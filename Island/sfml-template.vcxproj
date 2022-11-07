@@ -153,6 +153,7 @@
     <ClCompile Include="DataTable\DataTable.cpp" />
     <ClCompile Include="DataTable\DataTableMGR.cpp" />
     <ClCompile Include="DataTable\StringTable.cpp" />
+    <ClCompile Include="Ui\EditorMapUiMgr.cpp" />
     <ClCompile Include="Scens\MapEditor.cpp" />
     <ClCompile Include="Ui\DblClkObject.cpp" />
     <ClCompile Include="Framework\FileData.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="DataTable\DataTableMGR.h" />
     <ClInclude Include="DataTable\StringTable.h" />
+    <ClInclude Include="Ui\EditorMapUiMgr.h" />
     <ClInclude Include="Scens\MapEditor.h" />
     <ClInclude Include="Ui\DblClkObject.h" />
     <ClInclude Include="Framework\FileData.h" />

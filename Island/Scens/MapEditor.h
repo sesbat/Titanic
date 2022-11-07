@@ -13,10 +13,12 @@ private:
 
 public:
 	MapEditor();
-	virtual void Init();
-	virtual void Reset();
-	virtual void Update(float dt);
-	virtual void Draw(float dt);
-	~MapEditor();
+	virtual void Init() override;
+	virtual void Reset() override;
+	virtual void Update(float dt) override;
+	virtual void Draw(RenderWindow& window) override;
+	virtual void Enter() override;
+	virtual void Exit() override;
+	virtual ~MapEditor();
 };
 

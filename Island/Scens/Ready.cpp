@@ -47,7 +47,6 @@ void Ready::Enter()
 		SOUND_MGR->Play("sounds/menu.wav", true);
 		SOUND_MGR->SetNowBgm("sounds/menu.wav");
 	}
-	SCENE_MGR->GetCurrScene()->SetViewStop();
 	SCENE_MGR->GetCurrScene()->GetWorldView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
 	SCENE_MGR->GetCurrScene()->GetWorldView().setSize({ WINDOW_WIDTH , WINDOW_HEIGHT });
 }

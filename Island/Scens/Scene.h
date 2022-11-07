@@ -40,8 +40,6 @@ public:
 
 	View& GetWorldView() { return worldView; }
 	View& GetUiView() { return uiView; }
-	void SetViewStop();
-	void SetViewPlay();
 
 	Vector2f ScreenToWorld(Vector2i screenPos);
 	Vector2f ScreenToUiPosition(Vector2i screenPos);
