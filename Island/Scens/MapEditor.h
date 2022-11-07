@@ -8,8 +8,10 @@ class UiMgr;
 class MapEditor : public Scene
 {
 private:
-	map<int,vector<Button*>> greeds;
-	UiMgr* uimgr;
+	map<int, vector<Button*>> greeds;
+	map<int, map<int,Button*>> greedObjs;
+	Vector2f initMousePos;
+	bool isMove;
 
 public:
 	MapEditor();

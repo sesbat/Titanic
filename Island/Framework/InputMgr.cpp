@@ -13,6 +13,8 @@ list<Mouse::Button> InputMgr::downMouse;
 list<Mouse::Button> InputMgr::ingMouse;
 list<Mouse::Button> InputMgr::upMouse;
 Vector2f InputMgr::mousePos;
+bool InputMgr::wheelUp;
+bool InputMgr::wheelDown;
 
 void InputMgr::Init()
 {
@@ -45,6 +47,9 @@ void InputMgr::Init()
 	infoV.value = 0.f;
 
 	axisInfoMap.insert({ infoV.axis, infoV });
+
+	wheelUp = false;
+	wheelDown = false;
 }
 
 void InputMgr::Clear()
@@ -61,6 +66,7 @@ void InputMgr::Update(float dt)
 	upList.clear();
 	downMouse.clear();
 	upMouse.clear();
+	wheelUp = wheelDown = false;
 
 	for (auto& it : axisInfoMap)
 	{
@@ -114,6 +120,18 @@ void InputMgr::ProcessInput(Event& ev)
 			upList.push_back(ev.key.code);
 			break;
 		}
+	case Event::EventType::MouseWheelMoved:
+		{
+			if (ev.mouseWheel.delta > 0)
+			{
+				wheelUp = true;
+			}
+			if (ev.mouseWheel.delta < 0)
+			{
+				wheelDown = true;
+			}
+			break;
+		}
 	}
 }
 
@@ -145,6 +163,16 @@ bool InputMgr::GetMouseButton(Mouse::Button key)
 bool InputMgr::GetMouseButtonUp(Mouse::Button key)
 {
 	return find(upMouse.begin(), upMouse.end(), key) != upMouse.end();;
+}
+
+bool InputMgr::GetMouseWheelUp()
+{
+	return wheelUp;
+}
+
+bool InputMgr::GetMouseWheelDown()
+{
+	return wheelDown;
 }
 
 const Vector2f& InputMgr::GetMousePos()
