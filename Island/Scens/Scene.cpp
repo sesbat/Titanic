@@ -4,7 +4,7 @@
 #include "../Framework/Framework.h"
 #include "../Ui/Menu/MenuUiMgr.h"
 
-Scene::Scene(Scenes type) :type(type), viewSpeed(800.f), initViewSpeed(800.f), uiMgr(nullptr)
+Scene::Scene(Scenes type) :type(type), uiMgr(nullptr)
 {
 }
 
@@ -42,12 +42,10 @@ void Scene::Release()
 
 void Scene::SetViewStop()
 {
-	viewSpeed = 0.f;
 }
 
 void Scene::SetViewPlay()
 {
-	viewSpeed = initViewSpeed;
 }
 
 Vector2f Scene::ScreenToWorld(Vector2i screenPos)
@@ -74,11 +72,6 @@ void Scene::Update(float dt)
 				if (obj->GetActive())
 				{
 					obj->Update(dt);
-					if (layer.first == LayerType::Cookie)
-						continue;
-					if (layer.first == LayerType::Back)
-						continue;
-					obj->Translate(Vector2f{ -1.f,0 } * viewSpeed * dt);
 				}
 			}
 		}

@@ -11,11 +11,11 @@ using namespace std;
 class Object;
 enum class Scenes
 {
-	None = -1, Menu,Ready,Count
+	None = -1, Menu,Ready,MapEditor,Count
 };
 enum class LayerType
 {
-	None, Back,Bottom, Object, Cookie, Pet
+	None, Back,Plat, Object, Player
 };
 class Scene
 {
@@ -26,9 +26,6 @@ protected:
 
 	View worldView;
 	View uiView;
-
-	float viewSpeed;
-	float initViewSpeed;
 
 	UiMgr* uiMgr;
 public:
@@ -55,6 +52,5 @@ public:
 	void AddGameObject(Object* obj, LayerType type, int num);
 	Object* FindGameObj(string name);
 	UiMgr* GetUiMgr() { return uiMgr; }
-	float GetViewSpeed() { return viewSpeed; }
 };
 
