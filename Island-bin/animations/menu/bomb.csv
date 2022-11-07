@@ -1,0 +1,11 @@
+ID,LOOPTYPE (0: Single 1: Move),FPS,,,,,,
+bomb,1,10,,,,,,
+,,,,,,,,
+TEXTURE ID,L,T,W,H,X,Y,FlipX,FlipY
+graphics/Menu/bomb.png,0,0,198,316,99,158,0,0
+graphics/Menu/bomb.png,198,0,198,316,99,158,0,0
+graphics/Menu/bomb.png,396,0,198,316,99,158,0,0
+graphics/Menu/bomb.png,594,0,198,316,99,158,0,0
+graphics/Menu/bomb.png,792,0,198,316,99,158,0,0
+graphics/Menu/bomb.png,990,0,198,316,99,158,0,0
+graphics/Menu/bomb.png,1188,0,198,316,99,158,0,0

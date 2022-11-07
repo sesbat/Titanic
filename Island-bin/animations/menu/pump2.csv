@@ -1,0 +1,7 @@
+ID,LOOPTYPE (0: Single 1: Move),FPS,,,,,,
+pump2,1,10,,,,,,
+,,,,,,,,
+TEXTURE ID,L,T,W,H,X,Y,FlipX,FlipY
+graphics/Menu/pump2.png,0,0,143,117,71,58,0,0
+graphics/Menu/pump2.png,117,0,143,117,71,58,0,0
+graphics/Menu/pump2.png,234,0,143,117,71,58,0,0

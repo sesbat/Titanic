@@ -1,0 +1,10 @@
+ID,LOOPTYPE (0: Single 1: Move),FPS,,,,,,
+pump,1,10,,,,,,
+,,,,,,,,
+TEXTURE ID,L,T,W,H,X,Y,FlipX,FlipY
+graphics/Menu/pump.png,0,0,198,316,98,158,0,0
+graphics/Menu/pump.png,198,0,198,316,98,158,0,0
+graphics/Menu/pump.png,396,0,198,316,98,158,0,0
+graphics/Menu/pump.png,594,0,198,316,98,158,0,0
+graphics/Menu/pump.png,792,0,198,316,98,158,0,0
+graphics/Menu/pump.png,990,0,198,316,98,158,0,0

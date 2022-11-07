@@ -1,0 +1,4 @@
+id,type(0: EpisodeInfo 1: HitBoxInfo 2: CookieHitBox)
+config/episode/episode.txt,0
+config/cookie/Jungle.txt,2
+config/hitbox/Obstacle.txt,1

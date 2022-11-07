@@ -1,0 +1,7 @@
+ID,LOOPTYPE (0: Single 1: Move),FPS,,,,,,
+Jump,1,10,,,,,,
+,,,,,,,,
+TEXTURE ID,L,T,W,H,X,Y,FlipX,FlipY
+graphics/cookie/jungle/jump.png,0,0,364,364,182,182,0,0
+graphics/cookie/jungle/jump.png,364,0,364,364,182,182,0,0
+graphics/cookie/jungle/jump.png,728,0,364,364,182,182,0,0
