@@ -190,7 +190,6 @@ void MapEditor::Save()
 				ObjectData data;
 				data.type = nowObject->GetType();
 				data.path = nowObject->GetPath();
-				data.uiPath = nowObject->GetData().uiPaht;
 				data.position = nowObject->GetPos();
 				saveObjs.push_back(data);
 			}
@@ -211,7 +210,6 @@ void MapEditor::Load()
 		draw->SetOrigin(Origins::BC);
 		draw->SetMove(false);
 		draw->SetPos(obj.position);
-		draw->SetData({ obj.path, obj.uiPath });
 		
 		int i = ((int)obj.position.x-30) / 60;
 		int j = (int)obj.position.y / 60 - 1;
@@ -220,16 +218,16 @@ void MapEditor::Load()
 			objList[LayerType::Object][j].push_back(draw);
 			greedObjs[LayerType::Object][j][i] = draw;
 
-			cout << i << endl;
-			cout << j << endl << endl;
+			//cout << i << endl;
+			//cout << j << endl << endl;
 		}
 		if (obj.type == "Tile")
 		{
 			objList[LayerType::Tile][j].push_back(draw);
 			greedObjs[LayerType::Tile][j][i] = draw;
 
-			cout << i << endl;
-			cout << j << endl << endl;
+			//cout << i << endl;
+			//cout << j << endl << endl;
 		}
 	}
 }

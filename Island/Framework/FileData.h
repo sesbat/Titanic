@@ -43,14 +43,9 @@ namespace ns {
 	{
 		string type; // 바닥, 풀, (나무, 바위, 상자, 벽(특수)) 에너미
 		string path; // 스프라이트 파일
-		string uiPath; // 에디터 버튼 스프라이트
 		sf::Vector2f position;
-		vector<ns::RectangleInfo> hitBox;  //  size , pos
-		ns::RectangleInfo bottom;
-
 		vector<Item> item;
-		vector<Item> randomItem;
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ObjectData, type, path, uiPath, position, hitBox, bottom, item, randomItem)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ObjectData, type, path, position, item)
 	};
 
 	struct EditorObjs
