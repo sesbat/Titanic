@@ -12,8 +12,8 @@ private:
 
 	map<int, vector<Button*>> greeds;
 	map<LayerType,map<int, map<int, DrawObj*>>> greedObjs; //Tile, Object, Enermy
-	Vector2f initMousePos;
 	vector<ObjectData> saveObjs;
+	Vector2f initMousePos;
 	bool isMove;
 	string type;
 

@@ -167,7 +167,7 @@ MapEditor::~MapEditor()
 
 void MapEditor::SetType(string t)
 {
-	if (t == "TREE")
+	if (t == "TREE" || t == "STONE")
 	{
 		nowType = LayerType::Object;
 	}
@@ -200,7 +200,55 @@ void MapEditor::Save()
 
 void MapEditor::Load()
 {
-	auto data = FILE_MGR->GetMap("Tutorial");
+	for (auto& objs : objList[LayerType::Object])
+	{
+		for (auto it = objs.second.begin(); it != objs.second.end();)
+		{
+			auto del = *it;
+			it = objs.second.erase(it);
+			delete del;
+		}
+		objs.second.clear();
+	}
+
+	for (auto& objs : objList[LayerType::Tile])
+	{
+		for (auto it = objs.second.begin(); it != objs.second.end();)
+		{
+			auto del = *it;
+			it = objs.second.erase(it);
+			delete del;
+		}
+		objs.second.clear();
+	}
+	objList[LayerType::Tile].clear();
+	objList[LayerType::Object].clear();
+	for (auto& objs : greedObjs[LayerType::Object])
+	{
+		for (auto it = objs.second.begin(); it != objs.second.end();)
+		{
+			auto del = *it;
+			it = objs.second.erase(it);
+			delete del.second;
+		}
+		objs.second.clear();
+	}
+	for (auto& objs : greedObjs[LayerType::Tile])
+	{
+		for (auto it = objs.second.begin(); it != objs.second.end();)
+		{
+			auto del = *it;
+			it = objs.second.erase(it);
+			delete del.second;
+		}
+		objs.second.clear();
+	}
+	greedObjs[LayerType::Tile].clear();
+	greedObjs[LayerType::Object].clear();
+
+	greedObjs.clear();
+
+	auto& data = FILE_MGR->GetMap("Tutorial");
 	for (auto& obj : data)
 	{
 		DrawObj* draw = new DrawObj(uiMgr);
@@ -213,21 +261,15 @@ void MapEditor::Load()
 		
 		int i = ((int)obj.position.x-30) / 60;
 		int j = (int)obj.position.y / 60 - 1;
-		if (obj.type == "TREE")
+		if (obj.type == "TREE" || obj.type == "STONE")
 		{
 			objList[LayerType::Object][j].push_back(draw);
 			greedObjs[LayerType::Object][j][i] = draw;
-
-			//cout << i << endl;
-			//cout << j << endl << endl;
 		}
 		if (obj.type == "Tile")
 		{
 			objList[LayerType::Tile][j].push_back(draw);
 			greedObjs[LayerType::Tile][j][i] = draw;
-
-			//cout << i << endl;
-			//cout << j << endl << endl;
 		}
 	}
 }

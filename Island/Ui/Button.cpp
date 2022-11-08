@@ -10,6 +10,7 @@ Button::Button(UiMgr* mgr)
 {
 	Init();
 	sprite = new SpriteObject();
+	sprite->SetUI(true);
 	text = new TextObject();
 }
 
