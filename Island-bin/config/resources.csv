@@ -100,3 +100,9 @@ sounds/menu.wav,2
 sounds/jump.wav,2
 sounds/slide.wav,2
 sounds/coin.wav,2
+graphics/player/playerNakedIdle.png,0
+graphics/player/playerNakedMove.png,0
+animations/player/PlayerIdle.csv,3
+animations/player/PlayerIdleLeft.csv,3
+animations/player/PlayerMove.csv,3
+animations/player/PlayerMoveLeft.csv,3
