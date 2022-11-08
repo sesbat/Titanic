@@ -28,6 +28,7 @@ public:
 	virtual void Enter() override;
 	virtual void Exit() override;
 	virtual ~MapEditor();
+	void SetType(string t);
 
 	void Save();
 	void Load();

@@ -16,7 +16,7 @@ enum class Scenes
 // 바닥, 풀, 오브젝트 + 벽(특수), 에너미
 enum class LayerType
 {
-	None, Back, Plat, Object
+	None, Back, Tile, Object
 };
 class Scene
 {

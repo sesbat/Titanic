@@ -8,6 +8,7 @@
 #include "../Framework/InputMgr.h"
 #include "../../Scens/SceneManager.h"
 #include "../../Framework/FileManager.h"
+#include "../../Scens/MapEditor.h"
 
 EditorMapUiMgr::EditorMapUiMgr(Scene* scene)
 	:UiMgr(scene)
@@ -86,6 +87,7 @@ void EditorMapUiMgr::Select(DrawSelect* select)
 	nowDraw->SetType(select->GetType());
 	nowDraw->SetPath(select->GetPath());
 	nowDraw->SetData(select->GetData());
+	((MapEditor*)parentScene)->SetType(select->GetType());
 }
 
 void EditorMapUiMgr::DeleteDraw()

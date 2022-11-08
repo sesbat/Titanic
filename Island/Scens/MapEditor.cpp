@@ -34,6 +34,7 @@ void MapEditor::Reset()
 	}
 	uiMgr = new EditorMapUiMgr(this);
 	uiMgr->Init();
+	nowType = LayerType::Object;
 }
 
 void MapEditor::Update(float dt)
@@ -88,7 +89,6 @@ void MapEditor::Update(float dt)
 		{
 			if (greeds[i][j]->IsClick())
 			{
-				nowType = LayerType::Object;
 				cout << i << endl;
 				cout << j << endl;
 				cout << "clickTile" << endl;
@@ -104,7 +104,7 @@ void MapEditor::Update(float dt)
 						{
 							findObj = nowGreedObjs[i][j];
 							auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
-							objList[LayerType::Object][i].erase(deleteObj);
+							objList[nowType][i].erase(deleteObj);
 							greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
 
 							delete findObj;
@@ -114,14 +114,13 @@ void MapEditor::Update(float dt)
 				}
 
 				Button* findObj = nullptr;
-
 				if (nowGreedObjs.find(i) != nowGreedObjs.end())
 				{
 					if (nowGreedObjs[i].find(j) != nowGreedObjs[i].end())
 					{
 						findObj = nowGreedObjs[i][j];
-						auto deleteObj = find(objList[LayerType::Object][i].begin(), objList[LayerType::Object][i].end(), findObj);
-						objList[LayerType::Object][i].erase(deleteObj);
+						auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
+						objList[nowType][i].erase(deleteObj);
 						greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
 
 						delete findObj;
@@ -166,6 +165,18 @@ MapEditor::~MapEditor()
 {
 }
 
+void MapEditor::SetType(string t)
+{
+	if (t == "TREE")
+	{
+		nowType = LayerType::Object;
+	}
+	if (t == "Tile")
+	{
+		nowType = LayerType::Tile;
+	}
+}
+
 void MapEditor::Save()
 {
 	saveObjs.clear();
@@ -208,6 +219,14 @@ void MapEditor::Load()
 		{
 			objList[LayerType::Object][j].push_back(draw);
 			greedObjs[LayerType::Object][j][i] = draw;
+
+			cout << i << endl;
+			cout << j << endl << endl;
+		}
+		if (obj.type == "Tile")
+		{
+			objList[LayerType::Tile][j].push_back(draw);
+			greedObjs[LayerType::Tile][j][i] = draw;
 
 			cout << i << endl;
 			cout << j << endl << endl;
