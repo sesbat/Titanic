@@ -35,6 +35,11 @@ float Framework::GetRealDT() const
     return deltaTime.asSeconds();
 }
 
+const Vector2i& Framework::GetWindowSize() const
+{
+    return windowSize;
+}
+
 bool Framework::Init()
 {
     InputMgr::Init();

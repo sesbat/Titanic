@@ -54,6 +54,7 @@ animations/Jelly/goldCoin2.csv,3
 animations/Jelly/silverCoin1.csv,3
 animations/Jelly/silverCoin2.csv,3
 fonts/CookieRun Bold.ttf,1
+fonts/6809 chargen.otf,1
 graphics/stageBar.png,0
 graphics/miniCookie.png,0
 graphics/hpBar.png,0
@@ -91,6 +92,8 @@ graphics/episode2/stage1/back2.png,0
 graphics/episode2/stage1/back3.png,0
 graphics/episode2/stage1/block0.png,0
 graphics/cookie/jungle/clear.png,0
+graphics/title.png,0
+graphics/start.png,0
 animations/cookie/jungle/clear.csv,3
 sounds/editor.wav,2
 sounds/episode1.wav,2
@@ -100,3 +103,9 @@ sounds/menu.wav,2
 sounds/jump.wav,2
 sounds/slide.wav,2
 sounds/coin.wav,2
+graphics/player/playerNakedIdle.png,0
+graphics/player/playerNakedMove.png,0
+animations/player/PlayerIdle.csv,3
+animations/player/PlayerIdleLeft.csv,3
+animations/player/PlayerMove.csv,3
+animations/player/PlayerMoveLeft.csv,3
