@@ -47,32 +47,6 @@ bool ResourceManager::LoadAll()
             return false;
     }
 
-    {
-        rapidcsv::Document doc("config/editor.csv", rapidcsv::LabelParams(0, -1));
-        auto ids = doc.GetColumn<string>(0);
-        auto x_pos = doc.GetColumn<int>(1);
-        auto y_pos = doc.GetColumn<int>(2);
-
-        int cnt = doc.GetRowCount();
-        for (int i = 0; i < cnt; i++)
-        {
-            editorPos[ids[i]] = Vector2f(x_pos[i], y_pos[i]);
-        }
-    }
-
-    {
-        rapidcsv::Document doc("config/points.csv", rapidcsv::LabelParams(0, -1));
-        auto ids = doc.GetColumn<string>(0);
-        auto points = doc.GetColumn<int>(1);
-
-        int cnt = doc.GetRowCount();
-        for (int i = 0; i < cnt; i++)
-        {
-            this->points[ids[i]] = points[i];
-        }
-    }
-
-
     return true;
 }
 bool ResourceManager::Load(ResourcesTypes type, string id)
@@ -190,23 +164,4 @@ AnimationClip* ResourceManager::GetAnimationClip(string id)
     if (it == animationClipMap.end())
         return nullptr;
     return it->second;
-}
-
-Vector2f ResourceManager::GetEditorPos(string id)
-{
-    return editorPos[id];
-}
-map<string, Vector2f> ResourceManager::GetEditorPos()
-{
-    return editorPos;
-}
-
-int ResourceManager::GetPoints(string id)
-{
-    return points[id];
-}
-
-map<string, int> ResourceManager::GetPoints()
-{
-    return points;
 }

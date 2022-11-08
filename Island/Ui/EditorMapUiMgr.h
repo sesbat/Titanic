@@ -10,6 +10,7 @@ private:
 	Button* underUi;
 	vector<DrawSelect*> drawObj;
 	DrawObj* nowDraw;
+	map<string, vector<EditorObjs>> editorObjs;
 
 public:
 	EditorMapUiMgr(Scene* scene);
@@ -22,5 +23,6 @@ public:
 	DrawObj* GetDraw() { return nowDraw; }
 	void DeleteDraw();
 	bool IsUnder();
+
 };
 

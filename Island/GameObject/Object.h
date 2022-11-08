@@ -51,11 +51,8 @@ public:
 	virtual void SetPos(const Vector2f& pos);
 	virtual void Translate(const Vector2f& delta);
 	virtual const Vector2f& GetPos() const;
-	virtual void AddHitBox(const HitBoxInfo& hit, Vector2f pos);
-	virtual void AddHitBox(const CookieHitBox& hit, Vector2f pos);
+	virtual void AddHitBox(vector<ns::RectangleInfo>& hit, Vector2f pos);
 	virtual void AddHitBox(RectangleShape hit, Vector2f pos, bool isBottom = false);
-	virtual void AddHitBox(CircleShape hit, Vector2f pos, bool isBottom = false);
-	virtual void AddHitBox(ConvexShape hit,vector<Vector2f> points, Vector2f pos, bool isBottom = false);
 	void AddHitBox(Shape* hitbox, Vector2f initPos);
 	void AddHitBox(HitBox hit);
 	virtual const vector<HitBox>* GetHitBox();

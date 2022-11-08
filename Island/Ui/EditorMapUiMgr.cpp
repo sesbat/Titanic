@@ -7,6 +7,7 @@
 #include "../GameObject/SpriteObject.h"
 #include "../Framework/InputMgr.h"
 #include "../../Scens/SceneManager.h"
+#include "../../Framework/FileManager.h"
 
 EditorMapUiMgr::EditorMapUiMgr(Scene* scene)
 	:UiMgr(scene)
@@ -24,12 +25,37 @@ void EditorMapUiMgr::Init()
 	underUi->SetPos({ 0,WINDOW_HEIGHT - underUi->GetSpriteObj()->GetGlobalBound().height });
 	uiObjList[0].push_back(underUi);
 
-	DrawSelect* draw = new DrawSelect(this);
-	drawObj.push_back(draw);
-	draw->Set("TREE", "graphics/100sizeImage.png");
-	draw->SetPos(underUi->GetPos() + Vector2f { 10, 10 });
-	uiObjList[0].push_back(draw);
-	Reset();
+	editorObjs = FILE_MGR->GetEditorObjs();
+	int x = 20;
+
+	for (auto& type : editorObjs)
+	{
+		for (auto& obj : type.second)
+		{
+			DrawSelect* draw = new DrawSelect(this);
+			drawObj.push_back(draw);
+			draw->Set(type.first, obj.texPath, obj.uiPaht);
+			draw->SetPos(underUi->GetPos() + Vector2f{ (float)x, 10.f });
+			x += 100;
+			draw->SetData(obj);
+			uiObjList[0].push_back(draw);
+		}
+	}
+
+	//DrawSelect* draw = new DrawSelect(this);
+	//drawObj.push_back(draw);
+	//draw->Set("TREE", "graphics/editor/tree1.png", "graphics/editor/drawTree1.png");
+	//draw->SetPos(underUi->GetPos() + Vector2f { 10, 10 });
+	//uiObjList[0].push_back(draw);
+
+
+	//draw = new DrawSelect(this);
+	//drawObj.push_back(draw);
+	//draw->Set("TREE", "graphics/editor/tree2.png", "graphics/editor/drawTree2.png");
+	//draw->SetPos(underUi->GetPos() + Vector2f{ 120, 10 });
+	//uiObjList[0].push_back(draw);
+	//Reset();
+
 }
 
 void EditorMapUiMgr::Reset()
@@ -59,6 +85,7 @@ void EditorMapUiMgr::Select(DrawSelect* select)
 	nowDraw->SetOrigin(Origins::BC);
 	nowDraw->SetType(select->GetType());
 	nowDraw->SetPath(select->GetPath());
+	nowDraw->SetData(select->GetData());
 }
 
 void EditorMapUiMgr::DeleteDraw()

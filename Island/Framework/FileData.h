@@ -22,16 +22,6 @@ namespace sf {
 }
 
 namespace ns {
-	struct CircleInfo
-	{
-		float rad;
-		sf::Vector2f pos;
-	};
-	void to_json(json& j, const CircleInfo& c);
-	void from_json(const json& j, CircleInfo& c);
-}
-
-namespace ns {
 	struct RectangleInfo
 	{
 		sf::Vector2f size;
@@ -41,50 +31,31 @@ namespace ns {
 	void from_json(const json& j, RectangleInfo& c);
 }
 
-namespace ns {
-	struct ConvexInfo
-	{
-		vector<sf::Vector2f> points;
-		sf::Vector2f pos;
-	};
-	void to_json(json& j, const ConvexInfo& c);
-	void from_json(const json& j, ConvexInfo& c);
-}
-
-namespace ns {
-	struct BackInfo
-	{
-		string path;
-		float speed;
-	};
-	void to_json(json& j, const BackInfo& b);
-	void from_json(const json& j, BackInfo& b);
-}
-
-	struct MapData
-	{
-		vector<ns::BackInfo> backInfo; // background path
-		string bottomPath;		//bottom block path
-		vector<int> bottomPos;	//bottom block draw position
-		map<string, vector<sf::Vector2f>> obstacles; //obstacles draw path, draw position
-		map<string, vector<sf::Vector2f>> jellys; //obstacles draw path, draw position
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(MapData, backInfo, bottomPath, bottomPos, obstacles, jellys)
-	};
-
-	struct HitBoxInfo
-	{
-		vector<ns::CircleInfo> circles;    // rad, pos
-		vector<ns::RectangleInfo> rectangls;  //  size , pos
-		vector <ns::ConvexInfo> points; //point
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(HitBoxInfo, circles, rectangls, points)
-	};
-
-	struct CookieHitBox
+	struct Item
 	{
 		string type;
-		HitBoxInfo hitBox;
+		string path;
+		int pers = 100;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Item, type, path, pers)
+	};
+	
+	struct ObjectData
+	{
+		string type; // 바닥, 풀, (나무, 바위, 상자, 벽(특수)) 에너미
+		string path; // 스프라이트 파일
+		string uiPath; // 에디터 버튼 스프라이트
+		sf::Vector2f position;
+		vector<ns::RectangleInfo> hitBox;  //  size , pos
 		ns::RectangleInfo bottom;
-		
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(CookieHitBox, type, hitBox, bottom)
+
+		vector<Item> item;
+		vector<Item> randomItem;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ObjectData, type, path, uiPath, position, hitBox, bottom, item, randomItem)
 	};
 
+	struct EditorObjs
+	{
+		string texPath;
+		string uiPaht;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(EditorObjs, texPath, uiPaht)
+	};

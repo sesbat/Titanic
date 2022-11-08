@@ -13,9 +13,10 @@ enum class Scenes
 {
 	None = -1, Menu,Ready,MapEditor,Count
 };
+// 바닥, 풀, 오브젝트 + 벽(특수), 에너미
 enum class LayerType
 {
-	None, Back,Plat, Object, Player
+	None, Back, Plat, Object
 };
 class Scene
 {

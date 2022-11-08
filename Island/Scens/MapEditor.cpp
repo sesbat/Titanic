@@ -28,7 +28,7 @@ void MapEditor::Reset()
 			greeds[i].push_back(tile);
 			tile->SetTexture(*RESOURCES_MGR->GetTexture("graphics/editor/greed.png"), true);
 			tile->SetPos({ 60.f * j, 60.f * i });
-			objList[LayerType::Plat][i].push_back(tile);
+			objList[LayerType::Back][i].push_back(tile);
 			tile->SetUiView(false);
 		}
 	}
@@ -40,6 +40,15 @@ void MapEditor::Update(float dt)
 {
 	Scene::Update(dt);
 	
+	if (InputMgr::GetKeyDown(Keyboard::S))
+	{
+		Save();
+	}
+	if (InputMgr::GetKeyDown(Keyboard::L))
+	{
+		Load();
+	}
+
 	if (InputMgr::GetKeyDown(Keyboard::E))
 	{
 		((EditorMapUiMgr*)uiMgr)->DeleteDraw();
@@ -79,21 +88,24 @@ void MapEditor::Update(float dt)
 		{
 			if (greeds[i][j]->IsClick())
 			{
+				nowType = LayerType::Object;
 				cout << i << endl;
 				cout << j << endl;
 				cout << "clickTile" << endl;
 				DrawObj* nowDraw = ((EditorMapUiMgr*)uiMgr)->GetDraw();
+				auto& nowGreedObjs = greedObjs[nowType];
+
 				if (nowDraw == nullptr || ((EditorMapUiMgr*)uiMgr)->IsUnder())
 				{
 					Button* findObj = nullptr;
-					if (greedObjs.find(i) != greedObjs.end())
+					if (nowGreedObjs.find(i) != nowGreedObjs.end())
 					{
-						if (greedObjs[i].find(j) != greedObjs[i].end())
+						if (nowGreedObjs[i].find(j) != nowGreedObjs[i].end())
 						{
-							findObj = greedObjs[i][j];
-							auto deleteObj = find(objList[LayerType::Object][i].begin(), objList[LayerType::Object][i].end(), findObj);
+							findObj = nowGreedObjs[i][j];
+							auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
 							objList[LayerType::Object][i].erase(deleteObj);
-							greedObjs[i].erase(greedObjs[i].find(j));
+							greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
 
 							delete findObj;
 						}
@@ -103,19 +115,18 @@ void MapEditor::Update(float dt)
 
 				Button* findObj = nullptr;
 
-				if (greedObjs.find(i) != greedObjs.end())
+				if (nowGreedObjs.find(i) != nowGreedObjs.end())
 				{
-					if (greedObjs[i].find(j) != greedObjs[i].end())
+					if (nowGreedObjs[i].find(j) != nowGreedObjs[i].end())
 					{
-						findObj = greedObjs[i][j];
+						findObj = nowGreedObjs[i][j];
 						auto deleteObj = find(objList[LayerType::Object][i].begin(), objList[LayerType::Object][i].end(), findObj);
 						objList[LayerType::Object][i].erase(deleteObj);
-						greedObjs[i].erase(greedObjs[i].find(j));
+						greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
 
 						delete findObj;
 					}
 				}
-
 
 				DrawObj* draw = new DrawObj(uiMgr);
 				draw->SetType(nowDraw->GetType());
@@ -124,8 +135,9 @@ void MapEditor::Update(float dt)
 				draw->SetOrigin(Origins::BC);
 				draw->SetMove(false);
 				draw->SetPos(greeds[i][j]->GetPos() + Vector2f{30.f, 60.f});
-				objList[LayerType::Object][i].push_back(draw);
-				greedObjs[i][j] = draw;
+				draw->SetData(nowDraw->GetData());
+				objList[nowType][i].push_back(draw);
+				greedObjs[nowType][i][j] = draw;
 			}
 		}
 	}
@@ -152,4 +164,53 @@ void MapEditor::Exit()
 
 MapEditor::~MapEditor()
 {
+}
+
+void MapEditor::Save()
+{
+	saveObjs.clear();
+	for (auto& layer : greedObjs)
+	{
+		for (auto& objs : layer.second)
+		{
+			for (auto& obj : objs.second)
+			{
+				auto& nowObject = obj.second;
+				ObjectData data;
+				data.type = nowObject->GetType();
+				data.path = nowObject->GetPath();
+				data.uiPath = nowObject->GetData().uiPaht;
+				data.position = nowObject->GetPos();
+				saveObjs.push_back(data);
+			}
+		}
+	}
+	FILE_MGR->SaveMap(saveObjs, "Tutorial");
+}
+
+void MapEditor::Load()
+{
+	auto data = FILE_MGR->GetMap("Tutorial");
+	for (auto& obj : data)
+	{
+		DrawObj* draw = new DrawObj(uiMgr);
+		draw->SetType(obj.type);
+		draw->SetPath(obj.path);
+		draw->SetTexture(*RESOURCES_MGR->GetTexture(draw->GetPath()), true);
+		draw->SetOrigin(Origins::BC);
+		draw->SetMove(false);
+		draw->SetPos(obj.position);
+		draw->SetData({ obj.path, obj.uiPath });
+		
+		int i = ((int)obj.position.x-30) / 60;
+		int j = (int)obj.position.y / 60 - 1;
+		if (obj.type == "TREE")
+		{
+			objList[LayerType::Object][j].push_back(draw);
+			greedObjs[LayerType::Object][j][i] = draw;
+
+			cout << i << endl;
+			cout << j << endl << endl;
+		}
+	}
 }

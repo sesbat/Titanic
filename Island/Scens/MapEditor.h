@@ -5,13 +5,19 @@
 
 class Button;
 class UiMgr;
+class DrawObj;
 class MapEditor : public Scene
 {
 private:
+
 	map<int, vector<Button*>> greeds;
-	map<int, map<int,Button*>> greedObjs;
+	map<LayerType,map<int, map<int, DrawObj*>>> greedObjs; //Tile, Object, Enermy
 	Vector2f initMousePos;
+	vector<ObjectData> saveObjs;
 	bool isMove;
+	string type;
+
+	LayerType nowType;
 
 public:
 	MapEditor();
@@ -22,5 +28,8 @@ public:
 	virtual void Enter() override;
 	virtual void Exit() override;
 	virtual ~MapEditor();
+
+	void Save();
+	void Load();
 };
 
