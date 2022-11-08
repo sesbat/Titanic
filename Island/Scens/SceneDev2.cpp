@@ -51,10 +51,9 @@ void SceneDev2::Release()
 void SceneDev2::Enter()
 {
 	Init();
-	SCENE_MGR->GetCurrScene()->SetViewStop();
-	SCENE_MGR->GetCurrScene()->GetWorldView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
+	//SCENE_MGR->GetCurrScene()->SetViewStop();
+	//SCENE_MGR->GetCurrScene()->GetWorldView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
 	SCENE_MGR->GetCurrScene()->GetWorldView().setSize({ WINDOW_WIDTH , WINDOW_HEIGHT });
-	
 }
 
 void SceneDev2::Exit()
@@ -66,8 +65,6 @@ void SceneDev2::Update(float dt)
 {
 	
 	worldView.setCenter(player->GetPos());
-	worldView.setCenter(player->GetPos());
-	
 
 	//dev modes
 	

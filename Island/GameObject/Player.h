@@ -6,6 +6,7 @@
 using namespace std;
 
 class VertexArrayObj;
+class Scene;
 
 class Player : public SpriteObject
 {
@@ -18,11 +19,13 @@ public:
 	};
 protected:
 	Animator animator;
+	Scene* scene;
 	//RectangleShape healthBar;
 
 	States currState;
 	
 	float speed;
+	Vector2f look;
 	Vector2f velocity;
 	Vector2f direction;
 	Vector2f lastDirection;
@@ -66,5 +69,6 @@ public:
 	//void SetHpBar();
 	//void OnPickupItem(Item* item);
 	void SetPlayerPos();
+	Vector2f SetLookDir();
 };
 

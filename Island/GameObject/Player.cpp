@@ -3,6 +3,7 @@
 #include "../Framework/InputMgr.h"
 #include "../Framework/Utils.h"
 #include "../Framework/SoundManager.h"
+#include "../Scens/SceneManager.h"
 #include "VertexArrayObj.h"
 #include "Object.h"
 #include <iostream>
@@ -37,6 +38,8 @@ void Player::Init()
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerIdleLeft"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerMoveLeft"));
 	
+	scene = SCENE_MGR->GetCurrScene();
+
 	SetState(States::Idle);
 }
 
@@ -50,10 +53,10 @@ void Player::SetState(States newState)
 	switch (currState)
 	{
 	case Player::States::Idle:
-		animator.Play((lastDirection.x > 0.f) ? "PlayerIdle" : "PlayerIdleLeft");
+		animator.Play((look.x > 0.f) ? "PlayerIdle" : "PlayerIdleLeft");
 		break;
 	case Player::States::Move:
-		animator.Play((direction.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
+		animator.PlayQueue((look.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
 		lastDirection = direction;
 		break;
 	}
@@ -66,9 +69,16 @@ void Player::SetBackground(VertexArrayObj* bk)
 
 void Player::Update(float dt)
 {
+	scene = SCENE_MGR->GetCurrScene();
+
 	direction.x = InputMgr::GetAxisRaw(Axis::Horizontal);
 	direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
-	
+
+	Vector2i mousePos = (Vector2i)InputMgr::GetMousePos();
+	Vector2f mouseWorldPos = scene->ScreenToWorld(mousePos);
+
+	look = Utils::Normalize(mouseWorldPos);
+
 	switch (currState)
 	{
 	case Player::States::Idle:
@@ -154,14 +164,13 @@ void Player::UpdateIdle(float dt)
 	}
 	else if ( !EqualFloat(direction.y, 0.f) )
 	{
-		direction.x = direction.y;
 		SetState(States::Move);
 	}
 }
 
 void Player::UpdateMove(float dt)
 {
-	if ( EqualFloat(direction.x, 0.f) && EqualFloat(direction.y, 0.f) )
+	if (EqualFloat(direction.x, 0.f) && EqualFloat(direction.y, 0.f))
 	{
 		SetState(States::Idle);
 		return;
@@ -169,7 +178,7 @@ void Player::UpdateMove(float dt)
 
 	if ( !EqualFloat(direction.x, lastDirection.x))
 	{
-		animator.Play((direction.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
+		animator.PlayQueue((look.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
 		lastDirection.x = direction.x;
 	}
 
@@ -245,4 +254,11 @@ void Player::SetPlayerPos()
 	SetPos(prevPosition);
 	//playerHitbox->SetPos(prevPosition);
 	//healthBar.setPosition({ prevPosition.x, prevPosition.y - 15.f });
+}
+
+Vector2f Player::SetLookDir()
+{
+	Vector2f dir;
+	dir.x = look.x - GetPos().x;
+	return dir;
 }
