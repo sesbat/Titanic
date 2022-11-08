@@ -30,7 +30,7 @@ void MenuUiMgr::Update(float dt)
 
 		if (startBtn1->IsUp())
 		{
-			SCENE_MGR->ChangeScene(Scenes::Ready);
+			SCENE_MGR->ChangeScene(Scenes::Dev2);
 			return;
 		}
 		if (startBtn3->IsUp())

@@ -21,6 +21,7 @@ public:
 	float GetRealDT() const;
 
 	RenderWindow& GetWindow() { return window; }
+	const Vector2i& GetWindowSize()const;
 	bool Init();
 	bool Do();
 };

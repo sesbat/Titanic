@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "Menu.h"
 #include "Ready.h"
+#include "SceneDev2.h"
 #include "../Framework/info.h"
 #include "../Framework/ResourceManager.h"
 #include "../Framework/InputMgr.h"
@@ -51,6 +52,7 @@ bool SceneManager::Init()
 
 	sceneMap[Scenes::Menu] = new Menu();
 	sceneMap[Scenes::Ready] = new Ready();
+	sceneMap[Scenes::Dev2] = new SceneDev2();
 
 	currScene = Scenes::Menu;
 	sceneMap[currScene]->Enter();
