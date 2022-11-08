@@ -11,7 +11,7 @@ using namespace std;
 class Object;
 enum class Scenes
 {
-	None = -1, Menu,Ready,MapEditor,Count
+	None = -1, Menu,Ready,MapEditor,Count,Dev2
 };
 enum class LayerType
 {
