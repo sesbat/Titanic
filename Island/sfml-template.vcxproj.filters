@@ -107,6 +107,8 @@
     </ClCompile>
     <ClCompile Include="Ui\Fade.cpp">
 		</ClCompile>
+    <ClCompile></ClCompile> Include="Ui\Fade.cpp">
+
     <ClCompile Include="GameObject\Player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -213,6 +215,7 @@
     </ClInclude>
     <ClInclude Include="Ui\Fade.h">
 		</ClInclude>
+	  <ClInclude></ClInclude> Include="Ui\Fade.h">
     <ClInclude Include="GameObject\Player.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
