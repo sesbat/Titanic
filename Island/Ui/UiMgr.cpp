@@ -59,38 +59,38 @@ void UiMgr::Update(float dt)
 
     if (nowEvObj != nullptr)
     {
-        if (nowEvObj->IsMove() && nowEvObj->IsDrag()) //µå·¡±×ÁßÀÌ¸é
+        if (nowEvObj->IsMove() && nowEvObj->IsDrag()) //ï¿½å·¡ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
         {
-            nowEvObj->Update(dt); //¾ê¸¸ ¾÷µ¥ÀÌÆ® ÀÌº¥Æ® °ãÄ¡Áö ¾Ê°Ô ¾ê¸¸ ¾÷µ¥ÀÌÆ®
+            nowEvObj->Update(dt); //ï¿½ê¸¸ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ìºï¿½Æ® ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½ê¸¸ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
             isEvent = true;
         }
-        else if (nowEvObj->IsMoveRight() && nowEvObj->IsDragRight()) //µå·¡±×ÁßÀÌ¸é
+        else if (nowEvObj->IsMoveRight() && nowEvObj->IsDragRight()) //ï¿½å·¡ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
         {
-            nowEvObj->Update(dt); //¾ê¸¸ ¾÷µ¥ÀÌÆ® ÀÌº¥Æ® °ãÄ¡Áö ¾Ê°Ô ¾ê¸¸ ¾÷µ¥ÀÌÆ®
+            nowEvObj->Update(dt); //ï¿½ê¸¸ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ìºï¿½Æ® ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½ê¸¸ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
             isEvent = true;
         }
     }
-    for (auto uiObjs = uiObjList.rbegin(); uiObjs != uiObjList.rend(); uiObjs++) //¿ªÀ¸·Î Å½»ö = ¸Ç À§ÀÇ ui¸ÕÀú Å½»ö
+    for (auto uiObjs = uiObjList.rbegin(); uiObjs != uiObjList.rend(); uiObjs++) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å½ï¿½ï¿½ = ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ uiï¿½ï¿½ï¿½ï¿½ Å½ï¿½ï¿½
 	{
         for (auto it = (*uiObjs).second.rbegin(); it != (*uiObjs).second.rend(); it++)
         {
             if((*it) != nowEvObj)
-                (*it)->EventClear(); //Event »óÅÂ Å¬¸®¾î
+                (*it)->EventClear(); //Event ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
 
-            if (!isEvent) //ÀÌº¥Æ® ¹ß»ýÇÏÁö ¾ÊÀ»¶§¸¸ ¾÷µ¥ÀÌÆ® 
+            if (!isEvent) //ï¿½Ìºï¿½Æ® ï¿½ß»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® 
             {
                 (*it)->Update(dt);
             }
 			if ((*it)->GetEvent() && !isEvent)
 			{
 				isEvent = true;
-				nowEvObj = *it; //ÇöÀç ÀÌº¥Æ® °»½Å
+				nowEvObj = *it; //ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½
 			}
 		}
 	}
 
 
-    if (nowEvObj != nullptr && ((nowEvObj->GetState() == UiState::Exit) || (nowEvObj->GetState() == UiState::Enter))) //ÇöÀç ÀÌº¥Æ®°¡ ExitÀÌ¸é
+    if (nowEvObj != nullptr && ((nowEvObj->GetState() == UiState::Exit) || (nowEvObj->GetState() == UiState::Enter))) //ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ®ï¿½ï¿½ Exitï¿½Ì¸ï¿½
     {
         for (auto uiObjs = uiObjList.rbegin(); uiObjs != uiObjList.rend(); uiObjs++)
         {
@@ -100,15 +100,15 @@ void UiMgr::Update(float dt)
                 {
                     if ((*it)->GetState() == UiState::Stay || (*it)->GetState() == UiState::Down)
                     {
-                        (*it)->SetState(UiState::Exit); //¸¸¾à ÀÌÀü¿¡ ´­·ÁÁ®ÀÖ´ø°Ô ÀÖ´Ù¸é Exit
+                        (*it)->SetState(UiState::Exit); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ Exit
                         (*it)->SetEvent(true);
                     }
                     if ((*it)->GetState() == UiState::Stay || (*it)->GetState() == UiState::DownRight)
                     {
-                        (*it)->SetState(UiState::Exit); //¸¸¾à ÀÌÀü¿¡ ´­·ÁÁ®ÀÖ´ø°Ô ÀÖ´Ù¸é Exit
+                        (*it)->SetState(UiState::Exit); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ Exit
                         (*it)->SetEvent(true);
                     }
-                    (*it)->ColorClear(); // ¹öÆ° »ö»ó ÃÊ±âÈ­
+                    (*it)->ColorClear(); // ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
                 }
             }
         }

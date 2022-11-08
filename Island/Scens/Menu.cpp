@@ -24,11 +24,19 @@ Menu::~Menu()
 void Menu::Init()
 {
 	backGround = new SpriteObject();
-	backGround->SetTexture(*RESOURCES_MGR->GetTexture("graphics/Menu/back.png"));
+	backGround->SetTexture(*RESOURCES_MGR->GetTexture("graphics/title.png"));
 	backGround->SetSize({ WINDOW_WIDTH, WINDOW_HEIGHT });
 	backGround->SetPos({ 0,0 });
 
 	objList[LayerType::Back][0].push_back(backGround);
+
+	/*start = new TextObject();
+	start->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		75, Color::White, "Game Start");
+	start->SetOrigin(Origins::MC);
+	start->SetPos({ WINDOW_WIDTH/2,WINDOW_HEIGHT /2+100});*/
+	//objList[LayerType::Back][0].push_back(start);
+
 
 
 	uiMgr = new MenuUiMgr(this);
@@ -63,10 +71,6 @@ void Menu::Update(float dt)
 {
 	Scene::Update(dt);
 
-	for (auto& a : animes)
-	{
-		a.Update(dt);
-	}
 	if (InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		FRAMEWORK->GetWindow().close();

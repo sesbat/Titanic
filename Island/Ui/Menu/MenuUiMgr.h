@@ -1,6 +1,7 @@
 #pragma once
 #include "../UiMgr.h"
 
+class Fade;
 class Button;
 class Scene;
 class MoveObject;
@@ -8,11 +9,11 @@ class DblClkObject;
 class MenuUiMgr : public UiMgr
 {
 private:
-	DblClkObject* startBtn;
+	Button* startBtn1;
 	Button* startBtn2;
 	Button* startBtn3;
-	Button* startBtn4;
-	Button* startBtn5;
+
+	Fade* fade;
 
 	MoveObject* move;
 public:
