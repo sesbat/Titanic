@@ -1,6 +1,8 @@
 #include "SpriteObject.h"
+#include "../Scens/SceneManager.h"
 
 SpriteObject::SpriteObject()
+	:isUi(false)
 {
 }
 
@@ -20,7 +22,7 @@ void SpriteObject::Update(float dt)
 
 void SpriteObject::Draw(RenderWindow& window)
 {
-	if(enabled)
+	if(enabled && IsInView())
 		window.draw(sprite);
 	Object::Draw(window);
 }
@@ -67,4 +69,21 @@ void SpriteObject::SetOrigin(Origins origin)
 FloatRect SpriteObject::GetGlobalBound()
 {
 	return sprite.getGlobalBounds();
+}
+
+bool SpriteObject::IsInView()
+{
+	if (isUi)
+		return true;
+
+	auto& view = SCENE_MGR->GetCurrScene()->GetWorldView();
+	auto& viewSize = view.getSize();
+	auto& viewCenter = view.getCenter();
+	auto bound = GetGlobalBound();
+
+	if (((bound.left > viewCenter.x + viewSize.x / 2) || (bound.left + bound.width < viewCenter.x - viewSize.x / 2)) ||
+		((bound.top > viewCenter.y + viewSize.y / 2) || (bound.top + bound.height < viewCenter.y - viewSize.y / 2)))
+		return false;
+
+	return true;
 }

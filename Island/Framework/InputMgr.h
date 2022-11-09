@@ -38,6 +38,8 @@ private:
 	static list<Mouse::Button> upMouse;	  // 
 
 	static Vector2f mousePos;
+	static bool wheelUp;
+	static bool wheelDown;
 
 public:
 	static void Init();
@@ -52,6 +54,8 @@ public:
 	static bool GetMouseButtonDown(Mouse::Button key);
 	static bool GetMouseButton(Mouse::Button key);
 	static bool GetMouseButtonUp(Mouse::Button key);
+	static bool GetMouseWheelUp();
+	static bool GetMouseWheelDown();
 
 	static const Vector2f& GetMousePos();
 

@@ -40,13 +40,7 @@ void Scene::Release()
 	objList.clear();
 }
 
-void Scene::SetViewStop()
-{
-}
 
-void Scene::SetViewPlay()
-{
-}
 
 Vector2f Scene::ScreenToWorld(Vector2i screenPos)
 {

@@ -26,8 +26,6 @@ private:
 	map<string, Font*> fontMap;
 	map<string, SoundBuffer*> soundMap;
 	map<string, AnimationClip*> animationClipMap;
-	map<string, Vector2f> editorPos;
-	map<string, int> points;
 
 public:
 	ResourceManager();
@@ -48,13 +46,6 @@ public:
 	Font* GetFont(string id);
 	SoundBuffer* GetSoundBuffer(string id);
 	AnimationClip* GetAnimationClip(string id);
-
-	Vector2f GetEditorPos(string id);
-	map<string, Vector2f> GetEditorPos();
-
-	int GetPoints(string id);
-	map<string, int> GetPoints();
-
 };
 
 #define RESOURCES_MGR (ResourceManager::GetInstance())
