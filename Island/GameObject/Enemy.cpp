@@ -36,24 +36,27 @@ void Enemy::Init(Player* player)
 	Utils::SetOrigin(healthBar, Origins::MC);
 	
 	//enemy body hit box
-	bodyHitBox = new HitBox2();
-	bodyHitBox->SetHitbox({ 0,0,30.f,45.f });
-	bodyHitBox->SetPos(GetPos());
-	bodyHitBox->SetActive(true);
+
+	auto hitData = FILE_MGR->GetHitBox("graphics/enemy/enemy1.png");
+
+	for (auto& hit : hitData)
+	{
+		auto hitbox = new HitBox2();
+		hitbox->SetHitbox(FloatRect(hit.pos.x, hit.pos.y, hit.size.x, hit.size.y));
+		hitbox->SetInitPos(hit.pos);
+		hitbox->SetPos(GetPos());
+		hitbox->SetActive(true);
+		bodyHitBox.push_back(hitbox);
+	}
 
 	//enemy bottom hit box
-	bottomHitBox = new HitBox2();
-	bottomHitBox->SetHitbox({ 0,0,30.f,15.f });
-	bottomHitBox->SetPos({ GetPos().x,GetPos().y + 20.f });
-	bottomHitBox->SetFillColor(Color::Blue);
-	bottomHitBox->SetActive(true);
+	bottomHitBox = bodyHitBox[0];
 
 	//animation
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyIdle"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyIdleLeft"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMove"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMoveLeft"));
-	AddHitBox("graphics/enemy/enemy1.png");
 
 }
 
@@ -124,8 +127,11 @@ void Enemy::Update(float dt)
 	}*/
 
 	//position
-	bodyHitBox->SetPos(GetPos());
-	bottomHitBox->SetPos({ GetPos().x,GetPos().y + 20.f });
+	for (auto& hit : bodyHitBox)
+	{
+		hit->SetPos(GetPos());
+	}
+	//bottomHitBox->SetPos({ GetPos().x,GetPos().y + 20.f });
 
 	//hp bar
 	SetHpBar();
@@ -158,7 +164,10 @@ void Enemy::Draw(RenderWindow& window)
 	}
 	if (isHitBox)
 	{
-		bodyHitBox->Draw(window);
+		for (auto& hit : bodyHitBox)
+		{
+			hit->Draw(window);
+		}
 		bottomHitBox->Draw(window);
 	}
 }

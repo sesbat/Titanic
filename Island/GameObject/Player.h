@@ -24,7 +24,7 @@ protected:
 	Scene* scene;
 
 	HitBox2* bottomHitBox;
-	HitBox2* bodyHitBox;
+	vector<HitBox2*> bodyHitBox;
 
 	RectangleShape healthBar;
 

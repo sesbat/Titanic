@@ -43,10 +43,14 @@ void HitBox2::Draw(RenderWindow& window)
 	}
 }
 
+void HitBox2::SetInitPos(const Vector2f pos)
+{
+	initPos = pos;
+}
+
 void HitBox2::SetPos(const Vector2f& pos)
 {
-	hitbox.setPosition(pos);
-	Utils::SetOrigin(hitbox, Origins::MC);
+	hitbox.setPosition(initPos + pos);
 }
 
 const Vector2f& HitBox2::GetPos() const
@@ -65,7 +69,6 @@ void HitBox2::SetHitbox(const FloatRect rect)
 	hitbox.setFillColor(Color::Red);
 	hitbox.setOutlineColor(Color::Black);
 	hitbox.setOutlineThickness(2.f);
-	Utils::SetOrigin(hitbox, Origins::MC);
 }
 
 void HitBox2::SetFillColor(Color color)
