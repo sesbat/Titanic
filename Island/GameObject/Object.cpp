@@ -3,9 +3,10 @@
 #include "../Framework/InputMgr.h"
 #define DEBUG
 
+#include <iostream>
 Object::Object()
 {
-	hitDraw = false;
+	hitDraw = true;
 	Init();
 }
 
@@ -31,6 +32,7 @@ void Object::Init()
 
 void Object::Release()
 {
+	std::cout << "Release" << std::endl;
 	for (auto& hitbox : hitBoxs)
 	{
 		if (hitbox.shape != nullptr)
@@ -61,45 +63,24 @@ const Vector2f& Object::GetPos() const
 	return position;
 }
 
-void Object::AddHitBox(vector<ns::RectangleInfo>& hit, Vector2f pos)
+void Object::AddHitBox(string path)
 {
-	for (auto& ht : hit)
+	std::cout << "ADD" << std::endl;
+	auto data = FILE_MGR->GetHitBox(path);
+
+	for (auto& d : data)
 	{
-		AddHitBox(RectangleShape(ht.size), ht.pos);
+		HitBox h;
+		auto rect = new RectangleShape();
+		rect->setFillColor(Color::Red);
+		rect->setSize(d.size);
+		h.shape = rect;
+		h.initPos = d.pos;
+
+		hitBoxs.push_back(h);
 	}
-}
 
-void Object::AddHitBox(RectangleShape hitbox, Vector2f pos, bool isBottom)
-{
-	HitBox hit = HitBox();
-	hit.initPos = pos;
-	hit.shape = new RectangleShape(hitbox);
-	hit.shape->setFillColor(Color::Red);
-	hit.SetPos(position);
-
-	hitBoxs.push_back(hit);
-
-	if (isBottom)
-		bottomHitBox = hit;
-	Utils::SetOrigin(*hit.shape, Origins::TL);
-}
-
-void Object::AddHitBox(Shape* hitbox, Vector2f initPos)
-{
-	HitBox hit = HitBox();
-
-	hit.shape = hitbox;
-	hit.initPos = initPos;
-	hit.SetPos(position);
-	hit.shape->setFillColor(Color(255, 0, 0, 120));
-	hitBoxs.push_back(hit);
-}
-
-void Object::AddHitBox(HitBox hit)
-{
-	hit.SetPos(position);
-	hit.shape->setFillColor(Color(255, 0, 0, 120));
-	hitBoxs.push_back(hit);
+	bottomHitBox = hitBoxs[0];
 }
 
 const vector<HitBox>* Object::GetHitBox()
@@ -126,9 +107,9 @@ void Object::Update(float dt)
 
 void Object::Draw(RenderWindow& window)
 {
-	if(enabled && hitDraw)
-	for (auto& hitbox : hitBoxs)
-	{
-		window.draw(*hitbox.shape);
-	}
+	if (enabled && hitDraw)
+		for (auto& hitbox : hitBoxs)
+		{
+			window.draw(*hitbox.shape);
+		}
 }

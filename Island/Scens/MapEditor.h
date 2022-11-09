@@ -18,6 +18,8 @@ private:
 	string type;
 
 	LayerType nowType;
+	DrawObj* player;
+	Vector2i playerPos;
 
 public:
 	MapEditor();

@@ -20,5 +20,17 @@
       "texPath": "graphics/editor/tile1.png",
       "uiPaht": "graphics/editor/drawTile1.png"
     }
+  ],
+  "ENEMY": [
+    {
+      "texPath": "graphics/editor/enemy1.png",
+      "uiPaht": "graphics/editor/drawEnemy1.png"
+    }
+  ],
+  "PLAYER": [
+    {
+      "texPath": "graphics/editor/player.png",
+      "uiPaht": "graphics/editor/drawPlayer.png"
+    }
   ]
 }

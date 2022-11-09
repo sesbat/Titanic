@@ -53,6 +53,8 @@ void Enemy::Init(Player* player)
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyIdleLeft"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMove"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMoveLeft"));
+	AddHitBox("graphics/enemy/enemy1.png");
+
 }
 
 void Enemy::SetState(States newState)

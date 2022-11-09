@@ -90,6 +90,10 @@ void FileManager::LoadAll()
 	editorObjs = ao_d;
 	ao.close();
 
+	ifstream info("config/data/hitBoxs.json");
+	json info_d = json::parse(info);
+	hitBoxData = info_d;
+	info.close();
 	//ifstream hitbox("config/data/hitBox.json");
 	//json hit_d = json::parse(hitbox);
 	//hitBoxMap = hit_d;
@@ -104,7 +108,7 @@ const vector<ObjectData>& FileManager::GetMap(string name)
 
 const vector<ns::RectangleInfo>& FileManager::GetHitBox(string name)
 {
-	return hitBoxMap[name];
+	return hitBoxData[name];
 }
 
 void FileManager::SaveMap(vector<ObjectData> newData, string name)
