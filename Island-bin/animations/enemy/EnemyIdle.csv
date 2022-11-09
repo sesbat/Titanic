@@ -1,0 +1,8 @@
+ID,LOOPTYPE (0: Single 1: Move),FPS,,,,,,
+EnemyIdle,1,10,,,,,,
+,,,,,,,,
+TEXTURE ID,L,T,W,H,X,Y,FlipX,FlipY
+graphics/enemy/enemyIdle.png,0,0,128,128,64,64,0,0
+graphics/enemy/enemyIdle.png,128,0,128,128,64,64,0,0
+graphics/enemy/enemyIdle.png,256,0,128,128,64,64,0,0
+graphics/enemy/enemyIdle.png,384,0,128,128,64,64,0,0

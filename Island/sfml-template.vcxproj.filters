@@ -1,20 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="DataTable\DataTable.cpp" />
+    <ClCompile Include="DataTable\DataTableMGR.cpp" />
+    <ClCompile Include="DataTable\StringTable.cpp" />
+    <ClCompile Include="Ui\Fade.cpp" />
+    <ClCompile Include="GameObject\Player.cpp" />
+    <ClCompile Include="Scens\MapEditor.cpp" />
+    <ClCompile Include="Scens\SceneDev2.cpp" />
+    <ClCompile Include="Ui\DblClkObject.cpp" />
+    <ClCompile Include="Framework\FileData.cpp" />
+    <ClCompile Include="Framework\FileManager.cpp" />
+    <ClCompile Include="Framework\Framework.cpp" />
+    <ClCompile Include="Framework\InputMgr.cpp" />
+    <ClCompile Include="Framework\ResourceManager.cpp" />
+    <ClCompile Include="Framework\SoundManager.cpp" />
+    <ClCompile Include="Framework\Utils.cpp" />
+    <ClCompile Include="GameObject\Animation\AnimationClip.cpp" />
+    <ClCompile Include="GameObject\Animation\Animator.cpp" />
+    <ClCompile Include="GameObject\Object.cpp" />
+    <ClCompile Include="GameObject\SpriteObject.cpp" />
+    <ClCompile Include="GameObject\TextObject.cpp" />
+    <ClCompile Include="GameObject\VertexArrayObj.cpp" />
+    <ClCompile Include="Ui\MoveObject.cpp" />
+    <ClCompile Include="Scens\Menu.cpp" />
+    <ClCompile Include="Scens\Ready.cpp" />
+    <ClCompile Include="Scens\Scene.cpp" />
+    <ClCompile Include="Scens\SceneManager.cpp" />
+    <ClCompile Include="sfml-template.cpp" />
+    <ClCompile Include="Ui\Button.cpp" />
+    <ClCompile Include="Ui\Menu\MenuUiMgr.cpp" />
+    <ClCompile Include="Ui\Ready\ReadyButton.cpp" />
+    <ClCompile Include="Ui\Ready\ReadyUiMgr.cpp" />
+    <ClCompile Include="Ui\UiMgr.cpp" />
+    <ClCompile Include="Ui\UiObject.cpp" />
+    <ClCompile Include="GameObject\Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClCompile Include="sfml-template.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -242,6 +265,44 @@
 >>>>>>> feature/MapEditor
       <Filter>헤더 파일</Filter>
     </ClInclude>
+=======
+    <ClInclude Include="3rd\rapidcsv.h" />
+    <ClInclude Include="3rd\SingleTon.h" />
+    <ClInclude Include="DataTable\DataTable.h" />
+    <ClInclude Include="DataTable\DataTableMGR.h" />
+    <ClInclude Include="DataTable\StringTable.h" />
+    <ClInclude Include="Ui\Fade.h" />
+    <ClInclude Include="GameObject\Player.h" />
+    <ClInclude Include="Scens\MapEditor.h" />
+    <ClInclude Include="Scens\SceneDev2.h" />
+    <ClInclude Include="Ui\DblClkObject.h" />
+    <ClInclude Include="Framework\FileData.h" />
+    <ClInclude Include="Framework\FileManager.h" />
+    <ClInclude Include="Framework\Framework.h" />
+    <ClInclude Include="Framework\info.h" />
+    <ClInclude Include="Framework\InputMgr.h" />
+    <ClInclude Include="Framework\ResourceManager.h" />
+    <ClInclude Include="Framework\SoundManager.h" />
+    <ClInclude Include="Framework\Utils.h" />
+    <ClInclude Include="GameObject\Animation\AnimationClip.h" />
+    <ClInclude Include="GameObject\Animation\Animator.h" />
+    <ClInclude Include="GameObject\Object.h" />
+    <ClInclude Include="GameObject\SpriteObject.h" />
+    <ClInclude Include="GameObject\TextObject.h" />
+    <ClInclude Include="GameObject\VertexArrayObj.h" />
+    <ClInclude Include="Ui\MoveObject.h" />
+    <ClInclude Include="Scens\Menu.h" />
+    <ClInclude Include="Scens\Ready.h" />
+    <ClInclude Include="Scens\Scene.h" />
+    <ClInclude Include="Scens\SceneManager.h" />
+    <ClInclude Include="Ui\Button.h" />
+    <ClInclude Include="Ui\Menu\MenuUiMgr.h" />
+    <ClInclude Include="Ui\Ready\ReadyButton.h" />
+    <ClInclude Include="Ui\Ready\ReadyUiMgr.h" />
+    <ClInclude Include="Ui\UiMgr.h" />
+    <ClInclude Include="Ui\UiObject.h" />
+    <ClInclude Include="GameObject\Enemy.h" />
+>>>>>>> feature/enemy
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

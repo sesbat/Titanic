@@ -62,7 +62,7 @@ void Player::SetState(States newState)
 	}
 }
 
-void Player::SetBackground(VertexArrayObj* bk)
+void Player::SetBackground(SpriteObject* bk)
 {
 	background = bk;
 }

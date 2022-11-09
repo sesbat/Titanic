@@ -31,7 +31,7 @@ protected:
 	Vector2f lastDirection;
 	Vector2f prevPosition;
 
-	VertexArrayObj* background;
+	SpriteObject* background;
 	
 	//float timer;
 	//float attackTime;
@@ -48,7 +48,7 @@ public:
 	void Init();
 
 	void SetState(States newState);
-	void SetBackground(VertexArrayObj* bk);
+	void SetBackground(SpriteObject* bk);
 
 	void Update(float dt);
 	void Draw(RenderWindow& window);
