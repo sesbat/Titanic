@@ -25,5 +25,6 @@ public:
 	void SetOrigin(Origins origin);
 	FloatRect GetGlobalBound();
 	Sprite& GetSprite() { return sprite; };
+	void SetFlipX(bool flip);
 };
 

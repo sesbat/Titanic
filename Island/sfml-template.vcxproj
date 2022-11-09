@@ -190,6 +190,7 @@
     <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="DataTable\DataTableMGR.h" />
     <ClInclude Include="DataTable\StringTable.h" />
+    <ClInclude Include="Framework\ObjectPool.h" />
     <ClInclude Include="Ui\Fade.h" />
     <ClInclude Include="GameObject\Player.h" />
     <ClInclude Include="Scens\MapEditor.h" />

@@ -26,10 +26,15 @@ protected:
 	
 	float speed;
 	Vector2f look;
+	Vector2f lookDir;
+	Vector2f prevLook;
 	Vector2f velocity;
 	Vector2f direction;
 	Vector2f lastDirection;
 	Vector2f prevPosition;
+	bool isFlip;
+
+	Vector2f playerNormalize;
 
 	VertexArrayObj* background;
 	
@@ -70,5 +75,6 @@ public:
 	//void OnPickupItem(Item* item);
 	void SetPlayerPos();
 	Vector2f SetLookDir();
+	void SetFlipX(bool flip);
 };
 

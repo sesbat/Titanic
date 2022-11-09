@@ -9,7 +9,10 @@
 #include <iostream>
 
 Player::Player()
-	: currState(States::None), speed(500.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), hp(10), maxHp(10)
+	: currState(States::None),speed(500.f),
+	look(1.f,0.f),prevLook(1.f,0.f), 
+	direction(1.f, 0.f),lastDirection(1.f, 0.f),
+	hp(10),	maxHp(10)
 {
 }
 
@@ -49,14 +52,13 @@ void Player::SetState(States newState)
 		return;
 
 	currState = newState;
-	
 	switch (currState)
 	{
 	case Player::States::Idle:
-		animator.Play((look.x > 0.f) ? "PlayerIdle" : "PlayerIdleLeft");
+		animator.Play((look.x > GetPos().x) ? "PlayerIdle" : "PlayerIdleLeft");
 		break;
 	case Player::States::Move:
-		animator.PlayQueue((look.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
+		animator.Play((look.x > GetPos().x) ? "PlayerMove" : "PlayerMoveLeft");
 		lastDirection = direction;
 		break;
 	}
@@ -71,13 +73,15 @@ void Player::Update(float dt)
 {
 	scene = SCENE_MGR->GetCurrScene();
 
-	direction.x = InputMgr::GetAxisRaw(Axis::Horizontal);
-	direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
-
 	Vector2i mousePos = (Vector2i)InputMgr::GetMousePos();
 	Vector2f mouseWorldPos = scene->ScreenToWorld(mousePos);
 
-	look = Utils::Normalize(mouseWorldPos);
+	look = mouseWorldPos;
+	lookDir = Utils::Normalize(mouseWorldPos - GetPos());
+	direction.x = InputMgr::GetAxisRaw(Axis::Horizontal);
+	direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
+
+
 
 	switch (currState)
 	{
@@ -89,16 +93,16 @@ void Player::Update(float dt)
 		break;
 	}
 
-	//Á×À½
+	//ï¿½ï¿½ï¿½ï¿½
 	/*if ( hp <= 0 )
 	{
 		SetState(States::Dead);
 	}*/
 
-	//°¡¼Ó
+	//ï¿½ï¿½ï¿½ï¿½
 	velocity = direction * speed;
 
-	//°¨¼Ó
+	//ï¿½ï¿½ï¿½ï¿½
 	if ( Utils::Magnitude(direction) == 0.f )
 	{
 		velocity = { 0.f, 0.f };
@@ -166,6 +170,11 @@ void Player::UpdateIdle(float dt)
 	{
 		SetState(States::Move);
 	}
+	else if (!EqualFloat(lookDir.x, prevLook.x))
+	{
+		SetState(States::Move);
+		prevLook.x = lookDir.x;
+	}
 }
 
 void Player::UpdateMove(float dt)
@@ -176,10 +185,10 @@ void Player::UpdateMove(float dt)
 		return;
 	}
 
-	if ( !EqualFloat(direction.x, lastDirection.x))
+	if ( !EqualFloat(lookDir.x, prevLook.x))
 	{
-		animator.PlayQueue((look.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
-		lastDirection.x = direction.x;
+		animator.Play((lookDir.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
+		prevLook.x = lookDir.x;
 	}
 
 }
@@ -260,5 +269,11 @@ Vector2f Player::SetLookDir()
 {
 	Vector2f dir;
 	dir.x = look.x - GetPos().x;
+	dir.y = 0.f;
 	return dir;
+}
+
+void Player::SetFlipX(bool flip)
+{
+	SpriteObject::SetFlipX(flip);
 }
