@@ -33,6 +33,11 @@ void MenuUiMgr::Update(float dt)
 			SCENE_MGR->ChangeScene(Scenes::Dev2);
 			return;
 		}
+		if (startBtn2->IsUp())
+		{
+			SCENE_MGR->ChangeScene(Scenes::MapEditor);
+			return;
+		}
 		if (startBtn3->IsUp())
 		{
 			exit(1);
