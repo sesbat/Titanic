@@ -206,7 +206,10 @@ void MapEditor::Load()
 		{
 			auto del = *it;
 			it = objs.second.erase(it);
-			delete del;
+			if (del != nullptr)
+			{
+				delete del;
+			}
 		}
 		objs.second.clear();
 	}
@@ -217,35 +220,15 @@ void MapEditor::Load()
 		{
 			auto del = *it;
 			it = objs.second.erase(it);
-			delete del;
+			if (del != nullptr)
+			{
+				delete del;
+			}
 		}
 		objs.second.clear();
 	}
 	objList[LayerType::Tile].clear();
 	objList[LayerType::Object].clear();
-	for (auto& objs : greedObjs[LayerType::Object])
-	{
-		for (auto it = objs.second.begin(); it != objs.second.end();)
-		{
-			auto del = *it;
-			it = objs.second.erase(it);
-			delete del.second;
-		}
-		objs.second.clear();
-	}
-	for (auto& objs : greedObjs[LayerType::Tile])
-	{
-		for (auto it = objs.second.begin(); it != objs.second.end();)
-		{
-			auto del = *it;
-			it = objs.second.erase(it);
-			delete del.second;
-		}
-		objs.second.clear();
-	}
-	greedObjs[LayerType::Tile].clear();
-	greedObjs[LayerType::Object].clear();
-
 	greedObjs.clear();
 
 	auto& data = FILE_MGR->GetMap("Tutorial");
@@ -266,7 +249,7 @@ void MapEditor::Load()
 			objList[LayerType::Object][j].push_back(draw);
 			greedObjs[LayerType::Object][j][i] = draw;
 		}
-		if (obj.type == "Tile")
+		else if (obj.type == "Tile")
 		{
 			objList[LayerType::Tile][j].push_back(draw);
 			greedObjs[LayerType::Tile][j][i] = draw;

@@ -16,6 +16,8 @@ Button::Button(UiMgr* mgr)
 
 Button::~Button()
 {
+	delete sprite;
+	delete text;
 }
 
 void Button::Init()
