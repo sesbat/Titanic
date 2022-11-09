@@ -41,7 +41,7 @@ void Enemy::Init(Player* player)
 
 	for (auto& hit : hitData)
 	{
-		auto hitbox = new HitBox2();
+		auto hitbox = new HitBox();
 		hitbox->SetHitbox(FloatRect(hit.pos.x, hit.pos.y, hit.size.x, hit.size.y));
 		hitbox->SetInitPos(hit.pos);
 		hitbox->SetPos(GetPos());
@@ -51,6 +51,7 @@ void Enemy::Init(Player* player)
 
 	//enemy bottom hit box
 	bottomHitBox = bodyHitBox[0];
+	bottomHitBox->SetFillColor(Color::Blue);
 
 	//animation
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyIdle"));

@@ -1,7 +1,7 @@
 #pragma once
 #include "Object.h"
 
-class HitBox2 : public Object
+class HitBox : public Object
 {
 protected:
 	RectangleShape hitbox;
@@ -9,8 +9,8 @@ protected:
 	Vector2f initPos;
 
 public:
-	HitBox2();
-	virtual ~HitBox2();
+	HitBox();
+	virtual ~HitBox();
 
 	virtual void SetActive(bool active);
 	virtual bool GetActive() const;
