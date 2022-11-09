@@ -28,23 +28,41 @@ SceneDev2::~SceneDev2()
 
 void SceneDev2::Init()
 {
-	backGround = new SpriteObject();
+	auto& data = FILE_MGR->GetMap("Tutorial");
+	for (auto& obj : data)
+	{
+		SpriteObject* draw = new SpriteObject();
+		draw->SetTexture(*RESOURCES_MGR->GetTexture(obj.path));
+		draw->SetOrigin(Origins::BC);
+		draw->SetPos(obj.position);
+
+		int i = ((int)obj.position.x - 30) / 60;
+		int j = (int)obj.position.y / 60 - 1;
+		if (obj.type == "TREE" || obj.type == "STONE")
+		{
+			objList[LayerType::Object][j].push_back(draw);
+		}
+		else if (obj.type == "Tile")
+		{
+			objList[LayerType::Tile][j].push_back(draw);
+		}
+	}
+	/*backGround = new SpriteObject();
 	backGround->SetTexture(*RESOURCES_MGR->GetTexture("graphics/Menu/back.png"));
 	backGround->SetSize({ WINDOW_WIDTH, WINDOW_HEIGHT });
-	backGround->SetPos({ 0,0 });
-
-	objList[LayerType::Back][0].push_back(backGround);
+	backGround->SetPos({ 0,0 });*/
+	//objList[LayerType::Back][0].push_back(backGround);
 
 	player = new Player();
 	player->SetName("Player");
 	player->Init();
-	player->SetBackground(backGround);
+	//player->SetBackground(backGround);
 	objList[LayerType::Object][0].push_back(player);
 
 	enemy = new Enemy();
 	enemy->SetName("Enemy");
 	enemy->Init(player);
-	enemy->SetBackground(backGround);
+	//enemy->SetBackground(backGround);
 	objList[LayerType::Object][0].push_back(enemy);
 }
 

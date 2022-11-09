@@ -190,6 +190,7 @@
     <ClCompile Include="Ui\UiObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="3rd\OBB.h" />
     <ClInclude Include="3rd\rapidcsv.h" />
     <ClInclude Include="3rd\SingleTon.h" />
     <ClInclude Include="DataTable\DataTable.h" />

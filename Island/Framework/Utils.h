@@ -50,5 +50,6 @@ public:
 	static bool IsRange(float row, float height, float value);
 	static bool IsRange(const FloatRect rect, const Vector2f value);
 
+	static bool OBB(const RectangleShape& obb1, const RectangleShape& obb2);
 };
 

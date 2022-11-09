@@ -20,7 +20,7 @@ public:
 protected:
 	Animator animator;
 	Scene* scene;
-	//RectangleShape healthBar;
+	RectangleShape healthBar;
 
 	States currState;
 	
@@ -36,7 +36,7 @@ protected:
 
 	Vector2f playerNormalize;
 
-	SpriteObject* background;
+	//SpriteObject* background;
 	
 	//float timer;
 	//float attackTime;

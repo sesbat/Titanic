@@ -27,12 +27,12 @@ void Player::Init()
 	animator.SetTarget(&sprite);
 
 	//health bar
-	/*healthBar.setFillColor(Color::Green);
+	healthBar.setFillColor(Color::Green);
 	healthBar.setOutlineColor(Color::Black);
 	healthBar.setOutlineThickness(2.f);
 	healthBar.setSize({ 6.f * maxHp, 15.f });
 	healthBar.setPosition({ GetPos().x, GetPos().y - 15.f });
-	Utils::SetOrigin(healthBar, Origins::MC);*/
+	Utils::SetOrigin(healthBar, Origins::MC);
 
 	//animation
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerIdle"));
@@ -62,11 +62,6 @@ void Player::SetState(States newState)
 		lastDirection = direction;
 		break;
 	}
-}
-
-void Player::SetBackground(SpriteObject* bk)
-{
-	background = bk;
 }
 
 void Player::Update(float dt)
@@ -135,7 +130,7 @@ void Player::Update(float dt)
 	//wall bound
 	/*for ( const auto& hb: background->GetHitBoxList() )
 	{
-		if ( Utils::OBB(hb->GetHitbox(), playerHitbox->GetHitbox()) )
+		if ( Utils::OBB(hb->GetHitbox(),hitBoxs  ))
 		{
 			std::cout << "wall" << std::endl;
 			SetPlayerPos();
