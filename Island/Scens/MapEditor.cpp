@@ -35,24 +35,43 @@ void MapEditor::Reset()
 	uiMgr = new EditorMapUiMgr(this);
 	uiMgr->Init();
 	nowType = LayerType::Object;
+
+	DrawObj* draw = new DrawObj(uiMgr);
+	auto editorObjs = FILE_MGR->GetEditorObjs();
+	auto playerData = editorObjs["PLAYER"];
+	draw->SetType("PLAYER");
+	draw->SetPath(playerData[0].texPath);
+	draw->SetTexture(*RESOURCES_MGR->GetTexture(draw->GetPath()), true);
+	draw->SetOrigin(Origins::BC);
+	draw->SetMove(false);
+	draw->SetPos(greeds[0][0]->GetPos() + Vector2f{ 30.f, 60.f });
+	draw->SetData(playerData[0]);
+	objList[nowType][0].push_back(draw);
+	greedObjs[nowType][0][0] = draw;
+
+	player = draw;
 }
 
 void MapEditor::Update(float dt)
 {
 	Scene::Update(dt);
 	
-	if (InputMgr::GetKeyDown(Keyboard::S))
+	auto uimgr = ((EditorMapUiMgr*)uiMgr);
+	if (uimgr->IsSave() || InputMgr::GetKeyDown(Keyboard::S))
 	{
 		Save();
+		return;
 	}
-	if (InputMgr::GetKeyDown(Keyboard::L))
+	if (uimgr->IsLoad() || InputMgr::GetKeyDown(Keyboard::L))
 	{
 		Load();
+		return;
 	}
 
-	if (InputMgr::GetKeyDown(Keyboard::E))
+	if (uimgr->IsErase() || InputMgr::GetKeyDown(Keyboard::E))
 	{
 		((EditorMapUiMgr*)uiMgr)->DeleteDraw();
+		return;
 
 	}
 	if (InputMgr::GetMouseButtonDown(Mouse::Right))
@@ -89,9 +108,9 @@ void MapEditor::Update(float dt)
 		{
 			if (greeds[i][j]->IsClick())
 			{
-				cout << i << endl;
-				cout << j << endl;
-				cout << "clickTile" << endl;
+				if (nowType == LayerType::Object &&playerPos == Vector2i{ i,j })
+					return;
+
 				DrawObj* nowDraw = ((EditorMapUiMgr*)uiMgr)->GetDraw();
 				auto& nowGreedObjs = greedObjs[nowType];
 
@@ -119,6 +138,10 @@ void MapEditor::Update(float dt)
 					if (nowGreedObjs[i].find(j) != nowGreedObjs[i].end())
 					{
 						findObj = nowGreedObjs[i][j];
+
+						if (nowDraw->GetType() == "PLAYER")
+							return;
+
 						auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
 						objList[nowType][i].erase(deleteObj);
 						greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
@@ -130,13 +153,36 @@ void MapEditor::Update(float dt)
 				DrawObj* draw = new DrawObj(uiMgr);
 				draw->SetType(nowDraw->GetType());
 				draw->SetPath(nowDraw->GetPath());
-				draw->SetTexture(*RESOURCES_MGR->GetTexture(draw->GetPath()),true);
+				draw->SetTexture(*RESOURCES_MGR->GetTexture(draw->GetPath()), true);
 				draw->SetOrigin(Origins::BC);
 				draw->SetMove(false);
-				draw->SetPos(greeds[i][j]->GetPos() + Vector2f{30.f, 60.f});
+				draw->SetPos(greeds[i][j]->GetPos() + Vector2f{ 30.f, 60.f });
 				draw->SetData(nowDraw->GetData());
 				objList[nowType][i].push_back(draw);
 				greedObjs[nowType][i][j] = draw;
+
+				if (nowDraw->GetType() == "PLAYER")
+				{
+					if (player != nullptr)
+					{
+						int pi = playerPos.x;
+						int pj = playerPos.y;
+						if (nowGreedObjs.find(pi) != nowGreedObjs.end())
+						{
+							if (nowGreedObjs[pi].find(pj) != nowGreedObjs[pi].end())
+							{
+								findObj = nowGreedObjs[pi][pj];
+								auto deleteObj = find(objList[nowType][pi].begin(), objList[nowType][pi].end(), findObj);
+								objList[nowType][pi].erase(deleteObj);
+								greedObjs[nowType][pi].erase(nowGreedObjs[pi].find(pj));
+
+								delete findObj;
+							}
+						}
+					}
+					player = draw;
+					playerPos = { i,j };
+				}
 			}
 		}
 	}
@@ -167,7 +213,7 @@ MapEditor::~MapEditor()
 
 void MapEditor::SetType(string t)
 {
-	if (t == "TREE" || t == "STONE")
+	if (t == "TREE" || t == "STONE" || t == "ENEMY" || t == "PLAYER")
 	{
 		nowType = LayerType::Object;
 	}
@@ -231,6 +277,7 @@ void MapEditor::Load()
 	objList[LayerType::Object].clear();
 	greedObjs.clear();
 
+	player = nullptr;
 	auto& data = FILE_MGR->GetMap("Tutorial");
 	for (auto& obj : data)
 	{
@@ -244,10 +291,16 @@ void MapEditor::Load()
 		
 		int i = ((int)obj.position.x-30) / 60;
 		int j = (int)obj.position.y / 60 - 1;
-		if (obj.type == "TREE" || obj.type == "STONE")
+		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "ENEMY" || obj.type == "PLAYER")
 		{
 			objList[LayerType::Object][j].push_back(draw);
 			greedObjs[LayerType::Object][j][i] = draw;
+
+			if (obj.type == "PLAYER")
+			{
+				player = draw;
+				playerPos = Vector2i{ j,i };
+			}
 		}
 		else if (obj.type == "Tile")
 		{

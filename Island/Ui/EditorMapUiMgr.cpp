@@ -43,6 +43,32 @@ void EditorMapUiMgr::Init()
 		}
 	}
 
+	saveBtn = new Button(this);
+	saveBtn->SetClkColor(true);
+	saveBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		75, Color::White, "SAVE", true);
+	saveBtn->SetOrigin(Origins::TL);
+	saveBtn->SetPos({50,50 });
+	uiObjList[0].push_back(saveBtn);
+
+
+	loadBtn = new Button(this);
+	loadBtn->SetClkColor(true);
+	loadBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		75, Color::White, "LOAD", true);
+	loadBtn->SetOrigin(Origins::TL);
+	loadBtn->SetPos({ 50,120 });
+	uiObjList[0].push_back(loadBtn);
+
+	eraseBtn = new Button(this);
+	eraseBtn->SetClkColor(true);
+	eraseBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		75, Color::White, "ERASE", true);
+	eraseBtn->SetOrigin(Origins::TL);
+	eraseBtn->SetPos({ 50,190 });
+	uiObjList[0].push_back(eraseBtn);
+
+
 	//DrawSelect* draw = new DrawSelect(this);
 	//drawObj.push_back(draw);
 	//draw->Set("TREE", "graphics/editor/tree1.png", "graphics/editor/drawTree1.png");
@@ -102,4 +128,19 @@ bool EditorMapUiMgr::IsUnder()
 	mousePos = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)mousePos);
 	cout << Utils::IsRange(underUi->GetSpriteObj()->GetGlobalBound(), mousePos) << endl;
 	return Utils::IsRange(underUi->GetSpriteObj()->GetGlobalBound(), mousePos);
+}
+
+bool EditorMapUiMgr::IsSave()
+{
+	return saveBtn->IsDown() || saveBtn->IsClick();
+}
+
+bool EditorMapUiMgr::IsLoad()
+{
+	return loadBtn->IsDown() || loadBtn->IsClick();
+}
+
+bool EditorMapUiMgr::IsErase()
+{
+	return eraseBtn->IsDown() || eraseBtn->IsClick();
 }

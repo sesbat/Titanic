@@ -32,10 +32,8 @@ protected:
 	float rotation;
 	Vector2f scale;   
 
-	map<string, vector<HitBox>> allHitBoxs;
 	vector<HitBox> hitBoxs;
 	HitBox bottomHitBox;
-	map<string, HitBox> allBottom;
 	bool hitDraw;
 public:
 	Object();
@@ -51,10 +49,7 @@ public:
 	virtual void SetPos(const Vector2f& pos);
 	virtual void Translate(const Vector2f& delta);
 	virtual const Vector2f& GetPos() const;
-	virtual void AddHitBox(vector<ns::RectangleInfo>& hit, Vector2f pos);
-	virtual void AddHitBox(RectangleShape hit, Vector2f pos, bool isBottom = false);
-	void AddHitBox(Shape* hitbox, Vector2f initPos);
-	void AddHitBox(HitBox hit);
+	void AddHitBox(string path);
 	virtual const vector<HitBox>* GetHitBox();
 	virtual const HitBox& GetHitBoxBottom();
 

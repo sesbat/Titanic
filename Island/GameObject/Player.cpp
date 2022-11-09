@@ -42,7 +42,8 @@ void Player::Init()
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerMoveLeft"));
 	
 	scene = SCENE_MGR->GetCurrScene();
-
+	
+	AddHitBox("graphics/player/player.png");
 	SetState(States::Idle);
 }
 
