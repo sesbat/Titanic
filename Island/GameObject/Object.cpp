@@ -61,40 +61,13 @@ const Vector2f& Object::GetPos() const
 	return position;
 }
 
-void Object::AddHitBox(const HitBoxInfo& hit, Vector2f pos)
+void Object::AddHitBox(vector<ns::RectangleInfo>& hit, Vector2f pos)
 {
-	for (auto& ht : hit.rectangls)
+	for (auto& ht : hit)
 	{
 		AddHitBox(RectangleShape(ht.size), ht.pos);
 	}
-	for (auto& ht : hit.circles)
-	{
-		AddHitBox(CircleShape(ht.rad), ht.pos);
-	}
-	for (auto& ht : hit.points)
-	{
-		AddHitBox(ConvexShape(), ht.points, ht.pos);
-	}
 }
-
-void Object::AddHitBox(const CookieHitBox& hit, Vector2f pos)
-{
-	for (auto& ht : hit.hitBox.rectangls)
-	{
-		AddHitBox(RectangleShape(ht.size), ht.pos);
-	}
-	for (auto& ht : hit.hitBox.circles)
-	{
-		AddHitBox(CircleShape(ht.rad), ht.pos);
-	}
-	for (auto& ht : hit.hitBox.points)
-	{
-		AddHitBox(ConvexShape(),ht.points, ht.pos);
-	}
-
-	AddHitBox(RectangleShape(hit.bottom.size), hit.bottom.pos, true);
-}
-
 
 void Object::AddHitBox(RectangleShape hitbox, Vector2f pos, bool isBottom)
 {
@@ -110,47 +83,8 @@ void Object::AddHitBox(RectangleShape hitbox, Vector2f pos, bool isBottom)
 		bottomHitBox = hit;
 	Utils::SetOrigin(*hit.shape, Origins::TL);
 }
-void Object::AddHitBox(CircleShape hitbox, Vector2f pos, bool isBottom)
-{
-	HitBox hit = HitBox();
-	hit.initPos = pos;
-	hit.shape = new CircleShape(hitbox);
-	Utils::SetOrigin(*hit.shape, Origins::TL);
-	hit.shape->setFillColor(Color::Red);
-	hit.SetPos(position);
 
-	hitBoxs.push_back(hit);
-	if (isBottom)
-		bottomHitBox = hit;
-}
-void Object::AddHitBox(ConvexShape hitbox, vector<Vector2f> points, Vector2f pos, bool isBottom)
-{
-	HitBox hit = HitBox();
-
-	hitbox.setPointCount(points.size());
-	int idx = 0;
-	for (auto& point : points)
-	{
-		hitbox.setPoint(idx, point);
-		idx++;
-	}
-
-	hit.shape = new ConvexShape(hitbox);
-
-	hit.SetPos(position);
-
-	Utils::SetOrigin(*hit.shape, Origins::TL);
-
-
-	hit.shape->setFillColor(Color(255,0,0,120));
-	hit.initPos = pos;
-
-	hitBoxs.push_back(hit);
-	if (isBottom)
-		bottomHitBox = hit;
-}
-
-void Object::AddHitBox(Shape*  hitbox, Vector2f initPos)
+void Object::AddHitBox(Shape* hitbox, Vector2f initPos)
 {
 	HitBox hit = HitBox();
 

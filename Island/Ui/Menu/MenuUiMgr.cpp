@@ -55,6 +55,7 @@ void MenuUiMgr::Init()
 
 
 	startBtn1 = new Button(this);
+	startBtn1->SetClkColor(true);
 	/*startBtn2->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		75, Color::White,"Start",true);*/
 	startBtn1->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
@@ -64,6 +65,7 @@ void MenuUiMgr::Init()
 	uiObjList[0].push_back(startBtn1);
 
 	startBtn2 = new Button(this);
+	startBtn2->SetClkColor(true);
 	startBtn2->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		75, Color::White, "Settings", true);
 	startBtn2->SetOrigin(Origins::MC);
@@ -71,6 +73,7 @@ void MenuUiMgr::Init()
 	uiObjList[0].push_back(startBtn2);
 
 	startBtn3 = new Button(this);
+	startBtn3->SetClkColor(true);
 	startBtn3->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		75, Color::White, "Exit", true);
 	startBtn3->SetOrigin(Origins::MC);

@@ -155,6 +155,9 @@
     <ClCompile Include="DataTable\StringTable.cpp" />
     <ClCompile Include="Ui\Fade.cpp" />
     <ClCompile Include="GameObject\Player.cpp" />
+    <ClCompile Include="Ui\DrawObj.cpp" />
+    <ClCompile Include="Ui\DrawSelect.cpp" />
+    <ClCompile Include="Ui\EditorMapUiMgr.cpp" />
     <ClCompile Include="Scens\MapEditor.cpp" />
     <ClCompile Include="Scens\SceneDev2.cpp" />
     <ClCompile Include="Ui\DblClkObject.cpp" />
@@ -192,6 +195,9 @@
     <ClInclude Include="DataTable\StringTable.h" />
     <ClInclude Include="Ui\Fade.h" />
     <ClInclude Include="GameObject\Player.h" />
+    <ClInclude Include="Ui\DrawObj.h" />
+    <ClInclude Include="Ui\DrawSelect.h" />
+    <ClInclude Include="Ui\EditorMapUiMgr.h" />
     <ClInclude Include="Scens\MapEditor.h" />
     <ClInclude Include="Scens\SceneDev2.h" />
     <ClInclude Include="Ui\DblClkObject.h" />

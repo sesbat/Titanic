@@ -2,10 +2,11 @@
 #include "../../Framework/ResourceManager.h"
 #include "../../Framework//InputMgr.h"
 #include "../../Framework/Utils.h"
+#include "../Scens/SceneManager.h"
 
 UiObject::UiObject()
 	: btnState(UiState::None), drag(false), dragR(false),
-	isEvent(false), isClick(false), isClickR(false), isMove(false)
+	isEvent(false), isClick(false), isClickR(false), isMove(false), isUiView(true)
 {
 }
 
@@ -57,6 +58,10 @@ void UiObject::StateClear()
 void UiObject::Update(float dt)
 {
 	auto mousePos = InputMgr::GetMousePos();
+	if(isUiView)
+		mousePos = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)mousePos);
+	else
+		mousePos = SCENE_MGR->GetCurrScene()->ScreenToWorld((Vector2i)mousePos);
 	auto btnBoudn = bound;
 	
 
@@ -67,6 +72,7 @@ void UiObject::Update(float dt)
 		{
 			btnState = UiState::Enter;
 			isEvent = true;
+			isClick = false;
 		}
 		break;
 	case UiState::Stay:
@@ -74,6 +80,12 @@ void UiObject::Update(float dt)
 		{
 			btnState = UiState::Exit;
 			isEvent = true;
+		}
+		else if (!Utils::IsRange(btnBoudn, mousePos)) // 프레임 때문에 Exit못했을때
+		{
+			btnState = UiState::None;
+			isEvent = false;
+			isClick = false;
 		}
 		else if (InputMgr::GetMouseButtonDown(Mouse::Left))
 		{
@@ -137,11 +149,13 @@ void UiObject::Update(float dt)
 		{
 			btnState = UiState::Up;
 			isEvent = true;
+			isClick = false;
 		}
 		else if (!Utils::IsRange(btnBoudn, mousePos))
 		{
 			btnState = UiState::Exit;
 			isEvent = true;
+			isClick = false;
 		}
 		break;
 	case UiState::Up:

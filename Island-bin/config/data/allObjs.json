@@ -1,0 +1,24 @@
+{
+  "TREE": [
+    {
+      "texPath": "graphics/editor/tree1.png",
+      "uiPaht": "graphics/editor/drawTree1.png"
+    },
+    {
+      "texPath": "graphics/editor/tree2.png",
+      "uiPaht": "graphics/editor/drawTree2.png"
+    }
+  ],
+  "STONE": [
+    {
+      "texPath": "graphics/editor/stone1.png",
+      "uiPaht": "graphics/editor/drawStone1.png"
+    }
+  ],
+  "Tile": [
+    {
+      "texPath": "graphics/editor/tile1.png",
+      "uiPaht": "graphics/editor/drawTile1.png"
+    }
+  ]
+}
