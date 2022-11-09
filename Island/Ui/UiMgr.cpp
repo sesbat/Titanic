@@ -59,38 +59,38 @@ void UiMgr::Update(float dt)
 
     if (nowEvObj != nullptr)
     {
-        if (nowEvObj->IsMove() && nowEvObj->IsDrag()) //�巡�����̸�
+        if (nowEvObj->IsMove() && nowEvObj->IsDrag()) 
         {
-            nowEvObj->Update(dt); //�길 ������Ʈ �̺�Ʈ ��ġ�� �ʰ� �길 ������Ʈ
+            nowEvObj->Update(dt); 
             isEvent = true;
         }
-        else if (nowEvObj->IsMoveRight() && nowEvObj->IsDragRight()) //�巡�����̸�
+        else if (nowEvObj->IsMoveRight() && nowEvObj->IsDragRight()) 
         {
-            nowEvObj->Update(dt); //�길 ������Ʈ �̺�Ʈ ��ġ�� �ʰ� �길 ������Ʈ
+            nowEvObj->Update(dt);
             isEvent = true;
         }
     }
-    for (auto uiObjs = uiObjList.rbegin(); uiObjs != uiObjList.rend(); uiObjs++) //������ Ž�� = �� ���� ui���� Ž��
+    for (auto uiObjs = uiObjList.rbegin(); uiObjs != uiObjList.rend(); uiObjs++) 
 	{
         for (auto it = (*uiObjs).second.rbegin(); it != (*uiObjs).second.rend(); it++)
         {
             if((*it) != nowEvObj)
-                (*it)->EventClear(); //Event ���� Ŭ����
+                (*it)->EventClear(); 
 
-            if (!isEvent) //�̺�Ʈ �߻����� �������� ������Ʈ 
+            if (!isEvent)  
             {
                 (*it)->Update(dt);
             }
 			if ((*it)->GetEvent() && !isEvent)
 			{
 				isEvent = true;
-				nowEvObj = *it; //���� �̺�Ʈ ����
+				nowEvObj = *it; 
 			}
 		}
 	}
 
 
-    if (nowEvObj != nullptr && ((nowEvObj->GetState() == UiState::Exit) || (nowEvObj->GetState() == UiState::Enter))) //���� �̺�Ʈ�� Exit�̸�
+    if (nowEvObj != nullptr && ((nowEvObj->GetState() == UiState::Exit) || (nowEvObj->GetState() == UiState::Enter))) 
     {
         for (auto uiObjs = uiObjList.rbegin(); uiObjs != uiObjList.rend(); uiObjs++)
         {

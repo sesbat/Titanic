@@ -4,6 +4,7 @@
 
 class Player;
 class VertexArrayObj;
+class HitBox2;
 
 class Enemy : public SpriteObject
 {
@@ -17,7 +18,11 @@ public:
 	};
 protected:
 	Player* player;
+	
 	Animator animator;
+
+	HitBox2* bottomHitBox;
+	HitBox2* bodyHitBox;
 
 	RectangleShape healthBar;
 
@@ -28,8 +33,6 @@ protected:
 	Vector2f lastDirection;
 	Vector2f dir;
 	Vector2f prevPosition;
-
-	SpriteObject* background;
 
 	int bossState;
 	float moveTime;
@@ -42,6 +45,8 @@ protected:
 	int hp;
 	float barScaleX;
 
+	bool isHitBox;
+
 public:
 	Enemy();
 	virtual ~Enemy();
@@ -50,7 +55,6 @@ public:
 
 	void SetState(States newState);
 	States GetState();
-	void SetBackground(SpriteObject* bk);
 
 	void Update(float dt);
 	void Draw(RenderWindow& window);
