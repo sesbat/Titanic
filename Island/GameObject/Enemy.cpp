@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Player.h"
+#include "HitBox.h"
 #include "VertexArrayObj.h"
 #include "../Framework/ResourceManager.h"
 #include "../Framework/InputMgr.h"
@@ -7,7 +8,7 @@
 #include <iostream>
 
 Enemy::Enemy()
-    : currState(States::None), speed(50.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), bossState(0), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(true), hp(15), maxHp(15), barScaleX(60.f)
+	: currState(States::None), speed(50.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), bossState(0), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(true), hp(15), maxHp(15), barScaleX(60.f), isHitBox(true)
 {
 }
 
@@ -33,7 +34,19 @@ void Enemy::Init(Player* player)
 	healthBar.setSize({ barScaleX, 15.f });
 	healthBar.setPosition({ GetPos().x, GetPos().y - 35.f });
 	Utils::SetOrigin(healthBar, Origins::MC);
+	
+	//enemy body hit box
+	bodyHitBox = new HitBox2();
+	bodyHitBox->SetHitbox({ 0,0,30.f,45.f });
+	bodyHitBox->SetPos(GetPos());
+	bodyHitBox->SetActive(true);
 
+	//enemy bottom hit box
+	bottomHitBox = new HitBox2();
+	bottomHitBox->SetHitbox({ 0,0,30.f,15.f });
+	bottomHitBox->SetPos({ GetPos().x,GetPos().y + 20.f });
+	bottomHitBox->SetFillColor(Color::Blue);
+	bottomHitBox->SetActive(true);
 
 	//animation
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyIdle"));
@@ -62,10 +75,7 @@ Enemy::States Enemy::GetState()
     return currState;
 }
 
-void Enemy::SetBackground(SpriteObject* bk)
-{
-	background = bk;
-}
+
 
 void Enemy::Update(float dt)
 {
@@ -112,7 +122,8 @@ void Enemy::Update(float dt)
 	}*/
 
 	//position
-	
+	bodyHitBox->SetPos(GetPos());
+	bottomHitBox->SetPos({ GetPos().x,GetPos().y + 20.f });
 
 	//hp bar
 	SetHpBar();
@@ -129,6 +140,10 @@ void Enemy::Update(float dt)
 			SetBossPos();
 		}
 	}*/
+	if (InputMgr::GetKeyDown(Keyboard::F1))
+	{
+		isHitBox = !isHitBox;
+	}
 }
 
 void Enemy::Draw(RenderWindow& window)
@@ -138,6 +153,11 @@ void Enemy::Draw(RenderWindow& window)
 	{
 		SpriteObject::Draw(window);
 		window.draw(healthBar);
+	}
+	if (isHitBox)
+	{
+		bodyHitBox->Draw(window);
+		bottomHitBox->Draw(window);
 	}
 }
 
@@ -208,7 +228,7 @@ void Enemy::AttackPattern(float dt)
 	{
 		dir = Utils::Normalize(player->GetPos() - GetPos());
 
-		Translate(dir * this->speed * dt);
+		//Translate(dir * this->speed * dt);
 	}
 	//attack motion
 	if ( currState == States::Move && Utils::Distance(player->GetPos(), GetPos()) < 85.f )

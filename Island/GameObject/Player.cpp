@@ -6,13 +6,14 @@
 #include "../Scens/SceneManager.h"
 #include "VertexArrayObj.h"
 #include "Object.h"
+#include "HitBox.h"
 #include <iostream>
 
 Player::Player()
-	: currState(States::None),speed(500.f),
-	look(1.f,0.f),prevLook(1.f,0.f), 
-	direction(1.f, 0.f),lastDirection(1.f, 0.f),
-	hp(10),	maxHp(10)
+	: currState(States::None), speed(500.f),
+	look(1.f, 0.f), prevLook(1.f, 0.f),
+	direction(1.f, 0.f), lastDirection(1.f, 0.f),
+	hp(10), maxHp(10), isHitBox(true)
 {
 }
 
@@ -27,12 +28,25 @@ void Player::Init()
 	animator.SetTarget(&sprite);
 
 	//health bar
-	/*healthBar.setFillColor(Color::Green);
+	healthBar.setFillColor(Color::Green);
 	healthBar.setOutlineColor(Color::Black);
 	healthBar.setOutlineThickness(2.f);
 	healthBar.setSize({ 6.f * maxHp, 15.f });
 	healthBar.setPosition({ GetPos().x, GetPos().y - 15.f });
-	Utils::SetOrigin(healthBar, Origins::MC);*/
+	Utils::SetOrigin(healthBar, Origins::MC);
+
+	//player body hit box
+	bodyHitBox = new HitBox2();
+	bodyHitBox->SetHitbox({ 0,0,30.f,45.f });
+	bodyHitBox->SetPos(GetPos());
+	bodyHitBox->SetActive(true);
+
+	//player bottom hit box
+	bottomHitBox = new HitBox2();
+	bottomHitBox->SetHitbox({ 0,0,30.f,15.f });
+	bottomHitBox->SetPos({ GetPos().x,GetPos().y + 20.f });
+	bottomHitBox->SetFillColor(Color::Blue);
+	bottomHitBox->SetActive(true);
 
 	//animation
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerIdle"));
@@ -64,11 +78,6 @@ void Player::SetState(States newState)
 	}
 }
 
-void Player::SetBackground(SpriteObject* bk)
-{
-	background = bk;
-}
-
 void Player::Update(float dt)
 {
 	scene = SCENE_MGR->GetCurrScene();
@@ -80,8 +89,6 @@ void Player::Update(float dt)
 	lookDir = Utils::Normalize(mouseWorldPos - GetPos());
 	direction.x = InputMgr::GetAxisRaw(Axis::Horizontal);
 	direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
-
-
 
 	switch (currState)
 	{
@@ -124,10 +131,11 @@ void Player::Update(float dt)
 	//timer += dt;
 	
 	//positions
-	//playerHitbox->SetPos(GetPos());
-	
+	bodyHitBox->SetPos(GetPos());
+	bottomHitBox->SetPos({ GetPos().x,GetPos().y + 20.f });
+
 	//hp bar
-	//SetHpBar();
+	SetHpBar();
 
 	//animation
 	animator.Update(dt);
@@ -135,12 +143,17 @@ void Player::Update(float dt)
 	//wall bound
 	/*for ( const auto& hb: background->GetHitBoxList() )
 	{
-		if ( Utils::OBB(hb->GetHitbox(), playerHitbox->GetHitbox()) )
+		if ( Utils::OBB(hb->GetHitbox(),hitBoxs  ))
 		{
 			std::cout << "wall" << std::endl;
 			SetPlayerPos();
 		}
 	}*/
+
+	if (InputMgr::GetKeyDown(Keyboard::F1))
+	{
+		isHitBox = !isHitBox;
+	}
 
 	if (!EqualFloat(direction.x, 0.f))
 	{
@@ -151,7 +164,12 @@ void Player::Update(float dt)
 void Player::Draw(RenderWindow& window)
 {
 	SpriteObject::Draw(window);
-	//window.draw(healthBar);
+	window.draw(healthBar);
+	if (isHitBox)
+	{	
+		bodyHitBox->Draw(window);
+		bottomHitBox->Draw(window);
+	}
 }
 
 void Player::Dash(float dt)
@@ -210,31 +228,31 @@ void Player::SetHp(int num)
 	}
 }
 
-//void Player::SetHpBar()
-//{
-//	healthBar.setPosition({ GetPos().x, GetPos().y - 15.f });
-//	healthBar.setSize({ 6.f * hp, 15.f });
-//	if ( hp > 5 )
-//	{
-//		healthBar.setFillColor(Color::Green);
-//	}
-//	else if ( hp <= 5 && hp > 2 )
-//	{
-//		healthBar.setFillColor(Color::Yellow);
-//	}
-//	else if ( hp <= 2 )
-//	{
-//		healthBar.setFillColor(Color::Red);
-//	}
-//	if ( hp <= 0 )
-//	{
-//		healthBar.setOutlineThickness(0.f);
-//	}
-//	else
-//	{
-//		healthBar.setOutlineThickness(2.f);
-//	}
-//}
+void Player::SetHpBar()
+{
+	healthBar.setPosition({ GetPos().x, GetPos().y - 35.f });
+	healthBar.setSize({ 6.f * hp, 15.f });
+	if ( hp > 5 )
+	{
+		healthBar.setFillColor(Color::Green);
+	}
+	else if ( hp <= 5 && hp > 2 )
+	{
+		healthBar.setFillColor(Color::Yellow);
+	}
+	else if ( hp <= 2 )
+	{
+		healthBar.setFillColor(Color::Red);
+	}
+	if ( hp <= 0 )
+	{
+		healthBar.setOutlineThickness(0.f);
+	}
+	else
+	{
+		healthBar.setOutlineThickness(2.f);
+	}
+}
 
 //void Player::OnPickupItem(Item* item)
 //{
@@ -261,8 +279,9 @@ void Player::SetHp(int num)
 void Player::SetPlayerPos()
 {
 	SetPos(prevPosition);
-	//playerHitbox->SetPos(prevPosition);
-	//healthBar.setPosition({ prevPosition.x, prevPosition.y - 15.f });
+	bodyHitBox->SetPos(prevPosition);
+	bottomHitBox->SetPos(prevPosition);
+	healthBar.setPosition({ prevPosition.x, prevPosition.y - 15.f });
 }
 
 Vector2f Player::SetLookDir()

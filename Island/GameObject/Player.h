@@ -7,6 +7,7 @@ using namespace std;
 
 class VertexArrayObj;
 class Scene;
+class HitBox2;
 
 class Player : public SpriteObject
 {
@@ -19,8 +20,13 @@ public:
 	};
 protected:
 	Animator animator;
+
 	Scene* scene;
-	//RectangleShape healthBar;
+
+	HitBox2* bottomHitBox;
+	HitBox2* bodyHitBox;
+
+	RectangleShape healthBar;
 
 	States currState;
 	
@@ -36,7 +42,7 @@ protected:
 
 	Vector2f playerNormalize;
 
-	SpriteObject* background;
+	//SpriteObject* background;
 	
 	//float timer;
 	//float attackTime;
@@ -44,7 +50,7 @@ protected:
 	int hp;
 	int maxHp;
 
-	//bool isHitBox;
+	bool isHitBox;
 	//bool isAlive;
 public:
 	Player();
@@ -53,7 +59,7 @@ public:
 	void Init();
 
 	void SetState(States newState);
-	void SetBackground(SpriteObject* bk);
+	//void SetBackground(SpriteObject* bk);
 
 	void Update(float dt);
 	void Draw(RenderWindow& window);
@@ -71,7 +77,7 @@ public:
 	States GetCurrState() { return currState; }
 
 	void SetHp(int num);
-	//void SetHpBar();
+	void SetHpBar();
 	//void OnPickupItem(Item* item);
 	void SetPlayerPos();
 	Vector2f SetLookDir();

@@ -15,7 +15,7 @@ class SceneDev2 :public Scene
 protected:
 	Player* player;
 	Enemy* enemy;
-	SpriteObject* backGround;
+	//SpriteObject* backGround;
 	//
 	float timer;
 
