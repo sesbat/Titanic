@@ -46,8 +46,6 @@ void SceneDev2::Init()
 	enemy->Init(player);
 	enemy->SetBackground(backGround);
 	objList[LayerType::Object][0].push_back(enemy);
-
-
 }
 
 void SceneDev2::Release()
