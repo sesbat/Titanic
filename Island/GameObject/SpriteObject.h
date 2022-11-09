@@ -27,7 +27,7 @@ public:
 	FloatRect GetGlobalBound();
 	Sprite& GetSprite() { return sprite; };
 	void SetUI(bool u) { isUi = u; }
-
 	bool IsInView();
+	void SetFlipX(bool flip);
 };
 

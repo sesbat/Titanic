@@ -17,7 +17,7 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(RenderWindow& window) override;
 
-	// SceneÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
+	// Sceneï¿½ï¿½(ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Óµï¿½
 	virtual void Reset() override;
 };
 

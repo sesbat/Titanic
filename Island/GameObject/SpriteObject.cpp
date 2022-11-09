@@ -87,3 +87,9 @@ bool SpriteObject::IsInView()
 
 	return true;
 }
+void SpriteObject::SetFlipX(bool flip)
+{
+	Vector2f scale = sprite.getScale();
+	scale.x = flip ? -abs(scale.x) : abs(scale.x);
+	sprite.setScale(scale);
+}

@@ -154,6 +154,7 @@
     <ClCompile Include="DataTable\DataTableMGR.cpp" />
     <ClCompile Include="DataTable\StringTable.cpp" />
     <ClCompile Include="GameObject\Enemy.cpp" />
+    <ClCompile Include="GameObject\Sniper.cpp" />
     <ClCompile Include="Ui\Fade.cpp" />
     <ClCompile Include="GameObject\Player.cpp" />
     <ClCompile Include="Ui\DrawObj.cpp" />
@@ -195,6 +196,8 @@
     <ClInclude Include="DataTable\DataTableMGR.h" />
     <ClInclude Include="DataTable\StringTable.h" />
     <ClInclude Include="GameObject\Enemy.h" />
+    <ClInclude Include="Framework\ObjectPool.h" />
+    <ClInclude Include="GameObject\Sniper.h" />
     <ClInclude Include="Ui\Fade.h" />
     <ClInclude Include="GameObject\Player.h" />
     <ClInclude Include="Ui\DrawObj.h" />
