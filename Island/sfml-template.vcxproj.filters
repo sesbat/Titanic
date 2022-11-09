@@ -34,6 +34,7 @@
     <ClCompile Include="Ui\Ready\ReadyUiMgr.cpp" />
     <ClCompile Include="Ui\UiMgr.cpp" />
     <ClCompile Include="Ui\UiObject.cpp" />
+    <ClCompile Include="GameObject\Sniper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -72,6 +73,7 @@
     <ClInclude Include="Ui\UiMgr.h" />
     <ClInclude Include="Ui\UiObject.h" />
     <ClInclude Include="Framework\ObjectPool.h" />
+    <ClInclude Include="GameObject\Sniper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
