@@ -153,6 +153,7 @@
     <ClCompile Include="DataTable\DataTable.cpp" />
     <ClCompile Include="DataTable\DataTableMGR.cpp" />
     <ClCompile Include="DataTable\StringTable.cpp" />
+    <ClCompile Include="GameObject\Enemy.cpp" />
     <ClCompile Include="Ui\Fade.cpp" />
     <ClCompile Include="GameObject\Player.cpp" />
     <ClCompile Include="Scens\MapEditor.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="DataTable\DataTableMGR.h" />
     <ClInclude Include="DataTable\StringTable.h" />
+    <ClInclude Include="GameObject\Enemy.h" />
     <ClInclude Include="Ui\Fade.h" />
     <ClInclude Include="GameObject\Player.h" />
     <ClInclude Include="Scens\MapEditor.h" />

@@ -5,6 +5,7 @@
 #include <list>
 
 class Player;
+class Enemy;
 class VertexArrayObj;
 class SpriteObject;
 
@@ -13,6 +14,7 @@ class SceneDev2 :public Scene
 	
 protected:
 	Player* player;
+	Enemy* enemy;
 	SpriteObject* backGround;
 	//
 	float timer;
@@ -20,7 +22,7 @@ protected:
 	//int boxCount;
 
 	//map
-	VertexArrayObj* background;
+	//VertexArrayObj* background;
 	map<string, Vector2i> tileType;
 	list<string> tileList; list<string> wallNum = { "58","41","60","2",
 		"3","4","5","6","7","8","9","14","15","16",

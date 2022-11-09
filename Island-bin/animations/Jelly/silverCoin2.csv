@@ -1,8 +1,0 @@
-ID,LOOPTYPE (0: Single 1: Move),FPS,,,,,,
-graphics/Coin/jelly_coin_big_1-Sheet.png,1,10,,,,,,
-,,,,,,,,
-TEXTURE ID,L,T,W,H,X,Y,FlipX,FlipY
-graphics/Coin/jelly_coin_big_1-Sheet.png,0,0,160,161,80,80,0,0
-graphics/Coin/jelly_coin_big_1-Sheet.png,160,0,160,161,80,80,0,0
-graphics/Coin/jelly_coin_big_1-Sheet.png,320,0,160,161,80,80,0,0
-graphics/Coin/jelly_coin_big_1-Sheet.png,480,0,160,161,80,80,0,0

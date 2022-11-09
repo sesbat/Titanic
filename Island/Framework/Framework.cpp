@@ -22,7 +22,6 @@ Framework::~Framework()
     FILE_MGR->Destroy();
     SOUND_MGR->Destroy();
     RESOURCES_MGR->Destroy();
-
 }
 
 float Framework::GetDT() const

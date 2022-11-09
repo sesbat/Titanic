@@ -7,6 +7,7 @@
 #include "../Framework/SoundManager.h"
 #include "../Framework/Framework.h"
 #include "../GameObject/Player.h"
+#include "../GameObject/Enemy.h"
 #include "../GameObject/VertexArrayObj.h"
 #include "../../Framework/info.h"
 #include <SFML/System.hpp>
@@ -37,9 +38,15 @@ void SceneDev2::Init()
 	player = new Player();
 	player->SetName("Player");
 	player->Init();
-	//player->SetPos({ 1500,1300 });
-	player->SetBackground(background);
+	player->SetBackground(backGround);
 	objList[LayerType::Object][0].push_back(player);
+
+	enemy = new Enemy();
+	enemy->SetName("Enemy");
+	enemy->Init(player);
+	enemy->SetBackground(backGround);
+	objList[LayerType::Object][0].push_back(enemy);
+
 
 }
 
