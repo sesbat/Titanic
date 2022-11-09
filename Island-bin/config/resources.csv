@@ -1,13 +1,7 @@
 id,type(0: Texture. 1:Font 2: Sound 3:Animation)
 graphics/100sizeImage.png,0
 graphics/Menu/back.png,0
-graphics/Menu/bomb.png,0
-graphics/Menu/ghost.png,0
-graphics/Menu/pump2.png,0
-graphics/Menu/pump.png,0
 graphics/Editor/underUi.png,0
-graphics/Editor/leftUi.png,0
-graphics/Editor/erase.png,0
 fonts/CookieRun Bold.ttf,1
 fonts/6809 chargen.otf,1
 graphics/title.png,0
