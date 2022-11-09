@@ -32,3 +32,14 @@ animations/enemy/EnemyIdle.csv,3
 animations/enemy/EnemyIdleLeft.csv,3
 animations/enemy/EnemyMove.csv,3
 animations/enemy/EnemyMoveLeft.csv,3
+graphics/editor/greed.png,0
+graphics/editor/tree1.png,0
+graphics/editor/drawTree1.png,0
+graphics/editor/tree2.png,0
+graphics/editor/drawTree2.png,0
+graphics/editor/player.png,0
+graphics/editor/drawPlayer.png,0
+graphics/editor/tile1.png,0
+graphics/editor/drawTile1.png,0
+graphics/editor/stone1.png,0
+graphics/editor/drawStone1.png,0
