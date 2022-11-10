@@ -2,18 +2,20 @@
 #include "../../GameObject/SpriteObject.h"
 
 class HitBox;
-class MapObject : public SpriteObject
+class HitBoxObject : public SpriteObject
 {
-private:
+protected:
 	vector<HitBox*> hitboxs;
 	HitBox* bottom;
 	bool isHitBox;
 public:
-	MapObject();
-	virtual ~MapObject();
+	HitBoxObject();
+	virtual ~HitBoxObject();
 	void Init();
 	void Update(float dt);
 	void Draw(RenderWindow& window);
 	void SetHitBox(string path);
+	HitBox* GetBottom() { return bottom; }
+	const vector<HitBox*>& GetHitBoxs() { return hitboxs; }
 };
 

@@ -8,7 +8,9 @@
 #include <iostream>
 
 Enemy::Enemy()
-	: currState(States::None), speed(50.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), bossState(0), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(true), hp(15), maxHp(15), barScaleX(60.f), isHitBox(true)
+	: currState(States::None), speed(50.f), direction(1.f, 0.f), lastDirection(1.f, 0.f),
+	bossState(0), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(true), hp(15), 
+	maxHp(15), barScaleX(60.f)
 {
 }
 
@@ -18,6 +20,7 @@ Enemy::~Enemy()
 
 void Enemy::Init(Player* player)
 {
+	HitBoxObject::Init();
 	SetPos({ 200.f,200.f });
 	this->player = player;
 
@@ -36,22 +39,6 @@ void Enemy::Init(Player* player)
 	Utils::SetOrigin(healthBar, Origins::MC);
 	
 	//enemy body hit box
-
-	auto hitData = FILE_MGR->GetHitBox("graphics/enemy/enemy1.png");
-
-	for (auto& hit : hitData)
-	{
-		auto hitbox = new HitBox();
-		hitbox->SetHitbox(FloatRect(hit.pos.x, hit.pos.y, hit.size.x, hit.size.y));
-		hitbox->SetInitPos(hit.pos);
-		hitbox->SetPos(GetPos());
-		hitbox->SetActive(true);
-		bodyHitBox.push_back(hitbox);
-	}
-
-	//enemy bottom hit box
-	bottomHitBox = bodyHitBox[0];
-	bottomHitBox->SetFillColor(Color::Blue);
 
 	//animation
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyIdle"));
@@ -87,7 +74,7 @@ void Enemy::Update(float dt)
 {
 	prevPosition = GetPos();
 
-	SpriteObject::Update(dt);
+	HitBoxObject::Update(dt);
 	direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 
 	//boss attack
@@ -128,7 +115,7 @@ void Enemy::Update(float dt)
 	}*/
 
 	//position
-	for (auto& hit : bodyHitBox)
+	for (auto& hit : hitboxs)
 	{
 		hit->SetPos(GetPos());
 	}
@@ -149,10 +136,6 @@ void Enemy::Update(float dt)
 			SetBossPos();
 		}
 	}*/
-	if (InputMgr::GetKeyDown(Keyboard::F1))
-	{
-		isHitBox = !isHitBox;
-	}
 }
 
 void Enemy::Draw(RenderWindow& window)
@@ -160,16 +143,15 @@ void Enemy::Draw(RenderWindow& window)
 	
 	if ( GetActive() )
 	{
-		SpriteObject::Draw(window);
+		HitBoxObject::Draw(window);
 		window.draw(healthBar);
 	}
 	if (isHitBox)
 	{
-		for (auto& hit : bodyHitBox)
+		for (auto& hit : hitboxs)
 		{
 			hit->Draw(window);
 		}
-		bottomHitBox->Draw(window);
 	}
 }
 

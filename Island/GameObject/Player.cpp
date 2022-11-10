@@ -8,6 +8,7 @@
 #include "Bullet.h"
 #include "Object.h"
 #include "HitBox.h"
+#include "../Scens/SceneDev2.h"
 #include <iostream>
 
 void OnCreateBullet(Bullet* bullet)
@@ -20,7 +21,7 @@ Player::Player()
 	: currState(States::None), speed(500.f),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	hp(10), maxHp(10), isHitBox(true)
+	hp(10), maxHp(10)
 {
 }
 
@@ -30,7 +31,7 @@ Player::~Player()
 
 void Player::Init()
 {
-	SpriteObject::Reset();
+	HitBoxObject::Init();
 	hp = maxHp;
 
 	shotgun = new SpriteObject();
@@ -49,23 +50,6 @@ void Player::Init()
 	healthBar.setSize({ 6.f * maxHp, 15.f });
 	healthBar.setPosition({ GetPos().x, GetPos().y - 15.f });
 	Utils::SetOrigin(healthBar, Origins::MC);
-
-	//player body hit box
-	auto hitData = FILE_MGR->GetHitBox("graphics/player/player.png");
-
-	for (auto& hit : hitData)
-	{
-		auto hitbox = new HitBox();
-		hitbox->SetHitbox(FloatRect(hit.pos.x, hit.pos.y, hit.size.x, hit.size.y));
-		hitbox->SetInitPos(hit.pos);
-		hitbox->SetPos(GetPos());
-		hitbox->SetActive(true);
-		bodyHitBox.push_back(hitbox);
-	}
-
-	//enemy bottom hit box
-	bottomHitBox = bodyHitBox[0];
-	bottomHitBox->SetFillColor(Color::Blue);
 
 	//animation
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerIdle"));
@@ -100,8 +84,7 @@ void Player::SetState(States newState)
 
 void Player::Update(float dt)
 {
-	scene = SCENE_MGR->GetCurrScene();
-
+	HitBoxObject::Update(dt);
 	Vector2i mousePos = (Vector2i)InputMgr::GetMousePos();
 	Vector2f mouseWorldPos = scene->ScreenToWorld(mousePos);
 
@@ -164,7 +147,7 @@ void Player::Update(float dt)
 	//timer += dt;
 	
 	//positions
-	for (auto& hit : bodyHitBox)
+	for (auto& hit : hitboxs)
 	{
 		hit->SetPos(GetPos());
 	}
@@ -185,11 +168,6 @@ void Player::Update(float dt)
 		}
 	}*/
 
-	if (InputMgr::GetKeyDown(Keyboard::F1))
-	{
-		isHitBox = !isHitBox;
-	}
-
 	if (!EqualFloat(direction.x, 0.f))
 	{
 		lastDirection = direction;
@@ -205,15 +183,14 @@ void Player::Draw(RenderWindow& window)
 	{
 		bullet->Draw(window);
 	}
-	SpriteObject::Draw(window);
+	HitBoxObject::Draw(window);
 	window.draw(healthBar);
 	if (isHitBox)
 	{
-		for (auto& hit : bodyHitBox)
+		for (auto& hit : hitboxs)
 		{
 			hit->Draw(window);
 		}
-		bottomHitBox->Draw(window);
 	}
 	shotgun->Draw(window);
 	//window.draw(healthBar);
@@ -327,11 +304,11 @@ void Player::SetHpBar()
 void Player::SetPlayerPos()
 {
 	SetPos(prevPosition);
-	for (auto& hit : bodyHitBox)
+	for (auto& hit : hitboxs)
 	{
 		hit->SetPos(prevPosition);
 	}
-	bottomHitBox->SetPos(prevPosition);
+	bottom->SetPos(prevPosition);
 	healthBar.setPosition({ prevPosition.x, prevPosition.y - 15.f });
 }
 

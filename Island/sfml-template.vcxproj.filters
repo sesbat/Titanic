@@ -40,7 +40,7 @@
     <ClCompile Include="Ui\UiMgr.cpp" />
     <ClCompile Include="Ui\UiObject.cpp" />
     <ClCompile Include="GameObject\HitBox.cpp" />
-    <ClCompile Include="GameObject\MapObject.cpp" />
+    <ClCompile Include="GameObject\HitBoxObject.cpp" />
     <ClCompile Include="GameObject\Bullet.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -87,7 +87,7 @@
     <ClInclude Include="Ui\UiObject.h" />
     <ClInclude Include="3rd\OBB.h" />
     <ClInclude Include="GameObject\HitBox.h" />
-    <ClInclude Include="GameObject\MapObject.h" />
+    <ClInclude Include="GameObject\HitBoxObject.h" />
     <ClInclude Include="GameObject\Bullet.h" />
   </ItemGroup>
   <ItemGroup>

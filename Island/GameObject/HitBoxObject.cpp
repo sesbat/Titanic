@@ -1,21 +1,21 @@
-#include "MapObject.h"
+#include "HitBoxObject.h"
 #include "HitBox.h"
 #include "../../Framework/InputMgr.h"
 
-MapObject::MapObject()
+HitBoxObject::HitBoxObject()
 	:isHitBox(true)
 {
 }
 
-MapObject::~MapObject()
+HitBoxObject::~HitBoxObject()
 {
 }
 
-void MapObject::Init()
+void HitBoxObject::Init()
 {
 }
 
-void MapObject::Update(float dt)
+void HitBoxObject::Update(float dt)
 {
 	SpriteObject::Update(dt);
 	for (auto& hit : hitboxs)
@@ -28,7 +28,7 @@ void MapObject::Update(float dt)
 	}
 }
 
-void MapObject::Draw(RenderWindow& window)
+void HitBoxObject::Draw(RenderWindow& window)
 {
 	SpriteObject::Draw(window);
 	if (isHitBox)
@@ -37,13 +37,18 @@ void MapObject::Draw(RenderWindow& window)
 		{
 			hit->Draw(window);
 		}
-		bottom->Draw(window);
 	}
 }
 
-void MapObject::SetHitBox(string path)
+void HitBoxObject::SetHitBox(string path)
 {
 	auto hitData = FILE_MGR->GetHitBox(path);
+
+	if (hitData.size() == 0)
+	{
+		bottom = nullptr;
+		return;
+	}
 
 	for (auto& hit : hitData)
 	{

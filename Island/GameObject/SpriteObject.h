@@ -7,6 +7,7 @@ class SpriteObject : public Object
 protected:
 	Sprite sprite;
 	bool isUi;
+	bool viewIn; //카메라 안에 오브젝트 있는지
 public:
 	SpriteObject();
 	virtual ~SpriteObject();
@@ -29,5 +30,6 @@ public:
 	void SetUI(bool u) { isUi = u; }
 	bool IsInView();
 	void SetFlipX(bool flip);
+	bool GetIsView() { return viewIn; }
 };
 

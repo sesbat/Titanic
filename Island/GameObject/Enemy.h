@@ -1,12 +1,12 @@
 #pragma once
-#include "SpriteObject.h"
+#include "HitBoxObject.h"
 #include "Animation/Animator.h"
 
 class Player;
 class VertexArrayObj;
 class HitBox;
 
-class Enemy : public SpriteObject
+class Enemy : public HitBoxObject
 {
 public:
 	enum class States
@@ -20,9 +20,6 @@ protected:
 	Player* player;
 	
 	Animator animator;
-
-	HitBox* bottomHitBox;
-	vector<HitBox*> bodyHitBox;
 
 	RectangleShape healthBar;
 
@@ -44,8 +41,6 @@ protected:
 	int maxHp;
 	int hp;
 	float barScaleX;
-
-	bool isHitBox;
 
 public:
 	Enemy();

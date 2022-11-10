@@ -1,5 +1,5 @@
 #pragma once
-#include "SpriteObject.h"
+#include "HitBoxObject.h"
 #include "Animation/Animator.h"
 #include "../Framework/ObjectPool.h"
 #include <list>
@@ -12,7 +12,7 @@ class VertexArrayObj;
 class Scene;
 class HitBox;
 class Bullet;
-class Player : public SpriteObject
+class Player : public HitBoxObject
 {
 public:
 	enum class States
@@ -25,9 +25,6 @@ protected:
 	Animator animator;
 
 	Scene* scene;
-
-	HitBox* bottomHitBox;
-	vector<HitBox*> bodyHitBox;
 
 	RectangleShape healthBar;
 
@@ -50,14 +47,13 @@ protected:
 	//SpriteObject* background;
 	SpriteObject* shotgun;
 	SpriteObject* background;
-	
+
 	//float timer;
 	//float attackTime;
 
 	int hp;
 	int maxHp;
 
-	bool isHitBox;
 	//bool isAlive;
 public:
 	Player();
