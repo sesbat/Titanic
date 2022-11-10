@@ -63,5 +63,7 @@ public:
 	void SetBossPos();
 
 	void AttackPattern(float dt);
+
+
 };
 

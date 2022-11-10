@@ -51,5 +51,6 @@ public:
 	void AddGameObject(Object* obj, LayerType type, int num);
 	Object* FindGameObj(string name);
 	UiMgr* GetUiMgr() { return uiMgr; }
+	map<LayerType, map<int, vector<Object*>>> GetObjList() { return objList; }
 };
 

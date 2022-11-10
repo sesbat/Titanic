@@ -164,17 +164,40 @@ void Player::Update(float dt)
 
 	//animation
 	animator.Update(dt);
-
+	
 	//wall bound
-	/*for ( const auto& hb: background->GetHitBoxList() )
-	{
-		if ( Utils::OBB(hb->GetHitbox(),hitBoxs  ))
-		{
-			std::cout << "wall" << std::endl;
-			SetPlayerPos();
-		}
-	}*/
+	auto obj = scene->GetObjList();
+	//for (auto& objTile : obj[LayerType::Tile][0])
+	//{
+	//	auto hit = ((HitBoxObject*)objTile)->GetBottom();
+	//	//if (hit == nullptr /*|| !((SpriteObject*)objTile)->IsInView()*/)
+	//	//	continue;
+	//	if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+	//	{
+	//		std::cout << "wall" << std::endl;
+	//		SetPlayerPos();
+	//	}
 
+	//}
+	for (auto& objects : obj[LayerType::Object][0])
+	{
+		auto hit = ((HitBoxObject*)objects)->GetBottom();
+		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
+			continue;
+		if (objects->GetName() == "TREE" ||
+			objects->GetName() == "STONE" ||
+			objects->GetName() == "ENEMY")
+		{
+			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+			{
+				std::cout << "wall" << std::endl;
+				SetPlayerPos();
+			}
+		}
+		
+	}
+		
+	
 	if (!EqualFloat(direction.x, 0.f))
 	{
 		lastDirection = direction;
@@ -200,7 +223,6 @@ void Player::Draw(RenderWindow& window)
 		}
 	}
 	shotgun->Draw(window);
-	//window.draw(healthBar);
 }
 
 void Player::Dash(float dt)
@@ -316,7 +338,7 @@ void Player::SetPlayerPos()
 		hit->SetPos(prevPosition);
 	}
 	bottom->SetPos(prevPosition);
-	healthBar.setPosition({ prevPosition.x, prevPosition.y - 15.f });
+	healthBar.setPosition({ prevPosition.x, prevPosition.y - 35.f });
 }
 
 Vector2f Player::SetLookDir()

@@ -85,11 +85,7 @@ void SceneDev2::Init()
 			objList[LayerType::Tile][0].push_back(draw);
 		}
 	}
-	/*backGround = new SpriteObject();
-	backGround->SetTexture(*RESOURCES_MGR->GetTexture("graphics/Menu/back.png"));
-	backGround->SetSize({ WINDOW_WIDTH, WINDOW_HEIGHT });
-	backGround->SetPos({ 0,0 });*/
-	//objList[LayerType::Back][0].push_back(backGround);
+	prevWorldPos = player->GetPos();
 }
 
 void SceneDev2::Release()
@@ -116,9 +112,48 @@ void SceneDev2::Exit()
 void SceneDev2::Update(float dt)
 {
 	
-	worldView.setCenter(player->GetPos());
-
+	//worldView.setCenter(player->GetPos());
 	//dev modes
+	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
+
+	Vector2f dir;
+	dir.x = mouseworldPos.x - player->GetPos().x;
+	dir.y = mouseworldPos.y - player->GetPos().y;
+
+	float r = 0.1;
+	Vector2f camPoslen;
+	camPoslen.x = dir.x * r;
+	camPoslen.y = dir.y * r;
+
+
+	Vector2f realcam;
+	realcam.x = camPoslen.x + player->GetPos().x;
+	realcam.y = camPoslen.y + player->GetPos().y;
+	
+	if (player->GetActive())
+	{
+		worldView.setCenter(realcam);
+		if (worldView.getCenter().x < 0 || worldView.getCenter().x> WINDOW_WIDTH)
+		{
+			if (worldView.getCenter().y < 0 || worldView.getCenter().y > WINDOW_HEIGHT)
+			{
+				worldView.setCenter(prevWorldPos);
+			}
+			else
+			{
+				worldView.setCenter({ prevWorldPos.x, realcam.y });
+			}
+			
+		}
+		else
+		{
+			prevWorldPos = realcam;
+		}
+		
+	}
+	
+	
+		
 	
 	//
 	Scene::Update(dt);

@@ -12,6 +12,7 @@ class VertexArrayObj;
 class Scene;
 class HitBox;
 class Bullet;
+
 class Player : public HitBoxObject
 {
 public:

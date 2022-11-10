@@ -15,19 +15,17 @@ class SceneDev2 :public Scene
 protected:
 	Player* player;
 	Enemy* enemy;
-	//SpriteObject* backGround;
+	
 	//
 	float timer;
 
-	//int boxCount;
+	Vector2f prevWorldPos;
 
-	//map
-	//VertexArrayObj* background;
 public:
 	SceneDev2();
 	virtual ~SceneDev2();
 
-	// Scene��(��) ���� ��ӵ�
+	// Scene��(��) ���� ��ӵ�?
 	virtual void Init() override;
 	virtual void Release() override;
 
