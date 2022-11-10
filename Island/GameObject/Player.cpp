@@ -17,7 +17,7 @@ void OnCreateBullet(Bullet* bullet)
 }
 
 Player::Player()
-	: currState(States::None), speed(500.f),gun(Gun::Shotgun),
+	: currState(States::None), speed(500.f),gun(GunType::Shotgun),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
 	hp(10), maxHp(10), isHitBox(true)
@@ -360,7 +360,7 @@ void Player::Fire()
 	//shotgun
 	switch (gun)
 	{
-	case Player::Gun::Shotgun:
+	case Player::GunType::Shotgun:
 	{
 		Vector2f startPos = { shotgun->GetPos() };
 		startPos += lookDir * 50.f;
@@ -379,11 +379,11 @@ void Player::Fire()
 		bullet2->Fire(startPos, randomShot2, 1000, 500);
 	}
 		break;
-	case Player::Gun::Rifle:
+	case Player::GunType::Rifle:
 		break;
-	case Player::Gun::Sniper:
+	case Player::GunType::Sniper:
 		break;
-	case Player::Gun::GunCount:
+	case Player::GunType::GunCount:
 		break;
 	default:
 		break;

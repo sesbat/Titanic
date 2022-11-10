@@ -21,6 +21,13 @@ public:
 		Idle,
 		Move,
 	};
+	enum class GunType
+	{
+		Shotgun,
+		Rifle,
+		Sniper,
+		GunCount,
+	};
 protected:
 	Animator animator;
 
@@ -48,6 +55,9 @@ protected:
 	Vector2f playerNormalize;
 
 	//SpriteObject* background;
+
+	GunType gun;
+
 	SpriteObject* shotgun;
 	SpriteObject* background;
 	
