@@ -15,7 +15,7 @@
       "uiPaht": "graphics/editor/drawStone1.png"
     }
   ],
-  "Tile": [
+  "TILE": [
     {
       "texPath": "graphics/tile1.png",
       "uiPaht": "graphics/editor/drawTile1.png"

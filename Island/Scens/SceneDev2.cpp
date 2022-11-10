@@ -15,6 +15,7 @@
 #include <SFML/Graphics.hpp>
 #include "../GameObject/HitBoxObject.h"
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -29,6 +30,7 @@ SceneDev2::~SceneDev2()
 
 void SceneDev2::Init()
 {
+	isMap = true;
 	auto& data = FILE_MGR->GetMap("Tutorial");
 	for (auto& obj : data)
 	{
@@ -70,7 +72,7 @@ void SceneDev2::Init()
 			//enemy->SetBackground(backGround);
 			objList[LayerType::Object][0].push_back(enemy);
 		}
-		else if (obj.type == "Tile")
+		else if (obj.type == "TILE")
 		{
 			HitBoxObject* draw = new HitBoxObject();
 			draw->SetName(obj.type);
@@ -111,8 +113,9 @@ void SceneDev2::Exit()
 
 void SceneDev2::Update(float dt)
 {
-	
 	//worldView.setCenter(player->GetPos());
+	LayerSort();
+	worldView.setCenter(player->GetPos());
 	//dev modes
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
 

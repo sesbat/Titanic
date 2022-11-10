@@ -22,7 +22,7 @@ void SpriteObject::Update(float dt)
 
 void SpriteObject::Draw(RenderWindow& window)
 {
-	if(enabled /*&& IsInView()*/)
+	if(enabled && IsInView())
 		window.draw(sprite);
 	Object::Draw(window);
 }

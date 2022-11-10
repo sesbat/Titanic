@@ -20,7 +20,9 @@ protected:
 	float rotation;
 	Vector2f scale;   
 
-	bool hitDraw;
+	bool isUi;
+	bool viewIn;
+
 public:
 	Object();
 	virtual ~Object();
@@ -38,6 +40,8 @@ public:
 
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
+	void SetUI(bool u) { isUi = u; }
+	bool IsInView();
 	void SetName(string name) { this->name = name; }
 	const string& GetName() const { return name; }
 };
