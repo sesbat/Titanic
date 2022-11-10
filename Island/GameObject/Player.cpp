@@ -182,8 +182,8 @@ void Player::Update(float dt)
 	for (auto& objects : obj[LayerType::Object][0])
 	{
 		auto hit = ((HitBoxObject*)objects)->GetBottom();
-		//if (hit == nullptr /*|| !((SpriteObject*)objects)->IsInView()*/)
-		//	continue;
+		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
+			continue;
 		if (objects->GetName() == "TREE" ||
 			objects->GetName() == "STONE" ||
 			objects->GetName() == "ENEMY")
