@@ -29,5 +29,6 @@ public:
 	void SetUI(bool u) { isUi = u; }
 	bool IsInView();
 	void SetFlipX(bool flip);
+	void SetFlipY(bool flip);
 };
 

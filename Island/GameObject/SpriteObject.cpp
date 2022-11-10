@@ -93,3 +93,10 @@ void SpriteObject::SetFlipX(bool flip)
 	scale.x = flip ? -abs(scale.x) : abs(scale.x);
 	sprite.setScale(scale);
 }
+void SpriteObject::SetFlipY(bool flip)
+{
+	Vector2f scale = sprite.getScale();
+	scale.y = flip ? -abs(scale.y) : abs(scale.y);
+	sprite.setScale(scale);
+}
+
