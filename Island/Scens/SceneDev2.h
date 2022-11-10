@@ -20,6 +20,7 @@ protected:
 	float timer;
 
 	Vector2f prevWorldPos;
+	IntRect mapSize;
 
 public:
 	SceneDev2();

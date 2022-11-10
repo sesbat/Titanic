@@ -174,11 +174,10 @@ void Player::Update(float dt)
 			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
 			{
 				SetPlayerPos();
+				break;
 			}
 		}
-		
 	}
-		
 	
 	if (!EqualFloat(direction.x, 0.f))
 	{

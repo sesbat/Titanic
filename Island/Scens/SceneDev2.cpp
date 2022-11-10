@@ -88,6 +88,12 @@ void SceneDev2::Init()
 		}
 	}
 	prevWorldPos = player->GetPos();
+
+	auto& tiles = objList[LayerType::Tile][0];
+	mapSize.left = 0;
+	mapSize.top = 0;
+	mapSize.width = (tiles.back())->GetPos().x + 30;
+	mapSize.height = (tiles.back())->GetPos().y;
 }
 
 void SceneDev2::Release()
@@ -115,10 +121,10 @@ void SceneDev2::Update(float dt)
 {
 	//worldView.setCenter(player->GetPos());
 	LayerSort();
-	worldView.setCenter(player->GetPos());
+	//worldView.setCenter(player->GetPos());
 	//dev modes
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
-
+	
 	Vector2f dir;
 	dir.x = mouseworldPos.x - player->GetPos().x;
 	dir.y = mouseworldPos.y - player->GetPos().y;
@@ -133,24 +139,46 @@ void SceneDev2::Update(float dt)
 	realcam.x = camPoslen.x + player->GetPos().x;
 	realcam.y = camPoslen.y + player->GetPos().y;
 
+	realcam.x = max((int)realcam.x, WINDOW_WIDTH / 2);
+	realcam.x = min((int)realcam.x, mapSize.width -  WINDOW_WIDTH / 2);
+	realcam.y = max((int)realcam.y, WINDOW_HEIGHT / 2);
+	realcam.y = min((int)realcam.y, mapSize.height - WINDOW_HEIGHT / 2);
+
 	worldView.setCenter(realcam);
 	
-	/*if (player->GetActive())
-	{
-		if (worldView.getCenter().x - worldView.getSize().x * 0.5f < background->GetGlobalBounds().left)
-		{
-			worldView.setCenter(background->GetGlobalBounds().left + worldView.getSize().x * 0.5f, player->GetPos().y - 200);
-		}
-		else if (worldView.getCenter().x + worldView.getSize().x * 0.5f > background->GetGlobalBounds().left + background->GetGlobalBounds().width)
-		{
-			worldView.setCenter(background->GetGlobalBounds().left + background->GetGlobalBounds().width - worldView.getSize().x * 0.5f, player->GetPos().y - 200);
-		}
-		else
-		{
-			prevWorldPos = realcam;
-		}
+	
+
+	//if (player->GetActive())
+	//{
+	//	if (worldView.getCenter().x - worldView.getSize().x * 0.5f < mapSize.left)
+	//	{
+	//		worldView.setCenter(mapSize.left + worldView.getSize().x * 0.5f, player->GetPos().y - 200);
+	//	}
+	//	else if (worldView.getCenter().x + worldView.getSize().x * 0.5f > mapSize.left + mapSize.width)
+	//	{
+	//		worldView.setCenter(mapSize.left + mapSize.width - worldView.getSize().x * 0.5f, player->GetPos().y - 200);
+	//	}
+	//	else
+	//	{
+	//		worldView.setCenter(realcam);
+	//		//prevWorldPos = realcam;
+	//	}
+
+	//	if (worldView.getCenter().y - worldView.getSize().y * 0.5f < mapSize.top)
+	//	{
+	//		worldView.setCenter(mapSize.top + worldView.getSize().y * 0.5f, player->GetPos().y - 200);
+	//	}
+	//	else if (worldView.getCenter().y + worldView.getSize().y * 0.5f > mapSize.top + mapSize.height)
+	//	{
+	//		worldView.setCenter(mapSize.top + mapSize.height - worldView.getSize().y * 0.5f, player->GetPos().y - 200);
+	//	}
+	//	else
+	//	{
+	//		worldView.setCenter(realcam);
+	//		//prevWorldPos = realcam;
+	//	}
 		
-	}*/
+	//}
 	
 	Scene::Update(dt);
 }
