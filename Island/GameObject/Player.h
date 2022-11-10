@@ -1,13 +1,16 @@
 #pragma once
 #include "SpriteObject.h"
 #include "Animation/Animator.h"
+#include "../Framework/ObjectPool.h"
 #include <list>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 using namespace std;
 
 class VertexArrayObj;
 class Scene;
-
+class Bullet;
 class Player : public SpriteObject
 {
 public:
@@ -34,8 +37,11 @@ protected:
 	Vector2f prevPosition;
 	bool isFlip;
 
+	ObjectPool<Bullet> bulletPool;
+
 	Vector2f playerNormalize;
 
+	SpriteObject* shotgun;
 	SpriteObject* background;
 	
 	//float timer;
@@ -76,5 +82,7 @@ public:
 	void SetPlayerPos();
 	Vector2f SetLookDir();
 	void SetFlipX(bool flip);
+
+	void Fire();
 };
 

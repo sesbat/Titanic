@@ -4,8 +4,13 @@
     <ClCompile Include="DataTable\DataTable.cpp" />
     <ClCompile Include="DataTable\DataTableMGR.cpp" />
     <ClCompile Include="DataTable\StringTable.cpp" />
+    <ClCompile Include="GameObject\Enemy.cpp" />
+    <ClCompile Include="GameObject\Sniper.cpp" />
     <ClCompile Include="Ui\Fade.cpp" />
     <ClCompile Include="GameObject\Player.cpp" />
+    <ClCompile Include="Ui\DrawObj.cpp" />
+    <ClCompile Include="Ui\DrawSelect.cpp" />
+    <ClCompile Include="Ui\EditorMapUiMgr.cpp" />
     <ClCompile Include="Scens\MapEditor.cpp" />
     <ClCompile Include="Scens\SceneDev2.cpp" />
     <ClCompile Include="Ui\DblClkObject.cpp" />
@@ -34,233 +39,7 @@
     <ClCompile Include="Ui\Ready\ReadyUiMgr.cpp" />
     <ClCompile Include="Ui\UiMgr.cpp" />
     <ClCompile Include="Ui\UiObject.cpp" />
-    <ClCompile Include="GameObject\Enemy.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="sfml-template.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="DataTable\DataTable.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="DataTable\DataTableMGR.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="DataTable\StringTable.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\FileData.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\FileManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Framework.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\InputMgr.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\ResourceManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\SoundManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Utils.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\Animation\AnimationClip.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\Animation\Animator.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\Object.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\SpriteObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\TextObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\VertexArrayObj.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scens\Menu.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scens\Ready.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scens\Scene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scens\SceneManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ui\Button.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ui\Menu\MenuUiMgr.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ui\Ready\ReadyButton.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ui\Ready\ReadyUiMgr.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ui\UiMgr.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ui\UiObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ui\MoveObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ui\DblClkObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scens\MapEditor.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ui\Fade.cpp">
-		</ClCompile>
-    <ClCompile></ClCompile> Include="Ui\Fade.cpp">
-
-    <ClCompile Include="GameObject\Player.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scens\SceneDev2.cpp">
-	</ClCompile>
-    <ClCompile Include="Ui\EditorMapUiMgr.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ui\DrawSelect.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ui\DrawObj.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="3rd\rapidcsv.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="3rd\SingleTon.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="DataTable\DataTable.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="DataTable\DataTableMGR.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="DataTable\StringTable.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\FileData.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\FileManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Framework.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\info.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\InputMgr.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\ResourceManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\SoundManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Utils.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\Animation\AnimationClip.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\Animation\Animator.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\Object.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\SpriteObject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\TextObject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\VertexArrayObj.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scens\Menu.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scens\Ready.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scens\Scene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scens\SceneManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ui\Button.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ui\Menu\MenuUiMgr.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ui\Ready\ReadyButton.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ui\Ready\ReadyUiMgr.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ui\UiMgr.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ui\UiObject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ui\MoveObject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ui\DblClkObject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scens\MapEditor.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ui\Fade.h">
-		</ClInclude>
-	  <ClInclude></ClInclude> Include="Ui\Fade.h">
-    <ClInclude Include="GameObject\Player.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scens\SceneDev2.h">
-	</ClInclude>
-    <ClInclude Include="Ui\EditorMapUiMgr.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ui\DrawSelect.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ui\DrawObj.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClCompile Include="GameObject\Sniper.cpp" />
+    <ClCompile Include="GameObject\Bullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -268,8 +47,14 @@
     <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="DataTable\DataTableMGR.h" />
     <ClInclude Include="DataTable\StringTable.h" />
+    <ClInclude Include="GameObject\Enemy.h" />
+    <ClInclude Include="Framework\ObjectPool.h" />
+    <ClInclude Include="GameObject\Sniper.h" />
     <ClInclude Include="Ui\Fade.h" />
     <ClInclude Include="GameObject\Player.h" />
+    <ClInclude Include="Ui\DrawObj.h" />
+    <ClInclude Include="Ui\DrawSelect.h" />
+    <ClInclude Include="Ui\EditorMapUiMgr.h" />
     <ClInclude Include="Scens\MapEditor.h" />
     <ClInclude Include="Scens\SceneDev2.h" />
     <ClInclude Include="Ui\DblClkObject.h" />
@@ -298,9 +83,7 @@
     <ClInclude Include="Ui\Ready\ReadyUiMgr.h" />
     <ClInclude Include="Ui\UiMgr.h" />
     <ClInclude Include="Ui\UiObject.h" />
-    <ClInclude Include="GameObject\Enemy.h" />
-    <ClInclude Include="Framework\ObjectPool.h" />
-    <ClInclude Include="GameObject\Sniper.h" />
+    <ClInclude Include="GameObject\Bullet.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
