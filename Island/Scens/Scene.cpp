@@ -149,6 +149,14 @@ void Scene::LayerSort()
 {
 	moves.clear();
 	drawObjs.clear();
+	HitBoxObject* player = nullptr;
+
+	for (auto& obj : alphaObj)
+	{
+		((HitBoxObject*)(obj))->SetHitPlayer(false);
+	}
+
+	alphaObj.clear();
 
 	for (auto& objss : objList[LayerType::Object])
 	{
@@ -160,15 +168,29 @@ void Scene::LayerSort()
 			}
 			if (obj->GetName() == "TREE" || obj->GetName() == "STONE")
 			{
+				if (obj->GetName() == "TREE")
+					alphaObj.push_back((HitBoxObject*)obj);
 				drawObjs.push_back(obj);
 			}
 			else if (obj->GetName() == "ENEMY" || obj->GetName() == "PLAYER")
 			{
+				if (obj->GetName() == "PLAYER")
+					player = ((HitBoxObject*)obj);
 				moves.push_back(obj);
 			}
 		}
 	}
 
+	if (player != nullptr)
+	{
+		for (auto& obj : alphaObj)
+		{
+			if (Utils::OBB(obj->GetHitBoxs(), player->GetBottom()))
+			{
+				obj->SetHitPlayer(true);
+			}
+		}
+	}
 	sort(moves.begin(), moves.end(), sorting);
 	auto dit = drawObjs.begin();
 
@@ -185,30 +207,6 @@ void Scene::LayerSort()
 		}
 		if (((HitBoxObject*)(*mit))->GetBottomPos() < ((HitBoxObject*)(*dit))->GetBottomPos())
 		{
-			//if ((*mit)->GetName() == "PLAYER")
-			//{
-			//	auto& p_hit = ((HitBoxObject*)(*mit))->GetHitBoxs();
-			//	auto& o_hit = ((HitBoxObject*)(*dit))->GetHitBoxs();
-			//	bool isHit = false;
-			//	for (auto& ph : p_hit)
-			//	{
-			//		for (auto& oh : o_hit)
-			//		{
-			//			if (Utils::OBB(ph->GetHitbox(), oh->GetHitbox()))
-			//			{
-			//				hitTree
-			//			}
-			//			if (ph->GetHitbox().getGlobalBounds().intersects(oh->GetHitbox().getGlobalBounds()))
-			//			{
-			//				((HitBoxObject*)(*dit))->SetHitColor(true);
-			//				isHit = true;
-			//				break;
-			//			}
-			//		}
-			//		if (isHit)
-			//			break;
-			//	}
-			//}
 			dit = drawObjs.insert(dit, *mit);
 			mit++;
 		}

@@ -21,7 +21,7 @@ Enemy::~Enemy()
 void Enemy::Init(Player* player)
 {
 	HitBoxObject::Init();
-	SetPos({ 200.f,200.f });
+	//SetPos({ 200.f,200.f });
 	this->player = player;
 
 	hp = maxHp;

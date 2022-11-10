@@ -9,6 +9,7 @@ using namespace sf;
 using namespace std;
 
 class Object;
+class HitBoxObject;
 enum class Scenes
 {
 	None = -1, Menu,Ready,MapEditor,Count,Dev2
@@ -33,7 +34,7 @@ protected:
 	vector<Object*> moves;
 	vector<Object*> drawObjs;
 	vector<Object*> hitTree;
-
+	vector<HitBoxObject*> alphaObj;
 	bool isMap;
 
 public:

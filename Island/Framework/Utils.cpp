@@ -2,6 +2,7 @@
 #include "../3rd/OBB.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "../GameObject/HitBox.h"
 random_device Utils::rd;
 mt19937 Utils::gen(Utils::rd());
 
@@ -116,4 +117,17 @@ bool Utils::OBB(const RectangleShape& obb1, const RectangleShape& obb2)
 {
 	Vector2f MTV;
 	return testCollision(obb1, obb2, MTV);
+}
+bool Utils::OBB(const vector<HitBox*> obb1, const HitBox* obb2)
+{
+	Vector2f MTV;
+	bool isHit = false;
+	for (auto& hit : obb1)
+	{
+		if (OBB(hit->GetHitbox(), obb2->GetHitbox()))
+		{
+			return true;
+		}
+	}
+	return false;
 }

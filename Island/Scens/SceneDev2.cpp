@@ -31,6 +31,7 @@ SceneDev2::~SceneDev2()
 void SceneDev2::Init()
 {
 	isMap = true;
+	vector<Enemy*> enemys;
 	auto& data = FILE_MGR->GetMap("Tutorial");
 	for (auto& obj : data)
 	{
@@ -62,12 +63,12 @@ void SceneDev2::Init()
 		}
 		else if (obj.type == "ENEMY")
 		{
-			enemy = new Enemy();
+			Enemy* enemy = new Enemy();
 			enemy->SetName(obj.type);
-			enemy->Init(player);
+			//enemy->Init(player);
 			enemy->SetPos(obj.position);
-
 			enemy->SetHitBox(obj.path);
+			enemys.push_back(enemy);
 
 			//enemy->SetBackground(backGround);
 			objList[LayerType::Object][0].push_back(enemy);
@@ -86,6 +87,11 @@ void SceneDev2::Init()
 			int j = (int)obj.position.y / 60 - 1;
 			objList[LayerType::Tile][0].push_back(draw);
 		}
+	}
+
+	for (auto& enemy : enemys)
+	{
+		enemy->Init(player);
 	}
 	prevWorldPos = player->GetPos();
 }
@@ -146,7 +152,6 @@ void SceneDev2::Update(float dt)
 			{
 				worldView.setCenter({ prevWorldPos.x, realcam.y });
 			}
-			
 		}
 		else
 		{
@@ -154,10 +159,6 @@ void SceneDev2::Update(float dt)
 		}
 		
 	}
-	
-	
-		
-	
 	//
 	Scene::Update(dt);
 }
