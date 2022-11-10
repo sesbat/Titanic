@@ -1,41 +1,41 @@
 #include "HitBox.h"
 #include "../Framework/Utils.h"
 
-HitBox2::HitBox2()
+HitBox::HitBox()
 {
 }
 
-HitBox2::~HitBox2()
+HitBox::~HitBox()
 {
 }
 
-void HitBox2::SetActive(bool active)
+void HitBox::SetActive(bool active)
 {
 	Object::SetActive(active);
 }
 
-bool HitBox2::GetActive() const
+bool HitBox::GetActive() const
 {
 	return Object::GetActive();
 }
 
-void HitBox2::Init()
+void HitBox::Init()
 {
 }
 
-void HitBox2::Release()
+void HitBox::Release()
 {
 }
 
-void HitBox2::Reset()
+void HitBox::Reset()
 {
 }
 
-void HitBox2::Update(float dt)
+void HitBox::Update(float dt)
 {
 }
 
-void HitBox2::Draw(RenderWindow& window)
+void HitBox::Draw(RenderWindow& window)
 {
 	if ( enabled )
 	{
@@ -43,37 +43,40 @@ void HitBox2::Draw(RenderWindow& window)
 	}
 }
 
-void HitBox2::SetPos(const Vector2f& pos)
+void HitBox::SetInitPos(const Vector2f pos)
 {
-	hitbox.setPosition(pos);
-	Utils::SetOrigin(hitbox, Origins::MC);
+	initPos = pos;
 }
 
-const Vector2f& HitBox2::GetPos() const
+void HitBox::SetPos(const Vector2f& pos)
+{
+	hitbox.setPosition(initPos + pos);
+}
+
+const Vector2f& HitBox::GetPos() const
 {
 	return Object::GetPos();
 }
 
-void HitBox2::Translate(const Vector2f delta)
+void HitBox::Translate(const Vector2f delta)
 {
 }
 
-void HitBox2::SetHitbox(const FloatRect rect)
+void HitBox::SetHitbox(const FloatRect rect)
 {
 	hitBoxRect = rect;
 	hitbox.setSize({ rect.width, rect.height });
 	hitbox.setFillColor(Color::Red);
 	hitbox.setOutlineColor(Color::Black);
 	hitbox.setOutlineThickness(2.f);
-	Utils::SetOrigin(hitbox, Origins::MC);
 }
 
-void HitBox2::SetFillColor(Color color)
+void HitBox::SetFillColor(Color color)
 {
 	hitbox.setFillColor(color);
 }
 
-const RectangleShape& HitBox2::GetHitbox() const
+const RectangleShape& HitBox::GetHitbox() const
 {
 	return hitbox;
 }

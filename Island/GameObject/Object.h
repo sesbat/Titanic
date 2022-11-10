@@ -9,18 +9,6 @@ using namespace std;
 using namespace sf;
 
 
-struct HitBox
-{
-	Vector2f initPos;
-	Shape* shape;
-	HitBox()
-		:shape(nullptr) {}
-	void SetPos(Vector2f pos)
-	{
-		shape->setPosition(pos + initPos);
-	}
-};
-
 class Object
 {
 protected:
@@ -32,8 +20,6 @@ protected:
 	float rotation;
 	Vector2f scale;   
 
-	vector<HitBox> hitBoxs;
-	HitBox bottomHitBox;
 	bool hitDraw;
 public:
 	Object();
@@ -49,9 +35,6 @@ public:
 	virtual void SetPos(const Vector2f& pos);
 	virtual void Translate(const Vector2f& delta);
 	virtual const Vector2f& GetPos() const;
-	void AddHitBox(string path);
-	virtual const vector<HitBox>* GetHitBox();
-	virtual const HitBox& GetHitBoxBottom();
 
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);

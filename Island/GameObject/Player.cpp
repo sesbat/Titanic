@@ -36,17 +36,21 @@ void Player::Init()
 	Utils::SetOrigin(healthBar, Origins::MC);
 
 	//player body hit box
-	bodyHitBox = new HitBox2();
-	bodyHitBox->SetHitbox({ 0,0,30.f,45.f });
-	bodyHitBox->SetPos(GetPos());
-	bodyHitBox->SetActive(true);
+	auto hitData = FILE_MGR->GetHitBox("graphics/player/player.png");
 
-	//player bottom hit box
-	bottomHitBox = new HitBox2();
-	bottomHitBox->SetHitbox({ 0,0,30.f,15.f });
-	bottomHitBox->SetPos({ GetPos().x,GetPos().y + 20.f });
+	for (auto& hit : hitData)
+	{
+		auto hitbox = new HitBox();
+		hitbox->SetHitbox(FloatRect(hit.pos.x, hit.pos.y, hit.size.x, hit.size.y));
+		hitbox->SetInitPos(hit.pos);
+		hitbox->SetPos(GetPos());
+		hitbox->SetActive(true);
+		bodyHitBox.push_back(hitbox);
+	}
+
+	//enemy bottom hit box
+	bottomHitBox = bodyHitBox[0];
 	bottomHitBox->SetFillColor(Color::Blue);
-	bottomHitBox->SetActive(true);
 
 	//animation
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerIdle"));
@@ -57,7 +61,7 @@ void Player::Init()
 	
 	scene = SCENE_MGR->GetCurrScene();
 	
-	AddHitBox("graphics/player/player.png");
+	//AddHitBox("graphics/player/player.png");
 	SetState(States::Idle);
 }
 
@@ -132,8 +136,10 @@ void Player::Update(float dt)
 	//timer += dt;
 	
 	//positions
-	bodyHitBox->SetPos(GetPos());
-	bottomHitBox->SetPos({ GetPos().x,GetPos().y + 20.f });
+	for (auto& hit : bodyHitBox)
+	{
+		hit->SetPos(GetPos());
+	}
 
 	//hp bar
 	SetHpBar();
@@ -167,8 +173,11 @@ void Player::Draw(RenderWindow& window)
 	SpriteObject::Draw(window);
 	window.draw(healthBar);
 	if (isHitBox)
-	{	
-		bodyHitBox->Draw(window);
+	{
+		for (auto& hit : bodyHitBox)
+		{
+			hit->Draw(window);
+		}
 		bottomHitBox->Draw(window);
 	}
 }
@@ -280,7 +289,10 @@ void Player::SetHpBar()
 void Player::SetPlayerPos()
 {
 	SetPos(prevPosition);
-	bodyHitBox->SetPos(prevPosition);
+	for (auto& hit : bodyHitBox)
+	{
+		hit->SetPos(prevPosition);
+	}
 	bottomHitBox->SetPos(prevPosition);
 	healthBar.setPosition({ prevPosition.x, prevPosition.y - 15.f });
 }

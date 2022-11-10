@@ -4,7 +4,7 @@
 
 class Player;
 class VertexArrayObj;
-class HitBox2;
+class HitBox;
 
 class Enemy : public SpriteObject
 {
@@ -21,8 +21,8 @@ protected:
 	
 	Animator animator;
 
-	HitBox2* bottomHitBox;
-	HitBox2* bodyHitBox;
+	HitBox* bottomHitBox;
+	vector<HitBox*> bodyHitBox;
 
 	RectangleShape healthBar;
 

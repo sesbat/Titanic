@@ -156,6 +156,7 @@
     <ClCompile Include="GameObject\Enemy.cpp" />
     <ClCompile Include="GameObject\HitBox.cpp" />
     <ClCompile Include="GameObject\Sniper.cpp" />
+    <ClCompile Include="GameObject\MapObject.cpp" />
     <ClCompile Include="Ui\Fade.cpp" />
     <ClCompile Include="GameObject\Player.cpp" />
     <ClCompile Include="Ui\DrawObj.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="Framework\ObjectPool.h" />
     <ClInclude Include="GameObject\HitBox.h" />
     <ClInclude Include="GameObject\Sniper.h" />
+    <ClInclude Include="GameObject\MapObject.h" />
     <ClInclude Include="Ui\Fade.h" />
     <ClInclude Include="GameObject\Player.h" />
     <ClInclude Include="Ui\DrawObj.h" />

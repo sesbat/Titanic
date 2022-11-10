@@ -7,7 +7,7 @@ using namespace std;
 
 class VertexArrayObj;
 class Scene;
-class HitBox2;
+class HitBox;
 
 class Player : public SpriteObject
 {
@@ -23,8 +23,8 @@ protected:
 
 	Scene* scene;
 
-	HitBox2* bottomHitBox;
-	HitBox2* bodyHitBox;
+	HitBox* bottomHitBox;
+	vector<HitBox*> bodyHitBox;
 
 	RectangleShape healthBar;
 
