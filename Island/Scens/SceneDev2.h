@@ -19,12 +19,12 @@ protected:
 	float timer;
 
 	Vector2f prevWorldPos;
+	IntRect mapSize;
 
 public:
 	SceneDev2();
 	virtual ~SceneDev2();
 
-	// Sceneï¿½ï¿½(ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Óµï¿?
 	virtual void Init() override;
 	virtual void Release() override;
 

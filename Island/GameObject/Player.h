@@ -66,7 +66,6 @@ public:
 	void Init();
 
 	void SetState(States newState);
-	//void SetBackground(SpriteObject* bk);
 
 	void Update(float dt);
 	void Draw(RenderWindow& window);
@@ -92,6 +91,6 @@ public:
 	Vector2f SetLookDir();
 	void SetFlipX(bool flip);
 
-	void Fire();
+	//void Fire();
 };
 

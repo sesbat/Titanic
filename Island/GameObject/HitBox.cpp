@@ -80,8 +80,3 @@ const RectangleShape& HitBox::GetHitbox() const
 {
 	return hitbox;
 }
-
-//void HitBox::SetDevMode(bool dev)
-//{
-//	Object::SetDevMode(dev);
-//}

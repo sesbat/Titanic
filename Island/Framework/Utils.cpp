@@ -118,6 +118,7 @@ bool Utils::OBB(const RectangleShape& obb1, const RectangleShape& obb2)
 	Vector2f MTV;
 	return testCollision(obb1, obb2, MTV);
 }
+
 bool Utils::OBB(const vector<HitBox*> obb1, const HitBox* obb2)
 {
 	Vector2f MTV;
@@ -131,3 +132,4 @@ bool Utils::OBB(const vector<HitBox*> obb1, const HitBox* obb2)
 	}
 	return false;
 }
+

@@ -94,6 +94,12 @@ void SceneDev2::Init()
 		enemy->Init(player);
 	}
 	prevWorldPos = player->GetPos();
+
+	auto& tiles = objList[LayerType::Tile][0];
+	mapSize.left = 0;
+	mapSize.top = 0;
+	mapSize.width = (tiles.back())->GetPos().x + 30;
+	mapSize.height = (tiles.back())->GetPos().y;
 }
 
 void SceneDev2::Release()
@@ -104,8 +110,7 @@ void SceneDev2::Release()
 void SceneDev2::Enter()
 {
 	Init();
-	//SCENE_MGR->GetCurrScene()->SetViewStop();
-	//SCENE_MGR->GetCurrScene()->GetWorldView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
+
 	SCENE_MGR->GetCurrScene()->GetWorldView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
 	SCENE_MGR->GetCurrScene()->GetWorldView().setSize({ WINDOW_WIDTH , WINDOW_HEIGHT });
 	SCENE_MGR->GetCurrScene()->GetUiView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
@@ -119,12 +124,10 @@ void SceneDev2::Exit()
 
 void SceneDev2::Update(float dt)
 {
-	//worldView.setCenter(player->GetPos());
 	LayerSort();
-	worldView.setCenter(player->GetPos());
-	//dev modes
+	
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
-
+	
 	Vector2f dir;
 	dir.x = mouseworldPos.x - player->GetPos().x;
 	dir.y = mouseworldPos.y - player->GetPos().y;
@@ -138,28 +141,15 @@ void SceneDev2::Update(float dt)
 	Vector2f realcam;
 	realcam.x = camPoslen.x + player->GetPos().x;
 	realcam.y = camPoslen.y + player->GetPos().y;
+
+	realcam.x = max((int)realcam.x, WINDOW_WIDTH / 2);
+	realcam.x = min((int)realcam.x, mapSize.width -  WINDOW_WIDTH / 2);
+	realcam.y = max((int)realcam.y, WINDOW_HEIGHT / 2);
+	realcam.y = min((int)realcam.y, mapSize.height - WINDOW_HEIGHT / 2);
+
+	worldView.setCenter(realcam);
+
 	
-	if (player->GetActive())
-	{
-		worldView.setCenter(realcam);
-		if (worldView.getCenter().x < 0 || worldView.getCenter().x> WINDOW_WIDTH)
-		{
-			if (worldView.getCenter().y < 0 || worldView.getCenter().y > WINDOW_HEIGHT)
-			{
-				worldView.setCenter(prevWorldPos);
-			}
-			else
-			{
-				worldView.setCenter({ prevWorldPos.x, realcam.y });
-			}
-		}
-		else
-		{
-			prevWorldPos = realcam;
-		}
-		
-	}
-	//
 	Scene::Update(dt);
 }
 

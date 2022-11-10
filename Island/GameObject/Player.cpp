@@ -63,14 +63,11 @@ void Player::Init()
 	
 	scene = SCENE_MGR->GetCurrScene();
 	
-	//AddHitBox("graphics/player/player.png");
 	SetState(States::Idle);
 }
 
 void Player::SetState(States newState)
 {
-	/*if (currState == newState)
-		return;*/
 
 	currState = newState;
 	switch (currState)
@@ -174,11 +171,10 @@ void Player::Update(float dt)
 			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
 			{
 				SetPlayerPos();
+				break;
 			}
 		}
-		
 	}
-		
 	
 	if (!EqualFloat(direction.x, 0.f))
 	{
