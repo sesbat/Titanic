@@ -132,33 +132,26 @@ void SceneDev2::Update(float dt)
 	Vector2f realcam;
 	realcam.x = camPoslen.x + player->GetPos().x;
 	realcam.y = camPoslen.y + player->GetPos().y;
+
+	worldView.setCenter(realcam);
 	
-	if (player->GetActive())
+	/*if (player->GetActive())
 	{
-		worldView.setCenter(realcam);
-		if (worldView.getCenter().x < 0 || worldView.getCenter().x> WINDOW_WIDTH)
+		if (worldView.getCenter().x - worldView.getSize().x * 0.5f < background->GetGlobalBounds().left)
 		{
-			if (worldView.getCenter().y < 0 || worldView.getCenter().y > WINDOW_HEIGHT)
-			{
-				worldView.setCenter(prevWorldPos);
-			}
-			else
-			{
-				worldView.setCenter({ prevWorldPos.x, realcam.y });
-			}
-			
+			worldView.setCenter(background->GetGlobalBounds().left + worldView.getSize().x * 0.5f, player->GetPos().y - 200);
+		}
+		else if (worldView.getCenter().x + worldView.getSize().x * 0.5f > background->GetGlobalBounds().left + background->GetGlobalBounds().width)
+		{
+			worldView.setCenter(background->GetGlobalBounds().left + background->GetGlobalBounds().width - worldView.getSize().x * 0.5f, player->GetPos().y - 200);
 		}
 		else
 		{
 			prevWorldPos = realcam;
 		}
 		
-	}
+	}*/
 	
-	
-		
-	
-	//
 	Scene::Update(dt);
 }
 
