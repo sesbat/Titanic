@@ -18,7 +18,7 @@ void OnCreateBullet(Bullet* bullet)
 }
 
 Player::Player()
-	: currState(States::None), speed(500.f),
+	: currState(States::None), speed(500.f),gun(GunType::Shotgun),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
 	hp(10), maxHp(10)
@@ -36,7 +36,7 @@ void Player::Init()
 
 	shotgun = new SpriteObject();
 	shotgun->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun2.png"));
-	shotgun->SetPos({ GetPos().x,GetPos().y +20.f});
+	shotgun->SetPos({ GetPos().x,GetPos().y +10.f});
 	shotgun->SetOrigin(Origins::MC);
 	
 	animator.SetTarget(&sprite);
@@ -94,8 +94,15 @@ void Player::Update(float dt)
 	direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
 
 	float angle = Utils::Angle(lookDir);
-	shotgun->SetPos({ GetPos().x,GetPos().y + 20.f });
+	shotgun->SetPos({ GetPos().x,GetPos().y + 10.f });
 	shotgun->GetSprite().setRotation(angle);
+
+	if ((lookDir.x > 0 && prevLook.x < 0) ||
+		(lookDir.x < 0 && prevLook.x > 0))
+	{
+		isFlip = !isFlip;
+		shotgun->SetFlipY(isFlip);
+	}
 
 	if (InputMgr::GetMouseButtonDown(Mouse::Left))
 	{
@@ -328,19 +335,34 @@ void Player::SetFlipX(bool flip)
 void Player::Fire()
 {
 	//shotgun
-	Vector2f startPos = { GetPos().x+30.f,GetPos().y };
-	startPos += lookDir * 25.f;
-	Bullet* bullet = bulletPool.Get();
-	bullet->Fire(startPos, lookDir, 1000, 500);
+	switch (gun)
+	{
+	case Player::GunType::Shotgun:
+	{
+		Vector2f startPos = { shotgun->GetPos() };
+		startPos += lookDir * 50.f;
+		Bullet* bullet = bulletPool.Get();
+		bullet->Fire(startPos, lookDir, 1000, 500);
 
-	Bullet* bullet1 = bulletPool.Get();
-	Bullet* bullet2 = bulletPool.Get();
+		Bullet* bullet1 = bulletPool.Get();
+		Bullet* bullet2 = bulletPool.Get();
 
-	float temp = atan2(lookDir.y, lookDir.x);
-	float F1 = temp + M_PI / 12;
-	Vector2f randomShot1 = { cos(F1),sin(F1) };
-	float F2 = temp - M_PI / 12;
-	Vector2f randomShot2 = { cos(F2),sin(F2) };
-	bullet1->Fire(startPos, randomShot1, 1000, 500);
-	bullet2->Fire(startPos, randomShot2, 1000, 500);
+		float temp = atan2(lookDir.y, lookDir.x);
+		float F1 = temp + M_PI / 12;
+		Vector2f randomShot1 = { cos(F1),sin(F1) };
+		float F2 = temp - M_PI / 12;
+		Vector2f randomShot2 = { cos(F2),sin(F2) };
+		bullet1->Fire(startPos, randomShot1, 1000, 500);
+		bullet2->Fire(startPos, randomShot2, 1000, 500);
+	}
+		break;
+	case Player::GunType::Rifle:
+		break;
+	case Player::GunType::Sniper:
+		break;
+	case Player::GunType::GunCount:
+		break;
+	default:
+		break;
+	}
 }

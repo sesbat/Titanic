@@ -7,7 +7,7 @@ class SpriteObject : public Object
 protected:
 	Sprite sprite;
 	bool isUi;
-	bool viewIn; //Ä«¸Þ¶ó ¾È¿¡ ¿ÀºêÁ§Æ® ÀÖ´ÂÁö
+	bool viewIn; //Ä«ï¿½Þ¶ï¿½ ï¿½È¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ö´ï¿½ï¿½ï¿½
 public:
 	SpriteObject();
 	virtual ~SpriteObject();
@@ -31,5 +31,6 @@ public:
 	bool IsInView();
 	void SetFlipX(bool flip);
 	bool GetIsView() { return viewIn; }
+	void SetFlipY(bool flip);
 };
 
