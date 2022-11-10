@@ -42,7 +42,7 @@ void SceneDev2::Init()
 
 			int i = ((int)obj.position.x - 30) / 60;
 			int j = (int)obj.position.y / 60 - 1;
-			objList[LayerType::Object][j].push_back(draw);
+			objList[LayerType::Object][0].push_back(draw);
 		}
 		else if(obj.type == "PLAYER")
 		{
@@ -71,14 +71,9 @@ void SceneDev2::Init()
 
 			int i = ((int)obj.position.x - 30) / 60;
 			int j = (int)obj.position.y / 60 - 1;
-			objList[LayerType::Tile][j].push_back(draw);
+			objList[LayerType::Tile][0].push_back(draw);
 		}
 	}
-	/*backGround = new SpriteObject();
-	backGround->SetTexture(*RESOURCES_MGR->GetTexture("graphics/Menu/back.png"));
-	backGround->SetSize({ WINDOW_WIDTH, WINDOW_HEIGHT });
-	backGround->SetPos({ 0,0 });*/
-	//objList[LayerType::Back][0].push_back(backGround);
 }
 
 void SceneDev2::Release()

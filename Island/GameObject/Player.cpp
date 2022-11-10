@@ -32,16 +32,18 @@ void Player::Init()
 {
 	SpriteObject::Reset();
 	hp = maxHp;
+	animator.SetTarget(&sprite);
 
+	//Guns
 	shotgun = new SpriteObject();
 	shotgun->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun2.png"));
 	shotgun->SetPos({ GetPos().x,GetPos().y +20.f});
 	shotgun->SetOrigin(Origins::MC);
 	
-	animator.SetTarget(&sprite);
-
+	//bullet
 	bulletPool.OnCreate = OnCreateBullet;
 	bulletPool.Init();
+
 	//health bar
 	healthBar.setFillColor(Color::Green);
 	healthBar.setOutlineColor(Color::Black);
@@ -63,7 +65,7 @@ void Player::Init()
 		bodyHitBox.push_back(hitbox);
 	}
 
-	//enemy bottom hit box
+	//player bottom hit box
 	bottomHitBox = bodyHitBox[0];
 	bottomHitBox->SetFillColor(Color::Blue);
 
@@ -76,16 +78,13 @@ void Player::Init()
 	
 	scene = SCENE_MGR->GetCurrScene();
 	
-	//AddHitBox("graphics/player/player.png");
 	SetState(States::Idle);
 }
 
 void Player::SetState(States newState)
 {
-	/*if (currState == newState)
-		return;*/
-
 	currState = newState;
+
 	switch (currState)
 	{
 	case Player::States::Idle:
@@ -100,6 +99,7 @@ void Player::SetState(States newState)
 
 void Player::Update(float dt)
 {
+	//vectors
 	scene = SCENE_MGR->GetCurrScene();
 
 	Vector2i mousePos = (Vector2i)InputMgr::GetMousePos();
@@ -107,17 +107,17 @@ void Player::Update(float dt)
 
 	look = mouseWorldPos;
 	lookDir = Utils::Normalize(mouseWorldPos - GetPos());
+
+	//move input
 	direction.x = InputMgr::GetAxisRaw(Axis::Horizontal);
 	direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
 
+	//gun rotation
 	float angle = Utils::Angle(lookDir);
 	shotgun->SetPos({ GetPos().x,GetPos().y + 20.f });
 	shotgun->GetSprite().setRotation(angle);
 
-	if (InputMgr::GetMouseButtonDown(Mouse::Left))
-	{
-		Fire();
-	}
+	//bullet
 	const auto& bulletList = bulletPool.GetUseList();
 	for (auto bullet : bulletList)
 	{
@@ -133,16 +133,15 @@ void Player::Update(float dt)
 		break;
 	}
 
-	//����
+	//player dead
 	/*if ( hp <= 0 )
 	{
 		SetState(States::Dead);
 	}*/
 
-	//����
+	//move
 	velocity = direction * speed;
 
-	//����
 	if ( Utils::Magnitude(direction) == 0.f )
 	{
 		velocity = { 0.f, 0.f };
@@ -176,19 +175,25 @@ void Player::Update(float dt)
 	animator.Update(dt);
 
 	//wall bound
-	/*for ( const auto& hb: background->GetHitBoxList() )
+	/*for ( const auto& hb:  )
 	{
-		if ( Utils::OBB(hb->GetHitbox(),hitBoxs  ))
+		if ( Utils::OBB(hb->GetHitbox(), bottomHitBox->GetHitbox()))
 		{
 			std::cout << "wall" << std::endl;
 			SetPlayerPos();
 		}
 	}*/
 
+	//inputs
+	if (InputMgr::GetMouseButtonDown(Mouse::Left))
+	{
+		Fire();
+	}
 	if (InputMgr::GetKeyDown(Keyboard::F1))
 	{
 		isHitBox = !isHitBox;
 	}
+
 
 	if (!EqualFloat(direction.x, 0.f))
 	{
