@@ -14,7 +14,6 @@ class SceneDev2 :public Scene
 	
 protected:
 	Player* player;
-	Enemy* enemy;
 	
 	//
 	float timer;

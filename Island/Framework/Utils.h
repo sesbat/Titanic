@@ -5,6 +5,7 @@
 using namespace sf;
 using namespace std;
 
+class HitBox;
 enum class Origins
 {
 	TL,	// 0
@@ -51,5 +52,6 @@ public:
 	static bool IsRange(const FloatRect rect, const Vector2f value);
 
 	static bool OBB(const RectangleShape& obb1, const RectangleShape& obb2);
+	static bool OBB(const vector<HitBox*> obb1, const HitBox* obb2);
 };
 

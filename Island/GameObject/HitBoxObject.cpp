@@ -75,5 +75,5 @@ float HitBoxObject::GetBottomPos()
 void HitBoxObject::SetHitPlayer(bool h)
 {
 	isHitPlayer = h;
-	SetColor(h ? Color(255, 255, 255, 150): Color::White);
+	SetColor(h ? Color(255, 255, 255, 100): Color::White);
 }
