@@ -3,7 +3,7 @@
 #include "../../Framework/InputMgr.h"
 
 HitBoxObject::HitBoxObject()
-	:isHitBox(true)
+	:isHitBox(true), isHitPlayer(false)
 {
 }
 
@@ -64,4 +64,16 @@ void HitBoxObject::SetHitBox(string path)
 	bottom = hitboxs[0];
 	bottom->SetFillColor(Color::Blue);
 
+}
+
+float HitBoxObject::GetBottomPos()
+{
+	auto rect = bottom->GetHitbox().getGlobalBounds();
+	return rect.top - rect.height;
+}
+
+void HitBoxObject::SetHitPlayer(bool h)
+{
+	isHitPlayer = h;
+	SetColor(h ? Color(255, 255, 255, 150): Color::White);
 }

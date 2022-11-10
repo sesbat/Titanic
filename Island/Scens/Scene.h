@@ -18,17 +18,24 @@ enum class LayerType
 {
 	None, Back, Tile, Object
 };
+
 class Scene
 {
 protected:
 	Scenes type;
 
 	map<LayerType, map<int, vector<Object*>>> objList;
-
 	View worldView;
 	View uiView;
 
 	UiMgr* uiMgr;
+
+	vector<Object*> moves;
+	vector<Object*> drawObjs;
+	vector<Object*> hitTree;
+
+	bool isMap;
+
 public:
 	Scene(Scenes type);
 	virtual ~Scene();
@@ -51,5 +58,6 @@ public:
 	void AddGameObject(Object* obj, LayerType type, int num);
 	Object* FindGameObj(string name);
 	UiMgr* GetUiMgr() { return uiMgr; }
+	virtual void LayerSort();
 };
 

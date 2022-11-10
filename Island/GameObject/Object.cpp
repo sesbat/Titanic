@@ -6,7 +6,6 @@
 #include <iostream>
 Object::Object()
 {
-	hitDraw = true;
 	Init();
 }
 
@@ -54,14 +53,6 @@ const Vector2f& Object::GetPos() const
 
 void Object::Update(float dt)
 {
-	if (InputMgr::GetKeyDown(Keyboard::F12))
-	{
-		hitDraw = false;
-	}
-	if (InputMgr::GetKeyDown(Keyboard::F11))
-	{
-		hitDraw = true;
-	}
 }
 
 void Object::Draw(RenderWindow& window)

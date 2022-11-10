@@ -217,7 +217,7 @@ void MapEditor::SetType(string t)
 	{
 		nowType = LayerType::Object;
 	}
-	if (t == "Tile")
+	if (t == "TILE")
 	{
 		nowType = LayerType::Tile;
 	}
@@ -302,7 +302,7 @@ void MapEditor::Load()
 				playerPos = Vector2i{ j,i };
 			}
 		}
-		else if (obj.type == "Tile")
+		else if (obj.type == "TILE")
 		{
 			objList[LayerType::Tile][j].push_back(draw);
 			greedObjs[LayerType::Tile][j][i] = draw;
