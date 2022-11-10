@@ -11,7 +11,7 @@
       }
     }
   ],
-  "graphics/enemy/enemy1.png": [
+  "graphics/enemy1.png": [
     {
       "pos": {
         "x": -21.0,
@@ -33,7 +33,7 @@
       }
     }
   ],
-  "graphics/player/player.png": [
+  "graphics/player.png": [
     {
       "pos": {
         "x": -19.0,
