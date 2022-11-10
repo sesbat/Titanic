@@ -8,6 +8,7 @@ private:
 	Vector2f dir;
 	float speed;
 	float range;
+
 public:
 	Bullet();
 	~Bullet();

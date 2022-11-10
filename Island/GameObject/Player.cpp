@@ -10,15 +10,11 @@
 #include "HitBox.h"
 #include "../Scens/SceneDev2.h"
 #include <iostream>
+#include "Gun.h"
 
-void OnCreateBullet(Bullet* bullet)
-{
-	bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
-	bullet->Init();
-}
 
 Player::Player()
-	: currState(States::None), speed(500.f),gun(GunType::Shotgun),
+	: currState(States::None), speed(500.f),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
 	hp(10), maxHp(10)
@@ -34,15 +30,22 @@ void Player::Init()
 	HitBoxObject::Init();
 	hp = maxHp;
 
-	shotgun = new SpriteObject();
-	shotgun->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun2.png"));
-	shotgun->SetPos({ GetPos().x,GetPos().y +10.f});
-	shotgun->SetOrigin(Origins::MC);
+	shotgun = new Gun(GunType::Shotgun);
+	shotgun->SetPlayer(this);
+	shotgun->Init();
+
+	/*rifle = new Gun(GunType::Rifle);
+	rifle->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun.png"));
+	rifle->SetPos({ GetPos().x,GetPos().y + 10.f });
+	rifle->SetOrigin(Origins::MC);
+
+	sniper = new Gun(GunType::Sniper);
+	sniper->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun.png"));
+	sniper->SetPos({ GetPos().x,GetPos().y + 10.f });
+	sniper->SetOrigin(Origins::MC);*/
 	
 	animator.SetTarget(&sprite);
 
-	bulletPool.OnCreate = OnCreateBullet;
-	bulletPool.Init();
 	//health bar
 	healthBar.setFillColor(Color::Green);
 	healthBar.setOutlineColor(Color::Black);
@@ -93,26 +96,6 @@ void Player::Update(float dt)
 	direction.x = InputMgr::GetAxisRaw(Axis::Horizontal);
 	direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
 
-	float angle = Utils::Angle(lookDir);
-	shotgun->SetPos({ GetPos().x,GetPos().y + 10.f });
-	shotgun->GetSprite().setRotation(angle);
-
-	if ((lookDir.x > 0 && prevLook.x < 0) ||
-		(lookDir.x < 0 && prevLook.x > 0))
-	{
-		isFlip = !isFlip;
-		shotgun->SetFlipY(isFlip);
-	}
-
-	if (InputMgr::GetMouseButtonDown(Mouse::Left))
-	{
-		Fire();
-	}
-	const auto& bulletList = bulletPool.GetUseList();
-	for (auto bullet : bulletList)
-	{
-		bullet->Update(dt);
-	}
 	switch (currState)
 	{
 	case Player::States::Idle:
@@ -202,17 +185,15 @@ void Player::Update(float dt)
 	{
 		lastDirection = direction;
 	}
-
 	prevLook = lookDir;
+
+
+	shotgun->Update(dt);
+
 }
 
 void Player::Draw(RenderWindow& window)
 {
-	const auto& bulletList = bulletPool.GetUseList();
-	for (auto bullet : bulletList)
-	{
-		bullet->Draw(window);
-	}
 	HitBoxObject::Draw(window);
 	window.draw(healthBar);
 	if (isHitBox)
@@ -352,39 +333,4 @@ Vector2f Player::SetLookDir()
 void Player::SetFlipX(bool flip)
 {
 	SpriteObject::SetFlipX(flip);
-}
-
-void Player::Fire()
-{
-	//shotgun
-	switch (gun)
-	{
-	case Player::GunType::Shotgun:
-	{
-		Vector2f startPos = { shotgun->GetPos() };
-		startPos += lookDir * 50.f;
-		Bullet* bullet = bulletPool.Get();
-		bullet->Fire(startPos, lookDir, 1000, 500);
-
-		Bullet* bullet1 = bulletPool.Get();
-		Bullet* bullet2 = bulletPool.Get();
-
-		float temp = atan2(lookDir.y, lookDir.x);
-		float F1 = temp + M_PI / 12;
-		Vector2f randomShot1 = { cos(F1),sin(F1) };
-		float F2 = temp - M_PI / 12;
-		Vector2f randomShot2 = { cos(F2),sin(F2) };
-		bullet1->Fire(startPos, randomShot1, 1000, 500);
-		bullet2->Fire(startPos, randomShot2, 1000, 500);
-	}
-		break;
-	case Player::GunType::Rifle:
-		break;
-	case Player::GunType::Sniper:
-		break;
-	case Player::GunType::GunCount:
-		break;
-	default:
-		break;
-	}
 }

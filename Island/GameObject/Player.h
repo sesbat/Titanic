@@ -9,6 +9,7 @@
 using namespace std;
 
 class VertexArrayObj;
+class Gun;
 class Scene;
 class HitBox;
 class Bullet;
@@ -21,13 +22,6 @@ public:
 		None = -1,
 		Idle,
 		Move,
-	};
-	enum class GunType
-	{
-		Shotgun,
-		Rifle,
-		Sniper,
-		GunCount,
 	};
 protected:
 	Animator animator;
@@ -48,15 +42,14 @@ protected:
 	Vector2f prevPosition;
 	bool isFlip;
 
-	ObjectPool<Bullet> bulletPool;
-
 	Vector2f playerNormalize;
 
 	//SpriteObject* background;
 
-	GunType gun;
+	Gun* shotgun;
+	Gun* rifle;
+	Gun* sniper;
 
-	SpriteObject* shotgun;
 	SpriteObject* background;
 
 	//float timer;
@@ -87,6 +80,8 @@ public:
 
 	Vector2f GetPlayerDir() { return direction; }
 	Vector2f GetPlayerLastDir() { return lastDirection; }
+	Vector2f GetLookDir() { return lookDir; }
+	Vector2f GetPrevLookDir() { return prevLook; }
 	//int GetDamage() { return damage; }
 	States GetCurrState() { return currState; }
 

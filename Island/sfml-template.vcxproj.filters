@@ -41,6 +41,7 @@
     <ClCompile Include="GameObject\HitBox.cpp" />
     <ClCompile Include="GameObject\HitBoxObject.cpp" />
     <ClCompile Include="GameObject\Bullet.cpp" />
+    <ClCompile Include="GameObject\Gun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -87,6 +88,7 @@
     <ClInclude Include="GameObject\HitBox.h" />
     <ClInclude Include="GameObject\HitBoxObject.h" />
     <ClInclude Include="GameObject\Bullet.h" />
+    <ClInclude Include="GameObject\Gun.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
