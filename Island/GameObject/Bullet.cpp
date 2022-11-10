@@ -19,8 +19,15 @@ void Bullet::Update(float dt)
 {
 	SpriteObject::Update(dt);
 
-	Translate(dir * dt * speed);
 	range -= Utils::Magnitude(dir * dt * speed);
+	if (range >= 0.f)
+	{
+		Translate(dir * dt * speed);
+	}
+	else
+	{
+		SetActive(false);
+	}
 }
 
 void Bullet::Draw(RenderWindow& window)

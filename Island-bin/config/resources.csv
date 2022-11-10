@@ -7,7 +7,8 @@ fonts/6809 chargen.otf,1
 graphics/title.png,0
 graphics/start.png,0
 graphics/shotgunbullet.png,0
-graphics/shotgun2.png,0
+graphics/sniperbullet.png,0
+graphics/shotgun.png,0
 sounds/editor.wav,2
 sounds/episode1.wav,2
 sounds/episode2.wav,2
