@@ -173,7 +173,6 @@ void Player::Update(float dt)
 		{
 			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
 			{
-				std::cout << "wall" << std::endl;
 				SetPlayerPos();
 			}
 		}
