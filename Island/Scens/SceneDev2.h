@@ -32,7 +32,7 @@ public:
 	SceneDev2();
 	virtual ~SceneDev2();
 
-	// SceneÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
+	// Sceneï¿½ï¿½(ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Óµï¿½
 	virtual void Init() override;
 	virtual void Release() override;
 

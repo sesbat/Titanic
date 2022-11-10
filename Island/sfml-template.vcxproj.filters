@@ -41,6 +41,7 @@
     <ClCompile Include="Ui\UiObject.cpp" />
     <ClCompile Include="GameObject\HitBox.cpp" />
     <ClCompile Include="GameObject\MapObject.cpp" />
+    <ClCompile Include="GameObject\Bullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -87,6 +88,7 @@
     <ClInclude Include="3rd\OBB.h" />
     <ClInclude Include="GameObject\HitBox.h" />
     <ClInclude Include="GameObject\MapObject.h" />
+    <ClInclude Include="GameObject\Bullet.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

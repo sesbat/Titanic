@@ -5,9 +5,16 @@
 #include "../Framework/SoundManager.h"
 #include "../Scens/SceneManager.h"
 #include "VertexArrayObj.h"
+#include "Bullet.h"
 #include "Object.h"
 #include "HitBox.h"
 #include <iostream>
+
+void OnCreateBullet(Bullet* bullet)
+{
+	bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
+	bullet->Init();
+}
 
 Player::Player()
 	: currState(States::None), speed(500.f),
@@ -23,10 +30,18 @@ Player::~Player()
 
 void Player::Init()
 {
+	SpriteObject::Reset();
 	hp = maxHp;
+
+	shotgun = new SpriteObject();
+	shotgun->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun2.png"));
+	shotgun->SetPos({ GetPos().x,GetPos().y +20.f});
+	shotgun->SetOrigin(Origins::MC);
 	
 	animator.SetTarget(&sprite);
 
+	bulletPool.OnCreate = OnCreateBullet;
+	bulletPool.Init();
 	//health bar
 	healthBar.setFillColor(Color::Green);
 	healthBar.setOutlineColor(Color::Black);
@@ -67,17 +82,17 @@ void Player::Init()
 
 void Player::SetState(States newState)
 {
-	if (currState == newState)
-		return;
+	/*if (currState == newState)
+		return;*/
 
 	currState = newState;
 	switch (currState)
 	{
 	case Player::States::Idle:
-		animator.Play((look.x > GetPos().x) ? "PlayerIdle" : "PlayerIdleLeft");
+		animator.Play((lookDir.x > 0.f) ? "PlayerIdle" : "PlayerIdleLeft");
 		break;
 	case Player::States::Move:
-		animator.Play((look.x > GetPos().x) ? "PlayerMove" : "PlayerMoveLeft");
+		animator.Play((lookDir.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
 		lastDirection = direction;
 		break;
 	}
@@ -95,6 +110,19 @@ void Player::Update(float dt)
 	direction.x = InputMgr::GetAxisRaw(Axis::Horizontal);
 	direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
 
+	float angle = Utils::Angle(lookDir);
+	shotgun->SetPos({ GetPos().x,GetPos().y + 20.f });
+	shotgun->GetSprite().setRotation(angle);
+
+	if (InputMgr::GetMouseButtonDown(Mouse::Left))
+	{
+		Fire();
+	}
+	const auto& bulletList = bulletPool.GetUseList();
+	for (auto bullet : bulletList)
+	{
+		bullet->Update(dt);
+	}
 	switch (currState)
 	{
 	case Player::States::Idle:
@@ -166,10 +194,17 @@ void Player::Update(float dt)
 	{
 		lastDirection = direction;
 	}
+
+	prevLook = lookDir;
 }
 
 void Player::Draw(RenderWindow& window)
 {
+	const auto& bulletList = bulletPool.GetUseList();
+	for (auto bullet : bulletList)
+	{
+		bullet->Draw(window);
+	}
 	SpriteObject::Draw(window);
 	window.draw(healthBar);
 	if (isHitBox)
@@ -180,6 +215,8 @@ void Player::Draw(RenderWindow& window)
 		}
 		bottomHitBox->Draw(window);
 	}
+	shotgun->Draw(window);
+	//window.draw(healthBar);
 }
 
 void Player::Dash(float dt)
@@ -198,10 +235,10 @@ void Player::UpdateIdle(float dt)
 	{
 		SetState(States::Move);
 	}
-	else if (!EqualFloat(lookDir.x, prevLook.x))
+	if ((lookDir.x > 0 && prevLook.x < 0) ||
+		(lookDir.x < 0 && prevLook.x > 0))
 	{
-		SetState(States::Move);
-		prevLook.x = lookDir.x;
+		SetState(States::Idle);
 	}
 }
 
@@ -213,10 +250,11 @@ void Player::UpdateMove(float dt)
 		return;
 	}
 
-	if ( !EqualFloat(lookDir.x, prevLook.x))
+	if ( (lookDir.x > 0 && prevLook.x < 0) || 
+		(lookDir.x < 0 && prevLook.x > 0))
 	{
-		animator.Play((lookDir.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
-		prevLook.x = lookDir.x;
+		//animator.Play((lookDir.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
+		SetState(States::Move);
 	}
 
 }
@@ -308,4 +346,24 @@ Vector2f Player::SetLookDir()
 void Player::SetFlipX(bool flip)
 {
 	SpriteObject::SetFlipX(flip);
+}
+
+void Player::Fire()
+{
+	//shotgun
+	Vector2f startPos = { GetPos().x+30.f,GetPos().y };
+	startPos += lookDir * 25.f;
+	Bullet* bullet = bulletPool.Get();
+	bullet->Fire(startPos, lookDir, 1000, 500);
+
+	Bullet* bullet1 = bulletPool.Get();
+	Bullet* bullet2 = bulletPool.Get();
+
+	float temp = atan2(lookDir.y, lookDir.x);
+	float F1 = temp + M_PI / 12;
+	Vector2f randomShot1 = { cos(F1),sin(F1) };
+	float F2 = temp - M_PI / 12;
+	Vector2f randomShot2 = { cos(F2),sin(F2) };
+	bullet1->Fire(startPos, randomShot1, 1000, 500);
+	bullet2->Fire(startPos, randomShot2, 1000, 500);
 }
