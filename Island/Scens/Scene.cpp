@@ -185,30 +185,7 @@ void Scene::LayerSort()
 		}
 		if (((HitBoxObject*)(*mit))->GetBottomPos() < ((HitBoxObject*)(*dit))->GetBottomPos())
 		{
-			//if ((*mit)->GetName() == "PLAYER")
-			//{
-			//	auto& p_hit = ((HitBoxObject*)(*mit))->GetHitBoxs();
-			//	auto& o_hit = ((HitBoxObject*)(*dit))->GetHitBoxs();
-			//	bool isHit = false;
-			//	for (auto& ph : p_hit)
-			//	{
-			//		for (auto& oh : o_hit)
-			//		{
-			//			if (Utils::OBB(ph->GetHitbox(), oh->GetHitbox()))
-			//			{
-			//				hitTree
-			//			}
-			//			if (ph->GetHitbox().getGlobalBounds().intersects(oh->GetHitbox().getGlobalBounds()))
-			//			{
-			//				((HitBoxObject*)(*dit))->SetHitColor(true);
-			//				isHit = true;
-			//				break;
-			//			}
-			//		}
-			//		if (isHit)
-			//			break;
-			//	}
-			//}
+
 			dit = drawObjs.insert(dit, *mit);
 			mit++;
 		}

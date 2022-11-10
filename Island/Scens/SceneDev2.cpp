@@ -146,7 +146,6 @@ void SceneDev2::Update(float dt)
 			{
 				worldView.setCenter({ prevWorldPos.x, realcam.y });
 			}
-			
 		}
 		else
 		{
@@ -154,10 +153,6 @@ void SceneDev2::Update(float dt)
 		}
 		
 	}
-	
-	
-		
-	
 	//
 	Scene::Update(dt);
 }
