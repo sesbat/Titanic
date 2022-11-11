@@ -21,8 +21,14 @@ void Scene::Reset()
 
 void Scene::Release()
 {
-	if(uiMgr != nullptr)
+	moves.clear();
+	drawObjs.clear();
+	alphaObj.clear();
+	if (uiMgr != nullptr)
+	{
 		((MenuUiMgr*)uiMgr)->Release();
+		uiMgr = nullptr;
+	}
 	uiMgr = nullptr;
 	for (auto& layer : objList)
 	{
@@ -103,10 +109,13 @@ void Scene::Draw(RenderWindow& window)
 	else
 	{
 		LayerSort();
+		int i = 0;
 		for (auto& obj : objList[LayerType::Tile])
 		{
 			for (auto& o : obj.second)
+			{
 				o->Draw(window);
+			}
 		}
 		for (auto& obj : drawObjs)
 		{

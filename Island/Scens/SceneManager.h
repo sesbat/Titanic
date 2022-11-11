@@ -18,7 +18,6 @@ public:
 	Scene* GetCurrScene();
 	Scene* GetScene(Scenes scene);
 
-
 	bool LoadPath();
 	bool Init();
 	void ChangeScene(Scenes scene);

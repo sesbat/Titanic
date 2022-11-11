@@ -9,10 +9,10 @@
 #include "VertexArrayObj.h"
 #include "Object.h"
 #include "HitBox.h"
-#include "../Scens/SceneDev2.h"
+#include "../Scens/GameScene.h"
 #include <iostream>
 #include "../Framework/ObjectPool.h"
-
+#include "HitBoxObject.h"
 
 void OnCreateBullet(Bullet* bullet)
 {
@@ -120,6 +120,10 @@ void Gun::SetPlayer(Player* player)
 void Gun::Fire()
 {
 	//shotgun
+
+	auto hitObject = &SCENE_MGR->GetCurrScene()->GetObjList()[LayerType::Object][0];
+
+
 	switch (gunType)
 	{
 	case GunType::Shotgun:
@@ -134,7 +138,6 @@ void Gun::Fire()
 		Bullet* bullet2 = bulletPool.Get();
 		Bullet* bullet3 = bulletPool.Get();
 		Bullet* bullet4 = bulletPool.Get();
-
 		bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
 		bullet1->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
 		bullet2->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));

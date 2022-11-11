@@ -1,19 +1,21 @@
 #pragma once
-#include "SpriteObject.h"
+#include "HitBoxObject.h"
 
 class Bullet
-	:public SpriteObject
+	:public HitBoxObject
 {
 private:
 	Vector2f dir;
 	float speed;
 	float range;
+	vector<Object*>* hitObjs;
 
 public:
 	Bullet();
 	~Bullet();
 
 	virtual void Init();
+	virtual void SetHitObjs(vector<Object*>* objs);
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
 	virtual void Reset();

@@ -55,6 +55,18 @@
       }
     }
   ],
+  "graphics/shotgunbullet.png": [
+    {
+      "pos": {
+        "x": -14.0,
+        "y": -58.0
+      },
+      "size": {
+        "x": 26.0,
+        "y": 16.0
+      }
+    }
+  ],
   "graphics/stone1.png": [
     {
       "pos": {

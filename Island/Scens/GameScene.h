@@ -9,7 +9,7 @@ class Enemy;
 class VertexArrayObj;
 class SpriteObject;
 
-class SceneDev2 :public Scene
+class GameScene :public Scene
 {
 	
 protected:
@@ -22,8 +22,8 @@ protected:
 	IntRect mapSize;
 
 public:
-	SceneDev2();
-	virtual ~SceneDev2();
+	GameScene();
+	virtual ~GameScene();
 
 	virtual void Init() override;
 	virtual void Release() override;

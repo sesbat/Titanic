@@ -29,6 +29,7 @@ public:
 	virtual void Draw(RenderWindow& window) override;
 	virtual void Enter() override;
 	virtual void Exit() override;
+	virtual void Release() override;
 	virtual ~MapEditor();
 	void SetType(string t);
 

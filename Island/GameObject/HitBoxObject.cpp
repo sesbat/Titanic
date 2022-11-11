@@ -9,6 +9,10 @@ HitBoxObject::HitBoxObject()
 
 HitBoxObject::~HitBoxObject()
 {
+	for (auto& hit : hitboxs)
+	{
+		delete hit;
+	}
 }
 
 void HitBoxObject::Init()
@@ -21,6 +25,7 @@ void HitBoxObject::Update(float dt)
 	for (auto& hit : hitboxs)
 	{
 		hit->SetPos(GetPos());
+
 	}
 	if (InputMgr::GetKeyDown(Keyboard::F1))
 	{
@@ -42,6 +47,8 @@ void HitBoxObject::Draw(RenderWindow& window)
 
 void HitBoxObject::SetHitBox(string path)
 {
+	if (hitboxs.size() != 0)
+		return;
 	auto hitData = FILE_MGR->GetHitBox(path);
 
 	if (hitData.size() == 0)

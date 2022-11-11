@@ -57,6 +57,11 @@ void MapEditor::Update(float dt)
 	Scene::Update(dt);
 	
 	auto uimgr = ((EditorMapUiMgr*)uiMgr);
+	if (uimgr->IsExit() || InputMgr::GetKeyDown(Keyboard::Escape))
+	{
+		SCENE_MGR->ChangeScene(Scenes::Menu);
+		return;
+	}
 	if (uimgr->IsSave() || InputMgr::GetKeyDown(Keyboard::S))
 	{
 		Save();
@@ -205,6 +210,44 @@ void MapEditor::Enter()
 
 void MapEditor::Exit()
 {
+	Release();
+}
+
+void MapEditor::Release()
+{
+	for (auto& objs : objList[LayerType::Object])
+	{
+		for (auto it = objs.second.begin(); it != objs.second.end();)
+		{
+			auto del = *it;
+			it = objs.second.erase(it);
+			if (del != nullptr)
+			{
+				delete del;
+			}
+		}
+		objs.second.clear();
+	}
+
+	for (auto& objs : objList[LayerType::Tile])
+	{
+		for (auto it = objs.second.begin(); it != objs.second.end();)
+		{
+			auto del = *it;
+			it = objs.second.erase(it);
+			if (del != nullptr)
+			{
+				delete del;
+			}
+		}
+		objs.second.clear();
+	}
+	objList[LayerType::Tile].clear();
+	objList[LayerType::Object].clear();
+	greedObjs.clear();
+
+	player = nullptr;
+
 }
 
 MapEditor::~MapEditor()

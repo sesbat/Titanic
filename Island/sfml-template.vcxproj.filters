@@ -11,7 +11,7 @@
     <ClCompile Include="Ui\DrawSelect.cpp" />
     <ClCompile Include="Ui\EditorMapUiMgr.cpp" />
     <ClCompile Include="Scens\MapEditor.cpp" />
-    <ClCompile Include="Scens\SceneDev2.cpp" />
+    <ClCompile Include="Scens\GameScene.cpp" />
     <ClCompile Include="Ui\DblClkObject.cpp" />
     <ClCompile Include="Framework\FileData.cpp" />
     <ClCompile Include="Framework\FileManager.cpp" />
@@ -42,6 +42,7 @@
     <ClCompile Include="GameObject\HitBoxObject.cpp" />
     <ClCompile Include="GameObject\Bullet.cpp" />
     <ClCompile Include="GameObject\Gun.cpp" />
+    <ClCompile Include="Ui\GameSceneUiMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -57,7 +58,7 @@
     <ClInclude Include="Ui\DrawSelect.h" />
     <ClInclude Include="Ui\EditorMapUiMgr.h" />
     <ClInclude Include="Scens\MapEditor.h" />
-    <ClInclude Include="Scens\SceneDev2.h" />
+    <ClInclude Include="Scens\GameScene.h" />
     <ClInclude Include="Ui\DblClkObject.h" />
     <ClInclude Include="Framework\FileData.h" />
     <ClInclude Include="Framework\FileManager.h" />
@@ -89,6 +90,7 @@
     <ClInclude Include="GameObject\HitBoxObject.h" />
     <ClInclude Include="GameObject\Bullet.h" />
     <ClInclude Include="GameObject\Gun.h" />
+    <ClInclude Include="Ui\GameSceneUiMgr.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,4 +1,8 @@
 #include "Bullet.h"
+#include "../Scens/SceneManager.h"
+#include "../GameObject/HitBox.h"
+#include "../GameObject/HitBoxObject.h"
+#include <iostream>
 
 Bullet::Bullet()
 	:dir(), speed(0.f), range(0.f)
@@ -12,13 +16,18 @@ Bullet::~Bullet()
 void Bullet::Init()
 {
 	SetOrigin(Origins::MC);
-	SpriteObject::Init();
+	HitBoxObject::Init();
+}
+
+void Bullet::SetHitObjs(vector<Object*>* objs)
+{
+	this->hitObjs = objs;
 }
 
 void Bullet::Update(float dt)
 {
-	SpriteObject::Update(dt);
-
+	HitBoxObject::Update(dt);
+	isHitBox = false;
 	range -= Utils::Magnitude(dir * dt * speed);
 	if (range >= 0.f)
 	{
@@ -32,7 +41,7 @@ void Bullet::Update(float dt)
 
 void Bullet::Draw(RenderWindow& window)
 {
-	SpriteObject::Draw(window);
+	HitBoxObject::Draw(window);
 }
 
 void Bullet::Reset()
@@ -43,12 +52,12 @@ void Bullet::Reset()
 	sprite.setRotation(0.f);
 	SetPos({ 0, 0 });
 
-	SpriteObject::Reset();
+	HitBoxObject::Reset();
 }
 
 void Bullet::Release()
 {
-	SpriteObject::Release();
+	HitBoxObject::Release();
 }
 
 void Bullet::Fire(const Vector2f& pos, const Vector2f& dir, float speed, float range)

@@ -68,6 +68,13 @@ void EditorMapUiMgr::Init()
 	eraseBtn->SetPos({ 50,190 });
 	uiObjList[0].push_back(eraseBtn);
 
+	exitBtn = new Button(this);
+	exitBtn->SetClkColor(true);
+	exitBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		75, Color::White, "EXIT", true);
+	exitBtn->SetOrigin(Origins::TL);
+	exitBtn->SetPos({ 50,260 });
+	uiObjList[0].push_back(exitBtn);
 
 	//DrawSelect* draw = new DrawSelect(this);
 	//drawObj.push_back(draw);
@@ -94,6 +101,7 @@ void EditorMapUiMgr::Update(float dt)
 	UiMgr::Update(dt);
 	if (nowDraw != nullptr)
 		nowDraw->Update(dt);
+
 }
 
 void EditorMapUiMgr::Draw(RenderWindow& window)
@@ -143,4 +151,9 @@ bool EditorMapUiMgr::IsLoad()
 bool EditorMapUiMgr::IsErase()
 {
 	return eraseBtn->IsDown() || eraseBtn->IsClick();
+}
+
+bool EditorMapUiMgr::IsExit()
+{
+	return exitBtn->IsDown() || exitBtn->IsClick();
 }

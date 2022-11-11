@@ -1,4 +1,4 @@
-#include "SceneDev2.h"
+#include "GameScene.h"
 #include "SceneManager.h"
 #include "../Framework/InputMgr.h"
 #include "../Framework/ResourceManager.h"
@@ -16,19 +16,20 @@
 #include "../GameObject/HitBoxObject.h"
 #include <fstream>
 #include <algorithm>
+#include "../Ui/GameSceneUiMgr.h"
 
 using namespace std;
 
-SceneDev2::SceneDev2()
-	:Scene(Scenes::Dev2), timer(0.f)
+GameScene::GameScene()
+	:Scene(Scenes::GameScene), timer(0.f)
 {
 }
 
-SceneDev2::~SceneDev2()
+GameScene::~GameScene()
 {
 }
 
-void SceneDev2::Init()
+void GameScene::Init()
 {
 	isMap = true;
 	vector<Enemy*> enemys;
@@ -100,14 +101,17 @@ void SceneDev2::Init()
 	mapSize.top = 0;
 	mapSize.width = (tiles.back())->GetPos().x + 30;
 	mapSize.height = (tiles.back())->GetPos().y;
+
+	uiMgr = new GameSceneUiMgr(this);
+	uiMgr->Init();
 }
 
-void SceneDev2::Release()
+void GameScene::Release()
 {
 	Scene::Release();
 }
 
-void SceneDev2::Enter()
+void GameScene::Enter()
 {
 	Init();
 
@@ -117,13 +121,18 @@ void SceneDev2::Enter()
 	SCENE_MGR->GetCurrScene()->GetUiView().setSize({ WINDOW_WIDTH , WINDOW_HEIGHT });
 }
 
-void SceneDev2::Exit()
+void GameScene::Exit()
 {
 	Release();
 }
 
-void SceneDev2::Update(float dt)
+void GameScene::Update(float dt)
 {
+	if (((GameSceneUiMgr*)uiMgr)->IsExit() || InputMgr::GetKeyDown(Keyboard::Escape))
+	{
+		SCENE_MGR->ChangeScene(Scenes::Menu);
+		return;
+	}
 	LayerSort();
 	
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
@@ -153,7 +162,7 @@ void SceneDev2::Update(float dt)
 	Scene::Update(dt);
 }
 
-void SceneDev2::Draw(RenderWindow& window)
+void GameScene::Draw(RenderWindow& window)
 {
 	window.setView(worldView);
 	Scene::Draw(window);

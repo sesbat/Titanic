@@ -12,7 +12,7 @@ class Object;
 class HitBoxObject;
 enum class Scenes
 {
-	None = -1, Menu,Ready,MapEditor,Count,Dev2
+	None = -1, Menu,Ready,MapEditor,Count,GameScene
 };
 // 바닥, 풀, 오브젝트 + 벽(특수), 에너미
 enum class LayerType
@@ -33,7 +33,6 @@ protected:
 
 	vector<Object*> moves;
 	vector<Object*> drawObjs;
-	vector<Object*> hitTree;
 	vector<HitBoxObject*> alphaObj;
 	bool isMap;
 

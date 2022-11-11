@@ -8,7 +8,7 @@
 #include "Bullet.h"
 #include "Object.h"
 #include "HitBox.h"
-#include "../Scens/SceneDev2.h"
+#include "../Scens/GameScene.h"
 #include <iostream>
 #include "Gun.h"
 
@@ -147,6 +147,7 @@ void Player::Update(float dt)
 	
 	//wall bound
 	auto obj = scene->GetObjList();
+
 	//for (auto& objTile : obj[LayerType::Tile][0])
 	//{
 	//	auto hit = ((HitBoxObject*)objTile)->GetBottom();
@@ -157,8 +158,8 @@ void Player::Update(float dt)
 	//		std::cout << "wall" << std::endl;
 	//		SetPlayerPos();
 	//	}
-
 	//}
+
 	for (auto& objects : obj[LayerType::Object][0])
 	{
 		auto hit = ((HitBoxObject*)objects)->GetBottom();

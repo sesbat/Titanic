@@ -10,6 +10,7 @@ private:
 	Button* saveBtn;
 	Button* loadBtn;
 	Button* eraseBtn;
+	Button* exitBtn;
 	Button* underUi;
 	vector<DrawSelect*> drawObj;
 	DrawObj* nowDraw;
@@ -30,6 +31,8 @@ public:
 	bool IsSave();
 	bool IsLoad();
 	bool IsErase();
+
+	bool IsExit();
 
 };
 
