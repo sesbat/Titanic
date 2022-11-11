@@ -1,7 +1,9 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "HitBox.h"
+#include "Object.h"
 #include "VertexArrayObj.h"
+#include "../Scens/SceneManager.h"
 #include "../Framework/ResourceManager.h"
 #include "../Framework/InputMgr.h"
 #include "../Framework/SoundManager.h"
@@ -21,12 +23,9 @@ Enemy::~Enemy()
 void Enemy::Init(Player* player)
 {
 	HitBoxObject::Init();
-	//SetPos({ 200.f,200.f });
 	this->player = player;
 
 	hp = maxHp;
-
-	//sprite.setScale({ 2.f,2.f });
 
 	animator.SetTarget(&sprite);
 
@@ -37,14 +36,14 @@ void Enemy::Init(Player* player)
 	healthBar.setSize({ barScaleX, 15.f });
 	healthBar.setPosition({ GetPos().x, GetPos().y - 35.f });
 	Utils::SetOrigin(healthBar, Origins::MC);
-	
-	//enemy body hit box
 
 	//animation
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyIdle"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyIdleLeft"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMove"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMoveLeft"));
+
+	scene = SCENE_MGR->GetCurrScene();
 
 }
 
@@ -85,41 +84,12 @@ void Enemy::Update(float dt)
 
 	//player attack hitbox hits boss
 	getAttackTime += dt;
-	/*if ( getAttackTime > 0.5f )
-	{
-		if ( bossHitbox->GetActive() && player->GetAttackHitbox()->GetActive() )
-		{
-			if ( Utils::OBB(bossHitbox->GetHitbox(), player->GetAttackHitbox()->GetHitbox()) )
-			{
-				cout << "player hit boss" << endl;
-				SetHp(player->GetDamage());
-				if ( hp <= 0 )
-				{
-					SetState(States::Dead);
-					bossHitbox->SetActive(false);
-					attackHitbox->SetActive(false);
-					ITEM_GEN->Generate(GetPos(), true);
-				}
-				getAttackTime = 0.f;
-			}
-		}
-		if ( attackHitbox->GetActive() && player->GetPlayerHitBox()->GetActive() )
-		{
-			if ( Utils::OBB(attackHitbox->GetHitbox(), player->GetPlayerHitBox()->GetHitbox()) )
-			{
-				cout << "boss attack player" << endl;
-				player->SetHp(damage * 2);
-				getAttackTime = 0.f;
-			}
-		}
-	}*/
 
 	//position
 	for (auto& hit : hitboxs)
 	{
 		hit->SetPos(GetPos());
 	}
-	//bottomHitBox->SetPos({ GetPos().x,GetPos().y + 20.f });
 
 	//hp bar
 	SetHpBar();
@@ -128,14 +98,25 @@ void Enemy::Update(float dt)
 	animator.Update(dt);
 
 	//wall bound
-	/*for ( const auto& hb : background->GetHitBoxList() )
+	auto obj = scene->GetObjList();
+
+	for (auto& objects : obj[LayerType::Object][0])
 	{
-		if ( Utils::OBB(hb->GetHitbox(), bossHitbox->GetHitbox()) )
+		auto hit = ((HitBoxObject*)objects)->GetBottom();
+		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
+			continue;
+		if (objects->GetName() == "TREE" ||
+			objects->GetName() == "STONE" ||
+			objects->GetName() == "PLAYER" ||
+			objects->GetName() == "ENEMY")
 		{
-			std::cout << "wall" << std::endl;
-			SetBossPos();
+			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+			{
+				SetEnemyPos();
+				break;
+			}
 		}
-	}*/
+	}
 }
 
 void Enemy::Draw(RenderWindow& window)
@@ -203,7 +184,7 @@ void Enemy::SetHpBar()
 	}
 }
 
-void Enemy::SetBossPos()
+void Enemy::SetEnemyPos()
 {
 	SetPos(prevPosition);
 	healthBar.setPosition({ prevPosition.x, prevPosition.y - 15.f });
@@ -222,7 +203,7 @@ void Enemy::AttackPattern(float dt)
 	{
 		dir = Utils::Normalize(player->GetPos() - GetPos());
 
-		//Translate(dir * this->speed * dt);
+		Translate(dir * this->speed * dt);
 	}
 	//attack motion
 	if ( currState == States::Move && Utils::Distance(player->GetPos(), GetPos()) < 85.f )

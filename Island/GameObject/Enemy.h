@@ -5,6 +5,7 @@
 class Player;
 class VertexArrayObj;
 class HitBox;
+class Scene;
 
 class Enemy : public HitBoxObject
 {
@@ -18,7 +19,9 @@ public:
 	};
 protected:
 	Player* player;
-	
+
+	Scene* scene;
+
 	Animator animator;
 
 	RectangleShape healthBar;
@@ -60,7 +63,7 @@ public:
 
 	void SetHp(int num);
 	void SetHpBar();
-	void SetBossPos();
+	void SetEnemyPos();
 
 	void AttackPattern(float dt);
 

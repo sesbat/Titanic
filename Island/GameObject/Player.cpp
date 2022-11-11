@@ -109,10 +109,10 @@ void Player::Update(float dt)
 		SetState(States::Dead);
 	}*/
 
-	//����
+	//Move
 	velocity = direction * speed;
 
-	//����
+	//Stop
 	if ( Utils::Magnitude(direction) == 0.f )
 	{
 		velocity = { 0.f, 0.f };
