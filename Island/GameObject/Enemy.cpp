@@ -71,7 +71,7 @@ Enemy::States Enemy::GetState()
 
 void Enemy::Update(float dt)
 {
-	prevPosition = GetPos();
+	
 
 	HitBoxObject::Update(dt);
 	direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
@@ -82,13 +82,67 @@ void Enemy::Update(float dt)
 		AttackPattern(dt);
 	}
 
-	//player attack hitbox hits boss
-	getAttackTime += dt;
-
-	//position
-	for (auto& hit : hitboxs)
+	//move
+	auto obj = scene->GetObjList();
+	if (currState == States::Move)
 	{
-		hit->SetPos(GetPos());
+		dir = Utils::Normalize(player->GetPos() - GetPos());
+
+		//x dir
+		prevPosition = GetPos();
+		Translate({ dir.x * this->speed * dt, 0.f });
+
+		//position
+		for (auto& hit : hitboxs)
+		{
+			hit->SetPos(GetPos());
+		}
+
+		//wall bound
+		for (auto& objects : obj[LayerType::Object][0])
+		{
+			auto hit = ((HitBoxObject*)objects)->GetBottom();
+			if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
+				continue;
+			if (objects->GetName() == "TREE" ||
+				objects->GetName() == "STONE" ||
+				objects->GetName() == "PLAYER")
+			{
+				if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+				{
+					SetEnemyPos();
+					break;
+				}
+			}
+		}
+
+		//y dir
+		prevPosition = GetPos();
+		Translate({ 0.f,  dir.y * this->speed * dt });
+
+		//position
+		for (auto& hit : hitboxs)
+		{
+			hit->SetPos(GetPos());
+		}
+
+		//wall bound
+		for (auto& objects : obj[LayerType::Object][0])
+		{
+			auto hit = ((HitBoxObject*)objects)->GetBottom();
+			if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
+				continue;
+			if (objects->GetName() == "TREE" ||
+				objects->GetName() == "STONE" ||
+				objects->GetName() == "PLAYER")
+			{
+				if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+				{
+					SetEnemyPos();
+					break;
+				}
+			}
+		}
 	}
 
 	//hp bar
@@ -97,26 +151,6 @@ void Enemy::Update(float dt)
 	//animation
 	animator.Update(dt);
 
-	//wall bound
-	auto obj = scene->GetObjList();
-
-	for (auto& objects : obj[LayerType::Object][0])
-	{
-		auto hit = ((HitBoxObject*)objects)->GetBottom();
-		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
-			continue;
-		if (objects->GetName() == "TREE" ||
-			objects->GetName() == "STONE" ||
-			objects->GetName() == "PLAYER" ||
-			objects->GetName() == "ENEMY")
-		{
-			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
-			{
-				SetEnemyPos();
-				break;
-			}
-		}
-	}
 }
 
 void Enemy::Draw(RenderWindow& window)
@@ -187,7 +221,14 @@ void Enemy::SetHpBar()
 void Enemy::SetEnemyPos()
 {
 	SetPos(prevPosition);
-	healthBar.setPosition({ prevPosition.x, prevPosition.y - 15.f });
+
+	for (auto& hit : hitboxs)
+	{
+		hit->SetPos(prevPosition);
+	}
+	bottom->SetPos(prevPosition);
+
+	healthBar.setPosition({ prevPosition.x, prevPosition.y - 35.f });
 }
 
 void Enemy::AttackPattern(float dt)
@@ -198,13 +239,7 @@ void Enemy::AttackPattern(float dt)
 		SetState(States::Move);
 		moveTime = 3.f;
 	}
-	//move
-	if ( currState == States::Move )
-	{
-		dir = Utils::Normalize(player->GetPos() - GetPos());
-
-		Translate(dir * this->speed * dt);
-	}
+	
 	//attack motion
 	if ( currState == States::Move && Utils::Distance(player->GetPos(), GetPos()) < 85.f )
 	{
