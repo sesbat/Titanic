@@ -109,10 +109,10 @@ void Player::Update(float dt)
 		SetState(States::Dead);
 	}*/
 
-	//����
+	//Move
 	velocity = direction * speed;
 
-	//����
+	//Stop
 	if ( Utils::Magnitude(direction) == 0.f )
 	{
 		velocity = { 0.f, 0.f };
@@ -127,24 +127,15 @@ void Player::Update(float dt)
 	}
 
 	prevPosition = GetPos();
-	Translate(velocity * dt);
-	
+	Translate({ velocity.x * dt, 0.f });
 
-	//attack
-	//timer += dt;
-	
+
 	//positions
 	for (auto& hit : hitboxs)
 	{
 		hit->SetPos(GetPos());
 	}
 
-	//hp bar
-	SetHpBar();
-
-	//animation
-	animator.Update(dt);
-	
 	//wall bound
 	auto obj = scene->GetObjList();
 
@@ -176,7 +167,39 @@ void Player::Update(float dt)
 			}
 		}
 	}
-	
+
+	prevPosition = GetPos();
+	Translate({ 0.f, velocity.y * dt, });
+
+	//positions
+	for (auto& hit : hitboxs)
+	{
+		hit->SetPos(GetPos());
+	}
+
+	for (auto& objects : obj[LayerType::Object][0])
+	{
+		auto hit = ((HitBoxObject*)objects)->GetBottom();
+		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
+			continue;
+		if (objects->GetName() == "TREE" ||
+			objects->GetName() == "STONE" ||
+			objects->GetName() == "ENEMY")
+		{
+			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+			{
+				SetPlayerPos();
+				break;
+			}
+		}
+	}
+
+	//hp bar
+	SetHpBar();
+
+	//animation
+	animator.Update(dt);
+
 	if (!EqualFloat(direction.x, 0.f))
 	{
 		lastDirection = direction;
@@ -310,6 +333,7 @@ void Player::SetHpBar()
 void Player::SetPlayerPos()
 {
 	SetPos(prevPosition);
+	
 	for (auto& hit : hitboxs)
 	{
 		hit->SetPos(prevPosition);

@@ -44,8 +44,6 @@ protected:
 
 	Vector2f playerNormalize;
 
-	//SpriteObject* background;
-
 	Gun* shotgun;
 	Gun* rifle;
 	Gun* sniper;
