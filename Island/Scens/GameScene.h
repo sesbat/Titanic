@@ -8,6 +8,7 @@ class Player;
 class Enemy;
 class VertexArrayObj;
 class SpriteObject;
+class TextObject;
 
 class GameScene :public Scene
 {
@@ -17,9 +18,12 @@ protected:
 	
 	//
 	float timer;
+	Clock clock;
 
 	Vector2f prevWorldPos;
 	IntRect mapSize;
+
+	TextObject* text;
 
 public:
 	GameScene();

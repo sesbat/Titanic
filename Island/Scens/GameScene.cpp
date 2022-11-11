@@ -19,6 +19,7 @@
 #include "../Ui/GameSceneUiMgr.h"
 
 using namespace std;
+using namespace sf;
 
 GameScene::GameScene()
 	:Scene(Scenes::GameScene), timer(0.f)
@@ -119,6 +120,8 @@ void GameScene::Enter()
 	SCENE_MGR->GetCurrScene()->GetWorldView().setSize({ WINDOW_WIDTH , WINDOW_HEIGHT });
 	SCENE_MGR->GetCurrScene()->GetUiView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
 	SCENE_MGR->GetCurrScene()->GetUiView().setSize({ WINDOW_WIDTH , WINDOW_HEIGHT });
+
+	SOUND_MGR->StopAll();
 }
 
 void GameScene::Exit()
@@ -128,11 +131,16 @@ void GameScene::Exit()
 
 void GameScene::Update(float dt)
 {
+	//Time deltaTime = clock.restart();
+	//float fps = 1.0f / (deltaTime.asSeconds());
+	//cout << "fps: " << fps << endl;
+
 	if (((GameSceneUiMgr*)uiMgr)->IsExit() || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		SCENE_MGR->ChangeScene(Scenes::Menu);
 		return;
 	}
+
 	LayerSort();
 	
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);

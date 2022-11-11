@@ -71,8 +71,9 @@ Enemy::States Enemy::GetState()
 
 void Enemy::Update(float dt)
 {
-	
 
+	if (!enabled || !IsInView())
+		return;
 	HitBoxObject::Update(dt);
 	direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 
@@ -155,7 +156,9 @@ void Enemy::Update(float dt)
 
 void Enemy::Draw(RenderWindow& window)
 {
-	
+
+	if (!enabled || !IsInView())
+		return;
 	if ( GetActive() )
 	{
 		HitBoxObject::Draw(window);

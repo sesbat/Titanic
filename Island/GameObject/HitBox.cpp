@@ -25,6 +25,7 @@ void HitBox::Init()
 
 void HitBox::Release()
 {
+
 }
 
 void HitBox::Reset()
@@ -75,6 +76,7 @@ void HitBox::SetFillColor(Color color)
 {
 	hitbox.setFillColor(color);
 }
+
 
 const RectangleShape& HitBox::GetHitbox() const
 {

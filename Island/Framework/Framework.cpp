@@ -56,6 +56,7 @@ bool Framework::Do()
     while (window.isOpen())
     {
         deltaTime = clock.restart();
+       
         float dt = GetDT();
         //dt /= 10;
         InputMgr::Update(dt);
