@@ -27,21 +27,6 @@ void EditorMapUiMgr::Init()
 	uiObjList[0].push_back(underUi);
 
 	editorObjs = FILE_MGR->GetEditorObjs();
-	int x = 20;
-
-	for (auto& type : editorObjs)
-	{
-		for (auto& obj : type.second)
-		{
-			DrawSelect* draw = new DrawSelect(this);
-			drawObj.push_back(draw);
-			draw->Set(type.first, obj.texPath, obj.uiPaht);
-			draw->SetPos(underUi->GetPos() + Vector2f{ (float)x, 10.f });
-			x += 100;
-			draw->SetData(obj);
-			uiObjList[0].push_back(draw);
-		}
-	}
 
 	saveBtn = new Button(this);
 	saveBtn->SetClkColor(true);
@@ -76,20 +61,41 @@ void EditorMapUiMgr::Init()
 	exitBtn->SetPos({ 50,260 });
 	uiObjList[0].push_back(exitBtn);
 
-	//DrawSelect* draw = new DrawSelect(this);
-	//drawObj.push_back(draw);
-	//draw->Set("TREE", "graphics/editor/tree1.png", "graphics/editor/drawTree1.png");
-	//draw->SetPos(underUi->GetPos() + Vector2f { 10, 10 });
-	//uiObjList[0].push_back(draw);
+	selects = { "TILE","TREE","STONE","PLAYER","ENEMY","BOX","ANOTHER" };
+	selectTxtSize = { 75,75,65,55,60,75,40 };
+	selectPosY = { 54,54,54,62,54,54,70 };
+
+	selIdx = 0;
+	selectBtn = new Button(this);
+	selectBtn->SetClkColor(true);
+	selectBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		selectTxtSize[selIdx], Color::White, selects[selIdx], true); //TILE TREE STONE PLAYER ENEMY BOX ANOTHER
+	selectBtn->SetOrigin(Origins::MC);
+	selectBtn->SetPos(underUi->GetPos() + Vector2f{ 205, selectPosY[selIdx] });
+	uiObjList[0].push_back(selectBtn);
+
+	for (auto& type : editorObjs)
+	{
+		int x = 450;
+		for (auto& obj : type.second)
+		{
+			DrawSelect* draw = new DrawSelect(this);
+			drawObj.push_back(draw);
+			draw->Set(type.first, obj.texPath, obj.uiPaht);
+			draw->SetPos(underUi->GetPos() + Vector2f{ (float)x, 40.f });
+			x += 100;
+			draw->SetData(obj);
+			uiObjList[0].push_back(draw);
+			type_selects[type.first].push_back(draw);
+			draw->SetActive(false);
+		}
+	}
 
 
-	//draw = new DrawSelect(this);
-	//drawObj.push_back(draw);
-	//draw->Set("TREE", "graphics/editor/tree2.png", "graphics/editor/drawTree2.png");
-	//draw->SetPos(underUi->GetPos() + Vector2f{ 120, 10 });
-	//uiObjList[0].push_back(draw);
-	//Reset();
-
+	for (auto& obj : type_selects[selects[selIdx]])
+	{
+		obj->SetActive(true);
+	}
 }
 
 void EditorMapUiMgr::Reset()
@@ -101,6 +107,26 @@ void EditorMapUiMgr::Update(float dt)
 	UiMgr::Update(dt);
 	if (nowDraw != nullptr)
 		nowDraw->Update(dt);
+
+	if (selectBtn->IsClick())
+	{
+		for (auto& obj : type_selects[selects[selIdx]])
+		{
+			obj->SetActive(false);
+		}
+		selIdx = (selects.size() + selIdx + 1) % selects.size();
+		selectBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+			selectTxtSize[selIdx], Color::White, selects[selIdx], true); //TILE TREE STONE PLAYER ENEMY BOX ANOTHER
+		selectBtn->SetOrigin(Origins::MC);
+		selectBtn->SetPos(underUi->GetPos() + Vector2f{ 205, selectPosY[selIdx]});
+
+		for (auto& obj : type_selects[selects[selIdx]])
+		{
+			obj->SetActive(true);
+		}
+
+		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeleteDraw();
+	}
 
 }
 

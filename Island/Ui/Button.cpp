@@ -48,6 +48,8 @@ void Button::ColorClear()
 
 void Button::Update(float dt)
 {
+	if (!enabled)
+		return;
 	UiObject::Update(dt);
 	if (IsDown())
 	{
@@ -109,6 +111,8 @@ void Button::Update(float dt)
 
 void Button::Draw(RenderWindow& window)
 {
+	if (!enabled)
+		return;
 	UiObject::Draw(window);
 	if (sprite->GetSprite().getTexture() != nullptr)
 	{

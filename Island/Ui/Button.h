@@ -20,6 +20,7 @@ protected:
 	UiMgr* uimgr;
 	BoundType bndType;
 	bool isClickColor;
+
 public:
 	Button(UiMgr* mgr);
 	virtual ~Button();

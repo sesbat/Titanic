@@ -12,6 +12,14 @@ private:
 	Button* eraseBtn;
 	Button* exitBtn;
 	Button* underUi;
+
+	Button* selectBtn;
+	vector<string> selects;
+	vector<int> selectTxtSize;
+	vector<float> selectPosY;
+	int selIdx;
+	map<string, vector<Button*>> type_selects;
+
 	vector<DrawSelect*> drawObj;
 	DrawObj* nowDraw;
 	map<string, vector<EditorObjs>> editorObjs;
