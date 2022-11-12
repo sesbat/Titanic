@@ -1,11 +1,14 @@
 #pragma once
 #include "Button.h"
+
+class TextObject;
 class SaveWindowBox : public Button 
 {
 private:
 	Button* save;
 	Button* cancle;
 	string path;
+	TextObject* txt;
 public:
 	SaveWindowBox(UiMgr* mgr);
 	~SaveWindowBox();
@@ -15,5 +18,6 @@ public:
 
 	virtual bool IsSave();
 	virtual bool IsCancle();
+	virtual string GetPath() { return path ; }
 };
 

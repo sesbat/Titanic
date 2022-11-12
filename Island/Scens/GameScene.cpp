@@ -17,7 +17,6 @@
 #include <fstream>
 #include <algorithm>
 #include "../Ui/GameSceneUiMgr.h"
-
 using namespace std;
 
 GameScene::GameScene()
@@ -33,7 +32,7 @@ void GameScene::Init()
 {
 	isMap = true;
 	vector<Enemy*> enemys;
-	auto& data = FILE_MGR->GetMap("Tutorial");
+	auto& data = FILE_MGR->GetMap("TUTORIAL");
 	for (auto& obj : data)
 	{
 		if (obj.type == "TREE" || obj.type == "STONE")

@@ -62,12 +62,12 @@ void MapEditor::Update(float dt)
 		SCENE_MGR->ChangeScene(Scenes::Menu);
 		return;
 	}
-	if (uimgr->IsSave() || InputMgr::GetKeyDown(Keyboard::S))
+	if (uimgr->IsSave())
 	{
 		Save();
 		return;
 	}
-	if (uimgr->IsLoad() || InputMgr::GetKeyDown(Keyboard::L))
+	if (uimgr->IsLoad())
 	{
 		Load();
 		return;
@@ -269,6 +269,7 @@ void MapEditor::SetType(string t)
 void MapEditor::Save()
 {
 	saveObjs.clear();
+	string path = ((EditorMapUiMgr*)(uiMgr))->GetPath();
 	for (auto& layer : greedObjs)
 	{
 		for (auto& objs : layer.second)
@@ -284,7 +285,11 @@ void MapEditor::Save()
 			}
 		}
 	}
-	FILE_MGR->SaveMap(saveObjs, "Tutorial");
+
+	if (path == "")
+		return;
+
+	FILE_MGR->SaveMap(saveObjs, path);
 }
 
 void MapEditor::Load()
@@ -321,7 +326,7 @@ void MapEditor::Load()
 	greedObjs.clear();
 
 	player = nullptr;
-	auto& data = FILE_MGR->GetMap("Tutorial");
+	auto& data = FILE_MGR->GetMap("TUTORIAL");
 	for (auto& obj : data)
 	{
 		DrawObj* draw = new DrawObj(uiMgr);

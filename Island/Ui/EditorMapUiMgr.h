@@ -4,6 +4,7 @@
 class Button;
 class DrawSelect;
 class DrawObj;
+class SaveWindowBox;
 class EditorMapUiMgr : public UiMgr
 {
 private:
@@ -24,6 +25,8 @@ private:
 	DrawObj* nowDraw;
 	map<string, vector<EditorObjs>> editorObjs;
 
+	SaveWindowBox* saveWindow;
+
 public:
 	EditorMapUiMgr(Scene* scene);
 	virtual ~EditorMapUiMgr();
@@ -41,6 +44,8 @@ public:
 	bool IsErase();
 
 	bool IsExit();
+
+	string GetPath();
 
 };
 

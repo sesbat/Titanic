@@ -58,7 +58,6 @@ void InputMgr::Clear()
 	upList.clear();
 	downMouse.clear();
 	upMouse.clear();
-
 }
 void InputMgr::Update(float dt)
 {
@@ -207,4 +206,16 @@ float InputMgr::GetAxisRaw(Axis axis)
 	}
 	return 0.f;
 
+}
+
+char InputMgr::GetLastKey()
+{
+	if (downList.empty())
+		return ' ';
+	return downList.front() + 'A';
+}
+
+bool InputMgr::GetKeyDown()
+{
+	return !downList.empty();
 }

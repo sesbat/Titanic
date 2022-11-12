@@ -9,6 +9,7 @@
 #include "../../Scens/SceneManager.h"
 #include "../../Framework/FileManager.h"
 #include "../../Scens/MapEditor.h"
+#include "SaveWindowBox.h"
 
 EditorMapUiMgr::EditorMapUiMgr(Scene* scene)
 	:UiMgr(scene)
@@ -91,7 +92,10 @@ void EditorMapUiMgr::Init()
 		}
 	}
 
-
+	saveWindow = new SaveWindowBox(this);
+	saveWindow->SetPos({ 350,50 });
+	saveWindow->Init();
+	uiObjList[1].push_back(saveWindow);
 	for (auto& obj : type_selects[selects[selIdx]])
 	{
 		obj->SetActive(true);
@@ -104,9 +108,25 @@ void EditorMapUiMgr::Reset()
 
 void EditorMapUiMgr::Update(float dt)
 {
+	if (saveWindow->GetActive())
+	{
+		saveWindow->Update(dt);
+		if(saveWindow->IsCancle())
+			saveWindow->SetActive(false);
+		return;
+	}
 	UiMgr::Update(dt);
 	if (nowDraw != nullptr)
+	{
 		nowDraw->Update(dt);
+	}
+
+	cout << (int)saveBtn->GetState() << endl;
+	if (saveBtn->IsUp())
+	{
+		saveWindow->SetActive(true);
+		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeleteDraw();
+	}
 
 	if (selectBtn->IsClick())
 	{
@@ -166,7 +186,7 @@ bool EditorMapUiMgr::IsUnder()
 
 bool EditorMapUiMgr::IsSave()
 {
-	return saveBtn->IsDown() || saveBtn->IsClick();
+	return saveWindow->IsSave();
 }
 
 bool EditorMapUiMgr::IsLoad()
@@ -182,4 +202,9 @@ bool EditorMapUiMgr::IsErase()
 bool EditorMapUiMgr::IsExit()
 {
 	return exitBtn->IsDown() || exitBtn->IsClick();
+}
+
+string EditorMapUiMgr::GetPath()
+{
+	return saveWindow->GetPath();
 }
