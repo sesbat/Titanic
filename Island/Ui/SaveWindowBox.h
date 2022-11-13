@@ -15,6 +15,9 @@ public:
 	void Init();
 	virtual void Draw(RenderWindow& window);
 	virtual void Update(float dt);
+	virtual void Release();
+
+	void SetPath(string path);
 
 	virtual bool IsSave();
 	virtual bool IsCancle();

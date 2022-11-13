@@ -11,6 +11,21 @@ SaveWindowBox::SaveWindowBox(UiMgr* mgr)
 
 SaveWindowBox::~SaveWindowBox()
 {
+	if (save != nullptr)
+	{
+		delete save;
+		save = nullptr;
+	}
+	if (cancle != nullptr)
+	{
+		delete cancle;
+		cancle = nullptr;
+	}
+	if (txt != nullptr)
+	{
+		delete txt;
+		txt = nullptr;
+	}
 }
 
 void SaveWindowBox::Init()
@@ -80,7 +95,31 @@ void SaveWindowBox::Update(float dt)
 		}
 	}
 }
-
+void SaveWindowBox::Release()
+{
+	if (save != nullptr)
+	{
+		delete save;
+		save = nullptr;
+	}
+	if (cancle != nullptr)
+	{
+		delete cancle;
+		cancle = nullptr;
+	}
+	if (txt != nullptr)
+	{
+		delete txt;
+		txt = nullptr;
+	}
+	path = "";
+}
+void SaveWindowBox::SetPath(string path)
+{
+	this->path = path;
+	txt->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		38, Color::White, path + "");
+}
 bool SaveWindowBox::IsSave()
 {
 	return save->IsDown() || save->IsClick();

@@ -16,8 +16,16 @@ Button::Button(UiMgr* mgr)
 
 Button::~Button()
 {
-	delete sprite;
-	delete text;
+	if (sprite != nullptr)
+	{
+		delete sprite;
+		sprite = nullptr;
+	}
+	if (text != nullptr)
+	{
+		delete text;
+		text = nullptr;
+	}
 }
 
 void Button::Init()
@@ -130,6 +138,21 @@ void Button::SetPos(Vector2f pos)
 	sprite->SetPos(pos);
 	text->SetPos(pos);
 	ReBound();
+}
+
+void Button::Release()
+{
+	Object::Release();
+	if (sprite != nullptr)
+	{
+		delete sprite;
+		sprite = nullptr;
+	}
+	if (text != nullptr)
+	{
+		delete text;
+		text = nullptr;
+	}
 }
 
 void Button::SetTexture(Texture& t, bool isBound)

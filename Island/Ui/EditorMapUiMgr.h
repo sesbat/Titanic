@@ -5,6 +5,7 @@ class Button;
 class DrawSelect;
 class DrawObj;
 class SaveWindowBox;
+class LoadWindowBox;
 class EditorMapUiMgr : public UiMgr
 {
 private:
@@ -26,6 +27,7 @@ private:
 	map<string, vector<EditorObjs>> editorObjs;
 
 	SaveWindowBox* saveWindow;
+	LoadWindowBox* loadWindow;
 
 public:
 	EditorMapUiMgr(Scene* scene);
@@ -38,9 +40,14 @@ public:
 	DrawObj* GetDraw() { return nowDraw; }
 	void DeleteDraw();
 	bool IsUnder();
+	void SetLoadPath(string path);
+
+	void SetLoadInit();
 
 	bool IsSave();
 	bool IsLoad();
+	bool LoadActive();
+	string loadFile();
 	bool IsErase();
 
 	bool IsExit();

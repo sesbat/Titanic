@@ -44,6 +44,7 @@
     <ClCompile Include="GameObject\Gun.cpp" />
     <ClCompile Include="Ui\GameSceneUiMgr.cpp" />
     <ClCompile Include="Ui\SaveWindowBox.cpp" />
+    <ClCompile Include="Ui\LoadWindowBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -93,6 +94,7 @@
     <ClInclude Include="GameObject\Gun.h" />
     <ClInclude Include="Ui\GameSceneUiMgr.h" />
     <ClInclude Include="Ui\SaveWindowBox.h" />
+    <ClInclude Include="Ui\LoadWindowBox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

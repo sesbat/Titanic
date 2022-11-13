@@ -10,6 +10,7 @@
 #include "../../Framework/FileManager.h"
 #include "../../Scens/MapEditor.h"
 #include "SaveWindowBox.h"
+#include "LoadWindowBox.h"
 
 EditorMapUiMgr::EditorMapUiMgr(Scene* scene)
 	:UiMgr(scene)
@@ -100,6 +101,11 @@ void EditorMapUiMgr::Init()
 	{
 		obj->SetActive(true);
 	}
+
+	loadWindow = new LoadWindowBox(this);
+	loadWindow->SetPos({ 350,50 });
+	loadWindow->Init();
+	uiObjList[1].push_back(loadWindow);
 }
 
 void EditorMapUiMgr::Reset()
@@ -115,6 +121,17 @@ void EditorMapUiMgr::Update(float dt)
 			saveWindow->SetActive(false);
 		return;
 	}
+	if (loadWindow->GetActive())
+	{
+		loadBtn->Update(dt);
+		if (loadBtn->IsUp())
+		{
+			loadWindow->SetActive(!loadWindow->GetActive());
+			((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeleteDraw();
+		}
+		loadWindow->Update(dt);
+		return;
+	}
 	UiMgr::Update(dt);
 	if (nowDraw != nullptr)
 	{
@@ -125,6 +142,11 @@ void EditorMapUiMgr::Update(float dt)
 	if (saveBtn->IsUp())
 	{
 		saveWindow->SetActive(true);
+		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeleteDraw();
+	}
+	if (loadBtn->IsUp())
+	{
+		loadWindow->SetActive(!loadWindow->GetActive());
 		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeleteDraw();
 	}
 
@@ -184,6 +206,16 @@ bool EditorMapUiMgr::IsUnder()
 	return Utils::IsRange(underUi->GetSpriteObj()->GetGlobalBound(), mousePos);
 }
 
+void EditorMapUiMgr::SetLoadPath(string path)
+{
+	saveWindow->SetPath(path);
+}
+void EditorMapUiMgr::SetLoadInit()
+{
+	loadWindow->Reset();
+}
+
+
 bool EditorMapUiMgr::IsSave()
 {
 	return saveWindow->IsSave();
@@ -191,7 +223,17 @@ bool EditorMapUiMgr::IsSave()
 
 bool EditorMapUiMgr::IsLoad()
 {
-	return loadBtn->IsDown() || loadBtn->IsClick();
+	return loadWindow->IsLoad();
+}
+
+bool EditorMapUiMgr::LoadActive()
+{
+	return loadWindow->GetActive();
+}
+
+string EditorMapUiMgr::loadFile()
+{
+	return loadWindow->GetLoadPaht();
 }
 
 bool EditorMapUiMgr::IsErase()

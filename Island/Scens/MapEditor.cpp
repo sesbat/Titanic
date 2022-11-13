@@ -69,7 +69,9 @@ void MapEditor::Update(float dt)
 	}
 	if (uimgr->IsLoad())
 	{
-		Load();
+		string path = uimgr->loadFile();
+		Load(path);
+
 		return;
 	}
 
@@ -101,11 +103,13 @@ void MapEditor::Update(float dt)
 	
 	if (InputMgr::GetMouseWheelUp())
 	{
-		SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() - (Vector2f{19.2,10.8} * 3.f));
+		if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
+			SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() - (Vector2f{19.2,10.8} * 3.f));
 	}
 	if (InputMgr::GetMouseWheelDown())
 	{
-		SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *3.f));
+		if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
+			SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *3.f));
 	}
 	for (int i = 0; i < HEIGHTCNT; i++)
 	{
@@ -290,9 +294,10 @@ void MapEditor::Save()
 		return;
 
 	FILE_MGR->SaveMap(saveObjs, path);
+	((EditorMapUiMgr*)uiMgr)->SetLoadInit();
 }
 
-void MapEditor::Load()
+void MapEditor::Load(string path)
 {
 	for (auto& objs : objList[LayerType::Object])
 	{
@@ -326,7 +331,7 @@ void MapEditor::Load()
 	greedObjs.clear();
 
 	player = nullptr;
-	auto& data = FILE_MGR->GetMap("TUTORIAL");
+	auto& data = FILE_MGR->GetMap(path);
 	for (auto& obj : data)
 	{
 		DrawObj* draw = new DrawObj(uiMgr);
@@ -356,4 +361,6 @@ void MapEditor::Load()
 			greedObjs[LayerType::Tile][j][i] = draw;
 		}
 	}
+
+	((EditorMapUiMgr*)uiMgr)->SetLoadPath(path);
 }
