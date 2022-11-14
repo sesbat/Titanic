@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "HitBox.h"
 #include "HitBoxObject.h"
+#include "Enemy.h"
 #include "../Scens/SceneManager.h"
 #include <iostream>
 
@@ -15,10 +16,11 @@ Bullet::~Bullet()
 
 void Bullet::Init()
 {
-	SetOrigin(Origins::ML);
+	SetOrigin(Origins::MR);
 	SpriteObject::Init();
 	scene = SCENE_MGR->GetCurrScene();
 	prevPos = GetPos();
+	
 }
 
 void Bullet::Update(float dt)
@@ -26,7 +28,7 @@ void Bullet::Update(float dt)
 	if (GetActive())
 	{
 		SpriteObject::Update(dt);
-		//isHitBox = false;
+		
 		range -= Utils::Magnitude(dir * dt * speed);
 		prevPos = GetPos();
 		if (range >= 0.f)
@@ -38,7 +40,7 @@ void Bullet::Update(float dt)
 			SetActive(false);
 
 		}
-		//cout << GetPos().x << " " << GetPos().y << endl;
+		
 		// collision
 		auto obj = scene->GetObjList();
 		for (auto& objects : obj[LayerType::Object][0])
@@ -48,15 +50,30 @@ void Bullet::Update(float dt)
 				continue;
 
 			if (objects->GetName() == "TREE" ||
-				objects->GetName() == "STONE" ||
-				objects->GetName() == "ENEMY")
+				objects->GetName() == "STONE" )
 			{
 				if (LineRect(startPos, GetPos(), hit->GetHitbox()))
 				{
 					cout << "hit" << endl;
+
 					SetActive(false);
-					//hitbox->SetActive(false);
-					//hitbox->Release();
+					break;
+				}
+			}
+			else if (objects->GetName() == "ENEMY")
+			{
+				for (Enemy* enemy : *enemies)
+				{
+					if (objects->GetId() == enemy->GetId())
+					{
+						if (LineRect(startPos, GetPos(), hit->GetHitbox()))
+						{
+							cout << "hit" << endl;
+							enemy->SetHp(10);
+							SetActive(false);
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -67,7 +84,6 @@ void Bullet::Update(float dt)
 void Bullet::Draw(RenderWindow& window)
 {
 	SpriteObject::Draw(window);
-	//hitbox->Draw(window);
 }
 
 void Bullet::Reset()
@@ -89,18 +105,13 @@ void Bullet::Release()
 void Bullet::Fire(const Vector2f& pos, const Vector2f& dir, float speed, float range)
 {
 	sprite.setRotation(Utils::Angle(dir));
+	Utils::SetOrigin(sprite, Origins::MR);
 	SetPos(pos);
 	startPos = pos;
 	SetActive(true);
 	this->dir = dir;
 	this->speed = speed;
 	this->range = range;
-}
-
-void Bullet::SetHitbox()
-{
-	hitbox = new HitBox();
-	hitbox->SetHitbox(FloatRect(0.f, 0.f, 10.f, 10.f));
 }
 
 bool Bullet::EqualFloat(Vector2f a, Vector2f b)

@@ -15,8 +15,8 @@ class GameScene :public Scene
 	
 protected:
 	Player* player;
-	
-	//
+	list<Enemy*> enemies;
+
 	float timer;
 	Clock clock;
 
@@ -37,5 +37,7 @@ public:
 
 	virtual void Update(float dt) override;
 	virtual void Draw(RenderWindow& window) override;
+
+	list<Enemy*>* GetEnemyList() { return &enemies; }
 };
 

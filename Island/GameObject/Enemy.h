@@ -19,7 +19,6 @@ public:
 	};
 protected:
 	Player* player;
-
 	Scene* scene;
 
 	Animator animator;
@@ -66,7 +65,6 @@ public:
 	void SetEnemyPos();
 
 	void AttackPattern(float dt);
-
-
+	void Move(float dt);
+	void Collision();
 };
-

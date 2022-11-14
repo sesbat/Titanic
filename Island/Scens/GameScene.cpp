@@ -32,8 +32,8 @@ GameScene::~GameScene()
 
 void GameScene::Init()
 {
+	int id = 0;
 	isMap = true;
-	vector<Enemy*> enemys;
 	auto& data = FILE_MGR->GetMap("Tutorial");
 	for (auto& obj : data)
 	{
@@ -57,22 +57,19 @@ void GameScene::Init()
 			player->SetName(obj.type);
 			player->Init();
 			player->SetPos(obj.position);
-
 			player->SetHitBox(obj.path);
 
-			//player->SetBackground(backGround);
 			objList[LayerType::Object][0].push_back(player);
 		}
 		else if (obj.type == "ENEMY")
 		{
 			Enemy* enemy = new Enemy();
 			enemy->SetName(obj.type);
-			//enemy->Init(player);
+			enemy->SetId(id++);
 			enemy->SetPos(obj.position);
 			enemy->SetHitBox(obj.path);
-			enemys.push_back(enemy);
+			enemies.push_back(enemy);
 
-			//enemy->SetBackground(backGround);
 			objList[LayerType::Object][0].push_back(enemy);
 		}
 		else if (obj.type == "TILE")
@@ -91,7 +88,7 @@ void GameScene::Init()
 		}
 	}
 
-	for (auto& enemy : enemys)
+	for (auto& enemy : enemies)
 	{
 		enemy->Init(player);
 	}
@@ -110,6 +107,7 @@ void GameScene::Init()
 void GameScene::Release()
 {
 	Scene::Release();
+	enemies.clear();
 }
 
 void GameScene::Enter()
@@ -127,6 +125,7 @@ void GameScene::Enter()
 void GameScene::Exit()
 {
 	Release();
+	
 }
 
 void GameScene::Update(float dt)

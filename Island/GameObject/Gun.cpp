@@ -16,9 +16,10 @@
 
 void OnCreateBullet(Bullet* bullet)
 {
+	GameScene* scene = (GameScene*)SCENE_MGR->GetScene(Scenes::GameScene);
 	bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
-	//bullet->SetHitbox();
 	bullet->Init();
+	bullet->SetEnemyList(scene->GetEnemyList());
 }
 
 Gun::Gun()
@@ -73,7 +74,6 @@ void Gun::Update(float dt)
 	}
 	if (InputMgr::GetMouseButtonDown(Mouse::Right))
 	{
-
 		int temp = (int)gunType;
 		temp++;
 		if (temp == 3)
