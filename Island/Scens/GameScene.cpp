@@ -133,6 +133,15 @@ void GameScene::Update(float dt)
 	//Time deltaTime = clock.restart();
 	//float fps = 1.0f / (deltaTime.asSeconds());
 	//cout << "fps: " << fps << endl;
+	for (auto it = enemies.begin(); it != enemies.end(); )
+	{
+		if (!(*it)->GetActive())
+		{
+			it = enemies.erase(it);
+		}
+		else
+			it++;
+	}
 
 	if (((GameSceneUiMgr*)uiMgr)->IsExit() || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
