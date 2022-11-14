@@ -1,14 +1,20 @@
 #pragma once
-#include "SpriteObject.h"
+#include "HitBoxObject.h"
 #include "Animation/Animator.h"
+#include "../Framework/ObjectPool.h"
 #include <list>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 using namespace std;
 
 class VertexArrayObj;
+class Gun;
 class Scene;
+class HitBox;
+class Bullet;
 
-class Player : public SpriteObject
+class Player : public HitBoxObject
 {
 public:
 	enum class States
@@ -19,27 +25,37 @@ public:
 	};
 protected:
 	Animator animator;
+
 	Scene* scene;
-	//RectangleShape healthBar;
+
+	RectangleShape healthBar;
 
 	States currState;
 	
 	float speed;
 	Vector2f look;
+	Vector2f lookDir;
+	Vector2f prevLook;
 	Vector2f velocity;
 	Vector2f direction;
 	Vector2f lastDirection;
 	Vector2f prevPosition;
+	bool isFlip;
 
-	VertexArrayObj* background;
-	
+	Vector2f playerNormalize;
+
+	Gun* shotgun;
+	Gun* rifle;
+	Gun* sniper;
+
+	SpriteObject* background;
+
 	//float timer;
 	//float attackTime;
 
 	int hp;
 	int maxHp;
 
-	//bool isHitBox;
 	//bool isAlive;
 public:
 	Player();
@@ -48,7 +64,6 @@ public:
 	void Init();
 
 	void SetState(States newState);
-	void SetBackground(VertexArrayObj* bk);
 
 	void Update(float dt);
 	void Draw(RenderWindow& window);
@@ -62,13 +77,18 @@ public:
 
 	Vector2f GetPlayerDir() { return direction; }
 	Vector2f GetPlayerLastDir() { return lastDirection; }
+	Vector2f GetLookDir() { return lookDir; }
+	Vector2f GetPrevLookDir() { return prevLook; }
 	//int GetDamage() { return damage; }
 	States GetCurrState() { return currState; }
 
 	void SetHp(int num);
-	//void SetHpBar();
+	void SetHpBar();
 	//void OnPickupItem(Item* item);
 	void SetPlayerPos();
 	Vector2f SetLookDir();
+	void SetFlipX(bool flip);
+
+	//void Fire();
 };
 

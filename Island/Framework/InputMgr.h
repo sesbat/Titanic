@@ -22,7 +22,7 @@ struct AxisInfo
 	float value;
 };
 
-// ½ºÅÃÆ½ ÇÔ¼ö¸¦ ÀÌ¿ëÇØ¼­ Å°º¸µå ¹× ¸¶¿ì½º ÀÔ·ÂÀ» °Ë»çÇÒ ¼ö ÀÖ´Â Å¬·¡½º
+// ï¿½ï¿½ï¿½ï¿½Æ½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
 
 class InputMgr
 {
@@ -38,6 +38,8 @@ private:
 	static list<Mouse::Button> upMouse;	  // 
 
 	static Vector2f mousePos;
+	static bool wheelUp;
+	static bool wheelDown;
 
 public:
 	static void Init();
@@ -52,6 +54,8 @@ public:
 	static bool GetMouseButtonDown(Mouse::Button key);
 	static bool GetMouseButton(Mouse::Button key);
 	static bool GetMouseButtonUp(Mouse::Button key);
+	static bool GetMouseWheelUp();
+	static bool GetMouseWheelDown();
 
 	static const Vector2f& GetMousePos();
 

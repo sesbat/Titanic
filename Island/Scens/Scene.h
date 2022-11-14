@@ -9,25 +9,33 @@ using namespace sf;
 using namespace std;
 
 class Object;
+class HitBoxObject;
 enum class Scenes
 {
-	None = -1, Menu,Ready,MapEditor,Count,Dev2
+	None = -1, Menu,Ready,MapEditor,Count,GameScene
 };
+// 바닥, 풀, 오브젝트 + 벽(특수), 에너미
 enum class LayerType
 {
-	None, Back,Plat, Object, Player
+	None, Back, Tile, Object
 };
+
 class Scene
 {
 protected:
 	Scenes type;
 
 	map<LayerType, map<int, vector<Object*>>> objList;
-
 	View worldView;
 	View uiView;
 
 	UiMgr* uiMgr;
+
+	vector<Object*> moves;
+	vector<Object*> drawObjs;
+	vector<HitBoxObject*> alphaObj;
+	bool isMap;
+
 public:
 	Scene(Scenes type);
 	virtual ~Scene();
@@ -40,8 +48,6 @@ public:
 
 	View& GetWorldView() { return worldView; }
 	View& GetUiView() { return uiView; }
-	void SetViewStop();
-	void SetViewPlay();
 
 	Vector2f ScreenToWorld(Vector2i screenPos);
 	Vector2f ScreenToUiPosition(Vector2i screenPos);
@@ -52,5 +58,7 @@ public:
 	void AddGameObject(Object* obj, LayerType type, int num);
 	Object* FindGameObj(string name);
 	UiMgr* GetUiMgr() { return uiMgr; }
+	map<LayerType, map<int, vector<Object*>>> GetObjList() { return objList; }
+	virtual void LayerSort();
 };
 

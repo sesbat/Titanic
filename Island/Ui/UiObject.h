@@ -21,6 +21,8 @@ protected:
 	bool dragR;
 	Vector2f initPos;
 
+	bool isUiView;
+
 public:
 	UiObject();
 	virtual ~UiObject();
@@ -47,6 +49,7 @@ public:
 	virtual bool IsEnter() const { return (btnState == UiState::Enter) && isEvent; }
 	virtual bool IsExit() const { return (btnState == UiState::Exit) && isEvent; }
 	virtual bool IsStay() const { return (btnState == UiState::Stay) && isEvent; }
+	virtual bool IsNone() const { return (btnState == UiState::None); }
 	virtual bool IsDrag() const { return drag; }
 	virtual bool IsDragRight() const { return dragR; }
 	virtual bool GetEvent() const { return isEvent; }
@@ -57,6 +60,7 @@ public:
 	virtual void SetMoveRight(bool m) { isMoveR = m; }
 	virtual bool IsMove() { return isMove; }
 	virtual bool IsMoveRight() { return isMoveR; }
+	virtual void SetUiView(bool state) { isUiView = state; }
 
 	void SetBound(FloatRect b) { bound = b; }
 };

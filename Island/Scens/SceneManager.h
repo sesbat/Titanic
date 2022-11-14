@@ -18,12 +18,9 @@ public:
 	Scene* GetCurrScene();
 	Scene* GetScene(Scenes scene);
 
-
 	bool LoadPath();
 	bool Init();
 	void ChangeScene(Scenes scene);
-	void ChangeEpisode(string path);
-	void ChangeEditor(string name);
 	void Update(float dt);
 	void Draw(RenderWindow& window);
 };

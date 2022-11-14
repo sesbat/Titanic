@@ -5,22 +5,22 @@
 class FileManager : public Singleton<FileManager>
 {
 private:
-	map<string, map<string, MapData>> episodeMap; //find by path
-	map<string, HitBoxInfo> hitBoxMap; //find by path
-	map<string, map<string, CookieHitBox>> cookieInfo; //find by cookie name and cookie state. return now animation hitbox
+	map<string, vector<ns::RectangleInfo>> hitBoxData; //find by path
+	map<string, vector<ObjectData>> mapInfo;
+	map<string, vector<EditorObjs>> editorObjs;
 	//cookieInfo[Jungle][Jump]
 public:
 	FileManager();
 	~FileManager();
 
 	void LoadAll();
-	const map<string, MapData>& GetEpisode(string name);
-	const HitBoxInfo& GetHitBox(string name);
-	const  map<string, CookieHitBox>& GetCookie(string name) {return cookieInfo[name];}
-	const map<string, map<string, MapData>> GetAllEpisode() { return episodeMap; };
+	const vector<ns::RectangleInfo>& GetHitBox(string name);
 
-	void SaveData(map<string, map<string, MapData>> newData, string path);
-	void SaveDataEpisode( map<string, MapData> newData, string name);
+	const vector<ObjectData>& GetMap(string name);
+	const map<string, vector<ObjectData>>& GetAllMap() { return mapInfo; };
+
+	void SaveMap(vector<ObjectData> newData, string name);
+	const map<string, vector<EditorObjs>>& GetEditorObjs() { return editorObjs; }
 };
 
 #define FILE_MGR (FileManager::GetInstance())

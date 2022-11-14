@@ -1,6 +1,8 @@
 #include "SpriteObject.h"
+#include "../Scens/SceneManager.h"
 
 SpriteObject::SpriteObject()
+	:isUi(false), viewIn(false)
 {
 }
 
@@ -20,7 +22,7 @@ void SpriteObject::Update(float dt)
 
 void SpriteObject::Draw(RenderWindow& window)
 {
-	if(enabled)
+	if(enabled && IsInView())
 		window.draw(sprite);
 	Object::Draw(window);
 }
@@ -68,3 +70,39 @@ FloatRect SpriteObject::GetGlobalBound()
 {
 	return sprite.getGlobalBounds();
 }
+
+bool SpriteObject::IsInView()
+{
+	if (isUi)
+	{
+		viewIn = true;
+		return true;
+	}
+
+	auto& view = SCENE_MGR->GetCurrScene()->GetWorldView();
+	auto& viewSize = view.getSize();
+	auto& viewCenter = view.getCenter();
+	auto bound = GetGlobalBound();
+
+	if (((bound.left > viewCenter.x + viewSize.x / 2) || (bound.left + bound.width < viewCenter.x - viewSize.x / 2)) ||
+		((bound.top > viewCenter.y + viewSize.y / 2) || (bound.top + bound.height < viewCenter.y - viewSize.y / 2)))
+	{
+		viewIn = false;
+		return false;
+	}
+	viewIn = true;
+	return true;
+}
+void SpriteObject::SetFlipX(bool flip)
+{
+	Vector2f scale = sprite.getScale();
+	scale.x = flip ? -abs(scale.x) : abs(scale.x);
+	sprite.setScale(scale);
+}
+void SpriteObject::SetFlipY(bool flip)
+{
+	Vector2f scale = sprite.getScale();
+	scale.y = flip ? -abs(scale.y) : abs(scale.y);
+	sprite.setScale(scale);
+}
+

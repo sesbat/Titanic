@@ -48,7 +48,7 @@ void Fade::Update(float dt)
 	}
 	else if (isFadeOut && (alpha < goal)) // screen > black
 	{
-		alpha += dt;
+		alpha += 10 * dt;
 		rect.setFillColor(Color(0, 0, 0, alpha));
 	}
 }

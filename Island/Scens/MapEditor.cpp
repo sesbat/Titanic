@@ -1,10 +1,16 @@
 #include "MapEditor.h"
 #include "../Ui/Button.h"
+#include "../Framework/ResourceManager.h"
+#include "../Scens/SceneManager.h"
+#include "../Framework/info.h"
+#include "../../Ui/EditorMapUiMgr.h"
+#include "../../Ui/DrawObj.h"
+#include "../../Framework/InputMgr.h"
+#include <algorithm>
 
 MapEditor::MapEditor()
 	: Scene(Scenes::MapEditor)
 {
-	Init();
 }
 
 void MapEditor::Init()
@@ -14,23 +20,335 @@ void MapEditor::Init()
 
 void MapEditor::Reset()
 {
-	for (int i = 0; i < WIDTHCNT; i++)
+	for (int i = 0; i < HEIGHTCNT; i++)
 	{
-		for (int j = 0; j < HEIGHTCNT; j++)
+		for (int j = 0; j < WIDTHCNT; j++)
 		{
-			//greeds[i].push_back(new Button(nullptr));
+			auto tile = new Button(nullptr);
+			greeds[i].push_back(tile);
+			tile->SetTexture(*RESOURCES_MGR->GetTexture("graphics/editor/greed.png"), true);
+			tile->SetPos({ 60.f * j, 60.f * i });
+			objList[LayerType::Back][i].push_back(tile);
+			tile->SetUiView(false);
 		}
 	}
+	uiMgr = new EditorMapUiMgr(this);
+	uiMgr->Init();
+	nowType = LayerType::Object;
+
+	DrawObj* draw = new DrawObj(uiMgr);
+	auto editorObjs = FILE_MGR->GetEditorObjs();
+	auto playerData = editorObjs["PLAYER"];
+	draw->SetType("PLAYER");
+	draw->SetPath(playerData[0].texPath);
+	draw->SetTexture(*RESOURCES_MGR->GetTexture(draw->GetPath()), true);
+	draw->SetOrigin(Origins::BC);
+	draw->SetMove(false);
+	draw->SetPos(greeds[0][0]->GetPos() + Vector2f{ 30.f, 60.f });
+	draw->SetData(playerData[0]);
+	objList[nowType][0].push_back(draw);
+	greedObjs[nowType][0][0] = draw;
+
+	player = draw;
 }
 
 void MapEditor::Update(float dt)
 {
+	Scene::Update(dt);
+	
+	auto uimgr = ((EditorMapUiMgr*)uiMgr);
+	if (uimgr->IsExit() || InputMgr::GetKeyDown(Keyboard::Escape))
+	{
+		SCENE_MGR->ChangeScene(Scenes::Menu);
+		return;
+	}
+	if (uimgr->IsSave() || InputMgr::GetKeyDown(Keyboard::S))
+	{
+		Save();
+		return;
+	}
+	if (uimgr->IsLoad() || InputMgr::GetKeyDown(Keyboard::L))
+	{
+		Load();
+		return;
+	}
+
+	if (uimgr->IsErase() || InputMgr::GetKeyDown(Keyboard::E))
+	{
+		((EditorMapUiMgr*)uiMgr)->DeleteDraw();
+		return;
+
+	}
+	if (InputMgr::GetMouseButtonDown(Mouse::Right))
+	{
+		initMousePos = InputMgr::GetMousePos();
+		isMove = true;
+	}
+	if (isMove)
+	{
+		auto deltaPos = InputMgr::GetMousePos() - initMousePos;
+		initMousePos = InputMgr::GetMousePos();
+		cout << deltaPos.x << endl;
+		cout << deltaPos.y << endl;
+		auto movePos = SCENE_MGR->GetCurrScene()->GetWorldView().getCenter() - deltaPos;
+		SCENE_MGR->GetCurrScene()->GetWorldView().setCenter(movePos);
+	}
+	if (InputMgr::GetMouseButtonUp(Mouse::Right))
+	{
+		isMove = false;
+	}
+
+	
+	if (InputMgr::GetMouseWheelUp())
+	{
+		SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() - (Vector2f{19.2,10.8} * 3.f));
+	}
+	if (InputMgr::GetMouseWheelDown())
+	{
+		SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *3.f));
+	}
+	for (int i = 0; i < HEIGHTCNT; i++)
+	{
+		for (int j = 0; j < WIDTHCNT; j++)
+		{
+			if (greeds[i][j]->IsClick())
+			{
+				if (nowType == LayerType::Object &&playerPos == Vector2i{ i,j })
+					return;
+
+				DrawObj* nowDraw = ((EditorMapUiMgr*)uiMgr)->GetDraw();
+				auto& nowGreedObjs = greedObjs[nowType];
+
+				if (nowDraw == nullptr || ((EditorMapUiMgr*)uiMgr)->IsUnder())
+				{
+					Button* findObj = nullptr;
+					if (nowGreedObjs.find(i) != nowGreedObjs.end())
+					{
+						if (nowGreedObjs[i].find(j) != nowGreedObjs[i].end())
+						{
+							findObj = nowGreedObjs[i][j];
+							auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
+							objList[nowType][i].erase(deleteObj);
+							greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
+
+							delete findObj;
+						}
+					}
+					return;
+				}
+
+				Button* findObj = nullptr;
+				if (nowGreedObjs.find(i) != nowGreedObjs.end())
+				{
+					if (nowGreedObjs[i].find(j) != nowGreedObjs[i].end())
+					{
+						findObj = nowGreedObjs[i][j];
+
+						if (nowDraw->GetType() == "PLAYER")
+							return;
+
+						auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
+						objList[nowType][i].erase(deleteObj);
+						greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
+
+						delete findObj;
+					}
+				}
+
+				DrawObj* draw = new DrawObj(uiMgr);
+				draw->SetType(nowDraw->GetType());
+				draw->SetPath(nowDraw->GetPath());
+				draw->SetTexture(*RESOURCES_MGR->GetTexture(draw->GetPath()), true);
+				draw->SetOrigin(Origins::BC);
+				draw->SetMove(false);
+				draw->SetPos(greeds[i][j]->GetPos() + Vector2f{ 30.f, 60.f });
+				draw->SetData(nowDraw->GetData());
+				objList[nowType][i].push_back(draw);
+				greedObjs[nowType][i][j] = draw;
+
+				if (nowDraw->GetType() == "PLAYER")
+				{
+					if (player != nullptr)
+					{
+						int pi = playerPos.x;
+						int pj = playerPos.y;
+						if (nowGreedObjs.find(pi) != nowGreedObjs.end())
+						{
+							if (nowGreedObjs[pi].find(pj) != nowGreedObjs[pi].end())
+							{
+								findObj = nowGreedObjs[pi][pj];
+								auto deleteObj = find(objList[nowType][pi].begin(), objList[nowType][pi].end(), findObj);
+								objList[nowType][pi].erase(deleteObj);
+								greedObjs[nowType][pi].erase(nowGreedObjs[pi].find(pj));
+
+								delete findObj;
+							}
+						}
+					}
+					player = draw;
+					playerPos = { i,j };
+				}
+			}
+		}
+	}
 }
 
-void MapEditor::Draw(float dt)
+void MapEditor::Draw(RenderWindow& window)
 {
+	Scene::Draw(window);
+}
+
+
+void MapEditor::Enter()
+{
+	SCENE_MGR->GetCurrScene()->GetWorldView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
+	SCENE_MGR->GetCurrScene()->GetWorldView().setSize({ WINDOW_WIDTH , WINDOW_HEIGHT });
+	SCENE_MGR->GetCurrScene()->GetUiView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
+	SCENE_MGR->GetCurrScene()->GetUiView().setSize({ WINDOW_WIDTH , WINDOW_HEIGHT });
+	Init();
+}
+
+void MapEditor::Exit()
+{
+	Release();
+}
+
+void MapEditor::Release()
+{
+	for (auto& objs : objList[LayerType::Object])
+	{
+		for (auto it = objs.second.begin(); it != objs.second.end();)
+		{
+			auto del = *it;
+			it = objs.second.erase(it);
+			if (del != nullptr)
+			{
+				delete del;
+			}
+		}
+		objs.second.clear();
+	}
+
+	for (auto& objs : objList[LayerType::Tile])
+	{
+		for (auto it = objs.second.begin(); it != objs.second.end();)
+		{
+			auto del = *it;
+			it = objs.second.erase(it);
+			if (del != nullptr)
+			{
+				delete del;
+			}
+		}
+		objs.second.clear();
+	}
+	objList[LayerType::Tile].clear();
+	objList[LayerType::Object].clear();
+	greedObjs.clear();
+
+	player = nullptr;
+
 }
 
 MapEditor::~MapEditor()
 {
+}
+
+void MapEditor::SetType(string t)
+{
+	if (t == "TREE" || t == "STONE" || t == "ENEMY" || t == "PLAYER")
+	{
+		nowType = LayerType::Object;
+	}
+	if (t == "TILE")
+	{
+		nowType = LayerType::Tile;
+	}
+}
+
+void MapEditor::Save()
+{
+	saveObjs.clear();
+	for (auto& layer : greedObjs)
+	{
+		for (auto& objs : layer.second)
+		{
+			for (auto& obj : objs.second)
+			{
+				auto& nowObject = obj.second;
+				ObjectData data;
+				data.type = nowObject->GetType();
+				data.path = nowObject->GetPath();
+				data.position = nowObject->GetPos();
+				saveObjs.push_back(data);
+			}
+		}
+	}
+	FILE_MGR->SaveMap(saveObjs, "Tutorial");
+}
+
+void MapEditor::Load()
+{
+	for (auto& objs : objList[LayerType::Object])
+	{
+		for (auto it = objs.second.begin(); it != objs.second.end();)
+		{
+			auto del = *it;
+			it = objs.second.erase(it);
+			if (del != nullptr)
+			{
+				delete del;
+			}
+		}
+		objs.second.clear();
+	}
+
+	for (auto& objs : objList[LayerType::Tile])
+	{
+		for (auto it = objs.second.begin(); it != objs.second.end();)
+		{
+			auto del = *it;
+			it = objs.second.erase(it);
+			if (del != nullptr)
+			{
+				delete del;
+			}
+		}
+		objs.second.clear();
+	}
+	objList[LayerType::Tile].clear();
+	objList[LayerType::Object].clear();
+	greedObjs.clear();
+
+	player = nullptr;
+	auto& data = FILE_MGR->GetMap("Tutorial");
+	for (auto& obj : data)
+	{
+		DrawObj* draw = new DrawObj(uiMgr);
+		draw->SetType(obj.type);
+		draw->SetPath(obj.path);
+		draw->SetTexture(*RESOURCES_MGR->GetTexture(draw->GetPath()), true);
+		draw->SetOrigin(Origins::BC);
+		draw->SetMove(false);
+		draw->SetPos(obj.position);
+		
+		int i = ((int)obj.position.x-30) / 60;
+		int j = (int)obj.position.y / 60 - 1;
+		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "ENEMY" || obj.type == "PLAYER")
+		{
+			objList[LayerType::Object][j].push_back(draw);
+			greedObjs[LayerType::Object][j][i] = draw;
+
+			if (obj.type == "PLAYER")
+			{
+				player = draw;
+				playerPos = Vector2i{ j,i };
+			}
+		}
+		else if (obj.type == "TILE")
+		{
+			objList[LayerType::Tile][j].push_back(draw);
+			greedObjs[LayerType::Tile][j][i] = draw;
+		}
+	}
 }

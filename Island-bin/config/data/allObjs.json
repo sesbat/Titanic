@@ -1,0 +1,36 @@
+{
+  "TREE": [
+    {
+      "texPath": "graphics/tree1.png",
+      "uiPaht": "graphics/editor/drawTree1.png"
+    },
+    {
+      "texPath": "graphics/tree2.png",
+      "uiPaht": "graphics/editor/drawTree2.png"
+    }
+  ],
+  "STONE": [
+    {
+      "texPath": "graphics/stone1.png",
+      "uiPaht": "graphics/editor/drawStone1.png"
+    }
+  ],
+  "TILE": [
+    {
+      "texPath": "graphics/tile1.png",
+      "uiPaht": "graphics/editor/drawTile1.png"
+    }
+  ],
+  "ENEMY": [
+    {
+      "texPath": "graphics/enemy1.png",
+      "uiPaht": "graphics/editor/drawEnemy1.png"
+    }
+  ],
+  "PLAYER": [
+    {
+      "texPath": "graphics/player.png",
+      "uiPaht": "graphics/editor/drawPlayer.png"
+    }
+  ]
+}

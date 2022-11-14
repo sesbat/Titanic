@@ -36,6 +36,42 @@ FileManager::FileManager()
 	//	
 	//}
 
+	//{
+	//	map<string, vector<ObjectData>> stage;
+	//	vector<ObjectData> objData;
+	//	ObjectData d;
+	//	d.type = "TREE";
+	//	d.path = "graphics/editor/tree1.png";
+	//	d.uiPath = "graphics/editor/drawTree1.png";
+	//	d.position = sf::Vector2f(100.f,100.f);
+	//	d.bottom = {};
+	//	d.hitBox.push_back({});
+	//	d.hitBox.push_back({});
+	//	d.item.push_back({});
+	//	d.item.push_back({});
+	//	d.randomItem.push_back({});
+	//	d.randomItem.push_back({});
+	//	
+	//	objData.push_back(d);
+	//	stage["Tutorial"] = objData;
+	//	ofstream cookie1("config/data/map.json");
+	//	json data = stage;
+	//	cookie1 << data;
+	//}
+
+	//{
+	//	map<string, vector<EditorObjs>> objData;
+
+	//	vector<EditorObjs> paths;
+	//	paths.push_back({ "graphics/editor/tree1.png" ,"graphics/editor/drawTree1.png" });
+	//	paths.push_back({ "graphics/editor/tree2.png" ,"graphics/editor/drawTree2.png"});
+	//	objData["TREE"] = paths;
+
+	//	ofstream allObj("config/data/allObjs.json");
+	//	json data = objData;
+	//	allObj << data;
+	//}
+
 }
 
 FileManager::~FileManager()
@@ -44,51 +80,44 @@ FileManager::~FileManager()
 
 void FileManager::LoadAll()
 {
-	ifstream ep1_f("config/data/episode.json");
-	json ep1_d = json::parse(ep1_f);
-	episodeMap = ep1_d;
-	ep1_f.close();
+	ifstream allMap("config/data/map.json");
+	json allMap_d = json::parse(allMap);
+	mapInfo = allMap_d;
+	allMap.close();
 
-	ifstream hitbox("config/data/hitBox.json");
-	json hit_d = json::parse(hitbox);
-	hitBoxMap = hit_d;
-	hitbox.close();
+	ifstream ao("config/data/allObjs.json");
+	json ao_d = json::parse(ao);
+	editorObjs = ao_d;
+	ao.close();
 
-	ifstream cookie("config/data/cookieInfo.json");
-	json cook_d = json::parse(cookie);
-	cookieInfo = cook_d;
-	cookie.close();
+	ifstream info("config/data/hitBoxs.json");
+	json info_d = json::parse(info);
+	hitBoxData = info_d;
+	info.close();
+	//ifstream hitbox("config/data/hitBox.json");
+	//json hit_d = json::parse(hitbox);
+	//hitBoxMap = hit_d;
+	//hitbox.close();
+
 }
 
-const map<string,MapData>& FileManager::GetEpisode(string episode)
+const vector<ObjectData>& FileManager::GetMap(string name)
 {
-    return episodeMap[episode];
-}
-const HitBoxInfo& FileManager::GetHitBox(string name)
-{
-	return hitBoxMap[name];
+    return mapInfo[name];
 }
 
-void FileManager::SaveData(map<string, map<string, MapData>> newData, string path)
+const vector<ns::RectangleInfo>& FileManager::GetHitBox(string name)
 {
-	episodeMap = newData;
-
-	json data = newData;
-
-	ofstream ofs(path);
-	ofs << data;
-	ofs.close();
+	return hitBoxData[name];
 }
 
-void FileManager::SaveDataEpisode(map<string, MapData> newData, string name)
+void FileManager::SaveMap(vector<ObjectData> newData, string name)
 {
-	episodeMap[name].clear();
-	episodeMap[name] = newData;
+	mapInfo[name] = newData;
 
+	json data = mapInfo;
 
-	json data = episodeMap;
-
-	ofstream ofs("config/data/episode.json");
+	ofstream ofs("config/data/map.json");
 	ofs << data;
 	ofs.close();
 }

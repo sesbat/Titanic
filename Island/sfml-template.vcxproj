@@ -150,13 +150,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObject\Bullet.cpp" />
     <ClCompile Include="DataTable\DataTable.cpp" />
     <ClCompile Include="DataTable\DataTableMGR.cpp" />
     <ClCompile Include="DataTable\StringTable.cpp" />
+    <ClCompile Include="GameObject\Enemy.cpp" />
+    <ClCompile Include="GameObject\HitBox.cpp" />
+    <ClCompile Include="GameObject\HitBoxObject.cpp" />
+    <ClCompile Include="GameObject\Gun.cpp" />
+    <ClCompile Include="Ui\GameSceneUiMgr.cpp" />
     <ClCompile Include="Ui\Fade.cpp" />
     <ClCompile Include="GameObject\Player.cpp" />
+    <ClCompile Include="Ui\DrawObj.cpp" />
+    <ClCompile Include="Ui\DrawSelect.cpp" />
+    <ClCompile Include="Ui\EditorMapUiMgr.cpp" />
     <ClCompile Include="Scens\MapEditor.cpp" />
-    <ClCompile Include="Scens\SceneDev2.cpp" />
+    <ClCompile Include="Scens\GameScene.cpp" />
     <ClCompile Include="Ui\DblClkObject.cpp" />
     <ClCompile Include="Framework\FileData.cpp" />
     <ClCompile Include="Framework\FileManager.cpp" />
@@ -185,15 +194,26 @@
     <ClCompile Include="Ui\UiObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="3rd\OBB.h" />
     <ClInclude Include="3rd\rapidcsv.h" />
     <ClInclude Include="3rd\SingleTon.h" />
+    <ClInclude Include="GameObject\Bullet.h" />
     <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="DataTable\DataTableMGR.h" />
     <ClInclude Include="DataTable\StringTable.h" />
+    <ClInclude Include="GameObject\Enemy.h" />
+    <ClInclude Include="Framework\ObjectPool.h" />
+    <ClInclude Include="GameObject\HitBox.h" />
+    <ClInclude Include="GameObject\HitBoxObject.h" />
+    <ClInclude Include="GameObject\Gun.h" />
+    <ClInclude Include="Ui\GameSceneUiMgr.h" />
     <ClInclude Include="Ui\Fade.h" />
     <ClInclude Include="GameObject\Player.h" />
+    <ClInclude Include="Ui\DrawObj.h" />
+    <ClInclude Include="Ui\DrawSelect.h" />
+    <ClInclude Include="Ui\EditorMapUiMgr.h" />
     <ClInclude Include="Scens\MapEditor.h" />
-    <ClInclude Include="Scens\SceneDev2.h" />
+    <ClInclude Include="Scens\GameScene.h" />
     <ClInclude Include="Ui\DblClkObject.h" />
     <ClInclude Include="Framework\FileData.h" />
     <ClInclude Include="Framework\FileManager.h" />

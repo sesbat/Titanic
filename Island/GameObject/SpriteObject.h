@@ -6,6 +6,8 @@ class SpriteObject : public Object
 {
 protected:
 	Sprite sprite;
+	bool isUi;
+	bool viewIn; //ī�޶� �ȿ� ������Ʈ �ִ���
 public:
 	SpriteObject();
 	virtual ~SpriteObject();
@@ -25,5 +27,10 @@ public:
 	void SetOrigin(Origins origin);
 	FloatRect GetGlobalBound();
 	Sprite& GetSprite() { return sprite; };
+	void SetUI(bool u) { isUi = u; }
+	bool IsInView();
+	void SetFlipX(bool flip);
+	bool GetIsView() { return viewIn; }
+	void SetFlipY(bool flip);
 };
 
