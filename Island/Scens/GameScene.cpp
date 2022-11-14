@@ -17,7 +17,6 @@
 #include <fstream>
 #include <algorithm>
 #include "../Ui/GameSceneUiMgr.h"
-
 using namespace std;
 using namespace sf;
 
@@ -34,10 +33,11 @@ void GameScene::Init()
 {
 	int id = 0;
 	isMap = true;
-	auto& data = FILE_MGR->GetMap("Tutorial");
+	auto& data = FILE_MGR->GetMap("TUTORIAL");
+
 	for (auto& obj : data)
 	{
-		if (obj.type == "TREE" || obj.type == "STONE")
+		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "BLOCK")
 		{
 			HitBoxObject* draw = new HitBoxObject();
 			draw->SetName(obj.type);
@@ -92,7 +92,7 @@ void GameScene::Init()
 	{
 		enemy->Init(player);
 	}
-	prevWorldPos = player->GetPos();
+	//prevWorldPos = player->GetPos();
 
 	auto& tiles = objList[LayerType::Tile][0];
 	mapSize.left = 0;

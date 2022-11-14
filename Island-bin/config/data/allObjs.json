@@ -7,6 +7,42 @@
     {
       "texPath": "graphics/tree2.png",
       "uiPaht": "graphics/editor/drawTree2.png"
+    },
+    {
+      "texPath": "graphics/p1.png",
+      "uiPaht": "graphics/editor/drawP1.png"
+    },
+    {
+      "texPath": "graphics/p2.png",
+      "uiPaht": "graphics/editor/drawP2.png"
+    },
+    {
+      "texPath": "graphics/p3.png",
+      "uiPaht": "graphics/editor/drawP3.png"
+    },
+    {
+      "texPath": "graphics/p4.png",
+      "uiPaht": "graphics/editor/drawP4.png"
+    },
+    {
+      "texPath": "graphics/p5.png",
+      "uiPaht": "graphics/editor/drawP5.png"
+    },
+    {
+      "texPath": "graphics/p6.png",
+      "uiPaht": "graphics/editor/drawP6.png"
+    },
+    {
+      "texPath": "graphics/p7.png",
+      "uiPaht": "graphics/editor/drawP7.png"
+    },
+    {
+      "texPath": "graphics/p8.png",
+      "uiPaht": "graphics/editor/drawP8.png"
+    },
+    {
+      "texPath": "graphics/p9.png",
+      "uiPaht": "graphics/editor/drawP9.png"
     }
   ],
   "STONE": [
@@ -19,6 +55,10 @@
     {
       "texPath": "graphics/tile1.png",
       "uiPaht": "graphics/editor/drawTile1.png"
+    },
+    {
+      "texPath": "graphics/tile2.png",
+      "uiPaht": "graphics/editor/drawTile2.png"
     }
   ],
   "ENEMY": [
@@ -31,6 +71,12 @@
     {
       "texPath": "graphics/player.png",
       "uiPaht": "graphics/editor/drawPlayer.png"
+    }
+  ],
+  "BLOCK": [
+    {
+      "texPath": "graphics/block1.png",
+      "uiPaht": "graphics/editor/drawBlock1.png"
     }
   ]
 }

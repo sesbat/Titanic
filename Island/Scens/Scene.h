@@ -61,4 +61,4 @@ public:
 	map<LayerType, map<int, vector<Object*>>> GetObjList() { return objList; }
 	virtual void LayerSort();
 };
-
+bool sorting(Object* p1, Object* p2);

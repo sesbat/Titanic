@@ -20,6 +20,7 @@ protected:
 	UiMgr* uimgr;
 	BoundType bndType;
 	bool isClickColor;
+
 public:
 	Button(UiMgr* mgr);
 	virtual ~Button();
@@ -30,7 +31,7 @@ public:
 	virtual void Draw(RenderWindow& window);
 	virtual void SetPos(Vector2f pos);
 	virtual void SetClkColor(bool set) { isClickColor = set; }
-
+	virtual void Release();
 	void SetTexture(Texture& t, bool isBound);
 	void SetText(Font& font, int size, Color color, string str, bool isBound);
 

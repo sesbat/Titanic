@@ -20,7 +20,7 @@ protected:
 	float timer;
 	Clock clock;
 
-	Vector2f prevWorldPos;
+	//Vector2f prevWorldPos;
 	IntRect mapSize;
 
 	TextObject* text;

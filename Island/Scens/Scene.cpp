@@ -175,7 +175,7 @@ void Scene::LayerSort()
 			{
 				continue;
 			}
-			if (obj->GetName() == "TREE" || obj->GetName() == "STONE")
+			if (obj->GetName() == "TREE" || obj->GetName() == "STONE" || obj->GetName() == "BLOCK")
 			{
 				if (obj->GetName() == "TREE")
 					alphaObj.push_back((HitBoxObject*)obj);

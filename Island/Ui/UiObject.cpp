@@ -163,6 +163,10 @@ void UiObject::Update(float dt)
 		{
 			btnState = UiState::Stay;
 		}
+		else
+		{
+			btnState = UiState::None;
+		}
 		drag = false;
 		break;
 	case UiState::DownRight:
