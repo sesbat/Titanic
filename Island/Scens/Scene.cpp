@@ -175,7 +175,7 @@ void Scene::LayerSort()
 			{
 				continue;
 			}
-			if (obj->GetName() == "TREE" || obj->GetName() == "STONE")
+			if (obj->GetName() == "TREE" || obj->GetName() == "STONE" || obj->GetName() == "BLOCK")
 			{
 				if (obj->GetName() == "TREE")
 					alphaObj.push_back((HitBoxObject*)obj);
@@ -213,6 +213,10 @@ void Scene::LayerSort()
 				mit++;
 			}
 			break;
+		}
+		if (((HitBoxObject*)(*dit))->GetName() == "TREE")
+		{
+			cout << "this" << endl;
 		}
 		if (((HitBoxObject*)(*mit))->GetBottomPos() < ((HitBoxObject*)(*dit))->GetBottomPos())
 		{

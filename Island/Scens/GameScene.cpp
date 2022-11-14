@@ -35,7 +35,7 @@ void GameScene::Init()
 	auto& data = FILE_MGR->GetMap("TUTORIAL");
 	for (auto& obj : data)
 	{
-		if (obj.type == "TREE" || obj.type == "STONE")
+		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "BLOCK")
 		{
 			HitBoxObject* draw = new HitBoxObject();
 			draw->SetName(obj.type);
@@ -103,6 +103,10 @@ void GameScene::Init()
 
 	uiMgr = new GameSceneUiMgr(this);
 	uiMgr->Init();
+
+
+	//юс╫ц
+	sort(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), sorting);
 }
 
 void GameScene::Release()

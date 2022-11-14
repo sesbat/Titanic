@@ -19,6 +19,10 @@
     {
       "texPath": "graphics/tile1.png",
       "uiPaht": "graphics/editor/drawTile1.png"
+    },
+    {
+      "texPath": "graphics/tile2.png",
+      "uiPaht": "graphics/editor/drawTile2.png"
     }
   ],
   "ENEMY": [
@@ -31,6 +35,12 @@
     {
       "texPath": "graphics/player.png",
       "uiPaht": "graphics/editor/drawPlayer.png"
+    }
+  ],
+  "BLOCK": [
+    {
+      "texPath": "graphics/block1.png",
+      "uiPaht": "graphics/editor/drawBlock1.png"
     }
   ]
 }
