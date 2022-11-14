@@ -62,14 +62,16 @@ void MapEditor::Update(float dt)
 		SCENE_MGR->ChangeScene(Scenes::Menu);
 		return;
 	}
-	if (uimgr->IsSave() || InputMgr::GetKeyDown(Keyboard::S))
+	if (uimgr->IsSave())
 	{
 		Save();
 		return;
 	}
-	if (uimgr->IsLoad() || InputMgr::GetKeyDown(Keyboard::L))
+	if (uimgr->IsLoad())
 	{
-		Load();
+		string path = uimgr->loadFile();
+		Load(path);
+
 		return;
 	}
 
@@ -101,11 +103,13 @@ void MapEditor::Update(float dt)
 	
 	if (InputMgr::GetMouseWheelUp())
 	{
-		SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() - (Vector2f{19.2,10.8} * 3.f));
+		if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
+			SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() - (Vector2f{19.2,10.8} * 3.f));
 	}
 	if (InputMgr::GetMouseWheelDown())
 	{
-		SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *3.f));
+		if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
+			SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *3.f));
 	}
 	for (int i = 0; i < HEIGHTCNT; i++)
 	{
@@ -256,7 +260,7 @@ MapEditor::~MapEditor()
 
 void MapEditor::SetType(string t)
 {
-	if (t == "TREE" || t == "STONE" || t == "ENEMY" || t == "PLAYER")
+	if (t == "TREE" || t == "STONE" || t == "ENEMY" || t == "PLAYER" || t == "BLOCK")
 	{
 		nowType = LayerType::Object;
 	}
@@ -269,6 +273,7 @@ void MapEditor::SetType(string t)
 void MapEditor::Save()
 {
 	saveObjs.clear();
+	string path = ((EditorMapUiMgr*)(uiMgr))->GetPath();
 	for (auto& layer : greedObjs)
 	{
 		for (auto& objs : layer.second)
@@ -284,10 +289,16 @@ void MapEditor::Save()
 			}
 		}
 	}
-	FILE_MGR->SaveMap(saveObjs, "Tutorial");
+	
+
+	if (path == "")
+		return;
+
+	FILE_MGR->SaveMap(saveObjs, path);
+	((EditorMapUiMgr*)uiMgr)->SetLoadInit();
 }
 
-void MapEditor::Load()
+void MapEditor::Load(string path)
 {
 	for (auto& objs : objList[LayerType::Object])
 	{
@@ -321,7 +332,7 @@ void MapEditor::Load()
 	greedObjs.clear();
 
 	player = nullptr;
-	auto& data = FILE_MGR->GetMap("Tutorial");
+	auto& data = FILE_MGR->GetMap(path);
 	for (auto& obj : data)
 	{
 		DrawObj* draw = new DrawObj(uiMgr);
@@ -334,7 +345,7 @@ void MapEditor::Load()
 		
 		int i = ((int)obj.position.x-30) / 60;
 		int j = (int)obj.position.y / 60 - 1;
-		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "ENEMY" || obj.type == "PLAYER")
+		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "ENEMY" || obj.type == "PLAYER" || obj.type == "BLOCK")
 		{
 			objList[LayerType::Object][j].push_back(draw);
 			greedObjs[LayerType::Object][j][i] = draw;
@@ -351,4 +362,6 @@ void MapEditor::Load()
 			greedObjs[LayerType::Tile][j][i] = draw;
 		}
 	}
+
+	((EditorMapUiMgr*)uiMgr)->SetLoadPath(path);
 }

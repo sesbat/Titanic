@@ -106,6 +106,7 @@ void Enemy::Update(float dt)
 				continue;
 			if (objects->GetName() == "TREE" ||
 				objects->GetName() == "STONE" ||
+				objects->GetName() == "BLOCK" ||
 				objects->GetName() == "PLAYER")
 			{
 				if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
@@ -134,6 +135,7 @@ void Enemy::Update(float dt)
 				continue;
 			if (objects->GetName() == "TREE" ||
 				objects->GetName() == "STONE" ||
+				objects->GetName() == "BLOCK" ||
 				objects->GetName() == "PLAYER")
 			{
 				if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))

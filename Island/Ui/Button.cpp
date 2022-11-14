@@ -16,8 +16,16 @@ Button::Button(UiMgr* mgr)
 
 Button::~Button()
 {
-	delete sprite;
-	delete text;
+	if (sprite != nullptr)
+	{
+		delete sprite;
+		sprite = nullptr;
+	}
+	if (text != nullptr)
+	{
+		delete text;
+		text = nullptr;
+	}
 }
 
 void Button::Init()
@@ -48,6 +56,8 @@ void Button::ColorClear()
 
 void Button::Update(float dt)
 {
+	if (!enabled)
+		return;
 	UiObject::Update(dt);
 	if (IsDown())
 	{
@@ -109,6 +119,8 @@ void Button::Update(float dt)
 
 void Button::Draw(RenderWindow& window)
 {
+	if (!enabled)
+		return;
 	UiObject::Draw(window);
 	if (sprite->GetSprite().getTexture() != nullptr)
 	{
@@ -126,6 +138,21 @@ void Button::SetPos(Vector2f pos)
 	sprite->SetPos(pos);
 	text->SetPos(pos);
 	ReBound();
+}
+
+void Button::Release()
+{
+	Object::Release();
+	if (sprite != nullptr)
+	{
+		delete sprite;
+		sprite = nullptr;
+	}
+	if (text != nullptr)
+	{
+		delete text;
+		text = nullptr;
+	}
 }
 
 void Button::SetTexture(Texture& t, bool isBound)

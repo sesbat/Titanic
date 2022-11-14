@@ -1,6 +1,10 @@
 #include "FileManager.h"
 #include <fstream>
 #include <iostream>
+#include <filesystem>
+#include <iostream>
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+#include <experimental/filesystem>
 
 FileManager::FileManager()
 {
@@ -73,17 +77,24 @@ FileManager::FileManager()
 	//}
 
 }
-
 FileManager::~FileManager()
 {
 }
 
 void FileManager::LoadAll()
 {
-	ifstream allMap("config/data/map.json");
-	json allMap_d = json::parse(allMap);
-	mapInfo = allMap_d;
-	allMap.close();
+	for (const auto& file : std::experimental::filesystem::directory_iterator("config/data/map/"))
+	{
+		auto path = file.path().string();
+		auto name = file.path().string();
+		name = name.substr(16, name.size() - 17 + 1);
+		name = name.substr(0, name.size() - 5);
+		cout << name << endl;
+		ifstream allMap(path);
+		json allMap_d = json::parse(allMap);
+		mapInfo[name] = allMap_d;
+		allMap.close();
+	}
 
 	ifstream ao("config/data/allObjs.json");
 	json ao_d = json::parse(ao);
@@ -115,9 +126,9 @@ void FileManager::SaveMap(vector<ObjectData> newData, string name)
 {
 	mapInfo[name] = newData;
 
-	json data = mapInfo;
-
-	ofstream ofs("config/data/map.json");
+	json data = newData;
+	ofstream ofs("config/data/map/" + name + ".json");
 	ofs << data;
 	ofs.close();
 }
+

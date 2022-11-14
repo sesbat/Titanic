@@ -2,6 +2,8 @@
 #include "HitBox.h"
 #include "../../Framework/InputMgr.h"
 
+#include <iostream>
+
 HitBoxObject::HitBoxObject()
 	:isHitBox(true), isHitPlayer(false)
 {
@@ -76,7 +78,7 @@ void HitBoxObject::SetHitBox(string path)
 float HitBoxObject::GetBottomPos()
 {
 	auto rect = bottom->GetHitbox().getGlobalBounds();
-	return rect.top - rect.height;
+	return rect.top + rect.height;
 }
 
 void HitBoxObject::SetHitPlayer(bool h)

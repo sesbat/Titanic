@@ -34,6 +34,6 @@ public:
 	void SetType(string t);
 
 	void Save();
-	void Load();
+	void Load(string path);
 };
 
