@@ -179,7 +179,7 @@ void Gun::Fire()
 		break;
 	case GunType::Sniper:
 	{
-		bulletSpeed = 3000;
+		bulletSpeed = 5000;
 		range = 1500;
 		Vector2f startPos = { player->GetPos() };
 		startPos += player->GetLookDir() * 50.f;

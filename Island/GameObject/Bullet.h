@@ -15,6 +15,8 @@ private:
 	float speed;
 	float range;
 
+	Vector2f startPos;
+	Vector2f prevPos;
 	//vector<Object*>* hitObjs;
 
 public:
@@ -33,5 +35,8 @@ public:
 	void SetHitbox();
 	bool EqualFloat(Vector2f a, Vector2f b);
 	bool EqualFloat(float a, float b);
+
+	bool LineRect(Vector2f bulletpos, Vector2f bulletPrevPos, RectangleShape hitObject);
+	bool Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, float y3, float x4, float y4);
 };
 
