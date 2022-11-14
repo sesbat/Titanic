@@ -18,6 +18,7 @@
 #include <algorithm>
 #include "../Ui/GameSceneUiMgr.h"
 using namespace std;
+using namespace sf;
 
 GameScene::GameScene()
 	:Scene(Scenes::GameScene), timer(0.f)
@@ -30,9 +31,10 @@ GameScene::~GameScene()
 
 void GameScene::Init()
 {
+	int id = 0;
 	isMap = true;
-	vector<Enemy*> enemys;
 	auto& data = FILE_MGR->GetMap("TUTORIAL");
+
 	for (auto& obj : data)
 	{
 		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "BLOCK")
@@ -55,22 +57,19 @@ void GameScene::Init()
 			player->SetName(obj.type);
 			player->Init();
 			player->SetPos(obj.position);
-
 			player->SetHitBox(obj.path);
 
-			//player->SetBackground(backGround);
 			objList[LayerType::Object][0].push_back(player);
 		}
 		else if (obj.type == "ENEMY")
 		{
 			Enemy* enemy = new Enemy();
 			enemy->SetName(obj.type);
-			//enemy->Init(player);
+			enemy->SetId(id++);
 			enemy->SetPos(obj.position);
 			enemy->SetHitBox(obj.path);
-			enemys.push_back(enemy);
+			enemies.push_back(enemy);
 
-			//enemy->SetBackground(backGround);
 			objList[LayerType::Object][0].push_back(enemy);
 		}
 		else if (obj.type == "TILE")
@@ -89,11 +88,11 @@ void GameScene::Init()
 		}
 	}
 
-	for (auto& enemy : enemys)
+	for (auto& enemy : enemies)
 	{
 		enemy->Init(player);
 	}
-	prevWorldPos = player->GetPos();
+	//prevWorldPos = player->GetPos();
 
 	auto& tiles = objList[LayerType::Tile][0];
 	mapSize.left = 0;
@@ -108,6 +107,7 @@ void GameScene::Init()
 void GameScene::Release()
 {
 	Scene::Release();
+	enemies.clear();
 }
 
 void GameScene::Enter()
@@ -118,20 +118,37 @@ void GameScene::Enter()
 	SCENE_MGR->GetCurrScene()->GetWorldView().setSize({ WINDOW_WIDTH , WINDOW_HEIGHT });
 	SCENE_MGR->GetCurrScene()->GetUiView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
 	SCENE_MGR->GetCurrScene()->GetUiView().setSize({ WINDOW_WIDTH , WINDOW_HEIGHT });
+
+	SOUND_MGR->StopAll();
 }
 
 void GameScene::Exit()
 {
 	Release();
+	
 }
 
 void GameScene::Update(float dt)
 {
+	//Time deltaTime = clock.restart();
+	//float fps = 1.0f / (deltaTime.asSeconds());
+	//cout << "fps: " << fps << endl;
+	for (auto it = enemies.begin(); it != enemies.end(); )
+	{
+		if (!(*it)->GetActive())
+		{
+			it = enemies.erase(it);
+		}
+		else
+			it++;
+	}
+
 	if (((GameSceneUiMgr*)uiMgr)->IsExit() || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		SCENE_MGR->ChangeScene(Scenes::Menu);
 		return;
 	}
+
 	LayerSort();
 	
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);

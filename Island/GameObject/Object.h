@@ -42,6 +42,8 @@ public:
 	virtual void Draw(RenderWindow& window);
 	void SetUI(bool u) { isUi = u; }
 	bool IsInView();
+	void SetId(int id) { this->id = id; }
 	void SetName(string name) { this->name = name; }
 	const string& GetName() const { return name; }
+	const int& GetId() const { return id; }
 };

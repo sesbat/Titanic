@@ -75,6 +75,13 @@ void HitBoxObject::SetHitBox(string path)
 
 }
 
+void HitBoxObject::SetBulletHitBox()
+{
+	//bottom hit box
+	bottom->SetHitbox({ 0,0,10.f,10.f });
+	bottom->SetFillColor(Color::Green);
+}
+
 float HitBoxObject::GetBottomPos()
 {
 	auto rect = bottom->GetHitbox().getGlobalBounds();

@@ -12,6 +12,8 @@ enum class GunType
 
 class Player;
 class Bullet;
+class Enemy;
+
 class Gun :
     public SpriteObject
 {
@@ -27,6 +29,8 @@ private:
     bool isGunFlip;
 
     Player* player;
+    Enemy* enemy;
+
 public:
     Gun();
     Gun(GunType type);

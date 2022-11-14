@@ -8,18 +8,22 @@ class Player;
 class Enemy;
 class VertexArrayObj;
 class SpriteObject;
+class TextObject;
 
 class GameScene :public Scene
 {
 	
 protected:
 	Player* player;
-	
-	//
-	float timer;
+	list<Enemy*> enemies;
 
-	Vector2f prevWorldPos;
+	float timer;
+	Clock clock;
+
+	//Vector2f prevWorldPos;
 	IntRect mapSize;
+
+	TextObject* text;
 
 public:
 	GameScene();
@@ -33,5 +37,7 @@ public:
 
 	virtual void Update(float dt) override;
 	virtual void Draw(RenderWindow& window) override;
+
+	list<Enemy*>* GetEnemyList() { return &enemies; }
 };
 

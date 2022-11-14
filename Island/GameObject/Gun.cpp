@@ -16,8 +16,10 @@
 
 void OnCreateBullet(Bullet* bullet)
 {
+	GameScene* scene = (GameScene*)SCENE_MGR->GetScene(Scenes::GameScene);
 	bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
 	bullet->Init();
+	bullet->SetEnemyList(scene->GetEnemyList());
 }
 
 Gun::Gun()
@@ -72,7 +74,6 @@ void Gun::Update(float dt)
 	}
 	if (InputMgr::GetMouseButtonDown(Mouse::Right))
 	{
-
 		int temp = (int)gunType;
 		temp++;
 		if (temp == 3)
@@ -81,13 +82,16 @@ void Gun::Update(float dt)
 		}
 		gunType = (GunType)temp;
 	}
+
 	const auto& bulletList = bulletPool.GetUseList();
 	for (auto bullet : bulletList)
 	{
 		bullet->Update(dt);
 	}
+
 	SpriteObject::Update(dt);
 
+	//positions
 	isGunFlip = player->GetLookDir().x < 0;
 	this->SetFlipY(isGunFlip);
 
@@ -121,14 +125,13 @@ void Gun::Fire()
 {
 	//shotgun
 
-	auto hitObject = &SCENE_MGR->GetCurrScene()->GetObjList()[LayerType::Object][0];
-
+	//auto hitObject = &SCENE_MGR->GetCurrScene()->GetObjList()[LayerType::Object][0];
 
 	switch (gunType)
 	{
 	case GunType::Shotgun:
 	{	
-		bulletSpeed = 2000;
+		bulletSpeed = 1000;
 		range = 200;
 		Vector2f startPos = { player->GetPos() };
 		startPos += player->GetLookDir() * 50.f;
@@ -164,7 +167,7 @@ void Gun::Fire()
 	break;
 	case GunType::Rifle:
 	{
-		bulletSpeed = 4000;
+		bulletSpeed = 400;
 		range = 700;
 		Vector2f startPos = { player->GetPos() };
 		startPos += player->GetLookDir() * 50.f;
@@ -176,7 +179,7 @@ void Gun::Fire()
 		break;
 	case GunType::Sniper:
 	{
-		bulletSpeed = 10000;
+		bulletSpeed = 5000;
 		range = 1500;
 		Vector2f startPos = { player->GetPos() };
 		startPos += player->GetLookDir() * 50.f;
