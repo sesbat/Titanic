@@ -138,7 +138,6 @@ void EditorMapUiMgr::Update(float dt)
 		nowDraw->Update(dt);
 	}
 
-	cout << (int)saveBtn->GetState() << endl;
 	if (saveBtn->IsUp())
 	{
 		saveWindow->SetActive(true);
@@ -202,7 +201,6 @@ bool EditorMapUiMgr::IsUnder()
 {
 	auto mousePos = InputMgr::GetMousePos();
 	mousePos = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)mousePos);
-	cout << Utils::IsRange(underUi->GetSpriteObj()->GetGlobalBound(), mousePos) << endl;
 	return Utils::IsRange(underUi->GetSpriteObj()->GetGlobalBound(), mousePos);
 }
 
@@ -219,6 +217,11 @@ void EditorMapUiMgr::SetLoadInit()
 bool EditorMapUiMgr::IsSave()
 {
 	return saveWindow->IsSave();
+}
+
+bool EditorMapUiMgr::IsCancle()
+{
+	return saveWindow->IsCancle();
 }
 
 bool EditorMapUiMgr::IsLoad()

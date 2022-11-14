@@ -57,16 +57,20 @@ void MapEditor::Update(float dt)
 	Scene::Update(dt);
 	
 	auto uimgr = ((EditorMapUiMgr*)uiMgr);
+
+
 	if (uimgr->IsExit() || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		SCENE_MGR->ChangeScene(Scenes::Menu);
 		return;
 	}
+
 	if (uimgr->IsSave())
 	{
 		Save();
 		return;
 	}
+
 	if (uimgr->IsLoad())
 	{
 		string path = uimgr->loadFile();
@@ -79,8 +83,8 @@ void MapEditor::Update(float dt)
 	{
 		((EditorMapUiMgr*)uiMgr)->DeleteDraw();
 		return;
-
 	}
+
 	if (InputMgr::GetMouseButtonDown(Mouse::Right))
 	{
 		initMousePos = InputMgr::GetMousePos();
@@ -90,8 +94,6 @@ void MapEditor::Update(float dt)
 	{
 		auto deltaPos = InputMgr::GetMousePos() - initMousePos;
 		initMousePos = InputMgr::GetMousePos();
-		cout << deltaPos.x << endl;
-		cout << deltaPos.y << endl;
 		auto movePos = SCENE_MGR->GetCurrScene()->GetWorldView().getCenter() - deltaPos;
 		SCENE_MGR->GetCurrScene()->GetWorldView().setCenter(movePos);
 	}
@@ -111,12 +113,19 @@ void MapEditor::Update(float dt)
 		if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
 			SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *3.f));
 	}
+
+	if (uimgr->GetEvent())
+	{
+		return;
+	}
 	for (int i = 0; i < HEIGHTCNT; i++)
 	{
 		for (int j = 0; j < WIDTHCNT; j++)
 		{
 			if (greeds[i][j]->IsClick())
 			{
+				if(((EditorMapUiMgr*)uiMgr)->IsUnder())
+					return;
 				if (nowType == LayerType::Object &&playerPos == Vector2i{ i,j })
 					return;
 

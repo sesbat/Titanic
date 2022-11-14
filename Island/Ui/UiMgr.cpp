@@ -56,6 +56,7 @@ void UiMgr::Update(float dt)
         return;
 
     bool isEvent = false;
+    nowEvent = false;
 
     if (nowEvObj != nullptr)
     {
@@ -114,6 +115,7 @@ void UiMgr::Update(float dt)
         }
         nowEvObj = nullptr;
     }
+    nowEvent = isEvent;
 }
 
 void UiMgr::Draw(RenderWindow& window)
