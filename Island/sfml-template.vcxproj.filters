@@ -45,6 +45,8 @@
     <ClCompile Include="Ui\GameSceneUiMgr.cpp" />
     <ClCompile Include="Ui\SaveWindowBox.cpp" />
     <ClCompile Include="Ui\LoadWindowBox.cpp" />
+    <ClCompile Include="Ui\Inventory.cpp" />
+    <ClCompile Include="Ui\invenPos.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -95,6 +97,8 @@
     <ClInclude Include="Ui\GameSceneUiMgr.h" />
     <ClInclude Include="Ui\SaveWindowBox.h" />
     <ClInclude Include="Ui\LoadWindowBox.h" />
+    <ClInclude Include="Ui\Inventory.h" />
+    <ClInclude Include="Ui\invenPos.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -214,10 +214,6 @@ void Scene::LayerSort()
 			}
 			break;
 		}
-		if (((HitBoxObject*)(*dit))->GetName() == "TREE")
-		{
-			cout << "this" << endl;
-		}
 		if (((HitBoxObject*)(*mit))->GetBottomPos() < ((HitBoxObject*)(*dit))->GetBottomPos())
 		{
 			dit = drawObjs.insert(dit, *mit);

@@ -6,6 +6,7 @@
 #include "../../Scens/SceneManager.h"
 #include "../../Framework/FileManager.h"
 #include "../../Scens/GameScene.h"
+#include "Inventory.h"
 
 GameSceneUiMgr::GameSceneUiMgr(Scene* scene)
 	:UiMgr(scene)
@@ -25,6 +26,11 @@ void GameSceneUiMgr::Init()
 	exitBtn->SetOrigin(Origins::TL);
 	exitBtn->SetPos({ 50,50 });
 	uiObjList[0].push_back(exitBtn);
+	inven = new Inventory(this);
+	inven->Init();
+	uiObjList[1].push_back(inven);
+	inven->SetActive(false);
+	
 }
 
 void GameSceneUiMgr::Reset()
@@ -34,6 +40,11 @@ void GameSceneUiMgr::Reset()
 void GameSceneUiMgr::Update(float dt)
 {
 	UiMgr::Update(dt);
+
+	if (InputMgr::GetKeyDown(Keyboard::B))
+	{
+		//inven->SetActive(!(inven->GetActive()));
+	}
 }
 
 void GameSceneUiMgr::Draw(RenderWindow& window)

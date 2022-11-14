@@ -103,10 +103,6 @@ void GameScene::Init()
 
 	uiMgr = new GameSceneUiMgr(this);
 	uiMgr->Init();
-
-
-	//юс╫ц
-	sort(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), sorting);
 }
 
 void GameScene::Release()
