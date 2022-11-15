@@ -55,5 +55,6 @@ public:
     void Fire(Vector2f pos, bool isplayer);
 
     void SetGunType(GunType type);
+    GunType GetgunType() { return gunType; }
 };
 

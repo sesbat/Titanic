@@ -83,6 +83,8 @@ void Gun::Update(float dt)
 
 		SetPos({ player->GetPos().x,player->GetPos().y + 10.f });
 
+		//input
+		
 	}
 		break;
 	case User::Enemy:

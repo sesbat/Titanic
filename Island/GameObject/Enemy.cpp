@@ -83,11 +83,16 @@ void Enemy::Update(float dt)
 		return;
 
 	HitBoxObject::Update(dt);
-
-	look = player->GetPos();
-	lookDir = Utils::Normalize(player->GetPos() - GetPos());
-
-	direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+	if (Utils::Distance(player->GetPos(), GetPos()) < 500.f)
+	{
+		//look = player->GetPos();
+		lookDir = Utils::Normalize(player->GetPos() - GetPos());
+		direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+	}
+	else
+	{
+		lookDir = direction;
+	}
 	
 	//enemy dead
 	if (hp <= 0)
@@ -107,7 +112,6 @@ void Enemy::Update(float dt)
 		Move(dt);
 	}
 	
-
 	//hp bar
 	SetHpBar();
 
