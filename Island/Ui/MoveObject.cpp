@@ -15,8 +15,10 @@ void MoveObject::Update(float dt)
 {
 	Button::Update(dt);
 	
-	if(IsDragRight())
-		SetPos(InputMgr::GetMousePos());
+	if (IsDrag())
+	{
+		SetPos(InputMgr::GetMousePos() + Vector2f{-30.f, -30.f});
+	}
 }
 
 void MoveObject::Init()

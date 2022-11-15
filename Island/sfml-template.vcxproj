@@ -158,7 +158,8 @@
     <ClCompile Include="GameObject\HitBox.cpp" />
     <ClCompile Include="GameObject\HitBoxObject.cpp" />
     <ClCompile Include="GameObject\Gun.cpp" />
-    <ClCompile Include="Ui\invenPos.cpp" />
+    <ClCompile Include="Ui\InvenGreed.cpp" />
+    <ClCompile Include="Ui\InvenItem.cpp" />
     <ClCompile Include="Ui\Inventory.cpp" />
     <ClCompile Include="Ui\LoadWindowBox.cpp" />
     <ClCompile Include="Ui\SaveWindowBox.cpp" />
@@ -210,7 +211,8 @@
     <ClInclude Include="GameObject\HitBox.h" />
     <ClInclude Include="GameObject\HitBoxObject.h" />
     <ClInclude Include="GameObject\Gun.h" />
-    <ClInclude Include="Ui\invenPos.h" />
+    <ClInclude Include="Ui\InvenGreed.h" />
+    <ClInclude Include="Ui\InvenItem.h" />
     <ClInclude Include="Ui\Inventory.h" />
     <ClInclude Include="Ui\LoadWindowBox.h" />
     <ClInclude Include="Ui\SaveWindowBox.h" />

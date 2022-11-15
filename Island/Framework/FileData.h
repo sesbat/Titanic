@@ -54,3 +54,13 @@ namespace ns {
 		string uiPaht;
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(EditorObjs, texPath, uiPaht)
 	};
+
+	struct ItemInfo
+	{
+		string path;
+		int maxCount;
+		float weight;
+		int width;
+		int height;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemInfo, path, maxCount, weight, width, height)
+	};

@@ -75,6 +75,8 @@ void UiMgr::Update(float dt)
 	{
         for (auto it = (*uiObjs).second.rbegin(); it != (*uiObjs).second.rend(); it++)
         {
+            if (!(*it)->GetActive())
+                continue;
             if((*it) != nowEvObj)
                 (*it)->EventClear(); 
 
