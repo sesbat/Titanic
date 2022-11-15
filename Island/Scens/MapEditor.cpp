@@ -298,7 +298,6 @@ void MapEditor::Save()
 			}
 		}
 	}
-	
 
 	if (path == "")
 		return;

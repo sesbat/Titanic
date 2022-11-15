@@ -26,8 +26,10 @@ void InvenItem::Update(float dt)
 		return;
 	MoveObject::Update(dt);
 
-	if(GetEvent())
-		GetTextObj()->SetPos(position + Vector2f(60, 60));
+	if (IsDrag())
+	{
+		GetTextObj()->SetPos(position + Vector2f(bound.width, bound.height));
+	}
 }
 
 void InvenItem::Draw(RenderWindow& window)

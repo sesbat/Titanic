@@ -37,7 +37,7 @@ void InvenGreed::Update(float dt)
 				auto greed = inven->GetGreed(invenPos.y + j, invenPos.x + i);
 				if (greed == nullptr)
 					continue;
-				greed->SetState(true);
+				greed->SetState(true, nowItem);
 			}
 		}
 	}
@@ -53,8 +53,8 @@ void InvenGreed::Update(float dt)
 				auto greed = inven->GetGreed(invenPos.y + j, invenPos.x + i);
 				if (greed == nullptr)
 					continue;
-				
-				greed->SetState(inven->GetNowInven()->IsGreedItem(invenPos.y + j, invenPos.x + i));
+
+				greed->SetState(inven->GetNowInven()->IsGreedItem(invenPos.y + j, invenPos.x + i), greed->GetItem());
 			}
 		}
 	}
@@ -69,7 +69,7 @@ void InvenGreed::Update(float dt)
 		{
 			for (int j = 0; j < h; j++)
 			{
-				auto greed = inven->GetGreed(invenPos.y + j, invenPos.x + i);
+				auto greed = inven->GetNowInven()->GetGreed(invenPos.y + j, invenPos.x + i);
 				if (greed == nullptr || inven->GetNowInven()->IsGreedItem(invenPos.y + j, invenPos.x + i))
 				{
 					isMove = false;
@@ -81,21 +81,58 @@ void InvenGreed::Update(float dt)
 		if (isMove)
 		{
 			inven->GetNowInven()->MoveItem(invenPos.x, invenPos.y);
+			return;
 		}
 		else
 		{
-			for (int i = 0; i < w; i++)
-			{
-				for (int j = 0; j < h; j++)
+			bool isReturn = true;
+			if (nowItem != nullptr)
+				if (nowItem->GetName() == dragItem->GetName())
 				{
-					auto greed = inven->GetGreed(invenPos.y + j, invenPos.x + i);
-					if (greed != nullptr)
+					int nowCnt = nowItem->GetCount();
+					int dragCnt = dragItem->GetCount();
+
+					int maxCnt = nowItem->GetMaxCount();
+
+					if (nowCnt + dragCnt <= maxCnt)
 					{
-						greed->SetState(invenBox->IsGreedItem(invenPos.y + j, invenPos.x + i));
+						nowItem->AddCount(dragCnt);
+
+						isReturn = false;
+
+						auto items = inven->GetPrevInven()->GetItems();
+						items->erase(find(items->begin(), items->end(), dragItem));
+
+						delete dragItem;
+						inven->SetDrag(nullptr);
+					}
+					else
+					{
+						int addCnt = maxCnt - nowCnt;
+						nowItem->AddCount(addCnt);
+						dragItem->AddCount(-addCnt);
+
+						isReturn = true;
+
+					}
+
+				}
+			if (isReturn)
+			{
+				for (int i = 0; i < w; i++)
+				{
+					for (int j = 0; j < h; j++)
+					{
+						auto greed = inven->GetGreed(invenPos.y + j, invenPos.x + i);
+						if (greed != nullptr)
+						{
+							greed->SetState(invenBox->IsGreedItem(invenPos.y + j, invenPos.x + i), greed->GetItem());
+						}
 					}
 				}
+				inven->GetPrevInven()->ReturnItem();
+				return;
 			}
-			invenBox->ReturnItem();
 		}
 	}
 	Button::Update(dt);
@@ -106,9 +143,11 @@ void InvenGreed::Draw(RenderWindow& window)
 	Button::Draw(window);
 }
 
-void InvenGreed::SetState(bool s)
+void InvenGreed::SetState(bool s, InvenItem* item)
 {
 	state = s;
+
+	nowItem = item;
 
 	GetSpriteObj()->SetColor(!s ? Color::White : Color(0, 0, 0, 0));
 }

@@ -42,12 +42,6 @@ void InventoryBox::Update(float dt)
 	if (!enabled)
 		return;
 
-	if (nowDrag != nullptr)
-	{
-		nowDrag->Update(dt);
-	}
-	else
-	{
 		for (auto& item : items)
 		{
 			item->Update(dt);
@@ -63,24 +57,44 @@ void InventoryBox::Update(float dt)
 					for (int j = invenPos.y; j < invenPos.y + nowDrag->GetHeight(); j++)
 					{
 						itemPos[j][i] = false;
-						itemGreed[j][i]->SetState(false);
+						itemGreed[j][i]->SetState(false, nullptr);
 					}
 				}
 				//items.erase(items.begin(), find(items.begin(), items.end(), item));
 				//items.push_back(item);
 				break;
 			}
-		}
+			else if (item->IsClickRight())
+			{
+				auto pair = inven->GetPairBox(inven->GetNowInven());
+
+				cout << pair->GetName() << endl;
+				auto pos = pair->FindInvenPos(item->GetWidth(), item->GetHeight());
+
+				cout << pos.x << endl;
+				cout << pos.y << endl;
+				auto invenPos = item->GetGreedPos();
+
+
+				if (pos != Vector2i{ -1,-1 })
+				{
+					for (int i = invenPos.x; i < invenPos.x + item->GetWidth(); i++)
+					{
+						for (int j = invenPos.y; j < invenPos.y + item->GetHeight(); j++)
+						{
+							itemPos[j][i] = false;
+							itemGreed[j][i]->SetState(false, nullptr);
+						}
+					}
+
+					pair->AddItem(item->GetName(), item->GetCount());
+					items.erase(find(items.begin(), items.end(), item));
+					break;
+				}
+				break;
+			}
 	}
 
-	if (InputMgr::GetKeyDown(Keyboard::Q))
-	{
-		AddItem("Recoverykit");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::W))
-	{
-		AddItem("handsaw");
-	}
 	Button::Update(dt);
 
 	for (auto& greedLine : itemGreed)
@@ -90,6 +104,7 @@ void InventoryBox::Update(float dt)
 			greed->Update(dt);
 		}
 	}
+
 }
 
 void InventoryBox::Draw(RenderWindow& window)
@@ -114,7 +129,7 @@ void InventoryBox::Draw(RenderWindow& window)
 		nowDrag->Draw(window);
 }
 
-void InventoryBox::AddItem(string name)
+void InventoryBox::AddItem(string name, int count)
 {
 	auto data = FILE_MGR->GetItemInfo(name);
 
@@ -122,11 +137,17 @@ void InventoryBox::AddItem(string name)
 	{
 		if (item->GetName() == name)
 		{
-			if (item->GetCount() < data.maxCount)
+			if (item->GetCount() + count <= data.maxCount)
 			{
-				item->AddCount(1);
+				item->AddCount(count);
 				//totalWeight += data.weight;
 				return;
+			}
+			else if (item->GetCount() + count > data.maxCount)
+			{
+				int addCount = data.maxCount - item->GetCount();
+				item->AddCount(addCount);
+				count -= addCount;
 			}
 		}
 	}
@@ -138,13 +159,15 @@ void InventoryBox::AddItem(string name)
 		return;
 	}
 
+	int maxCnt = data.maxCount;
+
 	InvenItem* item = new InvenItem(uimgr);
 	for (int i = findPos.x; i < findPos.x + data.height; i++)
 	{
 		for (int j = findPos.y; j < findPos.y + data.weight; j++)
 		{
 			itemPos[i][j] = true;
-			itemGreed[i][j]->SetState(true);
+			itemGreed[i][j]->SetState(true, item);
 			cout << "unRock_i:" << i << endl;
 			cout << "unRock_j:" << j << endl;
 		}
@@ -152,7 +175,7 @@ void InventoryBox::AddItem(string name)
 	item->Set(data.width, data.height,
 		{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
 		{ findPos.y, findPos.x }, data.path, data.maxCount);
-	item->AddCount(1);
+	item->AddCount(count);
 	item->SetName(name);
 	item->Init();
 
@@ -221,7 +244,7 @@ void InventoryBox::MoveItem(int i, int j)
 		for (int y = 0; y < h; y++)
 		{
 			itemPos[y + j][x + i] = true;
-			itemGreed[y + j][x + i]->SetState(true);
+			itemGreed[y + j][x + i]->SetState(true, nowDrag);
 		}
 	}
 
@@ -243,7 +266,7 @@ void InventoryBox::ReturnItem()
 	{
 		for (int y = 0; y < h; y++)
 		{
-			itemGreed[y + j][x + i]->SetState(true);
+			itemGreed[y + j][x + i]->SetState(true, nowDrag);
 			itemPos[y + j][x + i] = true;
 		}
 	}

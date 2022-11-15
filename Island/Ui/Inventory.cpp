@@ -27,7 +27,6 @@ void Inventory::Init()
 	rightInven = new InventoryBox(uimgr, this, Vector2i{ 1248,252 });
 	rightInven->Init();
 	rightInven->SetName("RightInventory");
-
 }
 
 void Inventory::Update(float dt)
@@ -37,6 +36,29 @@ void Inventory::Update(float dt)
 	Button::Update(dt);
 	myInven->Update(dt);
 	rightInven->Update(dt);
+
+
+	if (InputMgr::GetKeyDown(Keyboard::Q))
+	{
+		myInven->AddItem("Recoverykit");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::W))
+	{
+		myInven->AddItem("handsaw");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::E))
+	{
+		rightInven->AddItem("Recoverykit");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::R))
+	{
+		rightInven->AddItem("handsaw");
+	}
+
+	if (nowDrag != nullptr && IsStay() )
+	{
+		prevInven->ReturnItem();
+	}
 }
 
 void Inventory::Draw(RenderWindow& window)
@@ -46,6 +68,7 @@ void Inventory::Draw(RenderWindow& window)
 	Button::Draw(window);
 	myInven->Draw(window);
 	rightInven->Draw(window);
+
 }
 
 void Inventory::SetDrag(InvenItem* item)
@@ -58,6 +81,16 @@ InventoryBox* Inventory::GetNowInven()
 {
 	return (InputMgr::GetMousePos().x <= WINDOW_WIDTH / 2) ? myInven : rightInven;
 }
+InventoryBox* Inventory::GetPrevInven()
+{
+	return prevInven;
+}
+
+InventoryBox* Inventory::GetPairBox(InventoryBox* now)
+{
+	return now == myInven ? rightInven : myInven;
+}
+
 
 void Inventory::MoveInvenItem(InventoryBox* nextInven)
 {

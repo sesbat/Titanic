@@ -13,6 +13,8 @@ private:
 	int height;
 	Vector2i invenPos;
 	Vector2i invenGreedPos;
+	
+
 public:
 	InvenItem(UiMgr* mgr);
 	virtual ~InvenItem();
@@ -21,6 +23,7 @@ public:
 	virtual void Draw(RenderWindow& window);
 
 	int GetCount() { return count; }
+	int GetMaxCount() { return maxCount; }
 	void Set(int width, int height, Vector2i invenPos,Vector2i invenGreedPos, string path, int maxCount);
 	void SetInvenPos(Vector2i invenPos, Vector2i invenGreedPos);
 	Vector2i GetInvenPos() { return invenPos; }
