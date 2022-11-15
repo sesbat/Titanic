@@ -84,7 +84,7 @@ void Player::Update(float dt)
 		break;
 	}
 
-	//����
+	//Dead
 	/*if ( hp <= 0 )
 	{
 		SetState(States::Dead);

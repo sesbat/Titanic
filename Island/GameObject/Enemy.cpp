@@ -12,7 +12,7 @@
 
 Enemy::Enemy()
 	: currState(States::None), speed(50.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(true), hp(15), 
-	maxHp(15), barScaleX(60.f)
+	maxHp(15), barScaleX(60.f), look(1.f, 0.f)
 {
 }
 
@@ -48,7 +48,7 @@ void Enemy::Init(Player* player)
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMoveLeft"));
 
 	scene = SCENE_MGR->GetCurrScene();
-	SetState(States::Idle);
+	//SetState(States::Idle);
 }
 
 void Enemy::SetState(States newState)
@@ -58,7 +58,7 @@ void Enemy::SetState(States newState)
 	switch ( currState )
 	{
 	case Enemy::States::Idle:
-		animator.PlayQueue((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
+		animator.Play((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
 		break;
 	case Enemy::States::Move:
 		animator.Play((direction.x > 0.f) ? "EnemyMove" : "EnemyMoveLeft");
@@ -81,7 +81,11 @@ void Enemy::Update(float dt)
 
 	HitBoxObject::Update(dt);
 
+	look = player->GetPos();
+	lookDir = Utils::Normalize(player->GetPos() - GetPos());
+
 	direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+	
 	//enemy dead
 	if (hp <= 0)
 	{
@@ -99,6 +103,7 @@ void Enemy::Update(float dt)
 	{
 		Move(dt);
 	}
+	
 
 	//hp bar
 	SetHpBar();
@@ -206,7 +211,10 @@ void Enemy::AttackPattern(float dt)
 
 	//boss hits player
 	hitTime += dt;
-	
+	if (hitTime >= 0.8f)
+	{
+		//gun->Fire();
+	}
 }
 
 void Enemy::Move(float dt)

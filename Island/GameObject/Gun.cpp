@@ -90,7 +90,7 @@ void Gun::Update(float dt)
 		break;
 	case User::Enemy:
 	{
-		//isGunFlip = enemy->GetLookDir().x < 0;
+		isGunFlip = enemy->GetLookDir().x < 0;
 		this->SetFlipY(isGunFlip);
 
 		float angle = Utils::Angle(enemy->GetLookDir());
