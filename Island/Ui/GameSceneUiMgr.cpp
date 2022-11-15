@@ -74,7 +74,7 @@ void GameSceneUiMgr::Init()
 	hunger = new Button(this);
 	hunger->SetClkColor(false);
 	hunger->SetTexture(*RESOURCES_MGR->GetTexture("graphics/hunger.png"), false);
-	hunger->GetSpriteObj()->SetColor(Color(169, 57, 53, hungerGuage));
+	hunger->GetSpriteObj()->SetColor(Color(169, 57, 53, (int)hungerGuage));
 	hunger->SetOrigin(Origins::MC);
 	//hunger->GetSpriteObj()->SetScale({ 0.5f,0.5f });
 	hunger->SetPos({ 500,100 });
@@ -91,7 +91,7 @@ void GameSceneUiMgr::Init()
 	thirst = new Button(this);
 	thirst->SetClkColor(false);
 	thirst->SetTexture(*RESOURCES_MGR->GetTexture("graphics/thirst.png"), false);
-	thirst->GetSpriteObj()->SetColor(Color(0, 145, 255, thirstGuage));
+	thirst->GetSpriteObj()->SetColor(Color(0, 145, 255, (int)thirstGuage));
 	thirst->SetOrigin(Origins::MC);
 	thirst->SetPos({ 600,100 });
 	uiObjList[0].push_back(thirst);
@@ -107,7 +107,7 @@ void GameSceneUiMgr::Init()
 	energy = new Button(this);
 	energy->SetClkColor(false);
 	energy->SetTexture(*RESOURCES_MGR->GetTexture("graphics/energy.png"), false);
-	energy->GetSpriteObj()->SetColor(Color(235, 255, 0, energyGuage));
+	energy->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)energyGuage));
 	energy->SetOrigin(Origins::MC);
 	energy->GetSpriteObj()->SetScale({ 1.5f,1.5f });
 	energy->SetPos({ 700,100 });
@@ -229,10 +229,6 @@ void GameSceneUiMgr::Draw(RenderWindow& window)
 	UiMgr::Draw(window);
 }
 
-void GameSceneUiMgr::SetPlayer(Player* player)
-{
-	this->player = player;
-}
 
 bool GameSceneUiMgr::IsExit()
 {
