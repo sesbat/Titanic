@@ -3,14 +3,16 @@
 
 class UiMgr;
 class Inventory;
+class InventoryBox;
 class InvenGreed : public Button
 {
 private:
 	Vector2i invenPos;
 	Inventory* inven;
+	InventoryBox* invenBox;
 	bool state;
 public:
-	InvenGreed(UiMgr* mgr, Inventory* inven);
+	InvenGreed(UiMgr* mgr, Inventory* inven, InventoryBox* invenBox);
 	~InvenGreed();
 	virtual void Init();
 	virtual void Update(float dt);

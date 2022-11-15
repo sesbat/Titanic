@@ -238,8 +238,10 @@ void UiObject::Update(float dt)
 		break;
 	case UiState::Exit:
 		btnState = UiState::None;
-		drag = false;
-		dragR = false;
+
+		drag = InputMgr::GetMouseButton(Mouse::Left);
+		dragR = InputMgr::GetMouseButton(Mouse::Right);
+		//dragR = false;
 		break;
 	default:
 		break;

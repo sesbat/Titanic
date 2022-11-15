@@ -6,9 +6,10 @@
 #include "../Framework/FileManager.h"
 #include "Inventory.h"
 #include "InvenItem.h"
+#include "InventoryBox.h"
 
-InvenGreed::InvenGreed(UiMgr* mgr, Inventory* inven)
-	:Button(mgr), inven(inven)
+InvenGreed::InvenGreed(UiMgr* mgr, Inventory* inven, InventoryBox* invenbox)
+	:Button(mgr), inven(inven), invenBox(invenbox), state(false)
 {
 }
 
@@ -53,7 +54,7 @@ void InvenGreed::Update(float dt)
 				if (greed == nullptr)
 					continue;
 				
-				greed->SetState(inven->IsGreedItem(invenPos.y + j, invenPos.x + i));
+				greed->SetState(inven->GetNowInven()->IsGreedItem(invenPos.y + j, invenPos.x + i));
 			}
 		}
 	}
@@ -69,7 +70,7 @@ void InvenGreed::Update(float dt)
 			for (int j = 0; j < h; j++)
 			{
 				auto greed = inven->GetGreed(invenPos.y + j, invenPos.x + i);
-				if (greed == nullptr || inven->IsGreedItem(invenPos.y + j, invenPos.x + i))
+				if (greed == nullptr || inven->GetNowInven()->IsGreedItem(invenPos.y + j, invenPos.x + i))
 				{
 					isMove = false;
 					break;
@@ -77,11 +78,25 @@ void InvenGreed::Update(float dt)
 				}
 			}
 		}
-
 		if (isMove)
-			inven->MoveItem(invenPos.x, invenPos.y);
+		{
+			inven->GetNowInven()->MoveItem(invenPos.x, invenPos.y);
+		}
 		else
-			inven->ReturnItem();
+		{
+			for (int i = 0; i < w; i++)
+			{
+				for (int j = 0; j < h; j++)
+				{
+					auto greed = inven->GetGreed(invenPos.y + j, invenPos.x + i);
+					if (greed != nullptr)
+					{
+						greed->SetState(invenBox->IsGreedItem(invenPos.y + j, invenPos.x + i));
+					}
+				}
+			}
+			invenBox->ReturnItem();
+		}
 	}
 	Button::Update(dt);
 }

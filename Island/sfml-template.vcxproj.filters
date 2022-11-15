@@ -48,6 +48,7 @@
     <ClCompile Include="Ui\Inventory.cpp" />
     <ClCompile Include="Ui\InvenItem.cpp" />
     <ClCompile Include="Ui\InvenGreed.cpp" />
+    <ClCompile Include="Ui\InventoryBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -101,6 +102,7 @@
     <ClInclude Include="Ui\Inventory.h" />
     <ClInclude Include="Ui\InvenItem.h" />
     <ClInclude Include="Ui\InvenGreed.h" />
+    <ClInclude Include="Ui\InventoryBox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
