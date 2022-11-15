@@ -30,29 +30,11 @@ void Player::Init()
 	HitBoxObject::Init();
 	hp = maxHp;
 
-	shotgun = new Gun(GunType::Shotgun);
-	shotgun->SetPlayer(this);
-	shotgun->Init();
-
-	/*rifle = new Gun(GunType::Rifle);
-	rifle->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun.png"));
-	rifle->SetPos({ GetPos().x,GetPos().y + 10.f });
-	rifle->SetOrigin(Origins::MC);
-
-	sniper = new Gun(GunType::Sniper);
-	sniper->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun.png"));
-	sniper->SetPos({ GetPos().x,GetPos().y + 10.f });
-	sniper->SetOrigin(Origins::MC);*/
+	gun = new Gun(GunType::Shotgun, User::Player);
+	gun->SetPlayer(this);
+	gun->Init();
 	
 	animator.SetTarget(&sprite);
-
-	//health bar
-	healthBar.setFillColor(Color::Green);
-	healthBar.setOutlineColor(Color::Black);
-	healthBar.setOutlineThickness(2.f);
-	healthBar.setSize({ 6.f * maxHp, 15.f });
-	healthBar.setPosition({ GetPos().x, GetPos().y - 15.f });
-	Utils::SetOrigin(healthBar, Origins::MC);
 
 	//animation
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerIdle"));
@@ -68,7 +50,6 @@ void Player::Init()
 
 void Player::SetState(States newState)
 {
-
 	currState = newState;
 	switch (currState)
 	{
@@ -103,13 +84,56 @@ void Player::Update(float dt)
 		break;
 	}
 
-	//����
+	//Dead
 	/*if ( hp <= 0 )
 	{
 		SetState(States::Dead);
 	}*/
 
 	//Move
+	Move(dt);
+
+	//animation
+	animator.Update(dt);
+
+	if (!EqualFloat(direction.x, 0.f))
+	{
+		lastDirection = direction;
+	}
+
+	prevLook = lookDir;
+
+	gun->Update(dt);
+
+	//input
+	switch (gun->GetgunType())
+	{
+	case GunType::Shotgun:
+	case GunType::Sniper:
+		if (InputMgr::GetMouseButtonDown(Mouse::Left))
+		{
+			gun->Fire(GetPos(), true);
+		}
+		break;
+	case GunType::Rifle:
+		if (InputMgr::GetMouseButton(Mouse::Left))
+		{
+			gun->Fire(GetPos(), true);
+		}
+		break;
+	}
+	if (InputMgr::GetKeyDown(Keyboard::Num1))
+	{
+		gun->SetGunType(GunType::Shotgun);
+	}
+	if (InputMgr::GetKeyDown(Keyboard::Num2))
+	{
+		gun->SetGunType(GunType::Rifle);
+	}
+	if (InputMgr::GetKeyDown(Keyboard::Num3))
+	{
+		gun->SetGunType(GunType::Sniper);
+	}
 
 	if (InputMgr::GetKeyDown(Keyboard::LShift))
 	{
@@ -127,114 +151,11 @@ void Player::Update(float dt)
 	{
 		speed = 500.f;
 	}
-
-	velocity = direction * speed;
-
-	//Stop
-	if ( Utils::Magnitude(direction) == 0.f )
-	{
-		velocity = { 0.f, 0.f };
-	}
-	if ( direction.x == 0.f )
-	{
-		velocity.x = 0.f;
-	}
-	if ( direction.y == 0.f )
-	{
-		velocity.y = 0.f;
-	}
-
-	prevPosition = GetPos();
-	Translate({ velocity.x * dt, 0.f });
-
-
-	//positions
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(GetPos());
-	}
-
-	//wall bound
-	auto obj = scene->GetObjList();
-
-	//for (auto& objTile : obj[LayerType::Tile][0])
-	//{
-	//	auto hit = ((HitBoxObject*)objTile)->GetBottom();
-	//	//if (hit == nullptr /*|| !((SpriteObject*)objTile)->IsInView()*/)
-	//	//	continue;
-	//	if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
-	//	{
-	//		std::cout << "wall" << std::endl;
-	//		SetPlayerPos();
-	//	}
-	//}
-
-	for (auto& objects : obj[LayerType::Object][0])
-	{
-		auto hit = ((HitBoxObject*)objects)->GetBottom();
-		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
-			continue;
-		if (objects->GetName() == "TREE" ||
-			objects->GetName() == "STONE" ||
-			objects->GetName() == "BLOCK" ||
-			objects->GetName() == "ENEMY")
-		{
-			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
-			{
-				SetPlayerPos();
-				break;
-			}
-		}
-	}
-
-	prevPosition = GetPos();
-	Translate({ 0.f, velocity.y * dt, });
-
-	//positions
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(GetPos());
-	}
-
-	for (auto& objects : obj[LayerType::Object][0])
-	{
-		auto hit = ((HitBoxObject*)objects)->GetBottom();
-		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
-			continue;
-		if (objects->GetName() == "TREE" ||
-			objects->GetName() == "STONE" ||
-			objects->GetName() == "BLOCK" ||
-			objects->GetName() == "ENEMY")
-		{
-			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
-			{
-				SetPlayerPos();
-				break;
-			}
-		}
-	}
-
-	//hp bar
-	SetHpBar();
-
-	//animation
-	animator.Update(dt);
-
-	if (!EqualFloat(direction.x, 0.f))
-	{
-		lastDirection = direction;
-	}
-	prevLook = lookDir;
-
-
-	shotgun->Update(dt);
-
 }
 
 void Player::Draw(RenderWindow& window)
 {
 	HitBoxObject::Draw(window);
-	window.draw(healthBar);
 	if (isHitBox)
 	{
 		for (auto& hit : hitboxs)
@@ -242,7 +163,7 @@ void Player::Draw(RenderWindow& window)
 			hit->Draw(window);
 		}
 	}
-	shotgun->Draw(window);
+	gun->Draw(window);
 }
 
 void Player::Dash(float dt)
@@ -302,32 +223,6 @@ void Player::SetHp(int num)
 	}
 }
 
-void Player::SetHpBar()
-{
-	healthBar.setPosition({ GetPos().x, GetPos().y - 35.f });
-	healthBar.setSize({ 6.f * hp, 15.f });
-	if ( hp > 5 )
-	{
-		healthBar.setFillColor(Color::Green);
-	}
-	else if ( hp <= 5 && hp > 2 )
-	{
-		healthBar.setFillColor(Color::Yellow);
-	}
-	else if ( hp <= 2 )
-	{
-		healthBar.setFillColor(Color::Red);
-	}
-	if ( hp <= 0 )
-	{
-		healthBar.setOutlineThickness(0.f);
-	}
-	else
-	{
-		healthBar.setOutlineThickness(2.f);
-	}
-}
-
 //void Player::OnPickupItem(Item* item)
 //{
 //	switch ( item->GetType() )
@@ -359,7 +254,6 @@ void Player::SetPlayerPos()
 		hit->SetPos(prevPosition);
 	}
 	bottom->SetPos(prevPosition);
-	healthBar.setPosition({ prevPosition.x, prevPosition.y - 35.f });
 }
 
 Vector2f Player::SetLookDir()
@@ -375,7 +269,80 @@ void Player::SetFlipX(bool flip)
 	SpriteObject::SetFlipX(flip);
 }
 
+
 void Player::SetIsDash(bool dash)
 {
 	isDash = dash;
+}
+
+void Player::Move(float dt)
+{
+	//Move
+	velocity = direction * speed;
+
+	//Stop
+	if (Utils::Magnitude(direction) == 0.f)
+	{
+		velocity = { 0.f, 0.f };
+	}
+	if (direction.x == 0.f)
+	{
+		velocity.x = 0.f;
+	}
+	if (direction.y == 0.f)
+	{
+		velocity.y = 0.f;
+	}
+	//////////////////////////////////////////
+	//x dir
+	prevPosition = GetPos();
+	Translate({ velocity.x * dt, 0.f });
+
+	for (auto& hit : hitboxs)
+	{
+		hit->SetPos(GetPos());
+	}
+	//wall bound
+	Collision();
+
+	////////////////////////////////////////
+	//y dir
+	prevPosition = GetPos();
+	Translate({ 0.f, velocity.y * dt, });
+
+	for (auto& hit : hitboxs)
+	{
+		hit->SetPos(GetPos());
+	}
+	//wall bound
+	Collision();
+}
+
+void Player::Collision()
+{
+	//wall bound
+	auto obj = scene->GetObjList();
+
+	for (auto& objects : obj[LayerType::Object][0])
+	{
+		auto hit = ((HitBoxObject*)objects)->GetBottom();
+		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
+			continue;
+		if (!objects->GetActive())
+		{
+			continue;
+		}
+		if (objects->GetName() == "TREE" ||
+			objects->GetName() == "STONE" ||
+			objects->GetName() == "BLOCK" ||
+			objects->GetName() == "ENEMY")
+		{
+			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+			{
+				cout << objects->GetName() << endl;
+				SetPlayerPos();
+				break;
+			}
+		}
+	}
 }

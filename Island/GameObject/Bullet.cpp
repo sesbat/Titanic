@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include "Player.h"
 #include "HitBox.h"
 #include "HitBoxObject.h"
 #include "Enemy.h"
@@ -20,7 +21,7 @@ void Bullet::Init()
 	SpriteObject::Init();
 	scene = SCENE_MGR->GetCurrScene();
 	prevPos = GetPos();
-	
+
 }
 
 void Bullet::Update(float dt)
@@ -29,8 +30,9 @@ void Bullet::Update(float dt)
 	{
 		SpriteObject::Update(dt);
 		
+		//position
 		range -= Utils::Magnitude(dir * dt * speed);
-		prevPos = GetPos();
+		prevPos = GetPos() * (float)sprite.getTextureRect().width;
 		if (range >= 0.f)
 		{
 			Translate(dir * dt * speed);
@@ -42,43 +44,8 @@ void Bullet::Update(float dt)
 		}
 		
 		// collision
-		auto obj = scene->GetObjList();
-		for (auto& objects : obj[LayerType::Object][0])
-		{
-			auto hit = ((HitBoxObject*)objects)->GetBottom();
-			if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
-				continue;
-
-			if (objects->GetName() == "TREE" ||
-				objects->GetName() == "STONE" )
-			{
-				if (LineRect(startPos, GetPos(), hit->GetHitbox()))
-				{
-					cout << "hit" << endl;
-
-					SetActive(false);
-					break;
-				}
-			}
-			else if (objects->GetName() == "ENEMY")
-			{
-				for (Enemy* enemy : *enemies)
-				{
-					if (objects->GetId() == enemy->GetId())
-					{
-						if (LineRect(startPos, GetPos(), hit->GetHitbox()))
-						{
-							cout << "hit" << endl;
-							enemy->SetHp(10);
-							SetActive(false);
-							break;
-						}
-					}
-				}
-			}
-		}
+		Collision();
 	}
-	
 }
 
 void Bullet::Draw(RenderWindow& window)
@@ -102,12 +69,12 @@ void Bullet::Release()
 	SpriteObject::Release();
 }
 
-void Bullet::Fire(const Vector2f& pos, const Vector2f& dir, float speed, float range)
+void Bullet::Fire(const Vector2f& pos, const Vector2f& dir, float speed, float range, bool isplayer)
 {
 	sprite.setRotation(Utils::Angle(dir));
-	Utils::SetOrigin(sprite, Origins::MR);
 	SetPos(pos);
 	startPos = pos;
+	this->isplayer = isplayer;
 	SetActive(true);
 	this->dir = dir;
 	this->speed = speed;
@@ -154,7 +121,67 @@ bool Bullet::Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, floa
 	// if uA and uB are between 0-1, lines are colliding
 	if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) 
 	{
+		
 		return true;
 	}
 	return false;
+}
+
+void Bullet::Collision()
+{
+	auto obj = scene->GetObjList();
+	for (auto& objects : obj[LayerType::Object][0])
+	{
+		auto hit = ((HitBoxObject*)objects)->GetBottom();
+		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
+			continue;
+
+		if (objects->GetName() == "TREE" ||
+			objects->GetName() == "STONE" ||
+			objects->GetName() == "BLOCK")
+		{
+			if (LineRect(startPos, GetPos(), hit->GetHitbox()))
+			{
+				cout << "hit" << endl;
+
+				SetActive(false);
+				break;
+			}
+		}
+		else if (isplayer && objects->GetName() == "ENEMY")
+		{
+			auto hb = ((HitBoxObject*)objects)->GetHitBoxs();
+			for (auto it : hb)
+			{
+				for (Enemy* enemy : *enemies)
+				{
+					if (objects->GetId() == enemy->GetId())
+					{
+						if (LineRect(startPos, GetPos(), it->GetHitbox()))
+						{
+							cout << "hit" << endl;
+							enemy->SetHp(10);
+							SetActive(false);
+							break;
+						}
+						break;
+					}
+				}
+			}
+		}
+		else if (!isplayer && objects->GetName() == "PLAYER")
+		{
+			auto hb = ((HitBoxObject*)objects)->GetHitBoxs();
+			for (auto it : hb)
+			{
+				if (LineRect(startPos, GetPos(), it->GetHitbox()))
+				{
+					cout << "player hit" << endl;
+					player->SetHp(1);
+					SetActive(false);
+					break;
+				}
+			}
+		}
+	}
 }

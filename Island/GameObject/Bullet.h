@@ -21,6 +21,8 @@ private:
 	Vector2f startPos;
 	Vector2f prevPos;
 
+	bool isplayer;
+
 public:
 	Bullet();
 	~Bullet();
@@ -31,14 +33,16 @@ public:
 	virtual void Reset();
 	virtual void Release();
 
-	void Fire(const Vector2f& pos, const Vector2f& dir, float speed, float range);
+	void Fire(const Vector2f& pos, const Vector2f& dir, float speed, float range, bool isplayer);
 
 	bool EqualFloat(Vector2f a, Vector2f b);
 	bool EqualFloat(float a, float b);
 
+	void SetPlayer(Player* player){this->player = player;}
 	void SetEnemyList(list<Enemy*>* list) { enemies = list; }
 
 	bool LineRect(Vector2f bulletpos, Vector2f bulletPrevPos, RectangleShape hitObject);
 	bool Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, float y3, float x4, float y4);
+	void Collision();
 };
 

@@ -39,6 +39,6 @@ public:
 	virtual void Draw(RenderWindow& window) override;
 
 	list<Enemy*>* GetEnemyList() { return &enemies; }
-
+	//Player** Getplayer() { return &player; }
 	Player* GetPlayer(){ return player; }
 };

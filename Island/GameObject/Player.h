@@ -9,9 +9,9 @@
 using namespace std;
 
 class VertexArrayObj;
-class Gun;
-class Scene;
 class HitBox;
+class Scene;
+class Gun;
 class Bullet;
 
 class Player : public HitBoxObject
@@ -23,13 +23,13 @@ public:
 		Idle,
 		Move,
 	};
+
 protected:
-	Animator animator;
-
 	Scene* scene;
+	Gun* gun;
 
-	RectangleShape healthBar;
-
+	Animator animator;
+	
 	States currState;
 	
 	float speed;
@@ -44,14 +44,7 @@ protected:
 
 	Vector2f playerNormalize;
 
-	Gun* shotgun;
-	Gun* rifle;
-	Gun* sniper;
-
 	SpriteObject* background;
-
-	//float timer;
-	//float attackTime;
 
 	int hp;
 	int maxHp;
@@ -87,13 +80,13 @@ public:
 	bool GetIsDash() { return isDash; }
 
 	void SetHp(int num);
-	void SetHpBar();
 	//void OnPickupItem(Item* item);
 	void SetPlayerPos();
 	Vector2f SetLookDir();
 	void SetFlipX(bool flip);
 	void SetIsDash(bool dash);
 
-	//void Fire();
+	void Move(float dt);
+	void Collision();
 };
 

@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "HitBox.h"
 #include "Object.h"
+#include "Gun.h"
 #include "VertexArrayObj.h"
 #include "../Scens/SceneManager.h"
 #include "../Framework/ResourceManager.h"
@@ -10,9 +11,8 @@
 #include <iostream>
 
 Enemy::Enemy()
-	: currState(States::None), speed(50.f), direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	bossState(0), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(true), hp(15), 
-	maxHp(15), barScaleX(60.f)
+	: currState(States::None), speed(50.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(true), hp(15), 
+	maxHp(15), barScaleX(60.f), look(1.f, 0.f)
 {
 }
 
@@ -26,6 +26,10 @@ void Enemy::Init(Player* player)
 	this->player = player;
 
 	hp = maxHp;
+
+	gun = new Gun(GunType::Rifle, User::Enemy);
+	gun->SetEnemy(this);
+	gun->Init();
 
 	animator.SetTarget(&sprite);
 
@@ -44,17 +48,20 @@ void Enemy::Init(Player* player)
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMoveLeft"));
 
 	scene = SCENE_MGR->GetCurrScene();
-	SetState(States::Idle);
+	//SetState(States::Idle);
 }
 
 void Enemy::SetState(States newState)
 {
-	currState = newState;
+	if (currState == newState)
+		return;
 
+	currState = newState;
+	
 	switch ( currState )
 	{
 	case Enemy::States::Idle:
-		animator.PlayQueue((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
+		animator.Play((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
 		break;
 	case Enemy::States::Move:
 		animator.Play((direction.x > 0.f) ? "EnemyMove" : "EnemyMoveLeft");
@@ -76,8 +83,17 @@ void Enemy::Update(float dt)
 		return;
 
 	HitBoxObject::Update(dt);
-
-	direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+	if (Utils::Distance(player->GetPos(), GetPos()) < 500.f)
+	{
+		//look = player->GetPos();
+		lookDir = Utils::Normalize(player->GetPos() - GetPos());
+		direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+	}
+	else
+	{
+		lookDir = direction;
+	}
+	
 	//enemy dead
 	if (hp <= 0)
 	{
@@ -95,13 +111,15 @@ void Enemy::Update(float dt)
 	{
 		Move(dt);
 	}
-
+	
 	//hp bar
 	SetHpBar();
 
 	//animation
 	animator.Update(dt);
-
+	
+	//gun
+	gun->Update(dt);
 }
 
 void Enemy::Draw(RenderWindow& window)
@@ -121,6 +139,7 @@ void Enemy::Draw(RenderWindow& window)
 			hit->Draw(window);
 		}
 	}
+	gun->Draw(window);
 }
 
 void Enemy::OnCompleteDead()
@@ -197,7 +216,12 @@ void Enemy::AttackPattern(float dt)
 		SetState(States::Idle);
 	}
 
-	//boss hits player
+	if (hitTime >= 0.8f && Utils::Distance(player->GetPos(), GetPos()) < 500.f)
+	{
+		gun->Fire(GetPos(), false);
+		hitTime = 0.f;
+	}
+
 	hitTime += dt;
 	
 }
