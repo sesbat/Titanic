@@ -17,7 +17,7 @@ Player::Player()
 	: currState(States::None), speed(500.f),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	hp(10), maxHp(10)
+	hp(10), maxHp(10), isDash(false)
 {
 }
 
@@ -110,6 +110,24 @@ void Player::Update(float dt)
 	}*/
 
 	//Move
+
+	if (InputMgr::GetKeyDown(Keyboard::LShift))
+	{
+		isDash = true;
+	}
+	if (InputMgr::GetKeyUp(Keyboard::LShift))
+	{
+		isDash = false;
+	}
+	if (isDash)
+	{
+		speed = 1000.f;
+	}
+	else
+	{
+		speed = 500.f;
+	}
+
 	velocity = direction * speed;
 
 	//Stop
@@ -353,4 +371,9 @@ Vector2f Player::SetLookDir()
 void Player::SetFlipX(bool flip)
 {
 	SpriteObject::SetFlipX(flip);
+}
+
+void Player::SetIsDash(bool dash)
+{
+	isDash = dash;
 }
