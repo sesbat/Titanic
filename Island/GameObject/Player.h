@@ -55,6 +55,8 @@ protected:
 
 	int hp;
 	int maxHp;
+	bool isDash;
+	float stamina;
 
 	//bool isAlive;
 public:
@@ -81,6 +83,8 @@ public:
 	Vector2f GetPrevLookDir() { return prevLook; }
 	//int GetDamage() { return damage; }
 	States GetCurrState() { return currState; }
+	float GetStamina() { return stamina; }
+	bool GetIsDash() { return isDash; }
 
 	void SetHp(int num);
 	void SetHpBar();
@@ -88,6 +92,7 @@ public:
 	void SetPlayerPos();
 	Vector2f SetLookDir();
 	void SetFlipX(bool flip);
+	void SetIsDash(bool dash);
 
 	//void Fire();
 };
