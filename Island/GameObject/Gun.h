@@ -24,6 +24,9 @@ class Gun :
     public SpriteObject
 {
 private:
+    Player* player;
+    Enemy* enemy;
+
     GunType gunType;
     User user;
 
@@ -35,8 +38,7 @@ private:
     int Damage;
     bool isGunFlip;
 
-    Player* player;
-    Enemy* enemy;
+    Vector2f lookDir;
 
 public:
     Gun();
@@ -50,7 +52,7 @@ public:
 
     void SetPlayer(Player* player);
     void SetEnemy(Enemy* enemy);
-    void Fire();
+    void Fire(Vector2f pos, bool isplayer);
 
     void SetGunType(GunType type);
 };

@@ -105,6 +105,10 @@ void Player::Update(float dt)
 	gun->Update(dt);
 
 	//input
+	if (InputMgr::GetMouseButton(Mouse::Left))
+	{
+		gun->Fire(GetPos(), true);
+	}
 	if (InputMgr::GetKeyDown(Keyboard::Num1))
 	{
 		gun->SetGunType(GunType::Shotgun);

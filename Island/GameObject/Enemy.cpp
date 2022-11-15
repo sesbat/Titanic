@@ -212,12 +212,14 @@ void Enemy::AttackPattern(float dt)
 		SetState(States::Idle);
 	}
 
-	//boss hits player
-	hitTime += dt;
-	if (hitTime >= 0.8f)
+	if (hitTime >= 0.8f && Utils::Distance(player->GetPos(), GetPos()) < 500.f)
 	{
-		//gun->Fire();
+		gun->Fire(GetPos(), false);
+		hitTime = 0.f;
 	}
+
+	hitTime += dt;
+	
 }
 
 void Enemy::Move(float dt)
