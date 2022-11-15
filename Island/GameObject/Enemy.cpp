@@ -53,8 +53,11 @@ void Enemy::Init(Player* player)
 
 void Enemy::SetState(States newState)
 {
-	currState = newState;
+	if (currState == newState)
+		return;
 
+	currState = newState;
+	
 	switch ( currState )
 	{
 	case Enemy::States::Idle:

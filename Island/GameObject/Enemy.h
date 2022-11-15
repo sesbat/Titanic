@@ -29,6 +29,7 @@ protected:
 	RectangleShape healthBar;
 
 	States currState;
+	States prevState;
 
 	float speed;
 	Vector2f look;
