@@ -40,5 +40,6 @@ public:
 
 	bool LineRect(Vector2f bulletpos, Vector2f bulletPrevPos, RectangleShape hitObject);
 	bool Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, float y3, float x4, float y4);
+	void Collision();
 };
 

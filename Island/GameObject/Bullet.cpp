@@ -29,6 +29,7 @@ void Bullet::Update(float dt)
 	{
 		SpriteObject::Update(dt);
 		
+		//position
 		range -= Utils::Magnitude(dir * dt * speed);
 		prevPos = GetPos();
 		if (range >= 0.f)
@@ -42,43 +43,8 @@ void Bullet::Update(float dt)
 		}
 		
 		// collision
-		auto obj = scene->GetObjList();
-		for (auto& objects : obj[LayerType::Object][0])
-		{
-			auto hit = ((HitBoxObject*)objects)->GetBottom();
-			if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
-				continue;
-
-			if (objects->GetName() == "TREE" ||
-				objects->GetName() == "STONE" )
-			{
-				if (LineRect(startPos, GetPos(), hit->GetHitbox()))
-				{
-					cout << "hit" << endl;
-
-					SetActive(false);
-					break;
-				}
-			}
-			else if (objects->GetName() == "ENEMY")
-			{
-				for (Enemy* enemy : *enemies)
-				{
-					if (objects->GetId() == enemy->GetId())
-					{
-						if (LineRect(startPos, GetPos(), hit->GetHitbox()))
-						{
-							cout << "hit" << endl;
-							enemy->SetHp(10);
-							SetActive(false);
-							break;
-						}
-					}
-				}
-			}
-		}
+		Collision();
 	}
-	
 }
 
 void Bullet::Draw(RenderWindow& window)
@@ -157,4 +123,49 @@ bool Bullet::Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, floa
 		return true;
 	}
 	return false;
+}
+
+void Bullet::Collision()
+{
+	auto obj = scene->GetObjList();
+	for (auto& objects : obj[LayerType::Object][0])
+	{
+		auto hit = ((HitBoxObject*)objects)->GetBottom();
+		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
+			continue;
+
+		if (objects->GetName() == "TREE" ||
+			objects->GetName() == "STONE" ||
+			objects->GetName() == "BLOCK")
+		{
+			if (LineRect(startPos, GetPos(), hit->GetHitbox()))
+			{
+				cout << "hit" << endl;
+
+				SetActive(false);
+				break;
+			}
+		}
+		else if (objects->GetName() == "ENEMY")
+		{
+			auto hb = ((HitBoxObject*)objects)->GetHitBoxs();
+			for (auto it : hb)
+			{
+				for (Enemy* enemy : *enemies)
+				{
+					if (objects->GetId() == enemy->GetId())
+					{
+						if (LineRect(startPos, GetPos(), it->GetHitbox()))
+						{
+							cout << "hit" << endl;
+							enemy->SetHp(10);
+							SetActive(false);
+							break;
+						}
+					}
+				}
+			}
+
+		}
+	}
 }

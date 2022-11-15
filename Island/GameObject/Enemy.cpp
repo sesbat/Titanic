@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "HitBox.h"
 #include "Object.h"
+#include "Gun.h"
 #include "VertexArrayObj.h"
 #include "../Scens/SceneManager.h"
 #include "../Framework/ResourceManager.h"
@@ -10,8 +11,7 @@
 #include <iostream>
 
 Enemy::Enemy()
-	: currState(States::None), speed(50.f), direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	bossState(0), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(true), hp(15), 
+	: currState(States::None), speed(50.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(true), hp(15), 
 	maxHp(15), barScaleX(60.f)
 {
 }
@@ -26,6 +26,10 @@ void Enemy::Init(Player* player)
 	this->player = player;
 
 	hp = maxHp;
+
+	gun = new Gun(GunType::Rifle, User::Enemy);
+	gun->SetEnemy(this);
+	gun->Init();
 
 	animator.SetTarget(&sprite);
 
@@ -101,7 +105,9 @@ void Enemy::Update(float dt)
 
 	//animation
 	animator.Update(dt);
-
+	
+	//gun
+	gun->Update(dt);
 }
 
 void Enemy::Draw(RenderWindow& window)
@@ -121,6 +127,7 @@ void Enemy::Draw(RenderWindow& window)
 			hit->Draw(window);
 		}
 	}
+	gun->Draw(window);
 }
 
 void Enemy::OnCompleteDead()

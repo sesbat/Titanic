@@ -2,10 +2,11 @@
 #include "HitBoxObject.h"
 #include "Animation/Animator.h"
 
-class Player;
 class VertexArrayObj;
 class HitBox;
+class Player;
 class Scene;
+class Gun;
 
 class Enemy : public HitBoxObject
 {
@@ -17,9 +18,11 @@ public:
 		Move,
 		Dead,
 	};
+
 protected:
 	Player* player;
 	Scene* scene;
+	Gun* gun;
 
 	Animator animator;
 
@@ -28,12 +31,16 @@ protected:
 	States currState;
 
 	float speed;
+	Vector2f look;
+	Vector2f lookDir;
+	Vector2f prevLook;
+	Vector2f velocity;
 	Vector2f direction;
 	Vector2f lastDirection;
 	Vector2f dir;
 	Vector2f prevPosition;
+	bool isFlip;
 
-	int bossState;
 	float moveTime;
 	float hitTime;
 	float getAttackTime;
@@ -62,7 +69,10 @@ public:
 
 	void SetHp(int num);
 	void SetHpBar();
+
 	void SetEnemyPos();
+	Vector2f GetLookDir() { return lookDir; }
+	Vector2f GetPrevLookDir() { return prevLook; }
 
 	void AttackPattern(float dt);
 	void Move(float dt);

@@ -10,6 +10,12 @@ enum class GunType
     TypeCount,
 };
 
+enum class User
+{
+    Player,
+    Enemy,
+};
+
 class Player;
 class Bullet;
 class Enemy;
@@ -19,6 +25,7 @@ class Gun :
 {
 private:
     GunType gunType;
+    User user;
 
     ObjectPool<Bullet> bulletPool;
 
@@ -33,7 +40,7 @@ private:
 
 public:
     Gun();
-    Gun(GunType type);
+    Gun(GunType type, User user);
     ~Gun();
 
     virtual void Init();
@@ -42,6 +49,9 @@ public:
     virtual void Relaese();
 
     void SetPlayer(Player* player);
+    void SetEnemy(Enemy* enemy);
     void Fire();
+
+    void SetGunType(GunType type);
 };
 
