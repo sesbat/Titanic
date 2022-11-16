@@ -7,8 +7,11 @@ class Player;
 class GameSceneUiMgr : public UiMgr
 {
 protected:
+	Player* player;
+
 	Button* exitBtn;
 	Inventory* inven;
+
 	Button* hpBar;
 	Button* hpBarBK;
 	Button* hpSprite;
@@ -29,19 +32,7 @@ protected:
 	Button* energyBK;
 	Button* energyTex;
 
-	Player* player;
-
-	float hungerGuage;
-	int prevHungerGuage;
-	float thirstGuage;
-	int prevThirstGuage;
-	float energyGuage;
-	int prevEnergyGuage;
-
-	float staminaTime;
-	float dash;
 	float hpBarSize;
-	float time;
 public:
 	GameSceneUiMgr(Scene* scene);
 	virtual ~GameSceneUiMgr();

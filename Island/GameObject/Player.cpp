@@ -17,7 +17,9 @@ Player::Player()
 	: currState(States::None), speed(500.f),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	hp(10), maxHp(10), isDash(false)
+	hp(10), maxHp(10), isDash(false),
+	hungerGuage(255),thirstGuage(255),energyGuage(255),
+	staminaScale(1.f),staminaTime(5.f),dash(0.01f)
 {
 }
 
@@ -84,6 +86,43 @@ void Player::Update(float dt)
 		break;
 	}
 
+	if (InputMgr::GetKeyDown(Keyboard::Num0))
+	{
+		hungerGuage = 255;
+	}
+	if (InputMgr::GetKeyDown(Keyboard::Num9))
+	{
+		hungerGuage = 50;
+	}
+	hungerDelay -= dt;
+	ThirstDelay -= dt;
+	EnergyDelay -= dt;
+	if (hungerDelay < 0.f && hungerGuage > 0.f)
+	{
+		hungerGuage -= 1.f;
+		hungerDelay = 0.01f;
+	}
+	if (ThirstDelay < 0.f && thirstGuage > 0.f)
+	{
+		thirstGuage -= 1.f;
+		ThirstDelay = 0.01f;
+	}
+	if (EnergyDelay < 0.f && energyGuage > 0.f)
+	{
+		energyGuage -= 1.f;
+		EnergyDelay = 0.01f;
+	}
+	
+	if (staminaScale < 0.99f&&!isDash)
+	{
+		staminaScale += dash;
+	}
+	if (staminaScale > 0.f&&isDash)
+	{
+		staminaScale -= dash / staminaTime;
+		if (staminaScale < 0.f)
+			isDash = !isDash;
+	}
 	//Dead
 	/*if ( hp <= 0 )
 	{
@@ -143,14 +182,7 @@ void Player::Update(float dt)
 	{
 		isDash = false;
 	}
-	if (isDash)
-	{
-		speed = 1000.f;
-	}
-	else
-	{
-		speed = 500.f;
-	}
+
 }
 
 void Player::Draw(RenderWindow& window)
@@ -273,6 +305,21 @@ void Player::SetFlipX(bool flip)
 void Player::SetIsDash(bool dash)
 {
 	isDash = dash;
+}
+
+void Player::SetPrevHungerGuage(int hunger)
+{
+	prevHungerGuage = hunger;
+}
+
+void Player::SetPrevThirstGuage(int thirst)
+{
+	prevThirstGuage = thirst;
+}
+
+void Player::SetPrevEnergyGuage(int energy)
+{
+	prevEnergyGuage = energy;
 }
 
 void Player::Move(float dt)
