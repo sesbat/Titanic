@@ -42,6 +42,8 @@ void InventoryBox::Update(float dt)
 	if (!enabled)
 		return;
 
+	if(nowDrag == nullptr)
+	{
 		for (auto& item : items)
 		{
 			item->Update(dt);
@@ -93,6 +95,11 @@ void InventoryBox::Update(float dt)
 				}
 				break;
 			}
+		}
+	}
+	else
+	{
+		nowDrag->Update(dt);
 	}
 
 	Button::Update(dt);
