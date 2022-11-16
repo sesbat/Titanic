@@ -1,6 +1,7 @@
 #include "MoveObject.h"
 #include "../../Framework/InputMgr.h"
-
+#include <iostream>
+#include "../Scens/SceneManager.h"
 MoveObject::MoveObject(UiMgr* scene)
 	:Button(scene)
 {
@@ -15,8 +16,15 @@ void MoveObject::Update(float dt)
 {
 	Button::Update(dt);
 	
-	if(IsDragRight())
-		SetPos(InputMgr::GetMousePos());
+	if (IsDown())
+	{
+	}
+	if (IsDrag())
+	{
+		auto MousePos = InputMgr::GetMousePos();
+		MousePos = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)MousePos);
+		SetPos(MousePos + Vector2f{ -30.f, -30.f });
+	}
 }
 
 void MoveObject::Init()

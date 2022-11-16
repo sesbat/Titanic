@@ -105,6 +105,13 @@ void FileManager::LoadAll()
 	json info_d = json::parse(info);
 	hitBoxData = info_d;
 	info.close();
+
+	ifstream item_info("config/data/allItems.json");
+	json item_info_d = json::parse(item_info);
+	itemInfos = item_info_d;
+	item_info.close();
+
+
 	//ifstream hitbox("config/data/hitBox.json");
 	//json hit_d = json::parse(hitbox);
 	//hitBoxMap = hit_d;
