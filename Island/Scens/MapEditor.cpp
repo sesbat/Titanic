@@ -269,7 +269,7 @@ MapEditor::~MapEditor()
 
 void MapEditor::SetType(string t)
 {
-	if (t == "TREE" || t == "STONE" || t == "ENEMY" || t == "PLAYER" || t == "BLOCK")
+	if (t == "TREE" ||t=="BUSH"|| t == "STONE" || t == "ENEMY" || t == "PLAYER" || t == "BLOCK")
 	{
 		nowType = LayerType::Object;
 	}
@@ -353,7 +353,7 @@ void MapEditor::Load(string path)
 		
 		int i = ((int)obj.position.x-30) / 60;
 		int j = (int)obj.position.y / 60 - 1;
-		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "ENEMY" || obj.type == "PLAYER" || obj.type == "BLOCK")
+		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "ENEMY" || obj.type == "PLAYER" || obj.type == "BLOCK")
 		{
 			objList[LayerType::Object][j].push_back(draw);
 			greedObjs[LayerType::Object][j][i] = draw;

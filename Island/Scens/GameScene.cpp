@@ -37,7 +37,7 @@ void GameScene::Init()
 
 	for (auto& obj : data)
 	{
-		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "BLOCK")
+		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "BLOCK")
 		{
 			HitBoxObject* draw = new HitBoxObject();
 			draw->SetName(obj.type);
