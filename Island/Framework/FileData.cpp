@@ -10,6 +10,16 @@ void sf::from_json(const json& j, Vector2f& p)
     j.at("x").get_to(p.x);
     j.at("y").get_to(p.y);
 }
+void sf::to_json(json& j, const Vector2i& p)
+{
+    j = json{ {"x", p.x}, {"y", p.y} };
+}
+
+void sf::from_json(const json& j, Vector2i& p)
+{
+    j.at("x").get_to(p.x);
+    j.at("y").get_to(p.y);
+}
 
 void ns::to_json(json& j, const RectangleInfo& c)
 {

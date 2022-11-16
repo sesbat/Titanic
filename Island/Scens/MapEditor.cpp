@@ -283,17 +283,22 @@ void MapEditor::Save()
 {
 	saveObjs.clear();
 	string path = ((EditorMapUiMgr*)(uiMgr))->GetPath();
+	
 	for (auto& layer : greedObjs)
 	{
+
 		for (auto& objs : layer.second)
 		{
+			int i = objs.first;
 			for (auto& obj : objs.second)
 			{
+				int j = obj.first;
 				auto& nowObject = obj.second;
 				ObjectData data;
 				data.type = nowObject->GetType();
 				data.path = nowObject->GetPath();
 				data.position = nowObject->GetPos();
+				data.greedIdx = Vector2i{ i,j };
 				saveObjs.push_back(data);
 			}
 		}
