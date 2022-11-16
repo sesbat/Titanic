@@ -78,6 +78,8 @@ public:
 	States GetCurrState() { return currState; }
 	float GetStamina() { return stamina; }
 	bool GetIsDash() { return isDash; }
+	int GetHp() { return hp; }
+	int GetMaxHp() { return maxHp; }
 
 	void SetHp(int num);
 	//void OnPickupItem(Item* item);

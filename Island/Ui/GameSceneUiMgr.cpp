@@ -173,6 +173,9 @@ void GameSceneUiMgr::Update(float dt)
 		//hpBarSize -= 0.001f;
 		//hpBar->GetSpriteObj()->SetScale({ hpBarSize,0.2f });
 		hpBar->SetPos({300,100});
+
+		float playerHpBar = player->GetHp() / player->GetMaxHp();
+		hpBar->GetSpriteObj()->SetScale({ playerHpBar,1.0f });
 	}
 	else
 	{
