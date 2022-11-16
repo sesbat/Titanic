@@ -116,7 +116,7 @@ void Player::Update(float dt)
 		}
 		break;
 	case GunType::Rifle:
-		if (InputMgr::GetMouseButton(Mouse::Left))
+		if (InputMgr::GetMouseButtonDown(Mouse::Left))
 		{
 			gun->Fire(GetPos(), true);
 		}

@@ -39,7 +39,7 @@ private:
     bool isGunFlip;
 
     Vector2f lookDir;
-
+    Vector2f pos;
 public:
     Gun();
     Gun(GunType type, User user);

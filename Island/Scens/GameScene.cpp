@@ -33,7 +33,7 @@ void GameScene::Init()
 {
 	int id = 0;
 	isMap = true;
-	auto& data = FILE_MGR->GetMap("TUTORIAL");
+	auto& data = FILE_MGR->GetMap("TEST");
 
 	for (auto& obj : data)
 	{
