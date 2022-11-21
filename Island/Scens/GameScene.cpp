@@ -84,14 +84,6 @@ void GameScene::Init()
 			objList[LayerType::Tile][0].push_back(draw);
 		}
 	}
-	npc = new NPC();
-	npc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/npc.png"));
-	npc->SetOrigin(Origins::MC);
-	npc->SetPlayer(player);
-	npc->SetPos({ 100.f,100.f });
-	npc->SetName("NPC");
-	npc->Init();
-	objList[LayerType::Object][0].push_back(npc);
 
 	for (auto& enemy : enemies)
 	{

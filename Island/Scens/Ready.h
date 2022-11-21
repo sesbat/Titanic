@@ -3,10 +3,18 @@
 #include "../../GameObject/Animation/Animator.h"
 class SpriteObject;
 class Button;
+class NPC;
+class Player;
 class Ready : public Scene
 {
 protected:
-	SpriteObject* backGround;
+	Player* player;
+	NPC* npc;
+
+	float timer;
+	Clock clock;
+
+	IntRect mapSize;
 public:
 	Ready();
 	~Ready();
@@ -16,8 +24,9 @@ public:
 	virtual void Exit() override;
 	virtual void Update(float dt) override;
 	virtual void Draw(RenderWindow& window) override;
-
-	// Scene��(��) ���� ��ӵ�
 	virtual void Reset() override;
+
+	Player* GetPlayer() { return player; }
+	NPC* GetNPC() { return npc; }
 };
 

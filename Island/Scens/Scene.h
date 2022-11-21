@@ -14,7 +14,7 @@ enum class Scenes
 {
 	None = -1, Menu,Ready,MapEditor,Count,GameScene
 };
-// ¹Ù´Ú, Ç®, ¿ÀºêÁ§Æ® + º®(Æ¯¼ö), ¿¡³Ê¹Ì
+// ï¿½Ù´ï¿½, Ç®, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® + ï¿½ï¿½(Æ¯ï¿½ï¿½), ï¿½ï¿½ï¿½Ê¹ï¿½
 enum class LayerType
 {
 	None, Back, Tile, Object
