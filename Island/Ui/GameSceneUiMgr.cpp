@@ -125,14 +125,6 @@ void GameSceneUiMgr::Init()
 	energyBK->SetPos({ 700,100 });
 	uiObjList[0].push_back(energyBK);
 
-	//text
-	exitBtn = new Button(this);
-	exitBtn->SetClkColor(true);
-	exitBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		75, Color::White, "EXIT", true);
-	exitBtn->SetOrigin(Origins::TL);
-	exitBtn->SetPos({ 50,50 });
-	uiObjList[0].push_back(exitBtn);
 	inven = new Inventory(this);
 	inven->Init();
 	uiObjList[1].push_back(inven);
@@ -284,7 +276,3 @@ void GameSceneUiMgr::Draw(RenderWindow& window)
 }
 
 
-bool GameSceneUiMgr::IsExit()
-{
-	return exitBtn->IsDown() || exitBtn->IsClick();
-}

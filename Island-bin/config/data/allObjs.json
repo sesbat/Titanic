@@ -84,5 +84,11 @@
       "texPath": "graphics/block2.png",
       "uiPaht": "graphics/editor/drawBlock2.png"
     }
+  ],
+  "ANOTHER": [
+    {
+      "texPath": "graphics/exit.png",
+      "uiPaht": "graphics/editor/drawExit.png"
+    }
   ]
 }

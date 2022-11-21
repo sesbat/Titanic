@@ -83,6 +83,32 @@ void GameScene::Init()
 
 			objList[LayerType::Tile][0].push_back(draw);
 		}
+		else if (obj.type == "ANOTHER")
+		{
+			HitBoxObject* draw = new HitBoxObject();
+			draw->SetName(obj.type);
+			draw->SetTexture(*RESOURCES_MGR->GetTexture(obj.path));
+			draw->SetOrigin(Origins::BC);
+			draw->SetPos(obj.position);
+			draw->SetHitBox(obj.path);
+			escapePoint = obj.position;
+			escapePoint.y -= 100.f;
+
+			objList[LayerType::Object][0].push_back(draw);
+
+			missionText = new TextObject();
+			missionText->SetActive(false);
+			missionText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 80, Color::Green, to_string(escapeTimer));
+			missionText->SetTextLine(Color::Black, 1.f);
+			missionText->SetOrigin(Origins::BC);
+			missionText->SetPos(escapePoint);
+			objList[LayerType::Object][1].push_back(missionText);
+			//HitBoxObject* exit = new HitBoxObject();
+			//exit->SetTexture(*RESOURCES_MGR->GetTexture("graphics/exit.png"));
+			//exit->SetOrigin(Origins::BC);
+			//exit->SetPos(obj.position);
+			//objList[LayerType::Object][0].push_back(exit);
+		}
 	}
 	npc = new NPC();
 	npc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/npc.png"));
@@ -91,6 +117,7 @@ void GameScene::Init()
 	npc->SetPos({ 100.f,100.f });
 	npc->SetName("NPC");
 	npc->Init();
+	npc->SetHitBox("graphics/player.png");
 	objList[LayerType::Object][0].push_back(npc);
 
 	for (auto& enemy : enemies)
@@ -106,22 +133,16 @@ void GameScene::Init()
 
 	
 	//mission exit tile
-	escapePoint = { 1200.f,1650.f };
-	HitBoxObject* exit = new HitBoxObject();
-	exit->SetName("EXIT");
-	exit->SetTexture(*RESOURCES_MGR->GetTexture("graphics/exit.png"));
-	exit->SetOrigin(Origins::BC);
-	exit->SetPos(escapePoint);
-	objList[LayerType::Tile][0].push_back(exit);
+	//escapePoint = { 1200.f,1650.f };
 
-	missionText = new TextObject();
-	missionText->SetActive(false);
-	missionText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 80, Color::Green, to_string(escapeTimer));
-	missionText->SetTextLine(Color::Black, 1.f);
-	missionText->SetOrigin(Origins::MC);
-	missionText->SetPos(escapePoint);
-	objList[LayerType::Object][1].push_back(missionText);
-	//
+	//missionText = new TextObject();
+	//missionText->SetActive(false);
+	//missionText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 80, Color::Green, to_string(escapeTimer));
+	//missionText->SetTextLine(Color::Black, 1.f);
+	//missionText->SetOrigin(Origins::MC);
+	//missionText->SetPos(escapePoint);
+	//objList[LayerType::Object][1].push_back(missionText);
+	
 
 	uiMgr = new GameSceneUiMgr(this);
 	uiMgr->Init();
@@ -165,7 +186,7 @@ void GameScene::Update(float dt)
 			it++;
 	}
 
-	if (((GameSceneUiMgr*)uiMgr)->IsExit() || InputMgr::GetKeyDown(Keyboard::Escape))
+	if (InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		SCENE_MGR->ChangeScene(Scenes::Menu);
 		return;
@@ -203,11 +224,14 @@ void GameScene::Update(float dt)
 		//et = et.substr(0, et.find('.') + 2);
 		escapeTimer -= dt;
 		missionText->SetActive(true);
-		missionText->SetString("LEAVING IN " + to_string(escapeTimer));
+		string timer = to_string(escapeTimer); 
+		timer = timer.substr(0, timer.find('.') + 3);
+		missionText->SetString("LEAVING IN " + timer);
 	}
 	else
 	{
 		missionText->SetActive(false);
+		cout << "FALSE" << endl;
 		escapeTimer = 3.f;
 	}
 

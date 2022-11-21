@@ -51,6 +51,20 @@ void MapEditor::Reset()
 	greedObjs[nowType][0][0] = draw;
 
 	player = draw;
+
+	DrawObj* exit = new DrawObj(uiMgr);
+	auto exitData = editorObjs["ANOTHER"];
+	exit->SetType("ANOTHER");
+	exit->SetPath(exitData[0].texPath);
+	exit->SetTexture(*RESOURCES_MGR->GetTexture(exit->GetPath()), true);
+	exit->SetOrigin(Origins::BC);
+	exit->SetMove(false);
+	exit->SetPos(greeds[0][1]->GetPos() + Vector2f{ 30.f, 60.f });
+	exit->SetData(exitData[0]);
+	objList[nowType][0].push_back(exit);
+	greedObjs[nowType][0][0] = exit;
+
+	now_exit = exit;
 }
 
 void MapEditor::Update(float dt)
@@ -129,6 +143,8 @@ void MapEditor::Update(float dt)
 					return;
 				if (nowType == LayerType::Object &&playerPos == Vector2i{ i,j })
 					return;
+				if (nowType == LayerType::Object &&exitPos== Vector2i{ i,j })
+					return;
 
 				DrawObj* nowDraw = ((EditorMapUiMgr*)uiMgr)->GetDraw();
 				auto& nowGreedObjs = greedObjs[nowType];
@@ -201,6 +217,28 @@ void MapEditor::Update(float dt)
 					}
 					player = draw;
 					playerPos = { i,j };
+				}
+				if (nowDraw->GetType() == "ANOTHER")
+				{
+					if (now_exit != nullptr)
+					{
+						int ei = exitPos.x;
+						int ej = exitPos.y;
+						if (nowGreedObjs.find(ei) != nowGreedObjs.end())
+						{
+							if (nowGreedObjs[ei].find(ej) != nowGreedObjs[ei].end())
+							{
+								findObj = nowGreedObjs[ei][ej];
+								auto deleteObj = find(objList[nowType][ei].begin(), objList[nowType][ei].end(), findObj);
+								objList[nowType][ei].erase(deleteObj);
+								greedObjs[nowType][ei].erase(nowGreedObjs[ei].find(ej));
+
+								delete findObj;
+							}
+						}
+					}
+					now_exit = draw;
+					exitPos = { i,j };
 				}
 			}
 			else if (InputMgr::GetKey(Keyboard::LControl))
@@ -275,6 +313,7 @@ void MapEditor::Release()
 	greedObjs.clear();
 
 	player = nullptr;
+	now_exit = nullptr;
 
 }
 
@@ -284,7 +323,7 @@ MapEditor::~MapEditor()
 
 void MapEditor::SetType(string t)
 {
-	if (t == "TREE" ||t=="BUSH"|| t == "STONE" || t == "ENEMY" || t == "PLAYER" || t == "BLOCK")
+	if (t == "TREE" ||t=="BUSH"|| t == "STONE" || t == "ENEMY" || t == "PLAYER" || t == "BLOCK" || t == "ANOTHER")
 	{
 		nowType = LayerType::Object;
 	}
@@ -360,6 +399,7 @@ void MapEditor::Load(string path)
 	greedObjs.clear();
 
 	player = nullptr;
+	now_exit = nullptr;
 	auto& data = FILE_MGR->GetMap(path);
 	for (auto& obj : data)
 	{
@@ -373,7 +413,7 @@ void MapEditor::Load(string path)
 		
 		int i = ((int)obj.position.x-30) / 60;
 		int j = (int)obj.position.y / 60 - 1;
-		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "ENEMY" || obj.type == "PLAYER" || obj.type == "BLOCK")
+		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "ENEMY" || obj.type == "PLAYER" || obj.type == "BLOCK" || obj.type == "ANOTHER")
 		{
 			objList[LayerType::Object][j].push_back(draw);
 			greedObjs[LayerType::Object][j][i] = draw;
@@ -382,6 +422,11 @@ void MapEditor::Load(string path)
 			{
 				player = draw;
 				playerPos = Vector2i{ j,i };
+			}
+			if (obj.type == "ANOTHER")
+			{
+				now_exit = draw;
+				exitPos = Vector2i{ j,i };
 			}
 		}
 		else if (obj.type == "TILE")

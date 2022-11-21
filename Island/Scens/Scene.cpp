@@ -24,6 +24,7 @@ void Scene::Release()
 	moves.clear();
 	drawObjs.clear();
 	alphaObj.clear();
+	another.clear();
 	if (uiMgr != nullptr)
 	{
 		((MenuUiMgr*)uiMgr)->Release();
@@ -117,6 +118,10 @@ void Scene::Draw(RenderWindow& window)
 				o->Draw(window);
 			}
 		}
+		for (auto& obj : another)
+		{
+			obj->Draw(window);
+		}
 		for (auto& obj : drawObjs)
 		{
 			obj->Draw(window);
@@ -167,6 +172,7 @@ void Scene::LayerSort()
 {
 	moves.clear();
 	drawObjs.clear();
+	another.clear();
 	HitBoxObject* player = nullptr;
 
 	for (auto& obj : alphaObj)
@@ -176,26 +182,29 @@ void Scene::LayerSort()
 
 	alphaObj.clear();
 
-	for (auto& objss : objList[LayerType::Object])
+	for (auto& obj : objList[LayerType::Object][0])
 	{
-		for (auto& obj : objss.second)
+		if (!(((SpriteObject*)obj)->IsInView()))
 		{
-			if (!(((SpriteObject*)obj)->IsInView()))
-			{
-				continue;
-			}
-			if (obj->GetName() == "TREE" || obj->GetName() == "BUSH" || obj->GetName() == "STONE" || obj->GetName() == "BLOCK" || obj->GetName() == "NPC")
-			{
-				if (obj->GetName() == "TREE" || obj->GetName() == "BUSH")
-					alphaObj.push_back((HitBoxObject*)obj);
-				drawObjs.push_back(obj);
-			}
-			else if (obj->GetName() == "ENEMY" || obj->GetName() == "PLAYER")
-			{
-				if (obj->GetName() == "PLAYER")
-					player = ((HitBoxObject*)obj);
-				moves.push_back(obj);
-			}
+			continue;
+		}
+		if (obj->GetName() == "TREE" || obj->GetName() == "BUSH" || obj->GetName() == "STONE" || obj->GetName() == "BLOCK" )
+		{
+			if (obj->GetName() == "TREE" || obj->GetName() == "BUSH")
+				alphaObj.push_back((HitBoxObject*)obj);
+
+			drawObjs.push_back(obj);
+
+		}
+		if (obj->GetName() == "ANOTHER")
+		{
+			another.push_back(obj);
+		}
+		else if (obj->GetName() == "ENEMY" || obj->GetName() == "PLAYER" || obj->GetName() == "NPC")
+		{
+			if (obj->GetName() == "PLAYER")
+				player = ((HitBoxObject*)obj);
+			moves.push_back(obj);
 		}
 	}
 

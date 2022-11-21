@@ -32,6 +32,7 @@ protected:
 	UiMgr* uiMgr;
 
 	vector<Object*> moves;
+	vector<Object*> another;
 	vector<Object*> drawObjs;
 	vector<HitBoxObject*> alphaObj;
 	bool isMap;

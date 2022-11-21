@@ -14,7 +14,6 @@ protected:
 	vector<Button*> maps;
 	Button* mapsBK;
 
-	Button* exitBtn;
 	Inventory* inven;
 
 	Button* hpBar;
@@ -48,6 +47,5 @@ public:
 	virtual void Draw(RenderWindow& window);
 
 	void SetPlayer(Player* player);
-	bool IsExit();
 };
 
