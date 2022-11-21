@@ -191,6 +191,8 @@ void GameScene::Update(float dt)
 	//mission
 	if (Utils::Distance(player->GetPos(), escapePoint) < 100.f)
 	{
+		//string et = to_string(escapeTimer);
+		//et = et.substr(0, et.find('.') + 2);
 		escapeTimer -= dt;
 		missionText->SetActive(true);
 		missionText->SetString("LEAVING IN " + to_string(escapeTimer));

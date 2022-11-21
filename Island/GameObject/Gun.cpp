@@ -145,7 +145,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 	case GunType::Shotgun:
 	{	
 		Vector2f startPos;
-		startPos = transform.transformPoint(80,0);
+		startPos = transform.transformPoint(100,0);
 		bulletSpeed = 1000;
 		range = 200;
 
@@ -182,7 +182,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 	{
 		Vector2f startPos;
 		startPos = transform.transformPoint(100, 0);
-		bulletSpeed = 600;
+		bulletSpeed = 800;
 		range = 700;
 		Bullet* bullet = bulletPool.Get();
 		bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
@@ -194,7 +194,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 	{
 		Vector2f startPos;
 		startPos = transform.transformPoint(120, 0);
-		bulletSpeed = 500;
+		bulletSpeed = 2000;
 		range = 1500;
 		Bullet* bullet = bulletPool.Get();
 		bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniperbullet.png"));

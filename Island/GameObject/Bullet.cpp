@@ -4,10 +4,11 @@
 #include "HitBoxObject.h"
 #include "Enemy.h"
 #include "../Scens/SceneManager.h"
+#include "../Framework/InputMgr.h"
 #include <iostream>
 
 Bullet::Bullet()
-	:dir(), speed(0.f), range(0.f)
+	:dir(), speed(0.f), range(0.f), showLine(false)
 {
 }
 
@@ -49,6 +50,10 @@ void Bullet::Update(float dt)
 		}
 		nextPos = GetPos() - dir * ((float)sprite.getLocalBounds().width);
 	}
+	if (InputMgr::GetKeyDown(Keyboard::P))
+	{
+		showLine = !showLine;
+	}
 }
 
 void Bullet::Draw(RenderWindow& window)
@@ -56,8 +61,11 @@ void Bullet::Draw(RenderWindow& window)
 	VertexArray lines(LineStrip, 2);
 	lines[0].position = { startPos - dir * ((float)sprite.getLocalBounds().width) };
 	lines[1].position = { nextPos };
-	window.draw(lines);
-
+	if (showLine)
+	{
+		window.draw(lines);
+	}
+	
 	SpriteObject::Draw(window);
 	
 }

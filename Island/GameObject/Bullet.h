@@ -22,7 +22,7 @@ private:
 	Vector2f nextPos;
 
 	bool isplayer;
-
+	bool showLine;
 public:
 	Bullet();
 	~Bullet();
