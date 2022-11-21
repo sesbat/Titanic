@@ -4,6 +4,11 @@ class UiMgr;
 class InvenItem;
 class InvenGreed;
 class InventoryBox;
+
+enum class InvenIdx
+{
+	None = -1, Weapon1, Weapon2, Cloth1, Cloth2, item1, item2, item3, item4, Count
+};
 class Inventory : public Button
 {
 private:
@@ -14,6 +19,12 @@ private:
 	InventoryBox* myInven;
 	InventoryBox* rightInven;
 	InventoryBox* prevInven;
+
+	Button* invenItemGreed[(int)InvenIdx::Count];
+	vector<InvenItem*> myUseItems;
+
+	int useIdx;
+
 
 public:
 	Inventory(UiMgr* mgr);
@@ -29,5 +40,6 @@ public:
 	InventoryBox* GetPairBox(InventoryBox* now);
 	void SetPrevInven(InventoryBox* inven) { this->prevInven = inven; }
 	void MoveInvenItem(InventoryBox* nextInven);
+	void ReturnUseItem();
 
 };

@@ -10,7 +10,7 @@
 #include "../Framework/info.h"
 
 Inventory::Inventory(UiMgr* mgr)
-	: Button(mgr), totalWeight(0.f), nowDrag(nullptr), prevInven(nullptr)
+	: Button(mgr), totalWeight(0.f), nowDrag(nullptr), prevInven(nullptr), useIdx(-1)
 {
 }
 
@@ -27,6 +27,18 @@ void Inventory::Init()
 	rightInven = new InventoryBox(uimgr, this, Vector2i{ 1248,252 });
 	rightInven->Init();
 	rightInven->SetName("RightInventory");
+
+	Vector2f invenPos[] = { {800.f,140.f},{800.f,310.f},{800.f,471.f},{991.f,471.f},{800.f,721.f},{888.f,721.f},{972.f,721.f},{1055.f,721.f} };
+	string invenPath[] = { "inven-weapon","inven-weapon" ,"inven-cloth" ,"inven-cloth" ,"inven-item","inven-item" ,"inven-item" ,"inven-item" };
+	
+	for (int i = 0; i < 8; i++)
+	{
+		invenItemGreed[i] = new Button(uimgr);
+		invenItemGreed[i]->SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/" + invenPath[i] + ".png"), true);
+		invenItemGreed[i]->SetPos(invenPos[i]);
+		invenItemGreed[i]->SetClkColor(false);
+	}
+	myUseItems = { nullptr,nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 }
 
 void Inventory::Update(float dt)
@@ -37,7 +49,6 @@ void Inventory::Update(float dt)
 	myInven->Update(dt);
 	rightInven->Update(dt);
 
-
 	if (InputMgr::GetKeyDown(Keyboard::Q))
 	{
 		myInven->AddItem("Recoverykit");
@@ -45,6 +56,10 @@ void Inventory::Update(float dt)
 	if (InputMgr::GetKeyDown(Keyboard::W))
 	{
 		myInven->AddItem("handsaw");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::T))
+	{
+		myInven->AddItem("Armor-1");
 	}
 	if (InputMgr::GetKeyDown(Keyboard::E))
 	{
@@ -59,13 +74,87 @@ void Inventory::Update(float dt)
 	{
 		prevInven->ReturnItem();
 	}
+	int i = 0;
+	for (auto& useItem : invenItemGreed)
+	{
+		if (useItem == nullptr)
+			continue;
+		useItem->Update(dt);
+
+		if (useItem->IsUp())
+		{
+			if (nowDrag != nullptr && myUseItems[i] == nullptr)
+			{
+				string itemName = nowDrag->GetName();
+				if (itemName == "Recoverykit")
+				{
+					if (!(i > 3 && i < 8))
+					{
+						prevInven->ReturnItem();
+						break;
+					}
+				}
+				if (itemName == "Armor-1")
+				{
+					if (i != 2)
+					{
+						prevInven->ReturnItem();
+						break;
+					}
+				}
+				//nowDrag->SetPos(useItem->GetPos());
+				nowDrag->SetInvenPos(useItem->GetPos());
+				auto item = prevInven->GetItems();
+
+				auto find_item = find(item->begin(), item->end(), nowDrag);
+				if (find_item != item->end())
+					item->erase(find_item);
+
+				myUseItems[i] = nowDrag;
+				SetDrag(nullptr);
+				useIdx = -1;
+			}
+		}
+		i++;
+	}
+	i = 0;
+	for (auto& useItem : myUseItems)
+	{
+		if (nowDrag != nullptr)
+			break;
+		if (useItem != nullptr)
+		{
+			useItem->Update(dt);
+			if (useItem->IsDown())
+			{
+				SetDrag(useItem);
+				prevInven = myInven;
+				SetPrevInven(myInven);
+				useItem = nullptr;
+				useIdx = i;
+				break;
+			}
+		}
+		i++;
+	}
 }
 
 void Inventory::Draw(RenderWindow& window)
 {
 	if (!enabled)
 		return;
+
 	Button::Draw(window);
+	for (auto& useItem : invenItemGreed)
+	{
+		if(useItem != nullptr)
+			useItem->Draw(window);
+	}
+	for (auto& useItem : myUseItems)
+	{
+		if (useItem != nullptr)
+			useItem->Draw(window);
+	}
 	myInven->Draw(window);
 	rightInven->Draw(window);
 
@@ -100,9 +189,21 @@ void Inventory::MoveInvenItem(InventoryBox* nextInven)
 	auto prev = prevInven->GetItems();
 	auto next = nextInven->GetItems();
 
-	prev->erase(find(prev->begin(), prev->end(), nowDrag));
+	auto find_item = find(prev->begin(), prev->end(), nowDrag);
+	if(find_item != prev->end())
+		prev->erase(find_item);
 	next->push_back(nowDrag);
 }
+
+void Inventory::ReturnUseItem()
+{
+	nowDrag->SetInvenPos(invenItemGreed[useIdx]->GetPos());
+	myUseItems[useIdx] = nowDrag;
+	SetDrag(nullptr);
+	SetPrevInven(nullptr);
+	useIdx = -1;
+}
+
 InvenGreed* Inventory::GetGreed(int i, int j)
 {
 	InventoryBox* inven = GetNowInven();

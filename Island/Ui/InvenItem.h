@@ -26,6 +26,7 @@ public:
 	int GetMaxCount() { return maxCount; }
 	void Set(int width, int height, Vector2i invenPos,Vector2i invenGreedPos, string path, int maxCount);
 	void SetInvenPos(Vector2i invenPos, Vector2i invenGreedPos);
+	void SetInvenPos(Vector2f invenGreedPos);
 	Vector2i GetInvenPos() { return invenPos; }
 	Vector2i GetGreedPos() { return invenGreedPos; }
 	int GetWidth() { return width; }

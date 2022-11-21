@@ -47,7 +47,7 @@ void GameScene::Init()
 
 			draw->SetHitBox(obj.path);
 
-			int i = ((int)obj.position.x - 30) / 60;
+			int i = ((int)obj.position.x - 30) / 60;	
 			int j = (int)obj.position.y / 60 - 1;
 			objList[LayerType::Object][0].push_back(draw);
 		}

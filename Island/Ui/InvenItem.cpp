@@ -64,6 +64,15 @@ void InvenItem::SetInvenPos(Vector2i invenPos, Vector2i invenGreedPos)
 	GetTextObj()->SetPos(position + Vector2f(60, 60));
 }
 
+void InvenItem::SetInvenPos(Vector2f invenGreedPos)
+{
+	this->invenPos = (Vector2i)invenGreedPos;
+
+	SetPos((Vector2f)invenPos);
+	GetTextObj()->SetPos(position + Vector2f(60, 60));
+	this->invenGreedPos = { -1,-1 };
+}
+
 void InvenItem::AddCount(int n)
 {
 	count += n;

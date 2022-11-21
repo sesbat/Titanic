@@ -255,6 +255,11 @@ void InventoryBox::MoveItem(int i, int j)
 		}
 	}
 
+	if (find(items.begin(), items.end(), nowDrag) == items.end())
+	{
+		items.push_back(nowDrag);
+	}
+
 	inven->MoveInvenItem(this);
 	inven->SetDrag(nullptr);
 	inven->SetPrevInven(nullptr);
@@ -264,6 +269,13 @@ void InventoryBox::ReturnItem()
 {
 	int i = nowDrag->GetGreedPos().x;
 	int j = nowDrag->GetGreedPos().y;
+
+	if (i == -1 || j == -1)
+	{
+		inven->ReturnUseItem();
+		return;
+	}
+
 	nowDrag->SetInvenPos({ startPos.x + i * 60 + padding * i , startPos.y + j * 60 + padding * j },
 		{ i, j });
 
