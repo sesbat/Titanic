@@ -6,6 +6,7 @@
 #include "../../Ui/EditorMapUiMgr.h"
 #include "../../Ui/DrawObj.h"
 #include "../../Framework/InputMgr.h"
+#include "../GameObject/SpriteObject.h"
 #include <algorithm>
 
 MapEditor::MapEditor()
@@ -85,7 +86,7 @@ void MapEditor::Update(float dt)
 		return;
 	}
 
-	if (InputMgr::GetMouseButtonDown(Mouse::Right))
+	if ((!InputMgr::GetKey(Keyboard::LControl)) && InputMgr::GetMouseButtonDown(Mouse::Right))
 	{
 		initMousePos = InputMgr::GetMousePos();
 		isMove = true;
@@ -201,6 +202,20 @@ void MapEditor::Update(float dt)
 					player = draw;
 					playerPos = { i,j };
 				}
+			}
+			else if (InputMgr::GetKey(Keyboard::LControl))
+			{
+				if (nowType == LayerType::Tile)
+					continue;
+				if (greedObjs[nowType].find(i) == greedObjs[nowType].end())
+					continue;
+				if (greedObjs[nowType][i].find(j) == greedObjs[nowType][i].end())
+					continue;
+				if((greedObjs[nowType][i][j]->GetType() != "ENEMY") && (greedObjs[nowType][i][j]->GetType() != "BOX"))
+					continue;
+
+				if(greeds[i][j]->IsUpRight())
+					cout << greedObjs[nowType][i][j]->GetType() << endl;
 			}
 		}
 	}

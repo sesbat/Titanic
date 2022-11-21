@@ -228,7 +228,7 @@ void GameSceneUiMgr::Update(float dt)
 
 	UiMgr::Update(dt);
 
-	if (InputMgr::GetKeyDown(Keyboard::B))
+	if (InputMgr::GetKeyDown(Keyboard::Tab))
 	{
 		inven->SetActive(!(inven->GetActive()));
 	}
