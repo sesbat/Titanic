@@ -158,6 +158,7 @@
     <ClCompile Include="GameObject\HitBox.cpp" />
     <ClCompile Include="GameObject\HitBoxObject.cpp" />
     <ClCompile Include="GameObject\Gun.cpp" />
+    <ClCompile Include="GameObject\NPC.cpp" />
     <ClCompile Include="Ui\InventoryBox.cpp" />
     <ClCompile Include="Ui\InvenGreed.cpp" />
     <ClCompile Include="Ui\InvenItem.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="GameObject\HitBox.h" />
     <ClInclude Include="GameObject\HitBoxObject.h" />
     <ClInclude Include="GameObject\Gun.h" />
+    <ClInclude Include="GameObject\NPC.h" />
     <ClInclude Include="Ui\InventoryBox.h" />
     <ClInclude Include="Ui\InvenGreed.h" />
     <ClInclude Include="Ui\InvenItem.h" />

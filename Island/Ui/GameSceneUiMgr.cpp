@@ -11,11 +11,11 @@
 #include "../GameObject/Player.h"
 #include "../Scens/GameScene.h"
 #include "../GameObject/TextObject.h"
+#include "../Framework/Framework.h"
+#include "../GameObject/NPC.h"
 
 GameSceneUiMgr::GameSceneUiMgr(Scene* scene)
-	:UiMgr(scene), hpBarSize(1.f), staminaBarSize(1.f), time(1.0f),
-	hungerGuage(255), thirstGuage(255), energyGuage(255), dash(0.01f),
-	prevHungerGuage(255)
+	:UiMgr(scene), hpBarSize(1.f),staminaBarSize(1.f)
 {
 }
 
@@ -25,12 +25,15 @@ GameSceneUiMgr::~GameSceneUiMgr()
 
 void GameSceneUiMgr::Init()
 {
+	player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
+	npc = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetNPC();
+
 	//hp
 	hpBar = new Button(this);
 	hpBar->SetClkColor(false);
-	hpBar->SetTexture(*RESOURCES_MGR->GetTexture("graphics/hpbar.png"),false);
+	hpBar->SetTexture(*RESOURCES_MGR->GetTexture("graphics/hpbar.png"), false);
 	hpBar->SetOrigin(Origins::ML);
-	hpBar->SetPos({300,100});
+	hpBar->SetPos({ 300,100 });
 	uiObjList[0].push_back(hpBar);
 
 	hpBarBK = new Button(this);
@@ -75,7 +78,7 @@ void GameSceneUiMgr::Init()
 	hunger = new Button(this);
 	hunger->SetClkColor(false);
 	hunger->SetTexture(*RESOURCES_MGR->GetTexture("graphics/hunger.png"), false);
-	hunger->GetSpriteObj()->SetColor(Color(169, 57, 53, (int)hungerGuage));
+	hunger->GetSpriteObj()->SetColor(Color(169, 57, 53, (int)player->GetHungerGuage()));
 	hunger->SetOrigin(Origins::MC);
 	//hunger->GetSpriteObj()->SetScale({ 0.5f,0.5f });
 	hunger->SetPos({ 500,100 });
@@ -92,7 +95,7 @@ void GameSceneUiMgr::Init()
 	thirst = new Button(this);
 	thirst->SetClkColor(false);
 	thirst->SetTexture(*RESOURCES_MGR->GetTexture("graphics/thirst.png"), false);
-	thirst->GetSpriteObj()->SetColor(Color(0, 145, 255, (int)thirstGuage));
+	thirst->GetSpriteObj()->SetColor(Color(0, 145, 255, (int)player->GetThirstGuage()));
 	thirst->SetOrigin(Origins::MC);
 	thirst->SetPos({ 600,100 });
 	uiObjList[0].push_back(thirst);
@@ -108,7 +111,7 @@ void GameSceneUiMgr::Init()
 	energy = new Button(this);
 	energy->SetClkColor(false);
 	energy->SetTexture(*RESOURCES_MGR->GetTexture("graphics/energy.png"), false);
-	energy->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)energyGuage));
+	energy->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)player->GetEnergyGuage()));
 	energy->SetOrigin(Origins::MC);
 	energy->GetSpriteObj()->SetScale({ 1.5f,1.5f });
 	energy->SetPos({ 700,100 });
@@ -134,12 +137,12 @@ void GameSceneUiMgr::Init()
 	inven->Init();
 	uiObjList[1].push_back(inven);
 	inven->SetActive(false);
-	
+
 
 	hungerTex = new Button(this);
 	hungerTex->SetClkColor(true);
 	hungerTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		20, Color::White, to_string((int)((hungerGuage / 255) * 100)), true);
+		20, Color::White, to_string(((player->GetHungerGuage() / 255) * 100)), true);
 	hungerTex->SetOrigin(Origins::MC);
 	hungerTex->SetPos({ 500,50 });
 	uiObjList[0].push_back(hungerTex);
@@ -147,7 +150,7 @@ void GameSceneUiMgr::Init()
 	thirstTex = new Button(this);
 	thirstTex->SetClkColor(true);
 	thirstTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		20, Color::White, to_string((int)((thirstGuage / 255) * 100)), true);
+		20, Color::White, to_string(((player->GetThirstGuage() / 255) * 100)), true);
 	thirstTex->SetOrigin(Origins::MC);
 	thirstTex->SetPos({ 600,50 });
 	uiObjList[0].push_back(thirstTex);
@@ -155,12 +158,38 @@ void GameSceneUiMgr::Init()
 	energyTex = new Button(this);
 	energyTex->SetClkColor(true);
 	energyTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		20, Color::White, to_string((int)((energyGuage / 255) * 100)), true);
+		20, Color::White, to_string(((player->GetEnergyGuage() / 255) * 100)), true);
 	energyTex->SetOrigin(Origins::MC);
 	energyTex->SetPos({ 700,50 });
 	uiObjList[0].push_back(energyTex);
 
-	player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
+
+	mapsBK = new Button(this);
+	mapsBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/mapsbk.png"), false);
+	mapsBK->SetPos({
+		(float)FRAMEWORK->GetWindowSize().x / 2,(float)FRAMEWORK->GetWindowSize().y / 2 });
+	mapsBK->SetOrigin(Origins::MC);
+	mapsBK->SetActive(false);
+	uiObjList[0].push_back(mapsBK);
+
+	auto map = new Button(this);
+	map->SetClkColor(true);
+	map->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 200, Color::White
+		, "map1", true);
+	map->SetPos({ 400,300 });
+	maps.push_back(map);
+
+	auto map1 = new Button(this);
+	map1->SetClkColor(true);
+	map1->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 200, Color::White
+		, "map2", true);
+	map1->SetPos({ 1000,300 });
+	maps.push_back(map1);
+
+	for (auto& map : maps)
+	{
+		uiObjList[0].push_back(map);
+	}
 }
 
 void GameSceneUiMgr::Reset()
@@ -169,36 +198,37 @@ void GameSceneUiMgr::Reset()
 
 void GameSceneUiMgr::Update(float dt)
 {
+	if (npc->GetShowMap())
+	{
+		mapsBK->SetActive(true);
+		for (auto& map : maps)
+		{
+			map->SetActive(true);
+		}
+	}
+	else
+	{
+		mapsBK->SetActive(false);
+		for (auto& map : maps)
+		{
+			map->SetActive(false);
+		}
+	}
 	//hp bar
 	hpBarSize = (float)player->GetHp() * 0.1f;
 	hpBar->GetSpriteObj()->SetScale({ hpBarSize,1.f });
-
-	//dev input
-	if (InputMgr::GetKeyDown(Keyboard::Num0))
-	{
-		hungerGuage = 255;
-	}
-	if (InputMgr::GetKeyDown(Keyboard::Num9))
-	{
-		hpBarSize -= 0.1f;
-	}
 
 	//stamina
 	staminaBarSize = player->GetStamina() * 0.1f;
 	staminaBar->GetSpriteObj()->SetScale({ staminaBarSize,1.f });
 
-	//hunger guage
-	hungerGuage -= 0.1f;
-	if (hungerGuage <= 0.f)
+
+	if (!player->Hunger())
 	{
-		hungerGuage = 0.f;
-	}
-	if ((int)hungerGuage != prevHungerGuage)
-	{
-		prevHungerGuage = (int)hungerGuage;
-		int result = (int)((hungerGuage / 255) * 100);
+		player->SetPrevHungerGuage(player->GetHungerGuage());
+		int result = ((player->GetHungerGuage() / 255) * 100);
 		hungerTex->GetTextObj()->SetString(to_string(result));
-		hunger->GetSpriteObj()->SetColor(Color(169, 57, 53, hungerGuage));
+		hunger->GetSpriteObj()->SetColor(Color(169, 57, 53, (int)player->GetHungerGuage()));
 		if (result < 30.f)
 		{
 			hungerTex->GetTextObj()->SetColor(Color::Red);
@@ -206,6 +236,36 @@ void GameSceneUiMgr::Update(float dt)
 		else
 		{
 			hungerTex->GetTextObj()->SetColor(Color::White);
+		}
+	}
+	if (!player->Thirst())
+	{
+		player->SetPrevThirstGuage(player->GetThirstGuage());
+		int result = ((player->GetThirstGuage() / 255) * 100);
+		thirstTex->GetTextObj()->SetString(to_string(result));
+		thirst->GetSpriteObj()->SetColor(Color(0, 145, 255, (int)player->GetThirstGuage()));
+		if (result < 30.f)
+		{
+			thirstTex->GetTextObj()->SetColor(Color::Red);
+		}
+		else
+		{
+			thirstTex->GetTextObj()->SetColor(Color::White);
+		}
+	}
+	if (!player->Energy())
+	{
+		player->SetPrevEnergyGuage(player->GetEnergyGuage());
+		int result = ((player->GetEnergyGuage() / 255) * 100);
+		energyTex->GetTextObj()->SetString(to_string(result));
+		energy->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)player->GetEnergyGuage()));
+		if (result < 30.f)
+		{
+			energyTex->GetTextObj()->SetColor(Color::Red);
+		}
+		else
+		{
+			energyTex->GetTextObj()->SetColor(Color::White);
 		}
 	}
 
