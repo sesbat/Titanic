@@ -9,10 +9,6 @@ class GameSceneUiMgr : public UiMgr
 {
 protected:
 	Player* player;
-	NPC* npc;
-
-	vector<Button*> maps;
-	Button* mapsBK;
 
 	Inventory* inven;
 

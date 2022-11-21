@@ -1,20 +1,28 @@
 #pragma once
 #include "../UiMgr.h"
+#include <vector>
 
 class ReadyButton;
 class Scene;
+class Player;
+class NPC;
+class Button;
 class ReadyUiMgr : public UiMgr
 {
 private:
-	ReadyButton* episode;
-	ReadyButton* editor;
+	Player* player;
+	NPC* npc;
 
+	UiMgr* uiMgr;
+
+	vector<Button*> maps;
+	Button* mapsBK;
 public:
 	ReadyUiMgr(Scene* scene);
-	virtual void Update(float dt) override;
-	virtual void Init() override;
-	virtual void Release() override;
-	virtual void Reset() override;
+	virtual void Init();
+	virtual void Release();
+	virtual void Update(float dt);
+	virtual void Draw(RenderWindow& window);
 
 	void ClickEpisodeBtn();
 

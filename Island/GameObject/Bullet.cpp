@@ -149,7 +149,6 @@ bool Bullet::Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, floa
 
 void Bullet::Collision()
 {
-	
 	auto obj = scene->GetObjList();
 	for (auto& objects : obj[LayerType::Object][0])
 	{
@@ -161,7 +160,7 @@ void Bullet::Collision()
 			continue;
 
 		if (objects->GetName() == "TREE" ||
-			//objects->GetName() == "STONE" ||
+			objects->GetName() == "STONE" ||
 			objects->GetName() == "BLOCK")
 		{
 			if (LineRect(

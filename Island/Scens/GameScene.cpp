@@ -36,7 +36,7 @@ void GameScene::Init()
 {
 	int id = 0;
 	isMap = true;
-	auto& data = FILE_MGR->GetMap("TUTORIAL");
+	auto& data = FILE_MGR->GetMap(sceneName);
 
 	for (auto& obj : data)
 	{
@@ -110,15 +110,6 @@ void GameScene::Init()
 			//objList[LayerType::Object][0].push_back(exit);
 		}
 	}
-	npc = new NPC();
-	npc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/npc.png"));
-	npc->SetOrigin(Origins::MC);
-	npc->SetPlayer(player);
-	npc->SetPos({ 100.f,100.f });
-	npc->SetName("NPC");
-	npc->Init();
-	npc->SetHitBox("graphics/player.png");
-	objList[LayerType::Object][0].push_back(npc);
 
 	for (auto& enemy : enemies)
 	{
@@ -186,11 +177,6 @@ void GameScene::Update(float dt)
 			it++;
 	}
 
-	if (InputMgr::GetKeyDown(Keyboard::Escape))
-	{
-		SCENE_MGR->ChangeScene(Scenes::Menu);
-		return;
-	}
 
 	LayerSort();
 	
@@ -237,13 +223,13 @@ void GameScene::Update(float dt)
 
 	if (escapeTimer <= 0.f)
 	{
-		SCENE_MGR->ChangeScene(Scenes::Menu);
+		SCENE_MGR->ChangeScene(Scenes::Ready);
 		return;
 	}
 
 	Scene::Update(dt);
 }
-
+	
 void GameScene::Draw(RenderWindow& window)
 {
 	window.setView(worldView);
