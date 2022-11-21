@@ -15,6 +15,7 @@ public:
 	virtual void Draw(RenderWindow& window);
 
 	void SetText(Font& font, int size, Color color, string str);
+	void SetTextLine(Color color, float size);
 	void SetPos(Vector2f pos);
 	void SetOrigin(Origins origin);
 	void SetString(string str);

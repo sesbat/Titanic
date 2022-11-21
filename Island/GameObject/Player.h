@@ -50,6 +50,7 @@ protected:
 	int maxHp;
 	bool isDash;
 	float stamina;
+	float maxStamina;
 
 	//bool isAlive;
 public:
@@ -78,8 +79,10 @@ public:
 	States GetCurrState() { return currState; }
 	float GetStamina() { return stamina; }
 	bool GetIsDash() { return isDash; }
-
+	
 	void SetHp(int num);
+	int GetHp() { return hp; }
+
 	//void OnPickupItem(Item* item);
 	void SetPlayerPos();
 	Vector2f SetLookDir();

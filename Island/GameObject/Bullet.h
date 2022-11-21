@@ -19,10 +19,10 @@ private:
 	float range;
 
 	Vector2f startPos;
-	Vector2f prevPos;
+	Vector2f nextPos;
 
 	bool isplayer;
-
+	bool showLine;
 public:
 	Bullet();
 	~Bullet();

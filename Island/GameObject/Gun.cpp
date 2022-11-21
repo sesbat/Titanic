@@ -30,7 +30,7 @@ Gun::Gun()
 }
 
 Gun::Gun(GunType type, User user)
-	:gunType(GunType::Shotgun), isGunFlip(false), bulletSpeed(10000), range(2000), user(user)
+	:gunType(type), isGunFlip(false), bulletSpeed(10000), range(2000), user(user)
 {
 }
 
@@ -82,8 +82,6 @@ void Gun::Update(float dt)
 		GetSprite().setRotation(angle);
 
 		SetPos({ player->GetPos().x,player->GetPos().y + 10.f });
-
-		//input
 		
 	}
 		break;
@@ -133,12 +131,21 @@ void Gun::SetEnemy(Enemy* enemy)
 
 void Gun::Fire(Vector2f pos, bool isplayer)
 {
+	Transform translation;
+	translation.translate(pos);
+
+	float angle = Utils::Angle(lookDir);
+	Transform rotation;
+	rotation.rotate(angle);
+
+	Transform transform = translation * rotation;
+
 	switch (gunType)
 	{
 	case GunType::Shotgun:
 	{	
-		Vector2f startPos = { pos };
-		startPos += lookDir * 80.f;
+		Vector2f startPos;
+		startPos = transform.transformPoint(100,0);
 		bulletSpeed = 1000;
 		range = 200;
 
@@ -173,9 +180,9 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 	break;
 	case GunType::Rifle:
 	{
-		Vector2f startPos = { pos };
-		startPos += lookDir * 180.f;
-		bulletSpeed = 400;
+		Vector2f startPos;
+		startPos = transform.transformPoint(100, 0);
+		bulletSpeed = 800;
 		range = 700;
 		Bullet* bullet = bulletPool.Get();
 		bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
@@ -185,13 +192,13 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		break;
 	case GunType::Sniper:
 	{
-		Vector2f startPos = { pos };
-		startPos += lookDir * 180.f;
-		bulletSpeed = 5000;
+		Vector2f startPos;
+		startPos = transform.transformPoint(120, 0);
+		bulletSpeed = 2000;
 		range = 1500;
 		Bullet* bullet = bulletPool.Get();
 		bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniperbullet.png"));
-		
+		bullet->SetOrigin(Origins::MR);
 		bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 	}
 		break;
