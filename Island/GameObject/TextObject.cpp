@@ -19,6 +19,10 @@ void TextObject::Update(float dt)
 
 void TextObject::Draw(RenderWindow& window)
 {
+	if (!enabled)
+	{
+		return;
+	}
 	window.draw(text);
 	Object::Draw(window);
 }
@@ -29,6 +33,12 @@ void TextObject::SetText(Font& font, int size, Color color, string str)
 	text.setCharacterSize(size);
 	text.setString(str);
 	text.setFillColor(color);
+}
+
+void TextObject::SetTextLine(Color color, float size)
+{
+	text.setOutlineColor(color);
+	text.setOutlineThickness(size);
 }
 
 void TextObject::SetPos(Vector2f pos)

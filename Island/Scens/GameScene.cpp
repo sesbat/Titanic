@@ -16,12 +16,15 @@
 #include "../GameObject/HitBoxObject.h"
 #include <fstream>
 #include <algorithm>
+#include <cmath>
 #include "../Ui/GameSceneUiMgr.h"
+
+
 using namespace std;
 using namespace sf;
 
 GameScene::GameScene()
-	:Scene(Scenes::GameScene), timer(0.f)
+	:Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f)
 {
 }
 
@@ -44,11 +47,8 @@ void GameScene::Init()
 			draw->SetTexture(*RESOURCES_MGR->GetTexture(obj.path));
 			draw->SetOrigin(Origins::BC);
 			draw->SetPos(obj.position);
-
 			draw->SetHitBox(obj.path);
 
-			int i = ((int)obj.position.x - 30) / 60;
-			int j = (int)obj.position.y / 60 - 1;
 			objList[LayerType::Object][0].push_back(draw);
 		}
 		else if(obj.type == "PLAYER")
@@ -79,11 +79,8 @@ void GameScene::Init()
 			draw->SetTexture(*RESOURCES_MGR->GetTexture(obj.path));
 			draw->SetOrigin(Origins::BC);
 			draw->SetPos(obj.position);
-
 			draw->SetHitBox(obj.path);
 
-			int i = ((int)obj.position.x - 30) / 60;
-			int j = (int)obj.position.y / 60 - 1;
 			objList[LayerType::Tile][0].push_back(draw);
 		}
 	}
@@ -92,13 +89,31 @@ void GameScene::Init()
 	{
 		enemy->Init(player);
 	}
-	//prevWorldPos = player->GetPos();
 
 	auto& tiles = objList[LayerType::Tile][0];
 	mapSize.left = 0;
 	mapSize.top = 0;
 	mapSize.width = (tiles.back())->GetPos().x + 30;
 	mapSize.height = (tiles.back())->GetPos().y;
+
+	
+	//mission exit tile
+	escapePoint = { 1200.f,1650.f };
+	HitBoxObject* exit = new HitBoxObject();
+	exit->SetName("EXIT");
+	exit->SetTexture(*RESOURCES_MGR->GetTexture("graphics/exit.png"));
+	exit->SetOrigin(Origins::BC);
+	exit->SetPos(escapePoint);
+	objList[LayerType::Tile][0].push_back(exit);
+
+	missionText = new TextObject();
+	missionText->SetActive(false);
+	missionText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 80, Color::Green, to_string(escapeTimer));
+	missionText->SetTextLine(Color::Black, 1.f);
+	missionText->SetOrigin(Origins::MC);
+	missionText->SetPos(escapePoint);
+	objList[LayerType::Object][1].push_back(missionText);
+	//
 
 	uiMgr = new GameSceneUiMgr(this);
 	uiMgr->Init();
@@ -125,7 +140,6 @@ void GameScene::Enter()
 void GameScene::Exit()
 {
 	Release();
-	
 }
 
 void GameScene::Update(float dt)
@@ -151,18 +165,18 @@ void GameScene::Update(float dt)
 
 	LayerSort();
 	
+
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
 	
 	Vector2f dir;
 	dir.x = mouseworldPos.x - player->GetPos().x;
 	dir.y = mouseworldPos.y - player->GetPos().y;
-
+	
+	//camera
 	float r = 0.1;
 	Vector2f camPoslen;
 	camPoslen.x = dir.x * r;
 	camPoslen.y = dir.y * r;
-
-
 	Vector2f realcam;
 	realcam.x = camPoslen.x + player->GetPos().x;
 	realcam.y = camPoslen.y + player->GetPos().y;
@@ -174,7 +188,25 @@ void GameScene::Update(float dt)
 
 	worldView.setCenter(realcam);
 
-	
+	//mission
+	if (Utils::Distance(player->GetPos(), escapePoint) < 100.f)
+	{
+		escapeTimer -= dt;
+		missionText->SetActive(true);
+		missionText->SetString("LEAVING IN " + to_string(escapeTimer));
+	}
+	else
+	{
+		missionText->SetActive(false);
+		escapeTimer = 3.f;
+	}
+
+	if (escapeTimer <= 0.f)
+	{
+		SCENE_MGR->ChangeScene(Scenes::Menu);
+		return;
+	}
+
 	Scene::Update(dt);
 }
 

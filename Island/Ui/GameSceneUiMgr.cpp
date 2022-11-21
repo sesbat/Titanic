@@ -208,7 +208,6 @@ void GameSceneUiMgr::Update(float dt)
 			hungerTex->GetTextObj()->SetColor(Color::White);
 		}
 	}
-	
 
 	UiMgr::Update(dt);
 
