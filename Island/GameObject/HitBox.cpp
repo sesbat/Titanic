@@ -56,7 +56,8 @@ void HitBox::SetPos(const Vector2f& pos)
 
 const Vector2f& HitBox::GetPos() const
 {
-	return Object::GetPos();
+	//return Object::GetPos();
+	return position;
 }
 
 void HitBox::Translate(const Vector2f delta)

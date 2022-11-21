@@ -27,7 +27,7 @@ void Enemy::Init(Player* player)
 
 	hp = maxHp;
 
-	gun = new Gun(GunType::Rifle, User::Enemy);
+	gun = new Gun(GunType::Sniper, User::Enemy);
 	gun->SetEnemy(this);
 	gun->Init();
 

@@ -4,6 +4,7 @@ class Button;
 class Inventory;
 class SpriteObject;
 class Player;
+
 class GameSceneUiMgr : public UiMgr
 {
 protected:
@@ -38,10 +39,11 @@ protected:
 	float energyGuage;
 	int prevEnergyGuage;
 
-	float staminaTime;
+	float staminaBarSize;
 	float dash;
 	float hpBarSize;
 	float time;
+
 public:
 	GameSceneUiMgr(Scene* scene);
 	virtual ~GameSceneUiMgr();

@@ -13,7 +13,7 @@
 #include "../GameObject/TextObject.h"
 
 GameSceneUiMgr::GameSceneUiMgr(Scene* scene)
-	:UiMgr(scene), hpBarSize(0.2f), staminaTime(5.f), time(1.0f),
+	:UiMgr(scene), hpBarSize(1.f), staminaBarSize(1.f), time(1.0f),
 	hungerGuage(255), thirstGuage(255), energyGuage(255), dash(0.01f),
 	prevHungerGuage(255)
 {
@@ -169,46 +169,30 @@ void GameSceneUiMgr::Reset()
 
 void GameSceneUiMgr::Update(float dt)
 {
-	if(hpBarSize>0.f) {
-		//hpBarSize -= 0.001f;
-		//hpBar->GetSpriteObj()->SetScale({ hpBarSize,0.2f });
-		hpBar->SetPos({300,100});
-	}
-	else
-	{
-		hpBar->GetSpriteObj()->SetScale({ 0.f,0.f });
-		hpBar->SetActive(false);
-	}
+	//hp bar
+	hpBarSize = (float)player->GetHp() * 0.1f;
+	hpBar->GetSpriteObj()->SetScale({ hpBarSize,1.f });
+
+	//dev input
 	if (InputMgr::GetKeyDown(Keyboard::Num0))
 	{
 		hungerGuage = 255;
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Num9))
 	{
-		hungerGuage = 50;
+		hpBarSize -= 0.1f;
 	}
 
-	if (player->GetIsDash())
-	{
-		if (time > 0.f)
-		{
-			time -= (dt/staminaTime);
-		}
-		if (time <= 0.f)
-		{
-			player->SetIsDash(false);
-		}
-		staminaBar->GetSpriteObj()->SetScale({ time,1.f });
-	}
-	else
-	{
-		if(time <0.99f)
-		{
-			time += dash;
-		}
-		staminaBar->GetSpriteObj()->SetScale({ time,1.f });
-	}
+	//stamina
+	staminaBarSize = player->GetStamina() * 0.1f;
+	staminaBar->GetSpriteObj()->SetScale({ staminaBarSize,1.f });
+
+	//hunger guage
 	hungerGuage -= 0.1f;
+	if (hungerGuage <= 0.f)
+	{
+		hungerGuage = 0.f;
+	}
 	if ((int)hungerGuage != prevHungerGuage)
 	{
 		prevHungerGuage = (int)hungerGuage;
@@ -224,7 +208,6 @@ void GameSceneUiMgr::Update(float dt)
 			hungerTex->GetTextObj()->SetColor(Color::White);
 		}
 	}
-	
 
 	UiMgr::Update(dt);
 
