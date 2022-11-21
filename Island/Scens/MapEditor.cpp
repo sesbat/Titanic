@@ -6,6 +6,7 @@
 #include "../../Ui/EditorMapUiMgr.h"
 #include "../../Ui/DrawObj.h"
 #include "../../Framework/InputMgr.h"
+#include "../GameObject/SpriteObject.h"
 #include <algorithm>
 
 MapEditor::MapEditor()
@@ -57,16 +58,20 @@ void MapEditor::Update(float dt)
 	Scene::Update(dt);
 	
 	auto uimgr = ((EditorMapUiMgr*)uiMgr);
+
+
 	if (uimgr->IsExit() || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		SCENE_MGR->ChangeScene(Scenes::Menu);
 		return;
 	}
+
 	if (uimgr->IsSave())
 	{
 		Save();
 		return;
 	}
+
 	if (uimgr->IsLoad())
 	{
 		string path = uimgr->loadFile();
@@ -79,9 +84,9 @@ void MapEditor::Update(float dt)
 	{
 		((EditorMapUiMgr*)uiMgr)->DeleteDraw();
 		return;
-
 	}
-	if (InputMgr::GetMouseButtonDown(Mouse::Right))
+
+	if ((!InputMgr::GetKey(Keyboard::LControl)) && InputMgr::GetMouseButtonDown(Mouse::Right))
 	{
 		initMousePos = InputMgr::GetMousePos();
 		isMove = true;
@@ -90,8 +95,6 @@ void MapEditor::Update(float dt)
 	{
 		auto deltaPos = InputMgr::GetMousePos() - initMousePos;
 		initMousePos = InputMgr::GetMousePos();
-		cout << deltaPos.x << endl;
-		cout << deltaPos.y << endl;
 		auto movePos = SCENE_MGR->GetCurrScene()->GetWorldView().getCenter() - deltaPos;
 		SCENE_MGR->GetCurrScene()->GetWorldView().setCenter(movePos);
 	}
@@ -111,12 +114,19 @@ void MapEditor::Update(float dt)
 		if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
 			SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *3.f));
 	}
+
+	if (uimgr->GetEvent())
+	{
+		return;
+	}
 	for (int i = 0; i < HEIGHTCNT; i++)
 	{
 		for (int j = 0; j < WIDTHCNT; j++)
 		{
 			if (greeds[i][j]->IsClick())
 			{
+				if(((EditorMapUiMgr*)uiMgr)->IsUnder())
+					return;
 				if (nowType == LayerType::Object &&playerPos == Vector2i{ i,j })
 					return;
 
@@ -193,6 +203,20 @@ void MapEditor::Update(float dt)
 					playerPos = { i,j };
 				}
 			}
+			else if (InputMgr::GetKey(Keyboard::LControl))
+			{
+				if (nowType == LayerType::Tile)
+					continue;
+				if (greedObjs[nowType].find(i) == greedObjs[nowType].end())
+					continue;
+				if (greedObjs[nowType][i].find(j) == greedObjs[nowType][i].end())
+					continue;
+				if((greedObjs[nowType][i][j]->GetType() != "ENEMY") && (greedObjs[nowType][i][j]->GetType() != "BOX"))
+					continue;
+
+				if(greeds[i][j]->IsUpRight())
+					cout << greedObjs[nowType][i][j]->GetType() << endl;
+			}
 		}
 	}
 }
@@ -260,7 +284,7 @@ MapEditor::~MapEditor()
 
 void MapEditor::SetType(string t)
 {
-	if (t == "TREE" || t == "STONE" || t == "ENEMY" || t == "PLAYER" || t == "BLOCK")
+	if (t == "TREE" ||t=="BUSH"|| t == "STONE" || t == "ENEMY" || t == "PLAYER" || t == "BLOCK")
 	{
 		nowType = LayerType::Object;
 	}
@@ -274,22 +298,26 @@ void MapEditor::Save()
 {
 	saveObjs.clear();
 	string path = ((EditorMapUiMgr*)(uiMgr))->GetPath();
+	
 	for (auto& layer : greedObjs)
 	{
+
 		for (auto& objs : layer.second)
 		{
+			int i = objs.first;
 			for (auto& obj : objs.second)
 			{
+				int j = obj.first;
 				auto& nowObject = obj.second;
 				ObjectData data;
 				data.type = nowObject->GetType();
 				data.path = nowObject->GetPath();
 				data.position = nowObject->GetPos();
+				data.greedIdx = Vector2i{ i,j };
 				saveObjs.push_back(data);
 			}
 		}
 	}
-	
 
 	if (path == "")
 		return;
@@ -345,7 +373,7 @@ void MapEditor::Load(string path)
 		
 		int i = ((int)obj.position.x-30) / 60;
 		int j = (int)obj.position.y / 60 - 1;
-		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "ENEMY" || obj.type == "PLAYER" || obj.type == "BLOCK")
+		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "ENEMY" || obj.type == "PLAYER" || obj.type == "BLOCK")
 		{
 			objList[LayerType::Object][j].push_back(draw);
 			greedObjs[LayerType::Object][j][i] = draw;

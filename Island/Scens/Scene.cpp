@@ -121,6 +121,15 @@ void Scene::Draw(RenderWindow& window)
 		{
 			obj->Draw(window);
 		}
+		for (auto& obj : objList[LayerType::Object])
+		{
+			if (obj.first == 0)
+				continue;
+			for (auto& o : obj.second)
+			{
+				o->Draw(window);
+			}
+		}
 
 		if (uiMgr != nullptr)
 			uiMgr->Draw(window);
@@ -175,9 +184,9 @@ void Scene::LayerSort()
 			{
 				continue;
 			}
-			if (obj->GetName() == "TREE" || obj->GetName() == "STONE" || obj->GetName() == "BLOCK")
+			if (obj->GetName() == "TREE" || obj->GetName() == "BUSH" || obj->GetName() == "STONE" || obj->GetName() == "BLOCK" || obj->GetName() == "NPC")
 			{
-				if (obj->GetName() == "TREE")
+				if (obj->GetName() == "TREE" || obj->GetName() == "BUSH")
 					alphaObj.push_back((HitBoxObject*)obj);
 				drawObjs.push_back(obj);
 			}

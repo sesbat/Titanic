@@ -56,6 +56,7 @@ void UiMgr::Update(float dt)
         return;
 
     bool isEvent = false;
+    nowEvent = false;
 
     if (nowEvObj != nullptr)
     {
@@ -74,6 +75,8 @@ void UiMgr::Update(float dt)
 	{
         for (auto it = (*uiObjs).second.rbegin(); it != (*uiObjs).second.rend(); it++)
         {
+            if (!(*it)->GetActive())
+                continue;
             if((*it) != nowEvObj)
                 (*it)->EventClear(); 
 
@@ -114,6 +117,7 @@ void UiMgr::Update(float dt)
         }
         nowEvObj = nullptr;
     }
+    nowEvent = isEvent;
 }
 
 void UiMgr::Draw(RenderWindow& window)

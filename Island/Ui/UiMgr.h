@@ -12,6 +12,8 @@ protected:
 
 	UiObject* nowEvObj;
 	bool enabled;
+
+	bool nowEvent;
 public:
 	UiMgr(Scene* scene);
 	virtual ~UiMgr();
@@ -23,5 +25,6 @@ public:
 
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
+	virtual bool GetEvent() { return nowEvent; }
 };
 

@@ -1,0 +1,23 @@
+{
+  "Recoverykit": {
+    "path": "graphics/items/recoverykit.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1
+  },
+  "handsaw": {
+    "path": "graphics/items/handsaw.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 2,
+    "height": 1
+  },
+  "Armor-1": {
+    "path": "graphics/items/Armor-1.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 2,
+    "height": 2
+  }
+}

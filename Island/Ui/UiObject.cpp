@@ -81,7 +81,7 @@ void UiObject::Update(float dt)
 			btnState = UiState::Exit;
 			isEvent = true;
 		}
-		else if (!Utils::IsRange(btnBoudn, mousePos)) // ÇÁ·¹ÀÓ ¶§¹®¿¡ Exit¸øÇßÀ»¶§
+		else if (!Utils::IsRange(btnBoudn, mousePos)) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Exitï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		{
 			btnState = UiState::None;
 			isEvent = false;
@@ -238,8 +238,10 @@ void UiObject::Update(float dt)
 		break;
 	case UiState::Exit:
 		btnState = UiState::None;
-		drag = false;
-		dragR = false;
+
+		drag = InputMgr::GetMouseButton(Mouse::Left);
+		dragR = InputMgr::GetMouseButton(Mouse::Right);
+		//dragR = false;
 		break;
 	default:
 		break;

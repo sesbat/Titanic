@@ -1,6 +1,7 @@
 #include "Gun.h"
 #include "Bullet.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "../Framework/ResourceManager.h"
 #include "../Framework/InputMgr.h"
 #include "../Framework/Utils.h"
@@ -20,6 +21,7 @@ void OnCreateBullet(Bullet* bullet)
 	bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
 	bullet->Init();
 	bullet->SetEnemyList(scene->GetEnemyList());
+	bullet->SetPlayer(scene->GetPlayer());
 }
 
 Gun::Gun()
@@ -27,8 +29,8 @@ Gun::Gun()
 {
 }
 
-Gun::Gun(GunType type)
-	:gunType(GunType::Shotgun),isGunFlip(false), bulletSpeed(10000), range(2000)
+Gun::Gun(GunType type, User user)
+	:gunType(type), isGunFlip(false), bulletSpeed(10000), range(2000), user(user)
 {
 }
 
@@ -40,49 +42,25 @@ void Gun::Init()
 {
 	bulletPool.OnCreate = OnCreateBullet;
 	bulletPool.Init();
-	switch (gunType)
+
+	SetGunType(gunType);
+
+	switch (user)
 	{
-	case GunType::Shotgun:
-		SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun.png"));
-		Damage = 30;
-		shootDelay = 0.5f;
+	case User::Player:
+		SetPos({ player->GetPos().x,player->GetPos().y + 10.f });
+		SetOrigin(Origins::MC);
 		break;
-	case GunType::Rifle:
-		SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun.png"));
-		Damage = 50;
-		shootDelay = 0.1f;
-		break;
-	case GunType::Sniper:
-		SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniper.png"));
-		shootDelay = 1.f;
-		Damage = 500;
-		break;
-	case GunType::TypeCount:
-		break;
-	default:
+	case User::Enemy:
+		SetPos({ enemy->GetPos().x,enemy->GetPos().y + 10.f });
+		SetOrigin(Origins::MC);
 		break;
 	}
-	SetPos({ player->GetPos().x,player->GetPos().y + 10.f });
-	SetOrigin(Origins::MC);
+	
 }
 
 void Gun::Update(float dt)
 {
-	if (InputMgr::GetMouseButtonDown(Mouse::Left))
-	{
-		Fire();
-	}
-	if (InputMgr::GetMouseButtonDown(Mouse::Right))
-	{
-		int temp = (int)gunType;
-		temp++;
-		if (temp == 3)
-		{
-			temp = 0;
-		}
-		gunType = (GunType)temp;
-	}
-
 	const auto& bulletList = bulletPool.GetUseList();
 	for (auto bullet : bulletList)
 	{
@@ -91,14 +69,36 @@ void Gun::Update(float dt)
 
 	SpriteObject::Update(dt);
 
-	//positions
-	isGunFlip = player->GetLookDir().x < 0;
-	this->SetFlipY(isGunFlip);
+	switch (user)
+	{
+	case User::Player:
+	{
+		//positions
+		isGunFlip = player->GetLookDir().x < 0;
+		lookDir = player->GetLookDir();
+		this->SetFlipY(isGunFlip);
 
-	float angle = Utils::Angle(player->GetLookDir());
-	GetSprite().setRotation(angle);
+		float angle = Utils::Angle(player->GetLookDir());
+		GetSprite().setRotation(angle);
 
-	SetPos({ player->GetPos().x,player->GetPos().y + 10.f });
+		SetPos({ player->GetPos().x,player->GetPos().y + 10.f });
+		
+	}
+		break;
+	case User::Enemy:
+	{
+		isGunFlip = enemy->GetLookDir().x < 0;
+		lookDir = enemy->GetLookDir();
+		this->SetFlipY(isGunFlip);
+
+		float angle = Utils::Angle(enemy->GetLookDir());
+		GetSprite().setRotation(angle);
+
+		SetPos({ enemy->GetPos().x,enemy->GetPos().y + 10.f });
+	}
+		break;
+	}
+	
 }
 
 void Gun::Draw(RenderWindow& window)
@@ -119,22 +119,35 @@ void Gun::Relaese()
 void Gun::SetPlayer(Player* player)
 {
 	this->player = player;
+	this->enemy = nullptr;
 }
 
-void Gun::Fire()
+void Gun::SetEnemy(Enemy* enemy)
 {
-	//shotgun
+	this->enemy = enemy;
+	this->player = nullptr;
+	
+}
 
-	//auto hitObject = &SCENE_MGR->GetCurrScene()->GetObjList()[LayerType::Object][0];
+void Gun::Fire(Vector2f pos, bool isplayer)
+{
+	Transform translation;
+	translation.translate(pos);
+
+	float angle = Utils::Angle(lookDir);
+	Transform rotation;
+	rotation.rotate(angle);
+
+	Transform transform = translation * rotation;
 
 	switch (gunType)
 	{
 	case GunType::Shotgun:
 	{	
+		Vector2f startPos;
+		startPos = transform.transformPoint(100,0);
 		bulletSpeed = 1000;
 		range = 200;
-		Vector2f startPos = { player->GetPos() };
-		startPos += player->GetLookDir() * 50.f;
 
 		Bullet* bullet = bulletPool.Get();
 		Bullet* bullet1 = bulletPool.Get();
@@ -147,7 +160,7 @@ void Gun::Fire()
 		bullet3->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
 		bullet4->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
 
-		float temp = atan2(player->GetLookDir().y, player->GetLookDir().x);
+		float temp = atan2(lookDir.y, lookDir.x);
 		float F1 = temp + M_PI / 12;
 		Vector2f randomShot1 = { cos(F1),sin(F1) };
 		float F2 = temp - M_PI / 12;
@@ -158,36 +171,63 @@ void Gun::Fire()
 		Vector2f randomShot4 = { cos(F4),sin(F4) };
 
 
-		bullet->Fire(startPos, player->GetLookDir(), bulletSpeed, range);
-		bullet1->Fire(startPos, randomShot1, bulletSpeed, range);
-		bullet2->Fire(startPos, randomShot2, bulletSpeed, range);
-		bullet3->Fire(startPos, randomShot3, bulletSpeed, range);
-		bullet4->Fire(startPos, randomShot4, bulletSpeed, range);
+		bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
+		bullet1->Fire(startPos, randomShot1, bulletSpeed, range, isplayer);
+		bullet2->Fire(startPos, randomShot2, bulletSpeed, range, isplayer);
+		bullet3->Fire(startPos, randomShot3, bulletSpeed, range, isplayer);
+		bullet4->Fire(startPos, randomShot4, bulletSpeed, range, isplayer);
 	}
 	break;
 	case GunType::Rifle:
 	{
-		bulletSpeed = 400;
+		Vector2f startPos;
+		startPos = transform.transformPoint(100, 0);
+		bulletSpeed = 800;
 		range = 700;
-		Vector2f startPos = { player->GetPos() };
-		startPos += player->GetLookDir() * 50.f;
 		Bullet* bullet = bulletPool.Get();
-		bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniperbullet.png"));
-		bullet->SetOrigin(Origins::MC);
-		bullet->Fire(startPos, player->GetLookDir(), bulletSpeed, range);
+		bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
+		
+		bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 	}
 		break;
 	case GunType::Sniper:
 	{
-		bulletSpeed = 5000;
+		Vector2f startPos;
+		startPos = transform.transformPoint(120, 0);
+		bulletSpeed = 2000;
 		range = 1500;
-		Vector2f startPos = { player->GetPos() };
-		startPos += player->GetLookDir() * 50.f;
 		Bullet* bullet = bulletPool.Get();
 		bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniperbullet.png"));
-		bullet->SetOrigin(Origins::MC);
-		bullet->Fire(startPos, player->GetLookDir(), bulletSpeed, range);
+		bullet->SetOrigin(Origins::MR);
+		bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 	}
+		break;
+	}
+}
+
+void Gun::SetGunType(GunType type)
+{
+	gunType = type;
+	switch (gunType)
+	{
+	case GunType::Shotgun:
+		SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun.png"));
+		Damage = 30;
+		shootDelay = 0.5f;
+		break;
+	case GunType::Rifle:
+		SetTexture(*RESOURCES_MGR->GetTexture("graphics/rifel.png"));
+		Damage = 50;
+		shootDelay = 0.1f;
+		break;
+	case GunType::Sniper:
+		SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniper.png"));
+		shootDelay = 1.f;
+		Damage = 500;
+		break;
+	case GunType::TypeCount:
+		break;
+	default:
 		break;
 	}
 }

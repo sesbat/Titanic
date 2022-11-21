@@ -19,6 +19,8 @@ enum class FileTypes
 namespace sf {
 	void to_json(json& j, const Vector2f& p);
 	void from_json(const json& j, Vector2f& p);
+	void to_json(json& j, const Vector2i& p);
+	void from_json(const json& j, Vector2i& p);
 }
 
 namespace ns {
@@ -44,8 +46,9 @@ namespace ns {
 		string type; // 바닥, 풀, (나무, 바위, 상자, 벽(특수)) 에너미
 		string path; // 스프라이트 파일
 		sf::Vector2f position;
+		sf::Vector2i greedIdx;
 		vector<Item> item;
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ObjectData, type, path, position, item)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ObjectData, type, path, position, greedIdx, item)
 	};
 
 	struct EditorObjs
@@ -53,4 +56,14 @@ namespace ns {
 		string texPath;
 		string uiPaht;
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(EditorObjs, texPath, uiPaht)
+	};
+
+	struct ItemInfo
+	{
+		string path;
+		int maxCount;
+		float weight;
+		int width;
+		int height;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemInfo, path, maxCount, weight, width, height)
 	};

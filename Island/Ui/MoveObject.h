@@ -3,7 +3,8 @@
 
 class MoveObject : public Button
 {
-
+private:
+	Vector2f initPos;
 
 public:
 	MoveObject(UiMgr* scene);

@@ -63,9 +63,9 @@ void EditorMapUiMgr::Init()
 	exitBtn->SetPos({ 50,260 });
 	uiObjList[0].push_back(exitBtn);
 
-	selects = { "TILE","TREE","STONE","BLOCK","PLAYER","ENEMY","BOX","ANOTHER"};
-	selectTxtSize = { 75,75,65,65,55,60,75,40 };
-	selectPosY = { 54,54,54,54,62,54,54,70 };
+	selects = { "TILE","TREE","BUSH","STONE","BLOCK","PLAYER","ENEMY","BOX","ANOTHER"};
+	selectTxtSize = { 75,75,75,65,65,55,60,75,40 };
+	selectPosY = { 54,54,54,54,54,62,54,54,70 };
 
 	selIdx = 0;
 	selectBtn = new Button(this);
@@ -138,7 +138,6 @@ void EditorMapUiMgr::Update(float dt)
 		nowDraw->Update(dt);
 	}
 
-	cout << (int)saveBtn->GetState() << endl;
 	if (saveBtn->IsUp())
 	{
 		saveWindow->SetActive(true);
@@ -202,7 +201,6 @@ bool EditorMapUiMgr::IsUnder()
 {
 	auto mousePos = InputMgr::GetMousePos();
 	mousePos = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)mousePos);
-	cout << Utils::IsRange(underUi->GetSpriteObj()->GetGlobalBound(), mousePos) << endl;
 	return Utils::IsRange(underUi->GetSpriteObj()->GetGlobalBound(), mousePos);
 }
 
@@ -219,6 +217,11 @@ void EditorMapUiMgr::SetLoadInit()
 bool EditorMapUiMgr::IsSave()
 {
 	return saveWindow->IsSave();
+}
+
+bool EditorMapUiMgr::IsCancle()
+{
+	return saveWindow->IsCancle();
 }
 
 bool EditorMapUiMgr::IsLoad()

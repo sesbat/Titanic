@@ -9,21 +9,30 @@ class Enemy;
 class VertexArrayObj;
 class SpriteObject;
 class TextObject;
+class NPC;
 
 class GameScene :public Scene
 {
 	
 protected:
 	Player* player;
+	NPC* npc;
+
 	list<Enemy*> enemies;
 
 	float timer;
 	Clock clock;
 
-	//Vector2f prevWorldPos;
 	IntRect mapSize;
 
-	TextObject* text;
+	
+
+	//mission
+	Vector2f escapePoint;
+	float escapeTimer;
+	int killCount;
+	float bombTimer;
+	TextObject* missionText;
 
 public:
 	GameScene();
@@ -39,5 +48,8 @@ public:
 	virtual void Draw(RenderWindow& window) override;
 
 	list<Enemy*>* GetEnemyList() { return &enemies; }
+	Player* GetPlayer(){ return player; }
+	float GetEscapeTimer() { return escapeTimer; }
+	Vector2f GetEscapePoint() { return escapePoint; }
+	NPC* GetNPC() { return npc; }
 };
-

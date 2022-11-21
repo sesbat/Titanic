@@ -45,12 +45,14 @@ public:
 	void SetLoadInit();
 
 	bool IsSave();
+	bool IsCancle();
 	bool IsLoad();
 	bool LoadActive();
 	string loadFile();
 	bool IsErase();
-
 	bool IsExit();
+
+	bool isUiCursorActive();
 
 	string GetPath();
 
