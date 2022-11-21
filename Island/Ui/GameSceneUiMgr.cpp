@@ -189,6 +189,10 @@ void GameSceneUiMgr::Update(float dt)
 
 	//hunger guage
 	hungerGuage -= 0.1f;
+	if (hungerGuage <= 0.f)
+	{
+		hungerGuage = 0.f;
+	}
 	if ((int)hungerGuage != prevHungerGuage)
 	{
 		prevHungerGuage = (int)hungerGuage;

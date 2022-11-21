@@ -166,7 +166,6 @@ void Player::Update(float dt)
 			stamina = maxStamina;
 		}
 	}
-	
 }
 
 void Player::Draw(RenderWindow& window)
