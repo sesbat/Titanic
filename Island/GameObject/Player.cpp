@@ -17,7 +17,7 @@ Player::Player()
 	: currState(States::None), speed(500.f),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	hp(10), maxHp(10), isDash(false)
+	hp(10), maxHp(10), isDash(false), stamina(10.f), maxStamina(10.f)
 {
 }
 
@@ -29,6 +29,7 @@ void Player::Init()
 {
 	HitBoxObject::Init();
 	hp = maxHp;
+	stamina = maxStamina;
 
 	gun = new Gun(GunType::Shotgun, User::Player);
 	gun->SetPlayer(this);
@@ -122,6 +123,7 @@ void Player::Update(float dt)
 		}
 		break;
 	}
+
 	if (InputMgr::GetKeyDown(Keyboard::Num1))
 	{
 		gun->SetGunType(GunType::Shotgun);
@@ -134,23 +136,37 @@ void Player::Update(float dt)
 	{
 		gun->SetGunType(GunType::Sniper);
 	}
-
-	if (InputMgr::GetKeyDown(Keyboard::LShift))
+	
+	if (stamina > 0.5f && InputMgr::GetKeyDown(Keyboard::LShift))
 	{
+		speed = 800.f;
 		isDash = true;
 	}
+	
 	if (InputMgr::GetKeyUp(Keyboard::LShift))
 	{
+		speed = 500.f;
 		isDash = false;
 	}
+
 	if (isDash)
 	{
-		speed = 1000.f;
+		stamina -= 0.01f;
+		if (stamina < 0.f)
+		{
+			stamina = 0.f;
+			speed = 500.f;
+		}
 	}
 	else
 	{
-		speed = 500.f;
+		stamina += 0.01f;
+		if (stamina >= maxStamina)
+		{
+			stamina = maxStamina;
+		}
 	}
+	
 }
 
 void Player::Draw(RenderWindow& window)

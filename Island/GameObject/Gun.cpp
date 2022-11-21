@@ -30,7 +30,7 @@ Gun::Gun()
 }
 
 Gun::Gun(GunType type, User user)
-	:gunType(GunType::Shotgun), isGunFlip(false), bulletSpeed(10000), range(2000), user(user)
+	:gunType(type), isGunFlip(false), bulletSpeed(10000), range(2000), user(user)
 {
 }
 
@@ -182,7 +182,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 	{
 		Vector2f startPos;
 		startPos = transform.transformPoint(100, 0);
-		bulletSpeed = 400;
+		bulletSpeed = 600;
 		range = 700;
 		Bullet* bullet = bulletPool.Get();
 		bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
@@ -193,7 +193,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 	case GunType::Sniper:
 	{
 		Vector2f startPos;
-		startPos = transform.transformPoint(180, 0);
+		startPos = transform.transformPoint(120, 0);
 		bulletSpeed = 500;
 		range = 1500;
 		Bullet* bullet = bulletPool.Get();

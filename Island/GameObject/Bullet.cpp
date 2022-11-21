@@ -25,7 +25,6 @@ void Bullet::Init()
 
 void Bullet::Update(float dt)
 {
-	
 	if (GetActive())
 	{
 		SpriteObject::Update(dt);
@@ -39,24 +38,27 @@ void Bullet::Update(float dt)
 		{
 			if (range >= 0.f)
 			{
-				Translate(dir * dt * speed);
+				Translate(dir * dt * speed);	
+				
+				
 			}
 			else
 			{
 				SetActive(false);
 			}
 		}
-		
+		nextPos = GetPos() - dir * ((float)sprite.getLocalBounds().width);
 	}
 }
 
 void Bullet::Draw(RenderWindow& window)
 {
 	VertexArray lines(LineStrip, 2);
-	lines[0].position = { GetPos() };
-	lines[1].position = { startPos - dir * ((float)sprite.getLocalBounds().width) };
+	lines[0].position = { startPos - dir * ((float)sprite.getLocalBounds().width) };
+	lines[1].position = { nextPos };
 	window.draw(lines);
-	//SpriteObject::Draw(window);
+
+	SpriteObject::Draw(window);
 	
 }
 
@@ -80,6 +82,7 @@ void Bullet::Fire(const Vector2f& pos, const Vector2f& dir, float speed, float r
 {
 	sprite.setRotation(Utils::Angle(dir));
 	startPos = pos;
+	nextPos = startPos - dir * ((float)sprite.getLocalBounds().width);
 	SetPos(pos);
 	this->isplayer = isplayer;
 	SetActive(true);
@@ -103,7 +106,6 @@ bool Bullet::LineRect(Vector2f bulletpos, Vector2f bulletPrevPos, RectangleShape
 	// check if the line has hit any of the rectangle's sides
 	// uses the Line/Line function below
 	auto bounds = hitObject.getGlobalBounds();
-
 	float rx = bounds.left;
 	float ry = bounds.top;
 	float rw = bounds.width;
@@ -139,6 +141,7 @@ bool Bullet::Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, floa
 
 void Bullet::Collision()
 {
+	
 	auto obj = scene->GetObjList();
 	for (auto& objects : obj[LayerType::Object][0])
 	{
@@ -149,19 +152,19 @@ void Bullet::Collision()
 		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
 			continue;
 
-		if (//objects->GetName() == "TREE" ||
+		if (objects->GetName() == "TREE" ||
 			//objects->GetName() == "STONE" ||
 			objects->GetName() == "BLOCK")
 		{
 			if (LineRect(
 				startPos - dir * ((float)sprite.getLocalBounds().width),
-				GetPos(),
+				nextPos,
 				hit->GetHitbox()))
 			{
 				speed = 0;
 				SetActive(false);
 				cout << "hit" << endl;
-				//break;
+				break;
 			}
 		}
 		else if (isplayer && objects->GetName() == "ENEMY")
@@ -173,8 +176,9 @@ void Bullet::Collision()
 				{
 					if (objects->GetId() == enemy->GetId())
 					{
-						if (LineRect(GetPos(),
+						if (LineRect(
 							startPos - dir * ((float)sprite.getLocalBounds().width),
+							nextPos,
 							it->GetHitbox()))
 						{
 							cout << "hit" << endl;
@@ -192,8 +196,9 @@ void Bullet::Collision()
 			auto hb = ((HitBoxObject*)objects)->GetHitBoxs();
 			for (auto it : hb)
 			{
-				if (LineRect(GetPos(),
+				if (LineRect(
 					startPos - dir * ((float)sprite.getLocalBounds().width),
+					nextPos,
 					it->GetHitbox()))
 				{
 					cout << "player hit" << endl;

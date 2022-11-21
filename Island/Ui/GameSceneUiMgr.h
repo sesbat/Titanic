@@ -38,7 +38,7 @@ protected:
 	float energyGuage;
 	int prevEnergyGuage;
 
-	float staminaTime;
+	float staminaBarSize;
 	float dash;
 	float hpBarSize;
 	float time;
