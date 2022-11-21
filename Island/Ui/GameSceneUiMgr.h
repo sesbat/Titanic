@@ -4,10 +4,15 @@ class Button;
 class Inventory;
 class SpriteObject;
 class Player;
+class NPC;
 class GameSceneUiMgr : public UiMgr
 {
 protected:
 	Player* player;
+	NPC* npc;
+
+	vector<Button*> maps;
+	Button* mapsBK;
 
 	Button* exitBtn;
 	Inventory* inven;

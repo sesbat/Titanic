@@ -11,6 +11,8 @@
 #include "../GameObject/Player.h"
 #include "../Scens/GameScene.h"
 #include "../GameObject/TextObject.h"
+#include "../Framework/Framework.h"
+#include "../GameObject/NPC.h"
 
 GameSceneUiMgr::GameSceneUiMgr(Scene* scene)
 	:UiMgr(scene), hpBarSize(0.2f)
@@ -24,6 +26,8 @@ GameSceneUiMgr::~GameSceneUiMgr()
 void GameSceneUiMgr::Init()
 {
 	player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
+	npc = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetNPC();
+
 	//hp
 	hpBar = new Button(this);
 	hpBar->SetClkColor(false);
@@ -158,6 +162,34 @@ void GameSceneUiMgr::Init()
 	energyTex->SetOrigin(Origins::MC);
 	energyTex->SetPos({ 700,50 });
 	uiObjList[0].push_back(energyTex);
+
+
+	mapsBK = new Button(this);
+	mapsBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/mapsbk.png"), false);
+	mapsBK->SetPos({
+		(float)FRAMEWORK->GetWindowSize().x / 2,(float)FRAMEWORK->GetWindowSize().y / 2 });
+	mapsBK->SetOrigin(Origins::MC);
+	mapsBK->SetActive(false);
+	uiObjList[0].push_back(mapsBK);
+
+	auto map = new Button(this);
+	map->SetClkColor(true);
+	map->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 200, Color::White
+		, "map1", true);
+	map->SetPos({ 400,300 });
+	maps.push_back(map);
+
+	auto map1 = new Button(this);
+	map1->SetClkColor(true);
+	map1->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 200, Color::White
+		, "map2", true);
+	map1->SetPos({ 1000,300 });
+	maps.push_back(map1);
+
+	for(auto& map: maps)
+	{
+		uiObjList[0].push_back(map);
+	}
 }
 
 void GameSceneUiMgr::Reset()
@@ -166,6 +198,22 @@ void GameSceneUiMgr::Reset()
 
 void GameSceneUiMgr::Update(float dt)
 {
+	if (npc->GetShowMap())
+	{
+		mapsBK->SetActive(true);
+		for (auto& map : maps)
+		{
+			map->SetActive(true);
+		}
+	}
+	else
+	{
+		mapsBK->SetActive(false);
+		for (auto& map : maps)
+		{
+			map->SetActive(false);
+		}
+	}
 	if(hpBarSize>0.f) {
 		//hpBarSize -= 0.001f;
 		//hpBar->GetSpriteObj()->SetScale({ hpBarSize,0.2f });

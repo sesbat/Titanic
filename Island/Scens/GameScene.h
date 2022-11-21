@@ -9,12 +9,15 @@ class Enemy;
 class VertexArrayObj;
 class SpriteObject;
 class TextObject;
+class NPC;
 
 class GameScene :public Scene
 {
 	
 protected:
 	Player* player;
+	NPC* npc;
+
 	list<Enemy*> enemies;
 
 	float timer;
@@ -41,4 +44,5 @@ public:
 	list<Enemy*>* GetEnemyList() { return &enemies; }
 	//Player** Getplayer() { return &player; }
 	Player* GetPlayer(){ return player; }
+	NPC* GetNPC() { return npc; }
 };
