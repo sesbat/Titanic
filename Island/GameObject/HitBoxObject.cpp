@@ -5,7 +5,7 @@
 #include <iostream>
 
 HitBoxObject::HitBoxObject()
-	:isHitBox(true), isHitPlayer(false)
+	:isHitBox(false), isHitPlayer(false)
 {
 }
 
