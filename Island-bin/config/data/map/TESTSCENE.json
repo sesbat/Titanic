@@ -21738,6 +21738,318 @@
   {
     "greedIdx": {
       "x": 22,
+      "y": 6
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 390.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 7
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 450.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 8
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 510.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 9
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 570.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 10
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 630.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 11
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 690.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 12
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 750.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 13
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 810.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 20
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1230.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 21
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1290.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 22
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1350.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 23
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1410.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 24
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1470.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 25
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1530.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 26
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1590.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 27
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1650.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 28
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1710.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 29
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1770.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 30
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1830.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 31
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1890.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 32
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 1950.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 33
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 2010.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 34
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 2070.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
+      "y": 35
+    },
+    "item": {},
+    "path": "graphics/tree1.png",
+    "position": {
+      "x": 2130.0,
+      "y": 1380.0
+    },
+    "type": "TREE"
+  },
+  {
+    "greedIdx": {
+      "x": 22,
       "y": 45
     },
     "item": {},
@@ -21864,6 +22176,19 @@
       "y": 1560.0
     },
     "type": "BLOCK"
+  },
+  {
+    "greedIdx": {
+      "x": 25,
+      "y": 11
+    },
+    "item": {},
+    "path": "graphics/enemy1.png",
+    "position": {
+      "x": 690.0,
+      "y": 1560.0
+    },
+    "type": "ENEMY"
   },
   {
     "greedIdx": {

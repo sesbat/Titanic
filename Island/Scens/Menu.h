@@ -16,7 +16,7 @@ protected:
 	TextObject* exit;
 public:
 	Menu();
-	~Menu();
+	~Menu();                                                                                                                                                              
 	virtual void Init() override;
 	virtual void Release() override;
 	virtual void Enter() override;
