@@ -277,28 +277,6 @@ void Player::SetHp(int num)
 	}
 }
 
-//void Player::OnPickupItem(Item* item)
-//{
-//	switch ( item->GetType() )
-//	{
-//	case Item::Types::Potion:
-//		cout << "potion" << endl;
-//		hp += item->GetValue();
-//		if ( hp >= maxHp )
-//			hp = maxHp;
-//		break;
-//	case Item::Types::Coin:
-//		cout << "coin" << endl;
-//		//exp += item->GetValue();
-//		break;
-//	case Item::Types::Key:
-//		cout << "key" << endl;
-//		item->SetIsKey();
-//		isKey = true;
-//		break;
-//	}
-//}
-
 void Player::SetPlayerPos()
 {
 	SetPos(prevPosition);
@@ -408,7 +386,7 @@ void Player::Collision()
 		{
 			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
 			{
-				cout << objects->GetName() << endl;
+				//cout << objects->GetName() << endl;
 				SetPlayerPos();
 				break;
 			}

@@ -217,7 +217,7 @@ void GameScene::Update(float dt)
 	else
 	{
 		missionText->SetActive(false);
-		cout << "FALSE" << endl;
+		//cout << "FALSE" << endl;
 		escapeTimer = 3.f;
 	}
 

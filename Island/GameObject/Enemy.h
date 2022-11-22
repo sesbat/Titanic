@@ -47,6 +47,7 @@ protected:
 	float getAttackTime;
 
 	bool attack;
+	bool isHit;
 
 	int maxHp;
 	int hp;
@@ -56,7 +57,7 @@ public:
 	Enemy();
 	virtual ~Enemy();
 
-	void Init(Player* player);
+	void Init(Player* player, int type = 1);
 
 	void SetState(States newState);
 	States GetState();
@@ -77,5 +78,6 @@ public:
 
 	void AttackPattern(float dt);
 	void Move(float dt);
+	void MoveToPos(float dt);
 	void Collision();
 };
