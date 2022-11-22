@@ -31,6 +31,7 @@ protected:
 	States currState;
 	States prevState;
 
+	//move
 	float speed;
 	Vector2f look;
 	Vector2f lookDir;
@@ -38,17 +39,21 @@ protected:
 	Vector2f velocity;
 	Vector2f direction;
 	Vector2f lastDirection;
-	Vector2f dir;
+	Vector2f moveDir;
 	Vector2f prevPosition;
 	bool isFlip;
+	Vector2f lastPlayerPos;
 
+	//timer
 	float moveTime;
 	float hitTime;
 	float getAttackTime;
 
+	//attack
 	bool attack;
 	bool isHit;
-
+	
+	//hp
 	int maxHp;
 	int hp;
 	float barScaleX;

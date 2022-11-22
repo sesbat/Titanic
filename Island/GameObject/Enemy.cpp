@@ -180,6 +180,7 @@ void Enemy::SetHp(int num)
 	isHit = true;
 	moveTime = 0.f;
 	attack = true;
+	lastPlayerPos = player->GetPos();
 	if ( hp > 0 )
 	{
 		hp -= num;
@@ -258,11 +259,11 @@ void Enemy::AttackPattern(float dt)
 
 void Enemy::Move(float dt)
 {
-	dir = Utils::Normalize(player->GetPos() - GetPos());
+	moveDir = Utils::Normalize(player->GetPos() - GetPos());
 
 	//x dir
 	prevPosition = GetPos();
-	Translate({ dir.x * this->speed * dt, 0.f });
+	Translate({ moveDir.x * this->speed * dt, 0.f });
 	//position
 	for (auto& hit : hitboxs)
 	{
@@ -273,7 +274,7 @@ void Enemy::Move(float dt)
 
 	//y dir
 	prevPosition = GetPos();
-	Translate({ 0.f,  dir.y * this->speed * dt });
+	Translate({ 0.f,  moveDir.y * this->speed * dt });
 	//position
 	for (auto& hit : hitboxs)
 	{
@@ -285,11 +286,11 @@ void Enemy::Move(float dt)
 void Enemy::MoveToPos(float dt)
 {
 	Vector2f aPos = { 100.f,100.f };
-	dir = Utils::Normalize(aPos - GetPos());
+	moveDir = Utils::Normalize(aPos - GetPos());
 
 	//x dir
 	prevPosition = GetPos();
-	Translate({ dir.x * this->speed * dt, 0.f });
+	Translate({ moveDir.x * this->speed * dt, 0.f });
 	//position
 	for (auto& hit : hitboxs)
 	{
@@ -300,7 +301,7 @@ void Enemy::MoveToPos(float dt)
 
 	//y dir
 	prevPosition = GetPos();
-	Translate({ 0.f,  dir.y * this->speed * dt });
+	Translate({ 0.f,  moveDir.y * this->speed * dt });
 	//position
 	for (auto& hit : hitboxs)
 	{
