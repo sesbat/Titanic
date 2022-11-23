@@ -11,6 +11,8 @@
 #include "../Scens/GameScene.h"
 #include <iostream>
 #include "Gun.h"
+#include "../Ui/Inventory.h"
+#include "../Ui/InventoryBox.h"
 
 
 Player::Player()
@@ -49,6 +51,10 @@ void Player::Init()
 	scene = SCENE_MGR->GetCurrScene();
 	
 	SetState(States::Idle);
+
+	inven = new Inventory(scene->GetUiMgr());
+	inven->Init();
+	inven->SetActive(false);
 }
 
 void Player::SetState(States newState)
@@ -188,6 +194,12 @@ void Player::Update(float dt)
 		isDash = false;
 	}
 
+	if (InputMgr::GetKeyDown(Keyboard::Tab))
+	{
+		inven->SetActive(!(inven->GetActive()));
+		if (!inven->GetActive())
+			inven->ClearInven();
+	}
 	if (isDash)
 	{
 		stamina -= 0.01f;
@@ -391,5 +403,17 @@ void Player::Collision()
 				break;
 			}
 		}
+	}
+}
+
+
+void Player::GetItem(map<string, Item>* items)
+{
+	inven->SetActive(true);
+	auto right_inven = inven->GetRightInven();
+
+	for (auto item : *items)
+	{
+		right_inven->AddItem(item.second.type);
 	}
 }

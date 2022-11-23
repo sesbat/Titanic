@@ -13,6 +13,7 @@ class HitBox;
 class Scene;
 class Gun;
 class Bullet;
+class Inventory;
 
 class Player : public HitBoxObject
 {
@@ -68,6 +69,7 @@ protected:
 	float EnergyDelay = 3.f;
 
 
+	Inventory* inven;
 	//bool isAlive;
 public:
 	Player();
@@ -119,5 +121,7 @@ public:
 	void Move(float dt);
 	void Collision();
 	Vector2f* GetPosPtr() { return &position; }
+	void GetItem(map<string, Item>* items);
+	Inventory* GetInventory() { return inven; }
 };
 

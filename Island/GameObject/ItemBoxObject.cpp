@@ -3,6 +3,7 @@
 #include "../Ui/GameSceneUiMgr.h"
 #include "../Scens/GameScene.h"
 #include "../Scens/SceneManager.h"
+#include "../GameObject/Player.h"
 
 ItemBoxObject::ItemBoxObject()
 	:pickState(false)
@@ -34,7 +35,7 @@ void ItemBoxObject::Update(float dt)
 
 	if (Utils::Distance(position, *playerPos) < 100 && InputMgr::GetKeyDown(Keyboard::F))
 	{
-		((GameScene*)SCENE_MGR->GetCurrScene())->GetItem(&items);;
+		((GameScene*)SCENE_MGR->GetCurrScene())->GetPlayer()->GetItem(&items);;
 	}
 }
 

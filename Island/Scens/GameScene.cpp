@@ -231,6 +231,7 @@ void GameScene::Update(float dt)
 		return;
 	}
 
+
 	Scene::Update(dt);
 }
 	
@@ -263,9 +264,4 @@ void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos)
 
 	//objList[LayerType::Object][0].push_back(box);
 	
-}
-
-void GameScene::GetItem(map<string, Item>* items)
-{
-	((GameSceneUiMgr*)(uiMgr))->GetItem(items);
 }

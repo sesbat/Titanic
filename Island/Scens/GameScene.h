@@ -54,5 +54,4 @@ public:
 	float GetEscapeTimer() { return escapeTimer; }
 	Vector2f GetEscapePoint() { return escapePoint; }
 	void SetDeadEnemy(map<string, Item> items, Vector2f pos);
-	void GetItem(map<string, Item>* items);
 };

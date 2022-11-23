@@ -193,10 +193,6 @@ void Scene::LayerSort()
 			if (obj->GetName() == "TREE" || obj->GetName() == "BUSH")
 				alphaObj.push_back((HitBoxObject*)obj);
 
-			if (obj->GetName() == "BOX")
-			{
-				cout << "BOX" << endl;
-			}
 			drawObjs.push_back(obj);
 
 		}
