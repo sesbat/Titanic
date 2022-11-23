@@ -72,15 +72,27 @@ void Ready::Init()
 	mapSize.width = (tiles.back())->GetPos().x + 30;
 	mapSize.height = (tiles.back())->GetPos().y;
 
-	npc = new NPC();
-	npc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/npc.png"));
-	npc->SetOrigin(Origins::BC);
-	npc->SetPlayer(player);
-	npc->SetPos({ 990.f,1740.f });
-	npc->SetName("NPC");
-	npc->Init();
-	npc->SetHitBox("graphics/player.png");
-	objList[LayerType::Object][0].push_back(npc);
+	startNpc = new NPC();
+	startNpc->SetNPCType(NPCType::Start);
+	startNpc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/startnpc.png"));
+	startNpc->SetOrigin(Origins::BC);
+	startNpc->SetPlayer(player);
+	startNpc->SetPos({ 990.f,1740.f });
+	startNpc->SetName("NPC");
+	startNpc->Init();
+	startNpc->SetHitBox("graphics/player.png");
+	objList[LayerType::Object][0].push_back(startNpc);
+
+	shopNpc = new NPC();
+	shopNpc->SetNPCType(NPCType::Shop);
+	shopNpc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shopnpc.png"));
+	shopNpc->SetOrigin(Origins::BC);
+	shopNpc->SetPlayer(player);
+	shopNpc->SetPos({ 1800.f,300.f });
+	shopNpc->SetName("NPC");
+	shopNpc->Init();
+	shopNpc->SetHitBox("graphics/player.png");
+	objList[LayerType::Object][0].push_back(shopNpc);
 
 	//npc = new NPC();
 	//npc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/npc.png"));

@@ -10,6 +10,8 @@
 #include "../../Framework/Framework.h"
 #include "../UiMgr.h"
 #include "../../Framework/FileManager.h"
+#include "../../GameObject/Player.h"
+#include "../../Ui/Inventory.h"
 
 ReadyUiMgr::ReadyUiMgr(Scene* scene)
 	:UiMgr(scene)
@@ -21,6 +23,9 @@ void ReadyUiMgr::Init()
 {
 	player = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
 	npc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetNPC();
+
+	inVen = player->GetInventory();
+	uiObjList[1].push_back(inVen);
 
 	mapsBK = new Button(this);
 	mapsBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/mapsbk.png"), false);

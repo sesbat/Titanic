@@ -43,8 +43,8 @@ namespace ns {
 	
 	struct ObjectData
 	{
-		string type; // ¹Ù´Ú, Ç®, (³ª¹«, ¹ÙÀ§, »óÀÚ, º®(Æ¯¼ö)) ¿¡³Ê¹Ì
-		string path; // ½ºÇÁ¶óÀÌÆ® ÆÄÀÏ
+		string type; // ï¿½Ù´ï¿½, Ç®, (ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½(Æ¯ï¿½ï¿½)) ï¿½ï¿½ï¿½Ê¹ï¿½
+		string path; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
 		sf::Vector2f position;
 		sf::Vector2i greedIdx;
 		map<string,Item> item;
