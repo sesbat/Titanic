@@ -391,7 +391,7 @@ void Player::Collision()
 		{
 			continue;
 		}
-		if (objects->GetName() == "TREE" ||
+		if (//objects->GetName() == "TREE" ||
 			objects->GetName() == "STONE" ||
 			objects->GetName() == "BLOCK" ||
 			objects->GetName() == "ENEMY")
