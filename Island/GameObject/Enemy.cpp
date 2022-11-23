@@ -58,7 +58,6 @@ void Enemy::Init(Player* player, int type)
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMoveLeft"));
 
 	scene = SCENE_MGR->GetCurrScene();
-	
 }
 
 void Enemy::SetState(States newState)
