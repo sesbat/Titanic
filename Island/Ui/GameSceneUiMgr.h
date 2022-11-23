@@ -43,5 +43,6 @@ public:
 	virtual void Draw(RenderWindow& window);
 
 	void SetPlayer(Player* player);
+	void GetItem(map<string, Item>* items);
 };
 

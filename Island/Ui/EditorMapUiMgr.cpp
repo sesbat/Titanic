@@ -9,6 +9,7 @@
 #include "../../Scens/SceneManager.h"
 #include "../../Framework/FileManager.h"
 #include "../../Scens/MapEditor.h"
+#include "../Ui/AddItemBox.h"
 #include "SaveWindowBox.h"
 #include "LoadWindowBox.h"
 
@@ -106,6 +107,10 @@ void EditorMapUiMgr::Init()
 	loadWindow->SetPos({ 350,50 });
 	loadWindow->Init();
 	uiObjList[1].push_back(loadWindow);
+
+	itemBox = new AddItemBox(this);
+	itemBox->Init();
+	uiObjList[1].push_back(itemBox);
 }
 
 void EditorMapUiMgr::Reset()
@@ -247,6 +252,16 @@ bool EditorMapUiMgr::IsErase()
 bool EditorMapUiMgr::IsExit()
 {
 	return exitBtn->IsDown() || exitBtn->IsClick();
+}
+
+void EditorMapUiMgr::SetItemBox(bool state)
+{
+	itemBox->SetActive(state);
+}
+
+void EditorMapUiMgr::SetItemBox()
+{
+	itemBox->SetActive(!itemBox->GetActive());
 }
 
 string EditorMapUiMgr::GetPath()

@@ -7,6 +7,7 @@
 #include "../../Ui/DrawObj.h"
 #include "../../Framework/InputMgr.h"
 #include "../GameObject/SpriteObject.h"
+#include "../Ui/AddItemBox.h"
 #include <algorithm>
 
 MapEditor::MapEditor()
@@ -65,6 +66,7 @@ void MapEditor::Reset()
 	greedObjs[nowType][0][0] = exit;
 
 	now_exit = exit;
+
 }
 
 void MapEditor::Update(float dt)
@@ -252,8 +254,12 @@ void MapEditor::Update(float dt)
 				if((greedObjs[nowType][i][j]->GetType() != "ENEMY") && (greedObjs[nowType][i][j]->GetType() != "BOX"))
 					continue;
 
-				if(greeds[i][j]->IsUpRight())
-					cout << greedObjs[nowType][i][j]->GetType() << endl;
+				if (greeds[i][j]->IsUpRight())
+				{
+					auto itemBox = ((EditorMapUiMgr*)uimgr)->GetItemBox();
+					itemBox->SetActive(!itemBox->GetActive());
+					itemBox->SetItems(greedObjs[nowType][i][j]->GetItem());
+				}
 			}
 		}
 	}
@@ -353,6 +359,7 @@ void MapEditor::Save()
 				data.path = nowObject->GetPath();
 				data.position = nowObject->GetPos();
 				data.greedIdx = Vector2i{ i,j };
+				data.item = nowObject->GetItem();
 				saveObjs.push_back(data);
 			}
 		}
@@ -410,6 +417,7 @@ void MapEditor::Load(string path)
 		draw->SetOrigin(Origins::BC);
 		draw->SetMove(false);
 		draw->SetPos(obj.position);
+		draw->SetItem(obj.item);
 		
 		int i = ((int)obj.position.x-30) / 60;
 		int j = (int)obj.position.y / 60 - 1;

@@ -13,6 +13,7 @@
 #include "../GameObject/TextObject.h"
 #include "../Framework/Framework.h"
 #include "../GameObject/NPC.h"
+#include "InventoryBox.h"
 
 GameSceneUiMgr::GameSceneUiMgr(Scene* scene)
 	:UiMgr(scene), hpBarSize(1.f),staminaBarSize(1.f)
@@ -222,6 +223,8 @@ void GameSceneUiMgr::Update(float dt)
 	if (InputMgr::GetKeyDown(Keyboard::Tab))
 	{
 		inven->SetActive(!(inven->GetActive()));
+		if(!inven->GetActive())
+			inven->ClearInven();
 	}
 }
 
@@ -229,6 +232,17 @@ void GameSceneUiMgr::Draw(RenderWindow& window)
 {
 	window.setView(parentScene->GetUiView());
 	UiMgr::Draw(window);
+}
+
+void GameSceneUiMgr::GetItem(map<string, Item>* items)
+{
+	inven->SetActive(true);
+	auto right_inven = inven->GetRightInven();
+
+	for (auto item : *items)
+	{
+		right_inven->AddItem(item.second.type);
+	}
 }
 
 

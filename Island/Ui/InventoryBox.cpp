@@ -32,7 +32,7 @@ void InventoryBox::Init()
 			greed->SetInvenPos(j, i);
 			greedLine.push_back(greed);
 		}
-		itemPos.push_back(line);
+		allPos.push_back(line);
 		itemGreed.push_back(greedLine);
 	}
 }
@@ -58,7 +58,7 @@ void InventoryBox::Update(float dt)
 				{
 					for (int j = invenPos.y; j < invenPos.y + nowDrag->GetHeight(); j++)
 					{
-						itemPos[j][i] = false;
+						allPos[j][i] = false;
 						itemGreed[j][i]->SetState(false, nullptr);
 					}
 				}
@@ -84,7 +84,7 @@ void InventoryBox::Update(float dt)
 					{
 						for (int j = invenPos.y; j < invenPos.y + item->GetHeight(); j++)
 						{
-							itemPos[j][i] = false;
+							allPos[j][i] = false;
 							itemGreed[j][i]->SetState(false, nullptr);
 						}
 					}
@@ -173,7 +173,7 @@ void InventoryBox::AddItem(string name, int count)
 	{
 		for (int j = findPos.y; j < findPos.y + data.weight; j++)
 		{
-			itemPos[i][j] = true;
+			allPos[i][j] = true;
 			itemGreed[i][j]->SetState(true, item);
 			cout << "unRock_i:" << i << endl;
 			cout << "unRock_j:" << j << endl;
@@ -196,7 +196,7 @@ Vector2i InventoryBox::FindInvenPos(int i_width, int i_height)
 	{
 		for (int j = 0; j < width; j++)
 		{
-			if (itemPos[i][j])
+			if (allPos[i][j])
 			{
 				continue;
 			}
@@ -215,7 +215,7 @@ Vector2i InventoryBox::FindInvenPos(int i_width, int i_height)
 				}
 				for (int n_j = j; n_j < j + i_width; n_j++)
 				{
-					if (itemPos[n_i][n_j] || j + i_width > width)
+					if (allPos[n_i][n_j] || j + i_width > width)
 					{
 						isCheck = false;
 						break;
@@ -250,7 +250,7 @@ void InventoryBox::MoveItem(int i, int j)
 	{
 		for (int y = 0; y < h; y++)
 		{
-			itemPos[y + j][x + i] = true;
+			allPos[y + j][x + i] = true;
 			itemGreed[y + j][x + i]->SetState(true, nowDrag);
 		}
 	}
@@ -286,11 +286,35 @@ void InventoryBox::ReturnItem()
 		for (int y = 0; y < h; y++)
 		{
 			itemGreed[y + j][x + i]->SetState(true, nowDrag);
-			itemPos[y + j][x + i] = true;
+			allPos[y + j][x + i] = true;
 		}
 	}
 
 	inven->SetDrag(nullptr);
 	inven->SetPrevInven(nullptr);
+}
+
+void InventoryBox::ClearInven()
+{
+	for (auto& item :items)
+	{
+		delete item;
+	}
+	items.clear();
+
+	for (auto& greed_line : itemGreed)
+	{
+		for (auto greed : greed_line)
+		{
+			greed->SetState(false, nullptr);
+		}
+	}
+	for (auto& pos_line : allPos)
+	{
+		for (auto pos : pos_line)
+		{
+			pos = false;
+		}
+	}
 }
 

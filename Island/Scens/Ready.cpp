@@ -74,7 +74,7 @@ void Ready::Init()
 
 	npc = new NPC();
 	npc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/npc.png"));
-	npc->SetOrigin(Origins::MC);
+	npc->SetOrigin(Origins::BC);
 	npc->SetPlayer(player);
 	npc->SetPos({ 990.f,1740.f });
 	npc->SetName("NPC");

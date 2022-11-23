@@ -1,6 +1,7 @@
 #pragma once
 #include "UiMgr.h"
 
+class AddItemBox;
 class Button;
 class DrawSelect;
 class DrawObj;
@@ -28,6 +29,7 @@ private:
 
 	SaveWindowBox* saveWindow;
 	LoadWindowBox* loadWindow;
+	AddItemBox* itemBox;
 
 public:
 	EditorMapUiMgr(Scene* scene);
@@ -52,7 +54,9 @@ public:
 	bool IsErase();
 	bool IsExit();
 
-	bool isUiCursorActive();
+	void SetItemBox(bool state);
+	void SetItemBox();
+	AddItemBox* GetItemBox() { return itemBox; }
 
 	string GetPath();
 

@@ -50,9 +50,14 @@
     <ClCompile Include="Ui\InvenGreed.cpp" />
     <ClCompile Include="Ui\InventoryBox.cpp" />
     <ClCompile Include="GameObject\NPC.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="QTree\Entity.cpp" />
     <ClCompile Include="QTree\QuadTree.cpp" />
     <ClCompile Include="QTree\QuadTreeNode.cpp" />
+=======
+    <ClCompile Include="Ui\AddItemBox.cpp" />
+    <ClCompile Include="GameObject\ItemBoxObject.cpp" />
+>>>>>>> feature/EditorItem
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -108,11 +113,16 @@
     <ClInclude Include="Ui\InvenGreed.h" />
     <ClInclude Include="Ui\InventoryBox.h" />
     <ClInclude Include="GameObject\NPC.h" />
+<<<<<<< HEAD
     <ClInclude Include="QTree\Common.hpp" />
     <ClInclude Include="QTree\Entity.hpp" />
     <ClInclude Include="QTree\NonCopyable.hpp" />
     <ClInclude Include="QTree\QuadTree.hpp" />
     <ClInclude Include="QTree\QuadTreeNode.hpp" />
+=======
+    <ClInclude Include="Ui\AddItemBox.h" />
+    <ClInclude Include="GameObject\ItemBoxObject.h" />
+>>>>>>> feature/EditorItem
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
