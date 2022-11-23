@@ -11,8 +11,8 @@
 #include <iostream>
 
 Enemy::Enemy()
-	: currState(States::None), speed(50.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(true), hp(15), 
-	maxHp(15), barScaleX(60.f), look(1.f, 0.f)
+	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(15),
+	maxHp(15), barScaleX(60.f), look(1.f, 0.f), isHit(false)
 {
 }
 
@@ -20,14 +20,24 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::Init(Player* player)
+void Enemy::Init(Player* player, int type)
 {
 	HitBoxObject::Init();
 	this->player = player;
 
 	hp = maxHp;
-
-	gun = new Gun(GunType::Sniper, User::Enemy);
+	switch (type)
+	{
+	case 1:
+		gun = new Gun(GunType::Shotgun, User::Enemy);
+		break;
+	case 2:
+		gun = new Gun(GunType::Rifle, User::Enemy);
+		break;
+	case 3:
+		gun = new Gun(GunType::Sniper, User::Enemy);
+		break;
+	}
 	gun->SetEnemy(this);
 	gun->Init();
 
@@ -48,7 +58,6 @@ void Enemy::Init(Player* player)
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMoveLeft"));
 
 	scene = SCENE_MGR->GetCurrScene();
-	//SetState(States::Idle);
 }
 
 void Enemy::SetState(States newState)
@@ -101,16 +110,23 @@ void Enemy::Update(float dt)
 	}
 
 	//enemy attack
-	if ( currState != States::Dead )
+	if (currState != States::Dead)
 	{
 		AttackPattern(dt);
 	}
+	
 
 	//move
 	if (currState == States::Move)
 	{
 		Move(dt);
 	}
+
+	//dev a* move
+	/*if (isHit)
+	{
+		MoveToPos(dt);
+	}*/
 	
 	//hp bar
 	SetHpBar();
@@ -120,6 +136,12 @@ void Enemy::Update(float dt)
 	
 	//gun
 	gun->Update(dt);
+
+	//dev input
+	if (InputMgr::GetKeyDown(Keyboard::F2))
+	{
+		isHit = !isHit;
+	}
 }
 
 void Enemy::Draw(RenderWindow& window)
@@ -154,6 +176,10 @@ bool Enemy::EqualFloat(float a, float b)
 
 void Enemy::SetHp(int num)
 {
+	isHit = true;
+	moveTime = 0.f;
+	attack = true;
+	lastPlayerPos = player->GetPos();
 	if ( hp > 0 )
 	{
 		hp -= num;
@@ -206,33 +232,37 @@ void Enemy::SetEnemyPos()
 void Enemy::AttackPattern(float dt)
 {
 	//attack motion
-	if ( Utils::Distance(player->GetPos(), GetPos()) < 300.f )
+	if (hitTime >= 0.8f && (Utils::Distance(player->GetPos(), GetPos()) < 500.f))
+	{
+		gun->Fire(GetPos(), false);
+		hitTime = 0.f;
+		moveTime = 0.f;
+		attack = true;
+	}
+
+	if (attack && moveTime < 10.f && ((Utils::Distance(player->GetPos(), GetPos()) > 500.f) || isHit))
 	{
 		SetState(States::Move);
-		//moveTime = 3.f;
 	}
 	else
 	{
 		SetState(States::Idle);
+		isHit = false;
 	}
-
-	if (hitTime >= 0.8f && Utils::Distance(player->GetPos(), GetPos()) < 500.f)
-	{
-		gun->Fire(GetPos(), false);
-		hitTime = 0.f;
-	}
-
+	
+	//timer
 	hitTime += dt;
+	moveTime += dt;
 	
 }
 
 void Enemy::Move(float dt)
 {
-	dir = Utils::Normalize(player->GetPos() - GetPos());
+	moveDir = Utils::Normalize(player->GetPos() - GetPos());
 
 	//x dir
 	prevPosition = GetPos();
-	Translate({ dir.x * this->speed * dt, 0.f });
+	Translate({ moveDir.x * this->speed * dt, 0.f });
 	//position
 	for (auto& hit : hitboxs)
 	{
@@ -243,7 +273,34 @@ void Enemy::Move(float dt)
 
 	//y dir
 	prevPosition = GetPos();
-	Translate({ 0.f,  dir.y * this->speed * dt });
+	Translate({ 0.f,  moveDir.y * this->speed * dt });
+	//position
+	for (auto& hit : hitboxs)
+	{
+		hit->SetPos(GetPos());
+	}
+	Collision();
+}
+
+void Enemy::MoveToPos(float dt)
+{
+	Vector2f aPos = { 100.f,100.f };
+	moveDir = Utils::Normalize(aPos - GetPos());
+
+	//x dir
+	prevPosition = GetPos();
+	Translate({ moveDir.x * this->speed * dt, 0.f });
+	//position
+	for (auto& hit : hitboxs)
+	{
+		hit->SetPos(GetPos());
+	}
+	//wall bound
+	Collision();
+
+	//y dir
+	prevPosition = GetPos();
+	Translate({ 0.f,  moveDir.y * this->speed * dt });
 	//position
 	for (auto& hit : hitboxs)
 	{

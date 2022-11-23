@@ -3,6 +3,7 @@
 #include "../GameObject/Object.h"
 #include <map>
 #include <list>
+#include "../QTree/QuadTree.hpp"
 
 class Player;
 class Enemy;
@@ -19,11 +20,14 @@ protected:
 
 	list<Enemy*> enemies;
 
+	QuadTree qTree;
+
 	float timer;
 	Clock clock;
 
 	IntRect mapSize;
 	
+	vector<SpriteObject*> sprObj;
 
 	//mission
 	Vector2f escapePoint;

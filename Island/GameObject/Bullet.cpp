@@ -170,7 +170,7 @@ void Bullet::Collision()
 			{
 				speed = 0;
 				SetActive(false);
-				cout << "hit" << endl;
+				//cout << "hit" << endl;
 				break;
 			}
 		}
@@ -188,7 +188,7 @@ void Bullet::Collision()
 							nextPos,
 							it->GetHitbox()))
 						{
-							cout << "hit" << endl;
+							//cout << "hit" << endl;
 							enemy->SetHp(10);
 							SetActive(false);
 							break;
@@ -208,7 +208,7 @@ void Bullet::Collision()
 					nextPos,
 					it->GetHitbox()))
 				{
-					cout << "player hit" << endl;
+					//cout << "player hit" << endl;
 					player->SetHp(1);
 					SetActive(false);
 					break;
