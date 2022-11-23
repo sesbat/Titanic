@@ -91,7 +91,7 @@ public:
 	Vector2f GetPlayerLastDir() { return lastDirection; }
 	Vector2f GetLookDir() { return lookDir; }
 	Vector2f GetPrevLookDir() { return prevLook; }
-	//int GetDamage() { return damage; }
+	
 	States GetCurrState() { return currState; }
 	float GetStaminaScale() { return staminaScale; }
 	bool GetIsDash() { return isDash; }
@@ -108,7 +108,6 @@ public:
 
 	void SetHp(int num);
 
-	//void OnPickupItem(Item* item);
 	void SetPlayerPos();
 	Vector2f SetLookDir();
 	void SetFlipX(bool flip);

@@ -211,22 +211,22 @@ std::ofstream& operator<<(std::ofstream& ofs, const Button& cur)
 	switch (cur.GetState())
 	{
 	case UiState::None:
-		cout << "None";
+		//cout << "None";
 		break;
 	case UiState::Enter:
-		cout << "Enter";
+		//cout << "Enter";
 		break;
 	case UiState::Stay:
-		cout << "Stay";
+		//cout << "Stay";
 		break;
 	case UiState::Down:
-		cout << "Down";
+		//cout << "Down";
 		break;
 	case UiState::Up:
-		cout << "Up";
+		//cout << "Up";
 		break;
 	case UiState::Exit:
-		cout << "Exit";
+		//cout << "Exit";
 		break;
 	default:
 		break;
