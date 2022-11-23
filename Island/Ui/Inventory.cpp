@@ -27,6 +27,7 @@ void Inventory::Init()
 	rightInven = new InventoryBox(uimgr, this, Vector2i{ 1248,252 });
 	rightInven->Init();
 	rightInven->SetName("RightInventory");
+	initRightInven = rightInven;
 
 	Vector2f invenPos[] = { {800.f,140.f},{800.f,310.f},{800.f,471.f},{991.f,471.f},{800.f,721.f},{888.f,721.f},{972.f,721.f},{1055.f,721.f} };
 	string invenPath[] = { "inven-weapon","inven-weapon" ,"inven-cloth" ,"inven-cloth" ,"inven-item","inven-item" ,"inven-item" ,"inven-item" };
@@ -210,7 +211,9 @@ void Inventory::ReturnUseItem()
 
 void Inventory::ClearInven()
 {
-	rightInven->ClearInven();
+	rightInven = initRightInven;
+
+	//rightInven->ClearInven();
 }
 
 InvenGreed* Inventory::GetGreed(int i, int j)

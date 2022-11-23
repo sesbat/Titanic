@@ -4,6 +4,8 @@
 #include "../Scens/GameScene.h"
 #include "../Scens/SceneManager.h"
 #include "../GameObject/Player.h"
+#include "../Ui/InventoryBox.h"
+#include "../Ui/Inventory.h"
 
 ItemBoxObject::ItemBoxObject()
 	:pickState(false)
@@ -35,7 +37,13 @@ void ItemBoxObject::Update(float dt)
 
 	if (Utils::Distance(position, *playerPos) < 100 && InputMgr::GetKeyDown(Keyboard::F))
 	{
-		((GameScene*)SCENE_MGR->GetCurrScene())->GetPlayer()->GetItem(&items);;
+		//((GameScene*)SCENE_MGR->GetCurrScene())->GetPlayer()->GetItem(&obj_items);;
+
+		auto scene = ((GameScene*)SCENE_MGR->GetCurrScene());
+		auto player = scene->GetPlayer();
+		player->GetInventory()->SetRightInven(invenBox);
+		player->GetInventory()->SetActive(true);
+		invenBox->SetActive(true);
 	}
 }
 
@@ -46,5 +54,16 @@ void ItemBoxObject::Draw(RenderWindow& window)
 
 void ItemBoxObject::SetItems(map<string, Item> items)
 {
-	this->items = items;
+	auto scene = ((GameScene*)SCENE_MGR->GetCurrScene());
+	auto player = scene->GetPlayer();
+	invenBox = new InventoryBox(scene->GetUiMgr(), player->GetInventory(), Vector2i{ 1248,252 });
+	invenBox->Init();
+	obj_items = items;
+	for (auto item : obj_items)
+	{
+		invenBox->AddItem(item.second.type);
+	}
+
+	this->obj_items = items;
+	
 }

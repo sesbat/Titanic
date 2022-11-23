@@ -17,6 +17,7 @@ private:
 	InvenItem* nowDrag;
 
 	InventoryBox* myInven;
+	InventoryBox* initRightInven;
 	InventoryBox* rightInven;
 	InventoryBox* prevInven;
 
@@ -43,5 +44,6 @@ public:
 	void MoveInvenItem(InventoryBox* nextInven);
 	void ReturnUseItem();
 	void ClearInven();
+	void SetRightInven(InventoryBox* rightInven) { this->rightInven = rightInven; }
 
 };

@@ -1,11 +1,18 @@
 #pragma once
 #include "HitBoxObject.h"
+
+class InvenGreed;
+class InvenItem;
+class InventoryBox;
 class ItemBoxObject : public HitBoxObject
 {
 private:
 	bool pickState;
-	map<string, Item> items;
+	map<string, Item> obj_items;
 	Vector2f* playerPos;
+
+	InventoryBox* invenBox;
+
 public:
 	ItemBoxObject();
 	~ItemBoxObject();

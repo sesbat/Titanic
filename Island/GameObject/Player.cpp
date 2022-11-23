@@ -198,7 +198,9 @@ void Player::Update(float dt)
 	{
 		inven->SetActive(!(inven->GetActive()));
 		if (!inven->GetActive())
+		{
 			inven->ClearInven();
+		}
 	}
 	if (isDash)
 	{
