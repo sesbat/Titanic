@@ -98,6 +98,7 @@ void Ready::Init()
 
 void Ready::Release()
 {
+	Scene::Release();
 }
 
 void Ready::Enter()

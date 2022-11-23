@@ -25,7 +25,7 @@ public:
 	void SetColor(Color color);
 	Color GetColor();
 	void SetOrigin(Origins origin);
-	FloatRect GetGlobalBound();
+	virtual FloatRect GetGlobalBound();
 	Sprite& GetSprite() { return sprite; };
 	void SetUI(bool u) { isUi = u; }
 	bool IsInView();

@@ -24,7 +24,7 @@ using namespace std;
 using namespace sf;
 
 GameScene::GameScene()
-	:Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f)
+	:Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f),qTree({0,0,1920,1080},15,8)
 {
 }
 
@@ -110,7 +110,7 @@ void GameScene::Init()
 			//objList[LayerType::Object][0].push_back(exit);
 		}
 	}
-
+	
 	for (auto& enemy : enemies)
 	{
 		enemy->Init(player);
@@ -164,6 +164,9 @@ void GameScene::Exit()
 
 void GameScene::Update(float dt)
 {
+	qTree.clear();
+	qTree.insert(objList[LayerType::Object][0]);
+	
 	//Time deltaTime = clock.restart();
 	//float fps = 1.0f / (deltaTime.asSeconds());
 	//cout << "fps: " << fps << endl;
@@ -232,6 +235,6 @@ void GameScene::Update(float dt)
 	
 void GameScene::Draw(RenderWindow& window)
 {
-	window.setView(worldView);
+	//window.setView(worldView);
 	Scene::Draw(window);
 }
