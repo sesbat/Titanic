@@ -52,6 +52,8 @@ protected:
 	int hp;
 	float barScaleX;
 
+	map<string, Item> items;
+
 public:
 	Enemy();
 	virtual ~Enemy();
@@ -78,4 +80,5 @@ public:
 	void AttackPattern(float dt);
 	void Move(float dt);
 	void Collision();
+	void SetItem(map<string, Item> items) { this->items = items; }
 };

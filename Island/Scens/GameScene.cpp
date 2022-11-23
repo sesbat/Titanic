@@ -19,6 +19,7 @@
 #include <cmath>
 #include "../Ui/GameSceneUiMgr.h"
 #include "../GameObject/NPC.h"
+#include "../GameObject/ItemBoxObject.h"
 
 using namespace std;
 using namespace sf;
@@ -68,6 +69,7 @@ void GameScene::Init()
 			enemy->SetId(id++);
 			enemy->SetPos(obj.position);
 			enemy->SetHitBox(obj.path);
+			enemy->SetItem(obj.item);
 			enemies.push_back(enemy);
 
 			objList[LayerType::Object][0].push_back(enemy);
@@ -217,7 +219,6 @@ void GameScene::Update(float dt)
 	else
 	{
 		missionText->SetActive(false);
-		cout << "FALSE" << endl;
 		escapeTimer = 3.f;
 	}
 
@@ -234,4 +235,34 @@ void GameScene::Draw(RenderWindow& window)
 {
 	window.setView(worldView);
 	Scene::Draw(window);
+}
+
+void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos)
+{
+	ItemBoxObject* box = new ItemBoxObject();
+	box->SetItems(items);
+	box->SetTexture(*RESOURCES_MGR->GetTexture("graphics/enemy1-die.png"));
+
+	box->SetOrigin(Origins::MC);
+	box->SetHitBox("graphics/enemy1-die.png");
+	box->SetPos(pos);
+	box->SetName("BOX");
+	box->SetPlayerPos(player->GetPosPtr());
+
+	for (auto& obj : objList[LayerType::Object][0])
+	{
+		if (((HitBoxObject*)(box))->GetBottomPos() < ((HitBoxObject*)(obj))->GetBottomPos())
+		{
+			objList[LayerType::Object][0].insert(find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), obj), box);
+			break;
+		}
+	}
+
+	//objList[LayerType::Object][0].push_back(box);
+	
+}
+
+void GameScene::GetItem(map<string, Item>* items)
+{
+	((GameSceneUiMgr*)(uiMgr))->GetItem(items);
 }

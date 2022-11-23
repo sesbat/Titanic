@@ -37,9 +37,11 @@ public:
 	InvenGreed* GetGreed(int i, int j);
 	InventoryBox* GetNowInven();
 	InventoryBox* GetPrevInven();
+	InventoryBox* GetRightInven();
 	InventoryBox* GetPairBox(InventoryBox* now);
 	void SetPrevInven(InventoryBox* inven) { this->prevInven = inven; }
 	void MoveInvenItem(InventoryBox* nextInven);
 	void ReturnUseItem();
+	void ClearInven();
 
 };

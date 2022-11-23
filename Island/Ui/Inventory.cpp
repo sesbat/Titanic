@@ -175,6 +175,10 @@ InventoryBox* Inventory::GetPrevInven()
 	return prevInven;
 }
 
+InventoryBox* Inventory::GetRightInven()
+{
+	return rightInven;
+}
 InventoryBox* Inventory::GetPairBox(InventoryBox* now)
 {
 	return now == myInven ? rightInven : myInven;
@@ -202,6 +206,11 @@ void Inventory::ReturnUseItem()
 	SetDrag(nullptr);
 	SetPrevInven(nullptr);
 	useIdx = -1;
+}
+
+void Inventory::ClearInven()
+{
+	rightInven->ClearInven();
 }
 
 InvenGreed* Inventory::GetGreed(int i, int j)
