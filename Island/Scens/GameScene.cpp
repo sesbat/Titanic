@@ -38,9 +38,17 @@ void GameScene::Init()
 	int id = 0;
 	isMap = true;
 	auto& data = FILE_MGR->GetMap(sceneName);
+	isGreedObject.clear();
+
+	for (int i = 0; i < 36; i++)
+		isGreedObject.push_back(vector<bool>(64, false));
 
 	for (auto& obj : data)
 	{
+		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "BLOCK")
+		{
+			isGreedObject[obj.greedIdx.x][obj.greedIdx.y] = true;
+		}
 		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "BLOCK")
 		{
 			HitBoxObject* draw = new HitBoxObject();
@@ -51,6 +59,7 @@ void GameScene::Init()
 			draw->SetHitBox(obj.path);
 
 			objList[LayerType::Object][0].push_back(draw);
+
 		}
 		else if(obj.type == "PLAYER")
 		{
@@ -118,11 +127,13 @@ void GameScene::Init()
 		enemy->Init(player);
 	}
 
+
 	auto& tiles = objList[LayerType::Tile][0];
 	mapSize.left = 0;
 	mapSize.top = 0;
 	mapSize.width = (tiles.back())->GetPos().x + 30;
 	mapSize.height = (tiles.back())->GetPos().y;
+
 
 	
 	//mission exit tile

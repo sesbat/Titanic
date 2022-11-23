@@ -35,6 +35,7 @@ protected:
 	int killCount;
 	float bombTimer;
 	TextObject* missionText;
+	vector<vector<bool>> isGreedObject;
 
 public:
 	GameScene();
