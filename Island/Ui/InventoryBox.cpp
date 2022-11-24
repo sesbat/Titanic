@@ -49,7 +49,6 @@ void InventoryBox::Update(float dt)
 			item->Update(dt);
 			if (item->IsDown())
 			{
-				cout << GetName() << endl;
 				inven->SetDrag(item);
 				inven->SetPrevInven(this);
 				auto invenPos = nowDrag->GetGreedPos();
@@ -68,13 +67,7 @@ void InventoryBox::Update(float dt)
 			}
 			else if (item->IsClickRight())
 			{
-				auto pair = inven->GetPairBox(inven->GetNowInven());
-
-				cout << pair->GetName() << endl;
-				auto pos = pair->FindInvenPos(item->GetWidth(), item->GetHeight());
-
-				cout << pos.x << endl;
-				cout << pos.y << endl;
+				auto pos = pairInven->FindInvenPos(item->GetWidth(), item->GetHeight());
 				auto invenPos = item->GetGreedPos();
 
 
@@ -89,7 +82,7 @@ void InventoryBox::Update(float dt)
 						}
 					}
 
-					pair->AddItem(item->GetName(), item->GetCount());
+					pairInven->AddItem(item->GetName(), item->GetCount());
 					items.erase(find(items.begin(), items.end(), item));
 					break;
 				}
@@ -175,8 +168,7 @@ void InventoryBox::AddItem(string name, int count)
 		{
 			allPos[i][j] = true;
 			itemGreed[i][j]->SetState(true, item);
-			cout << "unRock_i:" << i << endl;
-			cout << "unRock_j:" << j << endl;
+
 		}
 	}
 	item->Set(data.width, data.height,
@@ -257,10 +249,12 @@ void InventoryBox::MoveItem(int i, int j)
 
 	if (find(items.begin(), items.end(), nowDrag) == items.end())
 	{
-		items.push_back(nowDrag);
+		cout << "this11" << endl;
+		//items.push_back(nowDrag);
 	}
 
 	inven->MoveInvenItem(this);
+
 	inven->SetDrag(nullptr);
 	inven->SetPrevInven(nullptr);
 }
@@ -296,7 +290,7 @@ void InventoryBox::ReturnItem()
 
 void InventoryBox::ClearInven()
 {
-	for (auto& item :items)
+	for (auto item :items)
 	{
 		delete item;
 	}

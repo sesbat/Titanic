@@ -78,7 +78,7 @@ void Enemy::SetState(States newState)
 		animator.Play((direction.x > 0.f) ? "EnemyMove" : "EnemyMoveLeft");
 		break;
 	case Enemy::States::Dead:
-		((GameScene*)(SCENE_MGR->GetCurrScene()))->SetDeadEnemy(items, position);
+		((GameScene*)(SCENE_MGR->GetCurrScene()))->SetDeadEnemy(items, position, this);
 		SetActive(false);
 		break;
 	}

@@ -27,6 +27,8 @@ void Inventory::Init()
 	rightInven = new InventoryBox(uimgr, this, Vector2i{ 1248,252 });
 	rightInven->Init();
 	rightInven->SetName("RightInventory");
+	initRightInven = rightInven;
+
 
 	Vector2f invenPos[] = { {800.f,140.f},{800.f,310.f},{800.f,471.f},{991.f,471.f},{800.f,721.f},{888.f,721.f},{972.f,721.f},{1055.f,721.f} };
 	string invenPath[] = { "inven-weapon","inven-weapon" ,"inven-cloth" ,"inven-cloth" ,"inven-item","inven-item" ,"inven-item" ,"inven-item" };
@@ -101,6 +103,10 @@ void Inventory::Update(float dt)
 						prevInven->ReturnItem();
 						break;
 					}
+				}
+				if (itemName == "handsaw")
+				{
+					break;
 				}
 				//nowDrag->SetPos(useItem->GetPos());
 				nowDrag->SetInvenPos(useItem->GetPos());
@@ -187,8 +193,10 @@ InventoryBox* Inventory::GetPairBox(InventoryBox* now)
 
 void Inventory::MoveInvenItem(InventoryBox* nextInven)
 {
-	if (prevInven == nextInven)
+	if (prevInven == nextInven && useIdx == -1)
+	{
 		return;
+	}
 
 	auto prev = prevInven->GetItems();
 	auto next = nextInven->GetItems();
@@ -210,7 +218,16 @@ void Inventory::ReturnUseItem()
 
 void Inventory::ClearInven()
 {
-	rightInven->ClearInven();
+	initRightInven->ClearInven();
+}
+
+void Inventory::ResetRightInven()
+{
+	cout << myInven->GetName() << endl;
+	cout << rightInven->GetName() << endl;
+	rightInven = initRightInven;
+	myInven->SetPair(rightInven);
+	rightInven->SetPair(myInven);
 }
 
 InvenGreed* Inventory::GetGreed(int i, int j)
