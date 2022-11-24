@@ -46,7 +46,6 @@ public:
 	void ReturnUseItem();
 	void ClearInven();
 	void ResetRightInven();
-	void SetRightInven(InventoryBox* rightInven) { this->rightInven = rightInven; }
 	InventoryBox* GetPlayerInven() { return myInven; }
 
 };
