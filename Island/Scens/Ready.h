@@ -5,11 +5,13 @@ class SpriteObject;
 class Button;
 class NPC;
 class Player;
+class Inventory;
 class Ready : public Scene
 {
 protected:
 	Player* player;
-	NPC* npc;
+	NPC* startNpc;
+	NPC* shopNpc;
 
 	float timer;
 	Clock clock;
@@ -27,6 +29,6 @@ public:
 	virtual void Reset() override;
 
 	Player* GetPlayer() { return player; }
-	NPC* GetNPC() { return npc; }
+	NPC* GetNPC() { return startNpc; }
 };
 

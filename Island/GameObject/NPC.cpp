@@ -6,6 +6,10 @@
 #include "../Framework/ResourceManager.h"
 #include "../Ui/Button.h"
 #include "../Framework/Framework.h"
+#include "../Ui/InventoryBox.h"
+#include "../Scens/SceneManager.h"
+#include "../Scens/Scene.h"
+#include "../Ui/Inventory.h"
 
 NPC::NPC()
 	:isShowMap(false)
@@ -21,8 +25,19 @@ void NPC::SetPlayer(Player* player)
 	this->player = player;
 }
 
+void NPC::SetNPCType(NPCType type)
+{
+	this->type = type;
+}
+
 void NPC::Init()
 {
+	scene = SCENE_MGR->GetCurrScene();
+	shop = new InventoryBox(scene->GetUiMgr(),player->GetInventory(), Vector2i{ 1248,252 });
+	shop->Init();
+	NPCInven = player->GetInventory();
+	NPCInven->SetRightInven(shop);
+
 	SpriteObject::Init();
 }
 
@@ -38,7 +53,22 @@ void NPC::Update(float dt)
 	if (Utils::Distance(GetPos(), player->GetPos()) < 100 &&
 		InputMgr::GetKeyDown(Keyboard::F))
 	{
-		isShowMap = !isShowMap;
+		switch (type)
+		{
+		case NPCType::Start:
+			isShowMap = !isShowMap;
+			break;
+		case NPCType::Shop:
+			player->GetInventory()->SetActive(!(player->GetInventory()->GetActive()));
+			if (!player->GetInventory()->GetActive())
+				player->GetInventory()->ClearInven();
+			break;
+		case NPCType::Count:
+			break;
+		default:
+			break;
+		}
+
 	}
 }
 

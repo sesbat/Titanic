@@ -41,6 +41,7 @@ public:
 	InventoryBox* GetRightInven();
 	InventoryBox* GetPairBox(InventoryBox* now);
 	void SetPrevInven(InventoryBox* inven) { this->prevInven = inven; }
+	void SetRightInven(InventoryBox* inven) { rightInven = inven; }
 	void MoveInvenItem(InventoryBox* nextInven);
 	void ReturnUseItem();
 	void ClearInven();

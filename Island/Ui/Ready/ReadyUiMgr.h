@@ -7,11 +7,14 @@ class Scene;
 class Player;
 class NPC;
 class Button;
+class Inventory;
 class ReadyUiMgr : public UiMgr
 {
 private:
 	Player* player;
 	NPC* npc;
+
+	Inventory* inVen;
 
 	UiMgr* uiMgr;
 

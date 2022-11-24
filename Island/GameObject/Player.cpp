@@ -20,8 +20,8 @@ Player::Player()
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
 	hp(10), maxHp(10), isDash(false), stamina(10.f), maxStamina(10.f),
-	hungerGuage(255),thirstGuage(255),energyGuage(255),
-	staminaScale(1.f),staminaTime(5.f),dash(0.01f)
+	hungerGuage(255), thirstGuage(255), energyGuage(255),
+	staminaScale(1.f), staminaTime(5.f), dash(0.01f)
 {
 }
 
@@ -38,18 +38,18 @@ void Player::Init()
 	gun = new Gun(GunType::Shotgun, User::Player);
 	gun->SetPlayer(this);
 	gun->Init();
-	
+
 	animator.SetTarget(&sprite);
 
 	//animation
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerIdle"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerMove"));
-	
+
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerIdleLeft"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerMoveLeft"));
-	
+
 	scene = SCENE_MGR->GetCurrScene();
-	
+
 	SetState(States::Idle);
 
 	inven = new Inventory(scene->GetUiMgr());
@@ -119,12 +119,12 @@ void Player::Update(float dt)
 		energyGuage -= 1.f;
 		EnergyDelay = 0.01f;
 	}
-	
-	if (staminaScale < 0.99f&&!isDash)
+
+	if (staminaScale < 0.99f && !isDash)
 	{
 		staminaScale += dash;
 	}
-	if (staminaScale > 0.f&&isDash)
+	if (staminaScale > 0.f && isDash)
 	{
 		staminaScale -= dash / staminaTime;
 		if (staminaScale < 0.f)
@@ -181,13 +181,13 @@ void Player::Update(float dt)
 	{
 		gun->SetGunType(GunType::Sniper);
 	}
-	
+
 	if (stamina > 0.5f && InputMgr::GetKeyDown(Keyboard::LShift))
 	{
 		speed = 800.f;
 		isDash = true;
 	}
-	
+
 	if (InputMgr::GetKeyUp(Keyboard::LShift))
 	{
 		speed = 500.f;
@@ -250,11 +250,11 @@ void Player::Dash(float dt)
 void Player::UpdateIdle(float dt)
 {
 	//attackHitbox->SetActive(false);
-	if ( !EqualFloat(direction.x, 0.f) )
+	if (!EqualFloat(direction.x, 0.f))
 	{
 		SetState(States::Move);
 	}
-	else if ( !EqualFloat(direction.y, 0.f) )
+	else if (!EqualFloat(direction.y, 0.f))
 	{
 		SetState(States::Move);
 	}
@@ -273,7 +273,7 @@ void Player::UpdateMove(float dt)
 		return;
 	}
 
-	if ( (lookDir.x > 0 && prevLook.x < 0) || 
+	if ((lookDir.x > 0 && prevLook.x < 0) ||
 		(lookDir.x < 0 && prevLook.x > 0))
 	{
 		//animator.Play((lookDir.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
@@ -289,7 +289,7 @@ bool Player::EqualFloat(float a, float b)
 
 void Player::SetHp(int num)
 {
-	if ( hp > 0 )
+	if (hp > 0)
 	{
 		hp -= num;
 	}
@@ -302,7 +302,7 @@ void Player::SetHp(int num)
 void Player::SetPlayerPos()
 {
 	SetPos(prevPosition);
-	
+
 	for (auto& hit : hitboxs)
 	{
 		hit->SetPos(prevPosition);
