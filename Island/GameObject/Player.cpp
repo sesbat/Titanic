@@ -156,13 +156,13 @@ void Player::Update(float dt)
 	{
 	case GunType::Shotgun:
 	case GunType::Sniper:
-		if (InputMgr::GetMouseButtonDown(Mouse::Left))
+		if (InputMgr::GetMouseButtonDown(Mouse::Left) && !inven->GetActive())
 		{
 			gun->Fire(GetPos(), true);
 		}
 		break;
 	case GunType::Rifle:
-		if (InputMgr::GetMouseButtonDown(Mouse::Left))
+		if (InputMgr::GetMouseButtonDown(Mouse::Left) && !inven->GetActive())
 		{
 			gun->Fire(GetPos(), true);
 		}
@@ -197,9 +197,17 @@ void Player::Update(float dt)
 	if (InputMgr::GetKeyDown(Keyboard::Tab))
 	{
 		inven->SetActive(!(inven->GetActive()));
+		inven->ResetRightInven();
 		if (!inven->GetActive())
 		{
+			if (inven->GetRightInven()->GetItems()->size() > 0)
+			{
+
+			}
 			inven->ClearInven();
+		}
+		else
+		{
 		}
 	}
 	if (isDash)

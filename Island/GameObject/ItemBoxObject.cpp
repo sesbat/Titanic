@@ -43,6 +43,7 @@ void ItemBoxObject::Update(float dt)
 		auto player = scene->GetPlayer();
 		player->GetInventory()->SetRightInven(invenBox);
 		player->GetInventory()->SetActive(true);
+		player->GetInventory()->GetPlayerInven()->SetPair(invenBox);
 		invenBox->SetActive(true);
 	}
 }
@@ -57,13 +58,15 @@ void ItemBoxObject::SetItems(map<string, Item> items)
 	auto scene = ((GameScene*)SCENE_MGR->GetCurrScene());
 	auto player = scene->GetPlayer();
 	invenBox = new InventoryBox(scene->GetUiMgr(), player->GetInventory(), Vector2i{ 1248,252 });
+	invenBox->SetName("RightInventory");
 	invenBox->Init();
+	invenBox->SetPair(player->GetInventory()->GetPlayerInven());
+	cout << invenBox->GetPair()->GetName() << endl;
 	obj_items = items;
 	for (auto item : obj_items)
 	{
 		invenBox->AddItem(item.second.type);
 	}
-
 	this->obj_items = items;
 	
 }

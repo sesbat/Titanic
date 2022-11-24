@@ -80,7 +80,6 @@ void InvenGreed::Update(float dt)
 		}
 		if (isMove)
 		{
-			
 			inven->GetNowInven()->MoveItem(invenPos.x, invenPos.y);
 			return;
 		}

@@ -20,6 +20,7 @@
 #include "../Ui/GameSceneUiMgr.h"
 #include "../GameObject/NPC.h"
 #include "../GameObject/ItemBoxObject.h"
+#include "../Ui/Inventory.h"
 
 using namespace std;
 using namespace sf;
@@ -217,7 +218,8 @@ void GameScene::Update(float dt)
 	realcam.y = max((int)realcam.y, WINDOW_HEIGHT / 2);
 	realcam.y = min((int)realcam.y, mapSize.height - WINDOW_HEIGHT / 2);
 
-	worldView.setCenter(realcam);
+	if(!player->GetInventory()->GetActive())
+		worldView.setCenter(realcam);
 
 	//mission
 	if (Utils::Distance(player->GetPos(), escapePoint) < 100.f)
@@ -252,7 +254,25 @@ void GameScene::Draw(RenderWindow& window)
 	Scene::Draw(window);
 }
 
-void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos)
+void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy)
+{
+	ItemBoxObject* box = new ItemBoxObject();
+	box->SetItems(items);
+	box->SetTexture(*RESOURCES_MGR->GetTexture("graphics/enemy1-die.png"));
+
+	box->SetOrigin(Origins::MC);
+	box->SetHitBox("graphics/enemy1-die.png");
+	box->SetPos(pos);
+	box->SetName("BOX");
+	box->SetPlayerPos(player->GetPosPtr());
+
+	auto boxPos = ((HitBoxObject*)(box))->GetBottomPos() + box->GetGlobalBound().height / 2;
+
+	auto it = find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), enemy);
+	objList[LayerType::Object][0].insert(it, box);
+}
+
+void GameScene::DropItems(map<string, Item> items, Vector2f pos)
 {
 	ItemBoxObject* box = new ItemBoxObject();
 	box->SetItems(items);
@@ -266,13 +286,12 @@ void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos)
 
 	for (auto& obj : objList[LayerType::Object][0])
 	{
+		cout << ((HitBoxObject*)(obj))->GetBottomPos() << endl;
 		if (((HitBoxObject*)(box))->GetBottomPos() < ((HitBoxObject*)(obj))->GetBottomPos())
 		{
-			objList[LayerType::Object][0].insert(find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), obj), box);
-			break;
+			//objList[LayerType::Object][0].insert(find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), obj), box);
+			//break;
 		}
 	}
-
-	//objList[LayerType::Object][0].push_back(box);
-	
 }
+

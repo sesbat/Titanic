@@ -15,6 +15,7 @@ private:
 	vector<InvenItem*> items;
 	InvenItem* nowDrag;
 	Inventory* inven;
+	InventoryBox* pairInven;
 public:
 	InventoryBox(UiMgr* mgr, Inventory* inven, Vector2i startPos);
 	virtual ~InventoryBox();
@@ -33,5 +34,7 @@ public:
 	void SetDrag(InvenItem* nowDrag) { this->nowDrag = nowDrag; }
 	vector<InvenItem*>* GetItems() { return &items; }
 	void ClearInven();
+	void SetPair(InventoryBox* pair) { this->pairInven = pair; }
+	InventoryBox* GetPair() { return pairInven; }
 };
 
