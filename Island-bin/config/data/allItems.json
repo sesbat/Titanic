@@ -19,5 +19,19 @@
     "weight": 2.0,
     "width": 2,
     "height": 2
+  },
+  "GUN1": {
+    "path": "graphics/items/GUN1.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 5,
+    "height": 1
+  },
+  "GUN2": {
+    "path": "graphics/items/GUN2.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 3,
+    "height": 1
   }
 }

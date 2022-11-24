@@ -188,7 +188,8 @@ void Scene::LayerSort()
 		{
 			continue;
 		}
-		if (obj->GetName() == "TREE" || obj->GetName() == "BUSH" || obj->GetName() == "STONE" || obj->GetName() == "BLOCK" || obj->GetName() == "BOX")
+		if (obj->GetName() == "TREE" || obj->GetName() == "BUSH" || obj->GetName() == "STONE" ||
+			obj->GetName() == "BLOCK" || obj->GetName() == "BOX" || obj->GetName() == "BOX-ENEMY")
 		{
 			if (obj->GetName() == "TREE" || obj->GetName() == "BUSH")
 				alphaObj.push_back((HitBoxObject*)obj);

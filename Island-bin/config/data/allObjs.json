@@ -69,6 +69,12 @@
       "uiPaht": "graphics/editor/drawEnemy1.png"
     }
   ],
+  "BOX": [
+    {
+      "texPath": "graphics/items/box.png",
+      "uiPaht": "graphics/editor/drawBox1.png"
+    }
+  ],
   "PLAYER": [
     {
       "texPath": "graphics/player.png",

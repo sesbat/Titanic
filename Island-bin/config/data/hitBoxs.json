@@ -23,6 +23,30 @@
       }
     }
   ],
+  "graphics/block1.png": [
+    {
+      "pos": {
+        "x": -30.0,
+        "y": -61.0
+      },
+      "size": {
+        "x": 60.0,
+        "y": 60.0
+      }
+    }
+  ],
+  "graphics/items/box.png": [
+    {
+      "pos": {
+        "x": -21.0,
+        "y": -31.0
+      },
+      "size": {
+        "x": 39.0,
+        "y": 19.0
+      }
+    }
+  ],
   "graphics/enemy1.png": [
     {
       "pos": {

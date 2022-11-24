@@ -32,7 +32,7 @@ void Ready::Init()
 
 	for (auto& obj : data)
 	{
-		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "BLOCK")
+		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "BLOCK"|| obj.type == "BOX" || obj.type == "BOX-ENEMY")
 		{
 			HitBoxObject* draw = new HitBoxObject();
 			draw->SetName(obj.type);

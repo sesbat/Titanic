@@ -23,5 +23,6 @@ public:
 	virtual void Draw(RenderWindow& window);
 	void SetItems(map<string, Item> items);
 	void SetPlayerPos(Vector2f* pos) { playerPos = pos; }
+	InventoryBox* GetInvenBox() { return invenBox; }
 };
 

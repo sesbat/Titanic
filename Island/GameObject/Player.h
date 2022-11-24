@@ -14,6 +14,7 @@ class Scene;
 class Gun;
 class Bullet;
 class Inventory;
+class ItemBoxObject;
 
 class Player : public HitBoxObject
 {
@@ -47,6 +48,7 @@ protected:
 
 	SpriteObject* background;
 
+
 	int hp;
 	int maxHp;
 
@@ -70,6 +72,7 @@ protected:
 
 
 	Inventory* inven;
+	ItemBoxObject* rightInvenObj;
 	//bool isAlive;
 public:
 	Player();
@@ -123,5 +126,6 @@ public:
 	Vector2f* GetPosPtr() { return &position; }
 	void GetItem(map<string, Item>* items);
 	Inventory* GetInventory() { return inven; }
+	void SetRigthInvenBox(ItemBoxObject* inven) { rightInvenObj = inven; }
 };
 

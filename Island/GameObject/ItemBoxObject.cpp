@@ -35,7 +35,7 @@ void ItemBoxObject::Update(float dt)
 {
 	HitBoxObject::Update(dt);
 
-	if (Utils::Distance(position, *playerPos) < 100 && InputMgr::GetKeyDown(Keyboard::F))
+	if (Utils::Distance(position, *playerPos) < 30 && InputMgr::GetKeyDown(Keyboard::F))
 	{
 		//((GameScene*)SCENE_MGR->GetCurrScene())->GetPlayer()->GetItem(&obj_items);;
 
@@ -44,6 +44,7 @@ void ItemBoxObject::Update(float dt)
 		player->GetInventory()->SetRightInven(invenBox);
 		player->GetInventory()->SetActive(true);
 		player->GetInventory()->GetPlayerInven()->SetPair(invenBox);
+		player->SetRigthInvenBox(this);
 		invenBox->SetActive(true);
 	}
 }
@@ -65,7 +66,14 @@ void ItemBoxObject::SetItems(map<string, Item> items)
 	obj_items = items;
 	for (auto item : obj_items)
 	{
-		invenBox->AddItem(item.second.type);
+		auto data = FILE_MGR->GetItemInfo(item.first);
+		int i = item.second.count / data.maxCount;
+		
+		for (int n = 0; n < i; n++)
+		{
+			invenBox->AddItem(item.second.type, data.maxCount);
+		}
+		invenBox->AddItem(item.second.type, item.second.count % data.maxCount);
 	}
 	this->obj_items = items;
 	

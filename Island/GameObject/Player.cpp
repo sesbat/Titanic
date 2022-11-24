@@ -13,6 +13,8 @@
 #include "Gun.h"
 #include "../Ui/Inventory.h"
 #include "../Ui/InventoryBox.h"
+#include "../Ui/InvenItem.h"
+#include "../GameObject/ItemBoxObject.h"
 
 
 Player::Player()
@@ -202,12 +204,35 @@ void Player::Update(float dt)
 		{
 			if (inven->GetRightInven()->GetItems()->size() > 0)
 			{
-
+				auto rightInven = inven->GetRightInven()->GetItems();
+				map<string, Item> dropItems;
+				for (auto& item : *rightInven)
+				{
+					if (dropItems.find(item->GetName()) == dropItems.end())
+					{
+						dropItems[item->GetName()] = { item->GetName(), item->GetPath(),item->GetCount() };
+					}
+					else
+					{
+						dropItems[item->GetName()].count += item->GetCount();
+					}
+				}
+				((GameScene*)scene)->DropItems(dropItems, position);
+			}
+			if(rightInvenObj != nullptr)
+			{
+				auto items = rightInvenObj->GetInvenBox()->GetItems();
+				if (items->size() == 0)
+				{
+					((GameScene*)scene)->EmpytyInven(rightInvenObj);
+					rightInvenObj = nullptr;
+				}
 			}
 			inven->ClearInven();
 		}
 		else
 		{
+			rightInvenObj = nullptr;
 		}
 	}
 	if (isDash)

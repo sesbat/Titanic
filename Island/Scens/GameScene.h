@@ -11,6 +11,7 @@ class VertexArrayObj;
 class SpriteObject;
 class TextObject;
 class NPC;
+class ItemBoxObject;
 
 class GameScene :public Scene
 {
@@ -56,4 +57,5 @@ public:
 	Vector2f GetEscapePoint() { return escapePoint; }
 	void SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy);
 	void DropItems(map<string, Item> items, Vector2f pos);
+	void EmpytyInven(ItemBoxObject* inven);
 };

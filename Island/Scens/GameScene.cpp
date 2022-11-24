@@ -21,6 +21,7 @@
 #include "../GameObject/NPC.h"
 #include "../GameObject/ItemBoxObject.h"
 #include "../Ui/Inventory.h"
+#include "../Ui/InventoryBox.h"
 
 using namespace std;
 using namespace sf;
@@ -44,13 +45,29 @@ void GameScene::Init()
 	for (int i = 0; i < 36; i++)
 		isGreedObject.push_back(vector<bool>(64, false));
 
+	player = new Player();
+	player->SetName("PLAYER");
+	player->Init();
+
 	for (auto& obj : data)
 	{
 		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "BLOCK")
 		{
 			isGreedObject[obj.greedIdx.x][obj.greedIdx.y] = true;
 		}
-		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "BLOCK")
+		if (obj.type == "BOX" || obj.type == "BOX-ENEMY")
+		{
+			ItemBoxObject* box = new ItemBoxObject();
+			box->SetPlayerPos(player->GetPosPtr());
+			box->SetItems(obj.item);
+			box->SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/box.png"));
+			box->SetName(obj.type);
+			box->SetOrigin(Origins::BC);
+			box->SetPos(obj.position);
+			box->SetHitBox(obj.path);
+			objList[LayerType::Object][0].push_back(box);
+		}
+		else if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "BLOCK")
 		{
 			HitBoxObject* draw = new HitBoxObject();
 			draw->SetName(obj.type);
@@ -64,9 +81,6 @@ void GameScene::Init()
 		}
 		else if(obj.type == "PLAYER")
 		{
-			player = new Player();
-			player->SetName(obj.type);
-			player->Init();
 			player->SetPos(obj.position);
 			player->SetHitBox(obj.path);
 
@@ -263,7 +277,7 @@ void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy
 	box->SetOrigin(Origins::MC);
 	box->SetHitBox("graphics/enemy1-die.png");
 	box->SetPos(pos);
-	box->SetName("BOX");
+	box->SetName("BOX-ENEMY");
 	box->SetPlayerPos(player->GetPosPtr());
 
 	auto boxPos = ((HitBoxObject*)(box))->GetBottomPos() + box->GetGlobalBound().height / 2;
@@ -276,22 +290,30 @@ void GameScene::DropItems(map<string, Item> items, Vector2f pos)
 {
 	ItemBoxObject* box = new ItemBoxObject();
 	box->SetItems(items);
-	box->SetTexture(*RESOURCES_MGR->GetTexture("graphics/enemy1-die.png"));
+	box->SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/box.png"));
 
 	box->SetOrigin(Origins::MC);
-	box->SetHitBox("graphics/enemy1-die.png");
+	box->SetHitBox("graphics/items/box.png");
 	box->SetPos(pos);
 	box->SetName("BOX");
 	box->SetPlayerPos(player->GetPosPtr());
 
-	for (auto& obj : objList[LayerType::Object][0])
-	{
-		cout << ((HitBoxObject*)(obj))->GetBottomPos() << endl;
-		if (((HitBoxObject*)(box))->GetBottomPos() < ((HitBoxObject*)(obj))->GetBottomPos())
-		{
-			//objList[LayerType::Object][0].insert(find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), obj), box);
-			//break;
-		}
-	}
+	auto boxPos = ((HitBoxObject*)(box))->GetBottomPos() + box->GetGlobalBound().height / 2;
+
+	auto it = find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), player);
+	objList[LayerType::Object][0].insert(it, box);
 }
 
+void GameScene::EmpytyInven(ItemBoxObject* inven)
+{
+	if (inven == nullptr)
+		return;
+
+	if (inven->GetName() == "BOX")
+	{
+		auto it = find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), inven);
+		objList[LayerType::Object][0].erase(it);
+
+		delete inven;
+	}
+}

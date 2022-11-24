@@ -132,7 +132,6 @@ void InventoryBox::Draw(RenderWindow& window)
 void InventoryBox::AddItem(string name, int count)
 {
 	auto data = FILE_MGR->GetItemInfo(name);
-
 	for (auto& item : items)
 	{
 		if (item->GetName() == name)
