@@ -8,7 +8,7 @@ class Inventory;
 class Scene;
 enum class NPCType
 {
-    Start,Shop,Count,
+    Start,Shop,Craft,Count,
 };
 class NPC : public HitBoxObject
 {
@@ -16,6 +16,8 @@ private:
     Player* player;
     bool isShowMap;
     NPCType type;
+
+    bool isShowCraft;
 
     Inventory* NPCInven;
     InventoryBox* shop;
@@ -30,6 +32,7 @@ public:
     virtual void Draw(RenderWindow& window);
 
     bool GetShowMap() { return isShowMap; }
+    bool GetShowCraft() { return isShowCraft; }
     void SetPlayer(Player* player);
     void SetNPCType(NPCType type);
 };

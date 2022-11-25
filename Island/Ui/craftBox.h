@@ -1,0 +1,42 @@
+#pragma once
+#include "Button.h"
+#include "CraftGreed.h"
+class UiMgr;
+class InvenItem;
+class Craft;
+class CraftBox: public Button
+{
+private:
+	const Vector2i startPos;
+	int padding = 4;
+	int width = 21;
+	int height = 9;
+	vector<vector<bool>> allPos;
+	vector<vector<CraftGreed*>> itemGreed;
+	vector<InvenItem*> items;
+	InvenItem* nowDrag;
+	Craft* inven;
+	CraftBox* pairInven;
+public:
+	CraftBox(UiMgr* mgr, Craft* inven, Vector2i startPos);
+	virtual ~CraftBox();
+	virtual void Init();
+	virtual void Update(float dt);
+	virtual void Draw(RenderWindow& window);
+	void AddItem(string name, int count = 1);
+	Vector2i FindInvenPos(int i_width, int i_height);
+	InvenItem* GetNowDrag() { return nowDrag; }
+	CraftGreed* GetGreed(int i, int j);
+	void MoveItem(int i, int j);
+	void ReturnItem();
+	bool IsGreedItem(int i, int j) { return allPos[i][j]; }
+	int GetWidth() { return width; }
+	int GetHeight() { return height; }
+	void SetDrag(InvenItem* nowDrag) { this->nowDrag = nowDrag; }
+	void SetBoxSize(int width, int height);
+	vector<InvenItem*>* GetItems() { return &items; }
+	void ClearInven();
+	void SetPair(CraftBox* pair) { this->pairInven = pair; }
+	CraftBox* GetPair() { return pairInven; }
+};
+

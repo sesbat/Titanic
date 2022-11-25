@@ -63,6 +63,10 @@ void NPC::Update(float dt)
 			if (!player->GetInventory()->GetActive())
 				player->GetInventory()->ClearInven();
 			break;
+		case NPCType::Craft:
+			isShowCraft = !isShowCraft;
+			//Craft Table
+			break;
 		case NPCType::Count:
 			break;
 		default:

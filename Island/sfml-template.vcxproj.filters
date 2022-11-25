@@ -1,10 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="GameObject\ItemBoxObject.cpp" />
+    <ClCompile Include="Ui\AddItemBox.cpp" />
+    <ClCompile Include="GameObject\Bullet.cpp" />
     <ClCompile Include="DataTable\DataTable.cpp" />
     <ClCompile Include="DataTable\DataTableMGR.cpp" />
     <ClCompile Include="DataTable\StringTable.cpp" />
     <ClCompile Include="GameObject\Enemy.cpp" />
+    <ClCompile Include="GameObject\HitBox.cpp" />
+    <ClCompile Include="GameObject\HitBoxObject.cpp" />
+    <ClCompile Include="GameObject\Gun.cpp" />
+    <ClCompile Include="GameObject\NPC.cpp" />
+    <ClCompile Include="QTree\Entity.cpp" />
+    <ClCompile Include="QTree\QuadTree.cpp" />
+    <ClCompile Include="QTree\QuadTreeNode.cpp" />
+    <ClCompile Include="Ui\InventoryBox.cpp" />
+    <ClCompile Include="Ui\InvenGreed.cpp" />
+    <ClCompile Include="Ui\InvenItem.cpp" />
+    <ClCompile Include="Ui\Inventory.cpp" />
+    <ClCompile Include="Ui\LoadWindowBox.cpp" />
+    <ClCompile Include="Ui\SaveWindowBox.cpp" />
+    <ClCompile Include="Ui\GameSceneUiMgr.cpp" />
     <ClCompile Include="Ui\Fade.cpp" />
     <ClCompile Include="GameObject\Player.cpp" />
     <ClCompile Include="Ui\DrawObj.cpp" />
@@ -38,35 +55,38 @@
     <ClCompile Include="Ui\Ready\ReadyUiMgr.cpp" />
     <ClCompile Include="Ui\UiMgr.cpp" />
     <ClCompile Include="Ui\UiObject.cpp" />
-    <ClCompile Include="GameObject\HitBox.cpp" />
-    <ClCompile Include="GameObject\HitBoxObject.cpp" />
-    <ClCompile Include="GameObject\Bullet.cpp" />
-    <ClCompile Include="GameObject\Gun.cpp" />
-    <ClCompile Include="Ui\GameSceneUiMgr.cpp" />
-    <ClCompile Include="Ui\SaveWindowBox.cpp" />
-    <ClCompile Include="Ui\LoadWindowBox.cpp" />
-    <ClCompile Include="Ui\Inventory.cpp" />
-    <ClCompile Include="Ui\InvenItem.cpp" />
-    <ClCompile Include="Ui\InvenGreed.cpp" />
-    <ClCompile Include="Ui\InventoryBox.cpp" />
-    <ClCompile Include="GameObject\NPC.cpp" />
-<<<<<<< HEAD
-    <ClCompile Include="QTree\Entity.cpp" />
-    <ClCompile Include="QTree\QuadTree.cpp" />
-    <ClCompile Include="QTree\QuadTreeNode.cpp" />
-=======
-    <ClCompile Include="Ui\AddItemBox.cpp" />
-    <ClCompile Include="GameObject\ItemBoxObject.cpp" />
->>>>>>> feature/EditorItem
+    <ClCompile Include="Ui\craftBox.cpp" />
+    <ClCompile Include="Ui\Craft.cpp" />
+    <ClCompile Include="Ui\CraftGreed.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="3rd\OBB.h" />
     <ClInclude Include="3rd\rapidcsv.h" />
     <ClInclude Include="3rd\SingleTon.h" />
+    <ClInclude Include="GameObject\ItemBoxObject.h" />
+    <ClInclude Include="Ui\AddItemBox.h" />
+    <ClInclude Include="GameObject\Bullet.h" />
     <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="DataTable\DataTableMGR.h" />
     <ClInclude Include="DataTable\StringTable.h" />
     <ClInclude Include="GameObject\Enemy.h" />
     <ClInclude Include="Framework\ObjectPool.h" />
+    <ClInclude Include="GameObject\HitBox.h" />
+    <ClInclude Include="GameObject\HitBoxObject.h" />
+    <ClInclude Include="GameObject\Gun.h" />
+    <ClInclude Include="GameObject\NPC.h" />
+    <ClInclude Include="QTree\Common.hpp" />
+    <ClInclude Include="QTree\Entity.hpp" />
+    <ClInclude Include="QTree\NonCopyable.hpp" />
+    <ClInclude Include="QTree\QuadTree.hpp" />
+    <ClInclude Include="QTree\QuadTreeNode.hpp" />
+    <ClInclude Include="Ui\InventoryBox.h" />
+    <ClInclude Include="Ui\InvenGreed.h" />
+    <ClInclude Include="Ui\InvenItem.h" />
+    <ClInclude Include="Ui\Inventory.h" />
+    <ClInclude Include="Ui\LoadWindowBox.h" />
+    <ClInclude Include="Ui\SaveWindowBox.h" />
+    <ClInclude Include="Ui\GameSceneUiMgr.h" />
     <ClInclude Include="Ui\Fade.h" />
     <ClInclude Include="GameObject\Player.h" />
     <ClInclude Include="Ui\DrawObj.h" />
@@ -100,29 +120,9 @@
     <ClInclude Include="Ui\Ready\ReadyUiMgr.h" />
     <ClInclude Include="Ui\UiMgr.h" />
     <ClInclude Include="Ui\UiObject.h" />
-    <ClInclude Include="3rd\OBB.h" />
-    <ClInclude Include="GameObject\HitBox.h" />
-    <ClInclude Include="GameObject\HitBoxObject.h" />
-    <ClInclude Include="GameObject\Bullet.h" />
-    <ClInclude Include="GameObject\Gun.h" />
-    <ClInclude Include="Ui\GameSceneUiMgr.h" />
-    <ClInclude Include="Ui\SaveWindowBox.h" />
-    <ClInclude Include="Ui\LoadWindowBox.h" />
-    <ClInclude Include="Ui\Inventory.h" />
-    <ClInclude Include="Ui\InvenItem.h" />
-    <ClInclude Include="Ui\InvenGreed.h" />
-    <ClInclude Include="Ui\InventoryBox.h" />
-    <ClInclude Include="GameObject\NPC.h" />
-<<<<<<< HEAD
-    <ClInclude Include="QTree\Common.hpp" />
-    <ClInclude Include="QTree\Entity.hpp" />
-    <ClInclude Include="QTree\NonCopyable.hpp" />
-    <ClInclude Include="QTree\QuadTree.hpp" />
-    <ClInclude Include="QTree\QuadTreeNode.hpp" />
-=======
-    <ClInclude Include="Ui\AddItemBox.h" />
-    <ClInclude Include="GameObject\ItemBoxObject.h" />
->>>>>>> feature/EditorItem
+    <ClInclude Include="Ui\craftBox.h" />
+    <ClInclude Include="Ui\Craft.h" />
+    <ClInclude Include="Ui\CraftGreed.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
