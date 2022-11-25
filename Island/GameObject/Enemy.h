@@ -108,7 +108,7 @@ public:
 	void SetGreedObject(vector<vector<bool>> greed) { isGreedObject = greed; }
 
 	bool IsValid(int x, int y);
-	bool IsDestination(int x, int y, Pair dest);
+	bool IsDestination(Pair start, Pair dest);
 	int GetDistance(int x1, int y1, int x2, int y2);
 	void TracePath(Cell cellDetails[36][64], Pair dst);
 	void FindGrid();

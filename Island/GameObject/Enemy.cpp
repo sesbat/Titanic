@@ -302,7 +302,7 @@ void Enemy::Move(float dt)
 
 void Enemy::MoveToPos(float dt)
 {
-	cout << movePos.size() << endl;
+	
 	if (movePos.empty())
 	{
 		cout << "empty list" << endl;
@@ -374,14 +374,14 @@ void Enemy::Collision()
 
 bool Enemy::IsValid(int x, int y)
 {
-	if (x < 0 || y < 0 || x >= 64 || y >= 36)
+	if (x < 0 || y < 0 || x >= 36 || y >= 64)
 		return false;
 	return true;
 }
 
-bool Enemy::IsDestination(int x, int y, Pair dest)
+bool Enemy::IsDestination(Pair start, Pair dest)
 {
-	if (x == dest.first && y == dest.second)
+	if (start.first == dest.first && start.second == dest.second)
 		return true;
 	return false;
 }
@@ -426,9 +426,10 @@ void Enemy::FindGrid()
 {
 	startPos.first = (int)GetPos().y / 60;
 	startPos.second = (int)GetPos().x / 60;
-
+	cout << "start pos" << startPos.first << " " << startPos.second << endl;
 	destPos.first = (int)playerPos.y / 60;
 	destPos.second = (int)playerPos.x / 60;
+	cout << "dest pos" << destPos.first << " " << destPos.second << endl;
 }
 
 void Enemy::AstarSearch(vector<vector<bool>> map, Pair start, Pair dest)
@@ -439,10 +440,10 @@ void Enemy::AstarSearch(vector<vector<bool>> map, Pair start, Pair dest)
 		return;
 
 	if (true == map[start.second][start.first] ||
-		true == map[start.second][start.first])
+		true == map[dest.second][dest.first])
 		return;
 
-	if (IsDestination(start.first, start.second, dest))
+	if (IsDestination(start, dest))
 		return;
 
 	bool closedList[36][64];
@@ -451,8 +452,10 @@ void Enemy::AstarSearch(vector<vector<bool>> map, Pair start, Pair dest)
 	Cell cellDetails[36][64];
 
 	// init cells
-	for (int i = 0; i < 36; ++i) {
-		for (int j = 0; j < 64; ++j) {
+	for (int i = 0; i < 36; ++i) 
+	{
+		for (int j = 0; j < 64; ++j)
+		{
 			cellDetails[i][j].f = (numeric_limits<float>::max)();
 			cellDetails[i][j].g = (numeric_limits<float>::max)();
 			cellDetails[i][j].h = (numeric_limits<float>::max)();
@@ -477,7 +480,8 @@ void Enemy::AstarSearch(vector<vector<bool>> map, Pair start, Pair dest)
 
 	bool foundDest = false;
 
-	while (!openList.empty()) {
+	while (!openList.empty()) 
+	{
 		pPair p = *openList.begin();
 
 		openList.erase(openList.begin()); // openList�� �ִ� vertex�� ����.
@@ -487,15 +491,17 @@ void Enemy::AstarSearch(vector<vector<bool>> map, Pair start, Pair dest)
 		closedList[yy][xx] = true;
 
 		// 8������ successor�� �����Ѵ�.
-		for (int d = 0; d < 8; ++d) {
+		for (int d = 0; d < 8; ++d) 
+		{
 			int y = yy + yDir[d];
 			int x = xx + xDir[d];
 
 			if (false == IsValid(x, y))
 				continue;
 
-			if (true == IsDestination(x, y, dest)) {
-				// ������ Cell�� �θ� �����Ѵ�.
+			if (true == IsDestination(Pair(x,y), dest)) 
+			{
+				
 				cellDetails[y][x].parentX = xx;
 				cellDetails[y][x].parentY = yy;
 				cout << "dest found" << endl;
@@ -503,7 +509,8 @@ void Enemy::AstarSearch(vector<vector<bool>> map, Pair start, Pair dest)
 				foundDest = true;
 				return;
 			}
-			else if (false == closedList[y][x] && false == map[start.second][start.first]) {
+			else if (false == closedList[y][x] && false == map[y][x]) 
+			{
 				float gNew = cellDetails[yy][xx].g + 1.0f;
 				float hNew = GetDistance(x, y, dest.second, dest.first);
 				float fNew = gNew + hNew;
@@ -511,7 +518,8 @@ void Enemy::AstarSearch(vector<vector<bool>> map, Pair start, Pair dest)
 				// openList�� �ƴϸ� openList�� �߰��Ѵ�.
 				// �̹� openList�� 
 				if (cellDetails[y][x].f == (numeric_limits<float>::max)() ||
-					cellDetails[y][x].f > fNew) {
+					cellDetails[y][x].f > fNew) 
+				{
 					openList.insert(make_pair(fNew, make_pair(x, y)));
 
 					cellDetails[y][x].f = fNew;

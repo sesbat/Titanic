@@ -45,7 +45,7 @@ void GameScene::Init()
 
 	for (auto& obj : data)
 	{
-		if (obj.type == "TREE" || obj.type == "STONE" || obj.type == "BLOCK")
+		if (obj.type == "STONE" || obj.type == "BLOCK")
 		{
 			isGreedObject[obj.greedIdx.x][obj.greedIdx.y] = true;
 		}
