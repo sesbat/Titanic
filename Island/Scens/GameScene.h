@@ -55,4 +55,5 @@ public:
 	float GetEscapeTimer() { return escapeTimer; }
 	Vector2f GetEscapePoint() { return escapePoint; }
 	void SetDeadEnemy(map<string, Item> items, Vector2f pos);
+	vector<vector<bool>> GetGreedObj() { return isGreedObject; }
 };

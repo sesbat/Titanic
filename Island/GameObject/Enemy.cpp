@@ -1,4 +1,4 @@
- #include "Enemy.h"
+﻿ #include "Enemy.h"
 #include "Player.h"
 #include "HitBox.h"
 #include "Object.h"
@@ -11,6 +11,7 @@
 #include "../Ui/GameSceneUiMgr.h"
 #include "../Scens/GameScene.h"
 #include <iostream>
+#include <stack>
 
 Enemy::Enemy()
 	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(15),
@@ -122,7 +123,8 @@ void Enemy::Update(float dt)
 	//move
 	if (currState == States::Move)
 	{
-		Move(dt);
+		MoveToPos(dt);
+		//Move(dt);
 	}
 
 	//dev a* move
@@ -182,7 +184,7 @@ void Enemy::SetHp(int num)
 	isHit = true;
 	moveTime = 0.f;
 	attack = true;
-	lastPlayerPos = player->GetPos();
+	playerPos = player->GetPos();
 	if ( hp > 0 )
 	{
 		hp -= num;
@@ -241,6 +243,10 @@ void Enemy::AttackPattern(float dt)
 		hitTime = 0.f;
 		moveTime = 0.f;
 		attack = true;
+		playerPos = player->GetPos();
+		movePos.clear();
+		FindGrid();
+		AstarSearch(isGreedObject, startPos, destPos);
 	}
 
 	if (attack && moveTime < 10.f && ((Utils::Distance(player->GetPos(), GetPos()) > 500.f) || isHit))
@@ -261,38 +267,54 @@ void Enemy::AttackPattern(float dt)
 
 void Enemy::Move(float dt)
 {
-	moveDir = Utils::Normalize(player->GetPos() - GetPos());
-
-	//x dir
-	prevPosition = GetPos();
-	Translate({ moveDir.x * this->speed * dt, 0.f });
-	//position
-	for (auto& hit : hitboxs)
+	if (!movePos.empty())
 	{
-		hit->SetPos(GetPos());
-	}
-	//wall bound
-	Collision();
+		Vector2f pos = movePos.back();
+		while (GetPos() != pos)
+		{
+			moveDir = Utils::Normalize(pos - GetPos());
 
-	//y dir
-	prevPosition = GetPos();
-	Translate({ 0.f,  moveDir.y * this->speed * dt });
-	//position
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(GetPos());
+			//x dir
+			prevPosition = GetPos();
+			Translate({ moveDir.x * this->speed * dt, 0.f });
+			//position
+			for (auto& hit : hitboxs)
+			{
+				hit->SetPos(GetPos());
+			}
+			//wall bound
+			Collision();
+
+			//y dir
+			prevPosition = GetPos();
+			Translate({ 0.f,  moveDir.y * this->speed * dt });
+			//position
+			for (auto& hit : hitboxs)
+			{
+				hit->SetPos(GetPos());
+			}
+			Collision();
+		}
+		movePos.pop_back();
 	}
-	Collision();
+	
 }
 
 void Enemy::MoveToPos(float dt)
 {
-	Vector2f aPos = { 100.f,100.f };
-	moveDir = Utils::Normalize(aPos - GetPos());
+	cout << movePos.size() << endl;
+	if (movePos.empty())
+	{
+		cout << "empty list" << endl;
+		Translate({ 0.f, 0.f });
+		return;
+	}
+	Vector2f aPos = movePos.back();
 
+	moveDir = Utils::Normalize(aPos - GetPos());
 	//x dir
 	prevPosition = GetPos();
-	Translate({ moveDir.x * this->speed * dt, 0.f });
+	Translate( moveDir * this->speed * dt);
 	//position
 	for (auto& hit : hitboxs)
 	{
@@ -301,15 +323,32 @@ void Enemy::MoveToPos(float dt)
 	//wall bound
 	Collision();
 
-	//y dir
-	prevPosition = GetPos();
-	Translate({ 0.f,  moveDir.y * this->speed * dt });
-	//position
-	for (auto& hit : hitboxs)
+	////x dir
+	//prevPosition = GetPos();
+	//Translate({ moveDir.x * this->speed * dt, 0.f });
+	////position
+	//for (auto& hit : hitboxs)
+	//{
+	//	hit->SetPos(GetPos());
+	//}
+	////wall bound
+	//Collision();
+
+	////y dir
+	//prevPosition = GetPos();
+	//Translate({ 0.f,  moveDir.y * this->speed * dt });
+	////position
+	//for (auto& hit : hitboxs)
+	//{
+	//	hit->SetPos(GetPos());
+	//}
+	//Collision();
+
+	if (aPos == GetPos())
 	{
-		hit->SetPos(GetPos());
+		cout << "in position" << endl;
+		movePos.pop_back();
 	}
-	Collision();
 }
 
 void Enemy::Collision()
@@ -321,10 +360,8 @@ void Enemy::Collision()
 		auto hit = ((HitBoxObject*)objects)->GetBottom();
 		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
 			continue;
-		if (objects->GetName() == "TREE" ||
-			objects->GetName() == "STONE" ||
-			objects->GetName() == "BLOCK" ||
-			objects->GetName() == "PLAYER")
+		if (objects->GetName() == "STONE" ||
+			objects->GetName() == "BLOCK")
 		{
 			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
 			{
@@ -333,4 +370,160 @@ void Enemy::Collision()
 			}
 		}
 	}
+}
+
+bool Enemy::IsValid(int x, int y)
+{
+	if (x < 0 || y < 0 || x >= 64 || y >= 36)
+		return false;
+	return true;
+}
+
+bool Enemy::IsDestination(int x, int y, Pair dest)
+{
+	if (x == dest.first && y == dest.second)
+		return true;
+	return false;
+}
+
+int Enemy::GetDistance(int x1, int y1, int x2, int y2)
+{
+	return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+}
+
+void Enemy::TracePath(Cell cellDetails[36][64], Pair dest)
+{
+	int x = dest.first;
+	int y = dest.second;
+
+	stack<Pair> path;
+
+	while (!(cellDetails[y][x].parentX == x && cellDetails[y][x].parentY == y))
+	{
+		path.push(make_pair(y, x));
+
+		int tempX = cellDetails[y][x].parentX;
+		int tempY = cellDetails[y][x].parentY;
+		x = tempX;
+		y = tempY;
+	}
+
+	path.push(make_pair(y, x));
+	movePos.clear();
+	while (!path.empty()) 
+	{
+		pair<int, int> p = path.top();
+		movePos.push_front({ (p.first * 60.f),(p.second * 60.f) });
+		path.pop();
+		
+		cout << "->(" << p.first << "," << p.second << ")" << "\n";
+	}
+	movePos.pop_back();
+	cout << "\n";
+}
+
+void Enemy::FindGrid()
+{
+	startPos.first = (int)GetPos().y / 60;
+	startPos.second = (int)GetPos().x / 60;
+
+	destPos.first = (int)playerPos.y / 60;
+	destPos.second = (int)playerPos.x / 60;
+}
+
+void Enemy::AstarSearch(vector<vector<bool>> map, Pair start, Pair dest)
+{
+	if (false == IsValid(start.first, start.second))
+		return;
+	if (false == IsValid(dest.first, dest.second))
+		return;
+
+	if (true == map[start.second][start.first] ||
+		true == map[start.second][start.first])
+		return;
+
+	if (IsDestination(start.first, start.second, dest))
+		return;
+
+	bool closedList[36][64];
+	memset(closedList, false, sizeof(closedList));
+
+	Cell cellDetails[36][64];
+
+	// init cells
+	for (int i = 0; i < 36; ++i) {
+		for (int j = 0; j < 64; ++j) {
+			cellDetails[i][j].f = (numeric_limits<float>::max)();
+			cellDetails[i][j].g = (numeric_limits<float>::max)();
+			cellDetails[i][j].h = (numeric_limits<float>::max)();
+			cellDetails[i][j].parentX = -1;
+			cellDetails[i][j].parentY = -1;
+		}
+	}
+
+	// ���� ��带 �ʱ�ȭ �Ѵ�.
+	int yy = start.first, xx = start.second; // i = y, j = x
+	cellDetails[yy][xx].f = 0.f;
+	cellDetails[yy][xx].g = 0.f;
+	cellDetails[yy][xx].h = 0.f;
+	cellDetails[yy][xx].parentX = xx;
+	cellDetails[yy][xx].parentY = yy;
+
+	// open list�� �����.
+	set<pPair> openList;
+
+	// ���� ������ f�� 0���� �д�.
+	openList.insert(make_pair(0.f, make_pair(xx, yy)));
+
+	bool foundDest = false;
+
+	while (!openList.empty()) {
+		pPair p = *openList.begin();
+
+		openList.erase(openList.begin()); // openList�� �ִ� vertex�� ����.
+
+		xx = p.second.first; // x
+		yy = p.second.second;// y
+		closedList[yy][xx] = true;
+
+		// 8������ successor�� �����Ѵ�.
+		for (int d = 0; d < 8; ++d) {
+			int y = yy + yDir[d];
+			int x = xx + xDir[d];
+
+			if (false == IsValid(x, y))
+				continue;
+
+			if (true == IsDestination(x, y, dest)) {
+				// ������ Cell�� �θ� �����Ѵ�.
+				cellDetails[y][x].parentX = xx;
+				cellDetails[y][x].parentY = yy;
+				cout << "dest found" << endl;
+				TracePath(cellDetails, dest);
+				foundDest = true;
+				return;
+			}
+			else if (false == closedList[y][x] && false == map[start.second][start.first]) {
+				float gNew = cellDetails[yy][xx].g + 1.0f;
+				float hNew = GetDistance(x, y, dest.second, dest.first);
+				float fNew = gNew + hNew;
+
+				// openList�� �ƴϸ� openList�� �߰��Ѵ�.
+				// �̹� openList�� 
+				if (cellDetails[y][x].f == (numeric_limits<float>::max)() ||
+					cellDetails[y][x].f > fNew) {
+					openList.insert(make_pair(fNew, make_pair(x, y)));
+
+					cellDetails[y][x].f = fNew;
+					cellDetails[y][x].g = gNew;
+					cellDetails[y][x].h = hNew;
+					cellDetails[y][x].parentX = xx;
+					cellDetails[y][x].parentY = yy;
+				}
+			}
+		}
+	}
+
+	if (false == foundDest)
+		cout << "dest not found" << endl;
 }

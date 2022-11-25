@@ -79,6 +79,7 @@ void GameScene::Init()
 			enemy->SetPos(obj.position);
 			enemy->SetHitBox(obj.path);
 			enemy->SetItem(obj.item);
+			enemy->SetGreedObject(isGreedObject);
 			enemies.push_back(enemy);
 
 			objList[LayerType::Object][0].push_back(enemy);
