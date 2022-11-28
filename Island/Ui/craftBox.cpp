@@ -6,6 +6,7 @@
 #include "../Framework/FileManager.h"
 #include "InvenItem.h"
 #include "Craft.h"
+#include "CraftItem.h"
 
 CraftBox::CraftBox(UiMgr* mgr, Craft* inven, Vector2i startPos)
 	: Button(mgr), nowDrag(nullptr), inven(inven), startPos(startPos)
@@ -161,7 +162,7 @@ void CraftBox::AddItem(string name, int count)
 
 	int maxCnt = data.maxCount;
 
-	InvenItem* item = new InvenItem(uimgr);
+	CraftItem* item = new CraftItem(uimgr);
 	for (int i = findPos.x; i < findPos.x + data.height; i++)
 	{
 		for (int j = findPos.y; j < findPos.y + data.weight; j++)

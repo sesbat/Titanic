@@ -1,9 +1,11 @@
 #pragma once
 #include "Button.h"
+#include <map>
 class UiMgr;
 class InvenItem;
 class CraftGreed;
 class CraftBox;
+class CraftItem;
 
 enum class CraftIdx
 {
@@ -14,9 +16,10 @@ class Craft : public Button
 private:
 	float totalWeight;
 
-	InvenItem* nowDrag;
+	CraftItem* nowDrag;
 
 	vector<Button*> categories;
+	vector<CraftBox*> categoryBox;
 	int categoryCount;
 
 	CraftBox* craftBox;
@@ -25,8 +28,10 @@ private:
 	CraftBox* prevCraft;
 
 	Button* craftGreed[(int)CraftIdx::Count];
-	vector<InvenItem*> myUseItems;
+	vector<CraftItem*> myUseItems;
 
+
+	bool isShow;
 	int useIdx;
 
 
@@ -36,8 +41,8 @@ public:
 	virtual void Init();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
-	void SetDrag(InvenItem* item);
-	InvenItem* GetNowDrag() { return nowDrag; }
+	void SetDrag(CraftItem* item);
+	CraftItem* GetNowDrag() { return nowDrag; }
 	CraftGreed* GetGreed(int i, int j);
 	CraftBox* GetNowInven();
 	CraftBox* GetPrevInven();

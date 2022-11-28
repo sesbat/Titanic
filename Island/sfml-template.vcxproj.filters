@@ -55,9 +55,10 @@
     <ClCompile Include="Ui\Ready\ReadyUiMgr.cpp" />
     <ClCompile Include="Ui\UiMgr.cpp" />
     <ClCompile Include="Ui\UiObject.cpp" />
-    <ClCompile Include="Ui\craftBox.cpp" />
+    <ClCompile Include="Ui\CraftBox.cpp" />
     <ClCompile Include="Ui\Craft.cpp" />
     <ClCompile Include="Ui\CraftGreed.cpp" />
+    <ClCompile Include="Ui\CraftItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\OBB.h" />
@@ -120,9 +121,10 @@
     <ClInclude Include="Ui\Ready\ReadyUiMgr.h" />
     <ClInclude Include="Ui\UiMgr.h" />
     <ClInclude Include="Ui\UiObject.h" />
-    <ClInclude Include="Ui\craftBox.h" />
+    <ClInclude Include="Ui\CraftBox.h" />
     <ClInclude Include="Ui\Craft.h" />
     <ClInclude Include="Ui\CraftGreed.h" />
+    <ClInclude Include="Ui\CraftItem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

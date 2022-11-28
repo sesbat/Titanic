@@ -7,6 +7,7 @@
 #include "Craft.h"
 #include "InvenItem.h"
 #include "CraftBox.h"
+#include "CraftItem.h"
 
 CraftGreed::CraftGreed(UiMgr* mgr, Craft* inven, CraftBox* invenbox)
 	:Button(mgr), inven(inven), invenBox(invenbox), state(false)
@@ -24,7 +25,7 @@ void CraftGreed::Init()
 
 void CraftGreed::Update(float dt)
 {
-	InvenItem* dragItem = inven->GetNowDrag();
+	CraftItem* dragItem = inven->GetNowDrag();
 	if (IsEnter() && dragItem != nullptr)
 	{
 		int w = dragItem->GetWidth();
@@ -143,7 +144,7 @@ void CraftGreed::Draw(RenderWindow& window)
 	Button::Draw(window);
 }
 
-void CraftGreed::SetState(bool s, InvenItem* item)
+void CraftGreed::SetState(bool s, CraftItem* item)
 {
 	state = s;
 

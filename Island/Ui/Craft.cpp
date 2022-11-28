@@ -10,6 +10,7 @@
 #include "../Framework/info.h"
 #include "../Framework/Framework.h"
 #include "Button.h"
+#include "CraftItem.h"
 
 Craft::Craft(UiMgr* mgr)
 	: Button(mgr), totalWeight(0.f), nowDrag(nullptr), prevCraft(nullptr), useIdx(-1),categoryCount(3)
@@ -23,9 +24,21 @@ Craft::~Craft()
 void Craft::Init()
 {
 	SetTexture(*RESOURCES_MGR->GetTexture("graphics/craftbk.png"), true);
-	craftBox = new CraftBox(uimgr, this, Vector2i{ 512,64 });
-	craftBox->Init();
-	craftBox->SetName("MyInventory");
+
+	String box[] = { "box1", "box2", "box3" };
+	for (int i = 0; i < 3; i++)
+	{
+		craftBox = new CraftBox(uimgr, this, Vector2i{ 512,64 });
+		craftBox->Init();
+		craftBox->SetName(box[i]);
+		craftBox->SetActive(false);
+		categoryBox.push_back(craftBox);
+	}
+	String items[] = { "Recoverykit", "handsaw", "Armor-1" };
+	for (int i = 0; i < myUseItems.size(); i++)
+	{
+		myUseItems[i] = nullptr;
+	}
 
 	requiredItem = new CraftBox(uimgr, this, Vector2i{ 512,704 });
 	requiredItem->SetBoxSize(10,4);
@@ -33,16 +46,18 @@ void Craft::Init()
 	requiredItem->SetName("RightInventory");
 	initRequiredItem = requiredItem;
 
+	String itemList[] = { "1", "2", "3" };
 	for (int i = 0; i < 3; i++)
 	{
 		Button* button = new Button(uimgr);
 		button->SetClkColor(true);
 		button->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-			50, Color::White, " Health", true);
+			50, Color::White, itemList[i], true);
 		button->SetOrigin(Origins::MC);
-		button->SetPos({ 300.f,200.f + FRAMEWORK->GetWindowSize().y/3 *i});
+		button->SetPos({ 300.f,100.f + FRAMEWORK->GetWindowSize().y/6 *i});
+		categories.push_back(button);
 	}
-
+	
 	/*Vector2f invenPos[] = { {504.f,56.f},{504.f,696.f} };
 	string invenPath[] = { "craft-buy","craft-sel"};
 
@@ -53,37 +68,61 @@ void Craft::Init()
 		craftGreed[i]->SetPos(invenPos[i]);
 		craftGreed[i]->SetClkColor(false);
 	}*/
-	myUseItems = { nullptr,nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 }
 
 void Craft::Update(float dt)
 {
 	if (!enabled)
 		return;
+
+	for (auto& cg : categories)
+	{
+		cg->Update(dt);
+	}
 	Button::Update(dt);
-	craftBox->Update(dt);
+	
+	for (auto& btn : categoryBox)
+	{
+		btn->Update(dt);
+	}
 	requiredItem->Update(dt);
 
-	if (InputMgr::GetKeyDown(Keyboard::Q))
+	for (int i = 0; i < categories.size(); i++)
 	{
-		craftBox->AddItem("Recoverykit");
+		if (categories[i]->IsClick())
+		{
+			for (auto& btn : categoryBox)
+			{
+				btn->SetActive(false);
+			}
+			categoryBox[i]->SetActive(true);
+		}
+		if (!categoryBox[i]->GetActive())
+			continue;
+
+		if (InputMgr::GetKeyDown(Keyboard::Q))
+		{
+			categoryBox[i]->AddItem("Recoverykit");
+		}
+		if (InputMgr::GetKeyDown(Keyboard::W))
+		{
+			categoryBox[i]->AddItem("handsaw");
+		}
+		if (InputMgr::GetKeyDown(Keyboard::T))
+		{
+			categoryBox[i]->AddItem("Armor-1");
+		}
+		if (InputMgr::GetKeyDown(Keyboard::E))
+		{
+			requiredItem->AddItem("Recoverykit");
+		}
+		if (InputMgr::GetKeyDown(Keyboard::R))
+		{
+			requiredItem->AddItem("handsaw");
+		}
 	}
-	if (InputMgr::GetKeyDown(Keyboard::W))
-	{
-		craftBox->AddItem("handsaw");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::T))
-	{
-		craftBox->AddItem("Armor-1");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::E))
-	{
-		requiredItem->AddItem("Recoverykit");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::R))
-	{
-		requiredItem->AddItem("handsaw");
-	}
+
+	
 
 	if (nowDrag != nullptr && IsStay())
 	{
@@ -174,16 +213,18 @@ void Craft::Draw(RenderWindow& window)
 		if (useItem != nullptr)
 			useItem->Draw(window);
 	}
-	craftBox->Draw(window);
+	for (auto& btn : categoryBox)
+	{
+		btn->Draw(window);
+	}
 	requiredItem->Draw(window);
 	for (auto& cg : categories)
 	{
 		cg->Draw(window);
 	}
-
 }
 
-void Craft::SetDrag(InvenItem* item)
+void Craft::SetDrag(CraftItem* item)
 {
 	nowDrag = item;
 	craftBox->SetDrag(item);
