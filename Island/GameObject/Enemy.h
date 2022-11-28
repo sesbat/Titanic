@@ -10,6 +10,7 @@ class HitBox;
 class Player;
 class Scene;
 class Gun;
+class Astar;
 
 class Enemy : public HitBoxObject
 {
@@ -22,15 +23,16 @@ public:
 		Dead,
 	};
 
-	struct Cell {
+	/*struct Cell {
 		int parentX, parentY;
 		double f, g, h;
-	};
+	};*/
 
 protected:
 	Player* player;
 	Scene* scene;
 	Gun* gun;
+	Astar* astar;
 
 	Animator animator;
 
@@ -55,6 +57,7 @@ protected:
 	list<Vector2f> movePos;
 	Pair startPos;
 	Pair destPos;
+	Vector2f bottomPos;
 
 	//timer
 	float moveTime;
@@ -71,10 +74,8 @@ protected:
 	float barScaleX;
 
 	map<string, Item> items;
-	vector<vector<bool>> isGreedObject;
+	vector<vector<bool>> *isGreedObject;
 
-	int xDir[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
-	int yDir[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 public:
 	Enemy();
 	virtual ~Enemy();
@@ -105,12 +106,7 @@ public:
 	void MoveToPos(float dt);
 	void Collision();
 	
-	void SetGreedObject(vector<vector<bool>> greed) { isGreedObject = greed; }
+	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
 
-	bool IsValid(int x, int y);
-	bool IsDestination(Pair start, Pair dest);
-	int GetDistance(int x1, int y1, int x2, int y2);
-	void TracePath(Cell cellDetails[36][64], Pair dst);
 	void FindGrid();
-	void AstarSearch(vector<vector<bool>> map, Pair start, Pair dest);
 };

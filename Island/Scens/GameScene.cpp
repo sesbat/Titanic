@@ -45,11 +45,11 @@ void GameScene::Init()
 
 	for (auto& obj : data)
 	{
-		if (obj.type == "STONE" || obj.type == "BLOCK")
+		if (obj.type == "STONE"   || obj.type == "BLOCK")
 		{
 			isGreedObject[obj.greedIdx.x][obj.greedIdx.y] = true;
-		}
-		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "BLOCK")
+		} 
+		 if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "BLOCK")
 		{
 			HitBoxObject* draw = new HitBoxObject();
 			draw->SetName(obj.type);
@@ -79,7 +79,7 @@ void GameScene::Init()
 			enemy->SetPos(obj.position);
 			enemy->SetHitBox(obj.path);
 			enemy->SetItem(obj.item);
-			enemy->SetGreedObject(isGreedObject);
+			enemy->SetGreedObject(&isGreedObject);
 			enemies.push_back(enemy);
 
 			objList[LayerType::Object][0].push_back(enemy);

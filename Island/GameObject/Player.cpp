@@ -146,7 +146,7 @@ void Player::Update(float dt)
 	{
 		lastDirection = direction;
 	}
-
+	bottomPos = bottom->GetHitBottomPos();
 	prevLook = lookDir;
 
 	gun->Update(dt);
@@ -298,6 +298,7 @@ void Player::SetPlayerPos()
 		hit->SetPos(prevPosition);
 	}
 	bottom->SetPos(prevPosition);
+
 }
 
 Vector2f Player::SetLookDir()

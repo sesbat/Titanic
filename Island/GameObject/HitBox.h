@@ -32,5 +32,6 @@ public:
 	void SetFillColor(Color color);
 	const RectangleShape& GetHitbox() const;
 	FloatRect& GetHitBoxRect() { return hitBoxRect; }
+	Vector2f GetHitBottomPos() { return hitbox.getPosition(); }
 };
 

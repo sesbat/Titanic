@@ -2,7 +2,6 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "../Framework/FileManager.h"
-
 #include <list>
 
 using namespace std;
