@@ -52,7 +52,7 @@ void Astar::TracePath(vector<vector<bool>> map, Cell cellDetails[g_maxY][g_maxX]
 		{
 			DiagonalMove(map, p.first, p.second);
 		}
-		movePos.push_back({ ((float)p.first * 60.f) + 30.f ,((float)p.second * 60.f) + 30.f });
+		movePos.push_back({ ((float)p.first * 60.f) + 30.f ,((float)p.second * 60.f) + 20.f });
 		prevPos = { p.first ,p.second };
 		path.pop();
 
@@ -122,9 +122,9 @@ void Astar::AstarSearch(vector<vector<bool>> map, Pair start, Pair dest)
 		closedList[yy][xx] = true;
 
 		// 8방향의 successor를 생성한다.
-		for (int d = 0; d < 8; ++d) {
-			int y = yy + yDir[d];
-			int x = xx + xDir[d];
+		for (int d = 0; d < 4; ++d) {
+			int y = yy + dyDir[d];//yDir[d];
+			int x = xx + dxDir[d];// xDir[d];
 
 			if (false == IsValid(x, y))
 				continue;
@@ -200,8 +200,8 @@ void Astar::DiagonalMove(vector<vector<bool>> map, int x, int y)
 				if (prevPos.y > y)
 				{
 					movePos.push_back({ ((float)prevPos.x  * 60.f) + 30.f ,
-						((float)(prevPos.y - 1) * 60.f) + 30.f });
-					cout << "->(" << prevPos.x << "," << prevPos.y -1 << ")" << "\n";
+						((float)(prevPos.y + 1) * 60.f) + 30.f });
+					cout << "->(" << prevPos.x << "," << prevPos.y +1 << ")" << "\n";
 
 					return;
 				}
@@ -209,8 +209,8 @@ void Astar::DiagonalMove(vector<vector<bool>> map, int x, int y)
 				else
 				{
 					movePos.push_back({ ((float)prevPos.x * 60.f) + 30.f ,
-						((float)(prevPos.y + 1) * 60.f) + 30.f });
-					cout << "->(" << prevPos.x << "," << prevPos.y + 1 << ")" << "\n";
+						((float)(prevPos.y - 1) * 60.f) + 30.f });
+					cout << "->(" << prevPos.x << "," << prevPos.y - 1 << ")" << "\n";
 
 					return;
 				}

@@ -119,7 +119,7 @@ void Enemy::Update(float dt)
 	//enemy attack
 	if (currState != States::Dead)
 	{
-		AttackPattern(dt);
+		//AttackPattern(dt);
 	}
 	
 
@@ -147,10 +147,30 @@ void Enemy::Update(float dt)
 	{
 		isHit = !isHit;
 	}
+	if (InputMgr::GetKeyDown(Keyboard::F3))
+	{
+		playerPos = player->GetPos();
+		movePos.clear();
+		FindGrid();
+		astar->AstarSearch(*isGreedObject, startPos, destPos);
+		movePos = astar->GetCoordinate();
+		SetState(States::Move);
+	}
 }
 
 void Enemy::Draw(RenderWindow& window)
 {
+
+	VertexArray lines(Quads, 4);
+	if (!movePos.empty())
+	{
+		lines[0].position = { movePos.front().x - 30,movePos.front().y - 30.f };
+		lines[1].position = { movePos.front().x + 30.f,movePos.front().y - 30.f };
+		lines[2].position = { movePos.front().x + 30.f,movePos.front().y + 30.f };
+		lines[3].position = { movePos.front().x - 30.f,movePos.front().y + 30.f };
+		//window.draw(lines);
+	}
+	window.draw(lines);
 
 	if (!enabled || !IsInView())
 		return;
@@ -237,7 +257,7 @@ void Enemy::SetEnemyPos()
 void Enemy::AttackPattern(float dt)
 {
 	//attack motion
-	if (hitTime >= 0.8f && (Utils::Distance(player->GetPos(), GetPos()) < 500.f))
+	if (hitTime >= 0.8f && (Utils::Distance(player->GetPos(), GetPos()) < 300.f))
 	{
 		gun->Fire(GetPos(), false);
 		hitTime = 0.f;
@@ -246,12 +266,11 @@ void Enemy::AttackPattern(float dt)
 		playerPos = player->GetPos();
 		movePos.clear();
 		FindGrid();
-
 		astar->AstarSearch(*isGreedObject, startPos, destPos);
 		movePos = astar->GetCoordinate();
 	}
 
-	if (attack && moveTime < 10.f && ((Utils::Distance(player->GetPos(), GetPos()) > 500.f) || isHit))
+	if (attack && moveTime < 10.f && ((Utils::Distance(player->GetPos(), GetPos()) > 300.f) || isHit))
 	{
 		SetState(States::Move);
 	}
@@ -335,7 +354,7 @@ void Enemy::MoveToPos(float dt)
 		hit->SetPos(GetPos());
 	}
 	//wall bound
-	//Collision();
+	Collision();
 }
 
 void Enemy::Collision()

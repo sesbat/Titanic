@@ -76,6 +76,8 @@ protected:
 	map<string, Item> items;
 	vector<vector<bool>> *isGreedObject;
 
+	VertexArray* quad;
+
 public:
 	Enemy();
 	virtual ~Enemy();
