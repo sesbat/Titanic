@@ -23,11 +23,6 @@ public:
 		Dead,
 	};
 
-	/*struct Cell {
-		int parentX, parentY;
-		double f, g, h;
-	};*/
-
 protected:
 	Player* player;
 	Scene* scene;
@@ -39,7 +34,6 @@ protected:
 	RectangleShape healthBar;
 
 	States currState;
-	States prevState;
 
 	//move
 	float speed;
@@ -52,7 +46,8 @@ protected:
 	Vector2f moveDir;
 	Vector2f prevPosition;
 	bool isFlip;
-
+	
+	//a star dir
 	Vector2f playerPos;
 	list<Vector2f> movePos;
 	Pair startPos;
@@ -77,7 +72,7 @@ protected:
 	vector<vector<bool>> *isGreedObject;
 
 	//dev
-	bool isMove;
+	//bool isMove;
 
 public:
 	Enemy();

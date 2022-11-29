@@ -23,6 +23,14 @@ public:
 		double f, g, h;
 	};
 
+private:
+	int dxDir[4] = { 0, 0, 1, -1 };
+	int dyDir[4] = { -1, 1, 0, 0 };
+
+	Vector2i startPos;
+	list<Vector2f> movePos;
+	Vector2i prevPos;
+
 public:
 	Astar();
 	~Astar();
@@ -31,18 +39,7 @@ public:
 	int GetDistance(int x1, int y1, int x2, int y2);
 	void TracePath(vector<vector<bool>> map, Cell cellDetails[g_maxY][g_maxX], Pair dest);
 	void AstarSearch(vector<vector<bool>> map, Pair start, Pair dest);
-	list<Vector2f> GetCoordinate();// { return movePos; }
-	void DiagonalMove(vector<vector<bool>> map, int x, int y);
-	//void SetGreedObject(vector<vector<bool>> map) { isGreedObject = map; }
-private:
-	int xDir[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
-	int yDir[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
-	
-	int dxDir[4]= { 0, 0, 1, -1 };
-	int dyDir[4] = { -1, 1, 0, 0 };
-
-	Vector2i startPos;
-	list<Vector2f> movePos;
-	Vector2i prevPos;
+	list<Vector2f> GetCoordinate();
+	//void DiagonalMove(vector<vector<bool>> map, int x, int y);
 };
 

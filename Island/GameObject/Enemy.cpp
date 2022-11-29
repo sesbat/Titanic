@@ -16,7 +16,7 @@
 
 Enemy::Enemy()
 	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(15),
-	maxHp(15), barScaleX(60.f), look(1.f, 0.f), isHit(false), isMove(false)
+	maxHp(15), barScaleX(60.f), look(1.f, 0.f), isHit(false)//, isMove(false)
 {
 }
 
@@ -122,12 +122,10 @@ void Enemy::Update(float dt)
 		AttackPattern(dt);
 	}
 	
-
 	//move
 	if (currState == States::Move)
 	{
-		MoveToPos(dt);
-		//Move(dt);
+		Move(dt);
 	}
 	
 	//hp bar
@@ -149,7 +147,7 @@ void Enemy::Update(float dt)
 	}
 	if (InputMgr::GetKeyDown(Keyboard::F3))
 	{
-		isMove = !isMove;
+		//isMove = !isMove;
 		playerPos = player->GetPos();
 		movePos.clear();
 		FindGrid();
@@ -204,10 +202,15 @@ bool Enemy::EqualFloat(float a, float b)
 
 void Enemy::SetHp(int num)
 {
+	//move trigger
 	isHit = true;
 	moveTime = 0.f;
-	attack = true;
 	playerPos = player->GetPos();
+	movePos.clear();
+	FindGrid();
+	astar->AstarSearch(*isGreedObject, startPos, destPos);
+	movePos = astar->GetCoordinate();
+
 	if ( hp > 0 )
 	{
 		hp -= num;
@@ -280,55 +283,54 @@ void Enemy::AttackPattern(float dt)
 	{
 		SetState(States::Idle);
 		isHit = false;
-		//attack = false;
 	}
 	
 	//timer
 	hitTime += dt;
 	moveTime += dt;
-	
 }
 
 void Enemy::Move(float dt)
 {
-	if (!movePos.empty())
+	if (movePos.empty())
 	{
-		Vector2f pos = movePos.back();
-		while (GetPos() != pos)
-		{
-			moveDir = Utils::Normalize(pos - GetPos());
-
-			//x dir
-			prevPosition = GetPos();
-			Translate({ moveDir.x * this->speed * dt, 0.f });
-			//position
-			for (auto& hit : hitboxs)
-			{
-				hit->SetPos(GetPos());
-			}
-			//wall bound
-			Collision();
-
-			//y dir
-			prevPosition = GetPos();
-			Translate({ 0.f,  moveDir.y * this->speed * dt });
-			//position
-			for (auto& hit : hitboxs)
-			{
-				hit->SetPos(GetPos());
-			}
-			Collision();
-		}
-		movePos.pop_back();
+		//cout << "empty list1" << endl;
+		SetState(States::Idle);
+		Translate({ 0.f, 0.f });
+		return;
 	}
-	
+
+	Vector2f aPos = movePos.front();
+	if ((Utils::Distance(aPos, GetPos()) <= 10.f))
+	{
+		if (movePos.empty())
+		{
+			//cout << "empty list2" << endl;
+			SetState(States::Idle);
+			return;
+		}
+		//cout << "in position" << endl;
+		movePos.pop_front();
+	}
+	moveDir = Utils::Normalize(aPos - GetPos());
+
+	prevPosition = GetPos();
+	Translate(moveDir * this->speed * dt);
+
+	//position
+	for (auto& hit : hitboxs)
+	{
+		hit->SetPos(GetPos());
+	}
+	//wall bound
+	Collision();
 }
 
 void Enemy::MoveToPos(float dt)
 {
 	if (movePos.empty())
 	{
-		cout << "empty list1" << endl;
+		//cout << "empty list1" << endl;
 		SetState(States::Idle);
 		Translate({ 0.f, 0.f });
 		return;
@@ -339,11 +341,11 @@ void Enemy::MoveToPos(float dt)
 	{
 		if (movePos.empty())
 		{
-			cout << "empty list2" << endl;
+			//cout << "empty list2" << endl;
 			SetState(States::Idle);
 			return;
 		}
-		cout << "in position" << endl;
+		//cout << "in position" << endl;
 		movePos.pop_front();
 	}
 	moveDir = Utils::Normalize(aPos - GetPos());
@@ -386,10 +388,10 @@ void Enemy::FindGrid()
 	//Enemy start pos
 	startPos.first = (int)bottomPos.x / 60;
 	startPos.second = (int)bottomPos.y / 60;
-	cout << "start pos" << startPos.first << " " << startPos.second << endl;
+	//cout << "start pos" << startPos.first << " " << startPos.second << endl;
 	
 	//Enemy dest pos
 	destPos.first = (int)player->GetPlayerBottom().x / 60;
 	destPos.second = (int)player->GetPlayerBottom().y / 60;
-	cout << "dest pos" << destPos.first << " " << destPos.second << endl;
+	//cout << "dest pos" << destPos.first << " " << destPos.second << endl;
 }
