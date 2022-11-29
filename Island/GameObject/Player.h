@@ -2,6 +2,8 @@
 #include "HitBoxObject.h"
 #include "Animation/Animator.h"
 #include "../Framework/ObjectPool.h"
+#include "Candle/RadialLight.hpp"
+#include "Candle/LightingArea.hpp"
 #include <list>
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -70,6 +72,10 @@ protected:
 	Inventory* inven;
 	ItemBoxObject* rightInvenObj;
 	//bool isAlive;
+
+	//view sight
+	//candle::RadialLight light;
+
 public:
 	Player();
 	virtual~Player();

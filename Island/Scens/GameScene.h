@@ -4,6 +4,8 @@
 #include <map>
 #include <list>
 #include "../QTree/QuadTree.hpp"
+#include "Candle/RadialLight.hpp"
+#include "Candle/LightingArea.hpp"
 
 class Player;
 class Enemy;
@@ -38,6 +40,12 @@ protected:
 	TextObject* missionText;
 	vector<vector<bool>> isGreedObject;
 
+	//view sight
+	std::vector<std::shared_ptr<candle::LightSource>> lights1;
+	candle::RadialLight light;
+	candle::LightingArea fog;
+	list<candle::EdgeVector>blockPool;
+	candle::EdgeVector edgePool;
 public:
 	GameScene();
 	virtual ~GameScene();
@@ -61,4 +69,7 @@ public:
 	void SetDeadEnemy(map<string, Item> items, Vector2f pos);
 	vector<vector<bool>> GetGreedObj() { return isGreedObject; }
 
+	void pushEdge(const sfu::Line& edge);
+	void pushBlock(const sf::Vector2f& pos);
+	void castAllLights();
 };

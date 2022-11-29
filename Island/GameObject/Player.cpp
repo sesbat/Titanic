@@ -57,6 +57,9 @@ void Player::Init()
 	inven = new Inventory(scene->GetUiMgr());
 	inven->Init();
 	inven->SetActive(false);
+
+	//light.setRange(300.f);
+	
 }
 
 void Player::SetState(States newState)
@@ -140,6 +143,9 @@ void Player::Update(float dt)
 
 	//Move
 	Move(dt);
+
+	//view sight pos
+	//light.setPosition(GetPos());
 
 	//animation
 	animator.Update(dt);
@@ -265,6 +271,7 @@ void Player::Draw(RenderWindow& window)
 		}
 	}
 	gun->Draw(window);
+	//window.draw(light);
 }
 
 void Player::Dash(float dt)
