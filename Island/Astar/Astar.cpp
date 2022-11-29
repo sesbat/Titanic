@@ -2,6 +2,7 @@
 
 Astar::Astar()
 {
+	movePos.clear();
 }
 
 Astar::~Astar()
@@ -67,14 +68,15 @@ void Astar::TracePath(vector<vector<bool>> map, Cell cellDetails[g_maxY][g_maxX]
 
 void Astar::AstarSearch(vector<vector<bool>> map, Pair start, Pair dest)
 {
+	startPos = { start.first, start.second };
 	//isGreedObject = map;
 	if (false == IsValid(start.first, start.second))
 		return;
 	if (false == IsValid(dest.first, dest.second))
 		return;
 
-	if (true == map[start.first][start.second] ||
-		true == map[dest.first][dest.second])
+	if (true == map[start.second][start.first] ||
+		true == map[dest.second][dest.first])
 		return;
 
 	if (IsDestination(start.first, start.second, dest))
@@ -164,6 +166,15 @@ void Astar::AstarSearch(vector<vector<bool>> map, Pair start, Pair dest)
 		return;
 	}
 		
+}
+
+list<Vector2f> Astar::GetCoordinate()
+{
+	if (movePos.empty())
+	{
+		movePos.push_back({ ((float)startPos.x * 60.f) + 30.f ,((float)startPos.y * 60.f) + 20.f });
+	}
+	return movePos;
 }
 
 void Astar::DiagonalMove(vector<vector<bool>> map, int x, int y)

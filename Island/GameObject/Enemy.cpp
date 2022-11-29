@@ -15,8 +15,8 @@
 #include <stack>
 
 Enemy::Enemy()
-	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(15),
-	maxHp(15), barScaleX(60.f), look(1.f, 0.f), isHit(false)
+	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(15),
+	maxHp(15), barScaleX(60.f), look(1.f, 0.f), isHit(false), isMove(false)
 {
 }
 
@@ -119,7 +119,7 @@ void Enemy::Update(float dt)
 	//enemy attack
 	if (currState != States::Dead)
 	{
-		//AttackPattern(dt);
+		AttackPattern(dt);
 	}
 	
 
@@ -149,6 +149,7 @@ void Enemy::Update(float dt)
 	}
 	if (InputMgr::GetKeyDown(Keyboard::F3))
 	{
+		isMove = !isMove;
 		playerPos = player->GetPos();
 		movePos.clear();
 		FindGrid();
@@ -160,18 +161,6 @@ void Enemy::Update(float dt)
 
 void Enemy::Draw(RenderWindow& window)
 {
-
-	VertexArray lines(Quads, 4);
-	if (!movePos.empty())
-	{
-		lines[0].position = { movePos.front().x - 30,movePos.front().y - 30.f };
-		lines[1].position = { movePos.front().x + 30.f,movePos.front().y - 30.f };
-		lines[2].position = { movePos.front().x + 30.f,movePos.front().y + 30.f };
-		lines[3].position = { movePos.front().x - 30.f,movePos.front().y + 30.f };
-		//window.draw(lines);
-	}
-	window.draw(lines);
-
 	if (!enabled || !IsInView())
 		return;
 	if ( GetActive() )
@@ -187,6 +176,20 @@ void Enemy::Draw(RenderWindow& window)
 		}
 	}
 	gun->Draw(window);
+	//dev
+	/*if (isMove)
+	{
+		VertexArray lines(Quads, 4);
+		if (!movePos.empty())
+		{
+			lines[0].position = { movePos.front().x - 30,movePos.front().y - 30.f };
+			lines[1].position = { movePos.front().x + 30.f,movePos.front().y - 30.f };
+			lines[2].position = { movePos.front().x + 30.f,movePos.front().y + 30.f };
+			lines[3].position = { movePos.front().x - 30.f,movePos.front().y + 30.f };
+		}
+		window.draw(lines);
+	}*/
+
 }
 
 void Enemy::OnCompleteDead()
@@ -257,12 +260,11 @@ void Enemy::SetEnemyPos()
 void Enemy::AttackPattern(float dt)
 {
 	//attack motion
-	if (hitTime >= 0.8f && (Utils::Distance(player->GetPos(), GetPos()) < 300.f))
+	if (hitTime >= 0.8f && (Utils::Distance(player->GetPos(), GetPos()) < 500.f))
 	{
 		gun->Fire(GetPos(), false);
 		hitTime = 0.f;
 		moveTime = 0.f;
-		attack = true;
 		playerPos = player->GetPos();
 		movePos.clear();
 		FindGrid();
@@ -270,7 +272,7 @@ void Enemy::AttackPattern(float dt)
 		movePos = astar->GetCoordinate();
 	}
 
-	if (attack && moveTime < 10.f && ((Utils::Distance(player->GetPos(), GetPos()) > 300.f) || isHit))
+	if (!movePos.empty() && moveTime < 10.f && ((Utils::Distance(player->GetPos(), GetPos()) > 500.f) || isHit))
 	{
 		SetState(States::Move);
 	}
@@ -278,6 +280,7 @@ void Enemy::AttackPattern(float dt)
 	{
 		SetState(States::Idle);
 		isHit = false;
+		//attack = false;
 	}
 	
 	//timer
@@ -325,7 +328,7 @@ void Enemy::MoveToPos(float dt)
 {
 	if (movePos.empty())
 	{
-		cout << "empty list" << endl;
+		cout << "empty list1" << endl;
 		SetState(States::Idle);
 		Translate({ 0.f, 0.f });
 		return;
@@ -336,7 +339,7 @@ void Enemy::MoveToPos(float dt)
 	{
 		if (movePos.empty())
 		{
-			cout << "empty list" << endl;
+			cout << "empty list2" << endl;
 			SetState(States::Idle);
 			return;
 		}
@@ -380,11 +383,13 @@ void Enemy::Collision()
 
 void Enemy::FindGrid()
 {
-	startPos.first = (int)bottomPos.x / 60;//(int)GetPos().x / 60;
-	startPos.second = (int)bottomPos.y / 60;//(int)GetPos().y / 60;
+	//Enemy start pos
+	startPos.first = (int)bottomPos.x / 60;
+	startPos.second = (int)bottomPos.y / 60;
 	cout << "start pos" << startPos.first << " " << startPos.second << endl;
-
-	destPos.first = (int)player->GetPlayerBottom().x / 60;//(int)playerPos.x / 60;
-	destPos.second = (int)player->GetPlayerBottom().y / 60;//(int)playerPos.y / 60;
+	
+	//Enemy dest pos
+	destPos.first = (int)player->GetPlayerBottom().x / 60;
+	destPos.second = (int)player->GetPlayerBottom().y / 60;
 	cout << "dest pos" << destPos.first << " " << destPos.second << endl;
 }
