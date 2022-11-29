@@ -14,6 +14,7 @@ enum class Scenes
 {
 	None = -1, Menu,Ready,MapEditor,Count,GameScene
 };
+
 // �ٴ�, Ǯ, ������Ʈ + ��(Ư��), ���ʹ�
 enum class LayerType
 {

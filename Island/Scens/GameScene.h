@@ -58,4 +58,7 @@ public:
 	void SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy);
 	void DropItems(map<string, Item> items, Vector2f pos);
 	void EmpytyInven(ItemBoxObject* inven);
+	void SetDeadEnemy(map<string, Item> items, Vector2f pos);
+	vector<vector<bool>> GetGreedObj() { return isGreedObject; }
+
 };

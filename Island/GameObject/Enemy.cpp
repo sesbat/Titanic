@@ -1,4 +1,4 @@
- #include "Enemy.h"
+﻿ #include "Enemy.h"
 #include "Player.h"
 #include "HitBox.h"
 #include "Object.h"
@@ -10,11 +10,13 @@
 #include "../Framework/SoundManager.h"
 #include "../Ui/GameSceneUiMgr.h"
 #include "../Scens/GameScene.h"
+#include "../Astar/Astar.h"
 #include <iostream>
+#include <stack>
 
 Enemy::Enemy()
-	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(0.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(15),
-	maxHp(15), barScaleX(60.f), look(1.f, 0.f), isHit(false)
+	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(15),
+	maxHp(15), barScaleX(60.f), look(1.f, 0.f), isHit(false)//, isMove(false)
 {
 }
 
@@ -60,6 +62,8 @@ void Enemy::Init(Player* player, int type)
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMoveLeft"));
 
 	scene = SCENE_MGR->GetCurrScene();
+
+	astar = new Astar();
 }
 
 void Enemy::SetState(States newState)
@@ -118,18 +122,11 @@ void Enemy::Update(float dt)
 		AttackPattern(dt);
 	}
 	
-
 	//move
 	if (currState == States::Move)
 	{
 		Move(dt);
 	}
-
-	//dev a* move
-	/*if (isHit)
-	{
-		MoveToPos(dt);
-	}*/
 	
 	//hp bar
 	SetHpBar();
@@ -137,6 +134,9 @@ void Enemy::Update(float dt)
 	//animation
 	animator.Update(dt);
 	
+	//position
+	bottomPos = bottom->GetHitBottomPos();
+
 	//gun
 	gun->Update(dt);
 
@@ -145,11 +145,20 @@ void Enemy::Update(float dt)
 	{
 		isHit = !isHit;
 	}
+	if (InputMgr::GetKeyDown(Keyboard::F3))
+	{
+		//isMove = !isMove;
+		playerPos = player->GetPos();
+		movePos.clear();
+		FindGrid();
+		astar->AstarSearch(*isGreedObject, startPos, destPos);
+		movePos = astar->GetCoordinate();
+		SetState(States::Move);
+	}
 }
 
 void Enemy::Draw(RenderWindow& window)
 {
-
 	if (!enabled || !IsInView())
 		return;
 	if ( GetActive() )
@@ -165,6 +174,20 @@ void Enemy::Draw(RenderWindow& window)
 		}
 	}
 	gun->Draw(window);
+	//dev
+	/*if (isMove)
+	{
+		VertexArray lines(Quads, 4);
+		if (!movePos.empty())
+		{
+			lines[0].position = { movePos.front().x - 30,movePos.front().y - 30.f };
+			lines[1].position = { movePos.front().x + 30.f,movePos.front().y - 30.f };
+			lines[2].position = { movePos.front().x + 30.f,movePos.front().y + 30.f };
+			lines[3].position = { movePos.front().x - 30.f,movePos.front().y + 30.f };
+		}
+		window.draw(lines);
+	}*/
+
 }
 
 void Enemy::OnCompleteDead()
@@ -179,10 +202,15 @@ bool Enemy::EqualFloat(float a, float b)
 
 void Enemy::SetHp(int num)
 {
+	//move trigger
 	isHit = true;
 	moveTime = 0.f;
-	attack = true;
-	lastPlayerPos = player->GetPos();
+	playerPos = player->GetPos();
+	movePos.clear();
+	FindGrid();
+	astar->AstarSearch(*isGreedObject, startPos, destPos);
+	movePos = astar->GetCoordinate();
+
 	if ( hp > 0 )
 	{
 		hp -= num;
@@ -240,10 +268,14 @@ void Enemy::AttackPattern(float dt)
 		gun->Fire(GetPos(), false);
 		hitTime = 0.f;
 		moveTime = 0.f;
-		attack = true;
+		playerPos = player->GetPos();
+		movePos.clear();
+		FindGrid();
+		astar->AstarSearch(*isGreedObject, startPos, destPos);
+		movePos = astar->GetCoordinate();
 	}
 
-	if (attack && moveTime < 10.f && ((Utils::Distance(player->GetPos(), GetPos()) > 500.f) || isHit))
+	if (!movePos.empty() && moveTime < 10.f && ((Utils::Distance(player->GetPos(), GetPos()) > 500.f) || isHit))
 	{
 		SetState(States::Move);
 	}
@@ -256,59 +288,77 @@ void Enemy::AttackPattern(float dt)
 	//timer
 	hitTime += dt;
 	moveTime += dt;
-	
 }
 
 void Enemy::Move(float dt)
 {
-	moveDir = Utils::Normalize(player->GetPos() - GetPos());
+	if (movePos.empty())
+	{
+		//cout << "empty list1" << endl;
+		SetState(States::Idle);
+		Translate({ 0.f, 0.f });
+		return;
+	}
 
-	//x dir
+	Vector2f aPos = movePos.front();
+	if ((Utils::Distance(aPos, GetPos()) <= 10.f))
+	{
+		if (movePos.empty())
+		{
+			//cout << "empty list2" << endl;
+			SetState(States::Idle);
+			return;
+		}
+		//cout << "in position" << endl;
+		movePos.pop_front();
+	}
+	moveDir = Utils::Normalize(aPos - GetPos());
+
 	prevPosition = GetPos();
-	Translate({ moveDir.x * this->speed * dt, 0.f });
+	Translate(moveDir * this->speed * dt);
+
 	//position
 	for (auto& hit : hitboxs)
 	{
 		hit->SetPos(GetPos());
 	}
 	//wall bound
-	Collision();
-
-	//y dir
-	prevPosition = GetPos();
-	Translate({ 0.f,  moveDir.y * this->speed * dt });
-	//position
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(GetPos());
-	}
 	Collision();
 }
 
 void Enemy::MoveToPos(float dt)
 {
-	Vector2f aPos = { 100.f,100.f };
+	if (movePos.empty())
+	{
+		//cout << "empty list1" << endl;
+		SetState(States::Idle);
+		Translate({ 0.f, 0.f });
+		return;
+	}
+	
+	Vector2f aPos = movePos.front();
+	if ((Utils::Distance(aPos, GetPos()) <= 10.f))
+	{
+		if (movePos.empty())
+		{
+			//cout << "empty list2" << endl;
+			SetState(States::Idle);
+			return;
+		}
+		//cout << "in position" << endl;
+		movePos.pop_front();
+	}
 	moveDir = Utils::Normalize(aPos - GetPos());
 
-	//x dir
 	prevPosition = GetPos();
-	Translate({ moveDir.x * this->speed * dt, 0.f });
+	Translate( moveDir * this->speed * dt );
+
 	//position
 	for (auto& hit : hitboxs)
 	{
 		hit->SetPos(GetPos());
 	}
 	//wall bound
-	Collision();
-
-	//y dir
-	prevPosition = GetPos();
-	Translate({ 0.f,  moveDir.y * this->speed * dt });
-	//position
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(GetPos());
-	}
 	Collision();
 }
 
@@ -321,10 +371,8 @@ void Enemy::Collision()
 		auto hit = ((HitBoxObject*)objects)->GetBottom();
 		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
 			continue;
-		if (objects->GetName() == "TREE" ||
-			objects->GetName() == "STONE" ||
-			objects->GetName() == "BLOCK" ||
-			objects->GetName() == "PLAYER")
+		if (objects->GetName() == "STONE" ||
+			objects->GetName() == "BLOCK")
 		{
 			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
 			{
@@ -333,4 +381,17 @@ void Enemy::Collision()
 			}
 		}
 	}
+}
+
+void Enemy::FindGrid()
+{
+	//Enemy start pos
+	startPos.first = (int)bottomPos.x / 60;
+	startPos.second = (int)bottomPos.y / 60;
+	//cout << "start pos" << startPos.first << " " << startPos.second << endl;
+	
+	//Enemy dest pos
+	destPos.first = (int)player->GetPlayerBottom().x / 60;
+	destPos.second = (int)player->GetPlayerBottom().y / 60;
+	//cout << "dest pos" << destPos.first << " " << destPos.second << endl;
 }

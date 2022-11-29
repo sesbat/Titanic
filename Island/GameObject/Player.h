@@ -43,11 +43,8 @@ protected:
 	Vector2f lastDirection;
 	Vector2f prevPosition;
 	bool isFlip;
-
+	Vector2f bottomPos;
 	Vector2f playerNormalize;
-
-	SpriteObject* background;
-
 
 	int hp;
 	int maxHp;
@@ -69,7 +66,6 @@ protected:
 	float hungerDelay = 3.f;
 	float ThirstDelay = 3.f;
 	float EnergyDelay = 3.f;
-
 
 	Inventory* inven;
 	ItemBoxObject* rightInvenObj;
@@ -96,7 +92,7 @@ public:
 	Vector2f GetPlayerLastDir() { return lastDirection; }
 	Vector2f GetLookDir() { return lookDir; }
 	Vector2f GetPrevLookDir() { return prevLook; }
-	
+	Vector2f GetPlayerBottom() { return bottomPos; }
 	States GetCurrState() { return currState; }
 	float GetStaminaScale() { return staminaScale; }
 	bool GetIsDash() { return isDash; }

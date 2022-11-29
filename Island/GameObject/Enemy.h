@@ -2,11 +2,15 @@
 #include "HitBoxObject.h"
 #include "Animation/Animator.h"
 
+typedef pair<int, int> Pair;
+typedef pair<double, pair<int, int> > pPair;
+
 class VertexArrayObj;
 class HitBox;
 class Player;
 class Scene;
 class Gun;
+class Astar;
 
 class Enemy : public HitBoxObject
 {
@@ -23,13 +27,13 @@ protected:
 	Player* player;
 	Scene* scene;
 	Gun* gun;
+	Astar* astar;
 
 	Animator animator;
 
 	RectangleShape healthBar;
 
 	States currState;
-	States prevState;
 
 	//move
 	float speed;
@@ -42,7 +46,13 @@ protected:
 	Vector2f moveDir;
 	Vector2f prevPosition;
 	bool isFlip;
-	Vector2f lastPlayerPos;
+	
+	//a star dir
+	Vector2f playerPos;
+	list<Vector2f> movePos;
+	Pair startPos;
+	Pair destPos;
+	Vector2f bottomPos;
 
 	//timer
 	float moveTime;
@@ -59,6 +69,10 @@ protected:
 	float barScaleX;
 
 	map<string, Item> items;
+	vector<vector<bool>> *isGreedObject;
+
+	//dev
+	//bool isMove;
 
 public:
 	Enemy();
@@ -79,7 +93,9 @@ public:
 	void SetHp(int num);
 	void SetHpBar();
 
+	void SetItem(map<string, Item> items) { this->items = items; }
 	void SetEnemyPos();
+
 	Vector2f GetLookDir() { return lookDir; }
 	Vector2f GetPrevLookDir() { return prevLook; }
 
@@ -87,5 +103,8 @@ public:
 	void Move(float dt);
 	void MoveToPos(float dt);
 	void Collision();
-	void SetItem(map<string, Item> items) { this->items = items; }
+	
+	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
+
+	void FindGrid();
 };
