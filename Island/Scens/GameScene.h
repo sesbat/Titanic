@@ -17,7 +17,12 @@ class ItemBoxObject;
 
 class GameScene :public Scene
 {
-	
+public:
+	struct Blocks
+	{
+		Vector2f position;
+		candle::EdgeVector edgePool;
+	};
 protected:
 	Player* player;
 
@@ -41,11 +46,14 @@ protected:
 	vector<vector<bool>> isGreedObject;
 
 	//view sight
-	std::vector<std::shared_ptr<candle::LightSource>> lights1;
+	//std::vector<std::shared_ptr<candle::LightSource>> lights1;
 	candle::RadialLight light;
 	candle::LightingArea fog;
-	list<candle::EdgeVector>blockPool;
-	candle::EdgeVector edgePool;
+	
+	//list<candle::EdgeVector>blockPool;
+	vector<Blocks> blockPool;
+	//Blocks blockPool[36*64];
+	int blockCount;
 public:
 	GameScene();
 	virtual ~GameScene();
@@ -70,6 +78,6 @@ public:
 	vector<vector<bool>> GetGreedObj() { return isGreedObject; }
 
 	void pushEdge(const sfu::Line& edge);
-	void pushBlock(const sf::Vector2f& pos);
+	candle::EdgeVector pushBlock(const sf::Vector2f& pos);
 	void castAllLights();
 };

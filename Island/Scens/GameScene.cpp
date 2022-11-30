@@ -31,7 +31,7 @@ GameScene::GameScene()
 	:Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f), qTree({ 0,0,1920,1080 }, 15, 8),
 	fog(candle::LightingArea::FOG,
 		sf::Vector2f(0.f, 0.f),
-		sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2))
+		sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)), blockCount(0)
 {
 
 }
@@ -54,11 +54,16 @@ void GameScene::Init()
 	player->SetName("PLAYER");
 	player->Init();
 
+	//blockPool = new Blocks[36*64];
+
 	for (auto& obj : data)
 	{
 		if (obj.type == "STONE"   || obj.type == "BLOCK")
 		{
 			isGreedObject[obj.greedIdx.x][obj.greedIdx.y] = true;
+			Blocks block = { obj.position, pushBlock(obj.position) };
+			blockPool.push_back(block);
+			//blockCount++;
 		}
 		if (obj.type == "BOX" || obj.type == "BOX-ENEMY")
 		{
@@ -82,10 +87,7 @@ void GameScene::Init()
 			draw->SetPos(obj.position);
 			draw->SetHitBox(obj.path);
 			objList[LayerType::Object][0].push_back(draw);
-			if (obj.type == "STONE" || obj.type == "BLOCK")
-			{
-				pushBlock(obj.position);
-			}
+			
 
 		}
 		else if(obj.type == "PLAYER")
@@ -185,12 +187,11 @@ void GameScene::Release()
 {
 	Scene::Release();
 	enemies.clear();
-	edgePool.clear();
+	blockPool.clear();
 }
 
 void GameScene::Enter()
 {
-	edgePool.clear();
 	enemies.clear();
 
 	Init();
@@ -254,13 +255,7 @@ void GameScene::Update(float dt)
 
 	//view sight pos
 	light.setPosition(player->GetPos());
-	
-	for (auto lt : blockPool)
-	{
-		light.castLight(lt.begin(), lt.end());
-	}
-	//light.castLight(edgePool.begin(), edgePool.end());
-	
+	//castAllLights();	
 
 	//mission
 	if (Utils::Distance(player->GetPos(), escapePoint) < 100.f)
@@ -284,7 +279,11 @@ void GameScene::Update(float dt)
 		SCENE_MGR->ChangeScene(Scenes::Ready);
 		return;
 	}
-
+	if (!player->GetIsAlive())
+	{
+		SCENE_MGR->ChangeScene(Scenes::Ready);
+		return;
+	}
 
 	Scene::Update(dt);
 }
@@ -384,30 +383,50 @@ void GameScene::EmpytyInven(ItemBoxObject* inven)
 
 void GameScene::pushEdge(const sfu::Line& edge)
 {
-	edgePool.push_back(edge);
+	//edgePool.push_back(edge);
 }
 
-void GameScene::pushBlock(const sf::Vector2f& pos)
+candle::EdgeVector GameScene::pushBlock(const sf::Vector2f& pos)
 {
+	candle::EdgeVector edge;
 	const sf::Vector2f points[] = {
-			{pos.x - 30, pos.y - 60.f} ,
-			{pos.x + 30, pos.y - 60.f} ,
-			{pos.x + 30, pos.y + 60.f} ,
-			{pos.x - 30, pos.y + 60.f} ,
+			{pos.x - 30, pos.y -75.f} ,
+			{pos.x + 30, pos.y -75.f} ,
+			{pos.x + 30, pos.y } ,
+			{pos.x - 30, pos.y } ,
 	};
 	sfu::Polygon p(points, 4);
-	edgePool.clear();
-	for (auto& l : p.lines) {
-		//pushEdge(l);
-		edgePool.push_back(l);
+	for (auto& l : p.lines)
+	{
+		edge.push_back(l);
 	}
-	blockPool.push_back(edgePool);
+	return edge;
 }
 
 void GameScene::castAllLights()
 {
-	/*for (auto& l : light) 
+	for (auto &it : blockPool)
 	{
-		l->castLight(edgePool.begin(), edgePool.end());
+		light.castLight(it.edgePool.begin(), it.edgePool.end());
+		/*if ((Utils::Distance(player->GetPos(), it.position) >= light.getRange()/2))
+		{
+			continue;
+		}
+		else
+		{
+			light.castLight(it.edgePool.begin(), it.edgePool.end());
+		}*/
+	}
+	/*for (int i = 0; i < blockCount; i++)
+	{
+		if ((Utils::Distance(player->GetPos(), blockPool[i].position) >= light.getRange()))
+		{
+			continue;
+		}
+		else
+		{
+			light.castLight(blockPool[i].edgePool.begin(), blockPool[i].edgePool.end());
+		}
+		
 	}*/
 }
