@@ -77,48 +77,69 @@ void Inventory::Update(float dt)
 		prevInven->ReturnItem();
 	}
 	int i = 0;
+	bool isUseItemUp = false;
 	for (auto& useItem : invenItemGreed)
 	{
 		if (useItem == nullptr)
 			continue;
 		useItem->Update(dt);
 
-		if (useItem->IsUp())
+		if (nowDrag != nullptr && useItem->IsUp())
 		{
+			string itemName = nowDrag->GetName();
 			if (nowDrag != nullptr && myUseItems[i] == nullptr)
 			{
-				string itemName = nowDrag->GetName();
-				if (itemName == "Recoverykit")
+				switch (i)
 				{
-					if (!(i > 3 && i < 8))
-					{
-						prevInven->ReturnItem();
-						break;
-					}
-				}
-				if (itemName == "Armor-1")
-				{
-					if (i != 2)
-					{
-						prevInven->ReturnItem();
-						break;
-					}
-				}
-				if (itemName == "handsaw")
-				{
+				case 0:
+					if (itemName == "GUN1" || 
+						itemName == "GUN2")
+						isUseItemUp = true;
+					break;
+				case 1:
+					if (itemName == "GUN1" ||
+						itemName == "GUN2")
+						isUseItemUp = true;
+					break;
+				case 2:
+					if (itemName == "Armor-1")
+						isUseItemUp = true;
+					break;
+				case 3:
+					if (itemName == "Armor-1")
+						isUseItemUp = true;
+					break;
+				case 4:
+					if (itemName == "Recoverykit")
+						isUseItemUp = true;
+					break;
+				case 5:
+					if (itemName == "Recoverykit")
+						isUseItemUp = true;
+					break;
+				case 6:
+					if (itemName == "Recoverykit")
+						isUseItemUp = true;
+					break;
+				case 7:
+					if (itemName == "Recoverykit")
+						isUseItemUp = true;
 					break;
 				}
-				//nowDrag->SetPos(useItem->GetPos());
-				nowDrag->SetInvenPos(useItem->GetPos());
-				auto item = prevInven->GetItems();
 
-				auto find_item = find(item->begin(), item->end(), nowDrag);
-				if (find_item != item->end())
-					item->erase(find_item);
+				if (isUseItemUp)
+				{
+					nowDrag->SetInvenPos(useItem->GetPos());
+					auto item = prevInven->GetItems();
 
-				myUseItems[i] = nowDrag;
-				SetDrag(nullptr);
-				useIdx = -1;
+					auto find_item = find(item->begin(), item->end(), nowDrag);
+					if (find_item != item->end())
+						item->erase(find_item);
+
+					myUseItems[i] = nowDrag;
+					SetDrag(nullptr);
+					useIdx = -1;
+				}
 			}
 		}
 		i++;

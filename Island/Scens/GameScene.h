@@ -3,9 +3,9 @@
 #include "../GameObject/Object.h"
 #include <map>
 #include <list>
-#include "../QTree/QuadTree.hpp"
 #include "Candle/RadialLight.hpp"
 #include "Candle/LightingArea.hpp"
+#include "../3rd/QuadTree_SFML_DEMO.h"
 
 class Player;
 class Enemy;
@@ -28,7 +28,6 @@ protected:
 
 	list<Enemy*> enemies;
 
-	QuadTree qTree;
 
 	float timer;
 	Clock clock;
@@ -44,6 +43,9 @@ protected:
 	float bombTimer;
 	TextObject* missionText;
 	vector<vector<bool>> isGreedObject;
+	FloatRect MAP_BOUNDS = { 0, 0, 1920*2, 1080*2 };
+	TreeRect treeRect = { 0,0,1920 * 2,1080 *2};
+	QuadTree treeMap = QuadTree(treeRect, 16, 4);
 
 	//view sight
 	//std::vector<std::shared_ptr<candle::LightSource>> lights1;
@@ -65,6 +67,8 @@ public:
 	virtual void Exit() override;
 
 	virtual void Update(float dt) override;
+	vector<HitBoxObject*> ObjListObb(HitBoxObject* obj);
+	vector<HitBoxObject*> ObjListObb(FloatRect obj);
 	virtual void Draw(RenderWindow& window) override;
 
 	list<Enemy*>* GetEnemyList() { return &enemies; }

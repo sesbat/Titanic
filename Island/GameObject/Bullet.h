@@ -6,8 +6,8 @@ class HitBox;
 class Enemy;
 class Player;
 
-class Bullet
-	:public SpriteObject
+
+class Bullet :public SpriteObject
 {
 private:
 	Scene* scene;

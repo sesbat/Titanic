@@ -4,11 +4,11 @@
 class HitBox : public Object
 {
 protected:
-	RectangleShape hitbox;
 	FloatRect hitBoxRect;
 	Vector2f initPos;
 
 public:
+	RectangleShape hitbox;
 	HitBox();
 	virtual ~HitBox();
 
@@ -29,9 +29,11 @@ public:
 	virtual void Translate(const Vector2f delta);
 
 	void SetHitbox(const FloatRect rect);
+	void SetRotate(float dir);
 	void SetFillColor(Color color);
 	const RectangleShape& GetHitbox() const;
 	FloatRect& GetHitBoxRect() { return hitBoxRect; }
 	Vector2f GetHitBottomPos() { return hitbox.getPosition(); }
+	FloatRect GetGlobalBound() { return hitbox.getGlobalBounds(); }
 };
 

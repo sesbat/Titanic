@@ -77,6 +77,15 @@ FileManager::FileManager()
 	//	RequiredItem useItem2;
 	//	useItem2.path = "graphics/material/wood.png";
 	//	useItem2.cnt = 1;
+	//	testItem.path = "graphics/items/Armor-1.png";
+
+	//	CraftItem useItem;
+	//	useItem.path = "graphics/items/handsaw.png";
+	//	useItem.cnt = 1;
+
+	//	CraftItem useItem2;
+	//	useItem2.path = "graphics/items/recoverykit.png";
+	//	useItem2.cnt = 5;
 
 	//	testItem.useItem.push_back(useItem);
 	//	testItem.useItem.push_back(useItem2);
@@ -91,10 +100,6 @@ FileManager::FileManager()
 	//	ofs.close();
 	//}
 
-	ifstream info("config/data/CraftTable.json");
-	json info_d = json::parse(info);
-	craftItemInfo = info_d;
-	info.close();
 
 }
 FileManager::~FileManager()
@@ -131,6 +136,11 @@ void FileManager::LoadAll()
 	itemInfos = item_info_d;
 	item_info.close();
 
+
+	ifstream info_craft("config/data/CraftTable.json");
+	json info_craft_d = json::parse(info_craft);
+	craftItemInfo = info_craft_d;
+	info.close();
 
 	//ifstream hitbox("config/data/hitBox.json");
 	//json hit_d = json::parse(hitbox);

@@ -6,7 +6,7 @@ class SaveWindowBox : public Button
 {
 private:
 	Button* save;
-	Button* cancle;
+	//Button* cancle;
 	string path;
 	TextObject* txt;
 public:
@@ -20,7 +20,7 @@ public:
 	void SetPath(string path);
 
 	virtual bool IsSave();
-	virtual bool IsCancle();
+	//virtual bool IsCancle();
 	virtual string GetPath() { return path ; }
 };
 

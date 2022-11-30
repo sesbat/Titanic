@@ -91,18 +91,6 @@
       }
     }
   ],
-  "graphics/shotgunbullet.png": [
-    {
-      "pos": {
-        "x": -14.0,
-        "y": -58.0
-      },
-      "size": {
-        "x": 26.0,
-        "y": 16.0
-      }
-    }
-  ],
   "graphics/stone1.png": [
     {
       "pos": {
@@ -347,18 +335,6 @@
       }
     }
   ],
-  "graphics/block1.png": [
-    {
-      "pos": {
-        "x": -30.0,
-        "y": -60.0
-      },
-      "size": {
-        "x": 60.0,
-        "y": 60.0
-      }
-    }
-  ],
   "graphics/block2.png": [
     {
       "pos": {
@@ -380,6 +356,32 @@
       "size": {
         "x": 68.0,
         "y": 68.0
+      }
+    }
+  ],
+
+  "graphics/shotgunbullet.png": [
+    {
+      "pos": {
+        "x": -62.0,
+        "y": -10.0
+      },
+      "size": {
+        "x": 28.0,
+        "y": 17.0
+      }
+    }
+  ],
+
+  "graphics/sniperbullet.png": [
+    {
+      "pos": {
+        "x": -133.0,
+        "y": -4.0
+      },
+      "size": {
+        "x": 134.0,
+        "y": 8.0
       }
     }
   ]

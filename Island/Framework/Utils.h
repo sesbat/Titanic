@@ -53,5 +53,6 @@ public:
 
 	static bool OBB(const RectangleShape& obb1, const RectangleShape& obb2);
 	static bool OBB(const vector<HitBox*> obb1, const HitBox* obb2);
+	static bool OBB( FloatRect& obb1,  HitBox& obb2);
 };
 

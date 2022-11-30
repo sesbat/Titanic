@@ -62,7 +62,6 @@ void ItemBoxObject::SetItems(map<string, Item> items)
 	invenBox->SetName("RightInventory");
 	invenBox->Init();
 	invenBox->SetPair(player->GetInventory()->GetPlayerInven());
-	cout << invenBox->GetPair()->GetName() << endl;
 	obj_items = items;
 	for (auto item : obj_items)
 	{

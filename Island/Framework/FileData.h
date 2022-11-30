@@ -75,8 +75,10 @@ namespace ns {
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(RequiredItem, id, cnt)
 	};
 
+
 	struct CraftingInfo
 	{
 		vector<RequiredItem> useItem;
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(CraftingInfo, useItem)
 	};
+	

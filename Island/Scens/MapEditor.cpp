@@ -84,7 +84,9 @@ void MapEditor::Update(float dt)
 
 	if (uimgr->IsSave())
 	{
+		std::cout << "save" << endl;
 		Save();
+		//uimgr->CloseSaveWinow();
 		return;
 	}
 
@@ -371,6 +373,8 @@ void MapEditor::Save()
 
 	FILE_MGR->SaveMap(saveObjs, path);
 	((EditorMapUiMgr*)uiMgr)->SetLoadInit();
+
+	
 }
 
 void MapEditor::Load(string path)

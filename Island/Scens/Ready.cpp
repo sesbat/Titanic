@@ -144,7 +144,7 @@ void Ready::Exit()
 
 void Ready::Update(float dt)
 {
-	LayerSort();
+	//LayerSort();
 
 	if (craftNpc->GetShowCraft() || startNpc->GetShowMap())
 	{

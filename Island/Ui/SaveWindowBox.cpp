@@ -16,11 +16,11 @@ SaveWindowBox::~SaveWindowBox()
 		delete save;
 		save = nullptr;
 	}
-	if (cancle != nullptr)
-	{
-		delete cancle;
-		cancle = nullptr;
-	}
+	//if (cancle != nullptr)
+	//{
+	//	delete cancle;
+	//	cancle = nullptr;
+	//}
 	if (txt != nullptr)
 	{
 		delete txt;
@@ -42,14 +42,14 @@ void SaveWindowBox::Init()
 	save->SetOrigin(Origins::MC);
 	save->GetTextObj()->SetPos(save->GetPos() + Vector2f{ 0, -15 });
 
-	cancle = new Button(uimgr);
-	cancle->SetTexture(*RESOURCES_MGR->GetTexture("graphics/editor/button.png"), true);
-	cancle->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		38, Color::White, "CANCLE", false);
-	cancle->SetClkColor(true);
-	cancle->SetPos(position + Vector2f{ sprite->GetGlobalBound().width - 150, 255 });
-	cancle->SetOrigin(Origins::MC);
-	cancle->GetTextObj()->SetPos(cancle->GetPos() + Vector2f{0, -15});
+	//cancle = new Button(uimgr);
+	//cancle->SetTexture(*RESOURCES_MGR->GetTexture("graphics/editor/button.png"), true);
+	//cancle->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+	//	38, Color::White, "CANCLE", false);
+	//cancle->SetClkColor(true);
+	//cancle->SetPos(position + Vector2f{ sprite->GetGlobalBound().width - 150, 255 });
+	//cancle->SetOrigin(Origins::MC);
+	//cancle->GetTextObj()->SetPos(cancle->GetPos() + Vector2f{0, -15});
 
 	txt = new TextObject();
 	txt->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
@@ -65,7 +65,7 @@ void SaveWindowBox::Draw(RenderWindow& window)
 		return;
 	Button::Draw(window);
 	save->Draw(window);
-	cancle->Draw(window);
+	//cancle->Draw(window);
 	txt->Draw(window);
 }
 
@@ -75,7 +75,7 @@ void SaveWindowBox::Update(float dt)
 		return;
 	Button::Update(dt);
 	save->Update(dt);
-	cancle->Update(dt);
+	//cancle->Update(dt);
 
 	if (InputMgr::GetKeyDown())
 	{
@@ -102,11 +102,11 @@ void SaveWindowBox::Release()
 		delete save;
 		save = nullptr;
 	}
-	if (cancle != nullptr)
-	{
-		delete cancle;
-		cancle = nullptr;
-	}
+	//if (cancle != nullptr)
+	//{
+	//	delete cancle;
+	//	cancle = nullptr;
+	//}
 	if (txt != nullptr)
 	{
 		delete txt;
@@ -122,10 +122,10 @@ void SaveWindowBox::SetPath(string path)
 }
 bool SaveWindowBox::IsSave()
 {
-	return save->IsDown() || save->IsClick();
+	return save->IsUp();
 }
 
-bool SaveWindowBox::IsCancle()
-{
-	return cancle->IsDown() || cancle->IsClick();
-}
+//bool SaveWindowBox::IsCancle()
+//{
+//	return cancle->IsDown() || cancle->IsClick();
+//}

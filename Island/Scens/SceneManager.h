@@ -16,6 +16,7 @@ public:
 	~SceneManager();
 	void Release();
 	Scene* GetCurrScene();
+	Scenes GetCurrSceneType();
 	Scene* GetScene(Scenes scene);
 
 	bool LoadPath();
