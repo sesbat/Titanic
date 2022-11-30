@@ -34,7 +34,7 @@ GameScene::GameScene()
 	:Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f),
 	fog(candle::LightingArea::FOG,
 		sf::Vector2f(0.f, 0.f),
-		sf::Vector2f(WINDOW_WIDTH * 4, WINDOW_HEIGHT * 4)), blockCount(0)
+		sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)), blockCount(0)
 {
 
 }
@@ -108,6 +108,18 @@ void GameScene::Init()
 			enemy->SetId(id++);
 			enemy->SetPos(obj.position);
 			enemy->SetHitBox(obj.path);
+			if (obj.path == "graphics/enemy1.png")
+			{
+				enemy->SetType(1);
+			}
+			else if (obj.path == "graphics/enemy2.png")
+			{
+				enemy->SetType(2);
+			}
+			else if (obj.path == "graphics/enemy3.png")
+			{
+				enemy->SetType(3);
+			}
 			enemy->SetItem(obj.item);
 			enemy->SetGreedObject(&isGreedObject);
 			enemies.push_back(enemy);
@@ -267,7 +279,8 @@ void GameScene::Update(float dt)
 
 	//view sight pos
 	light.setPosition(player->GetPos());
-	castAllLights();	
+	fog.setPosition({ player->GetPos().x - 1920 / 2, player->GetPos().y - 1080 / 2 });
+	//castAllLights();	
 
 	//mission
 	if (Utils::Distance(player->GetPos(), escapePoint) < 100.f)
