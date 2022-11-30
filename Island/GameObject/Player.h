@@ -7,6 +7,7 @@
 #include <list>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "Gun.h"
 
 using namespace std;
 
@@ -31,6 +32,8 @@ public:
 protected:
 	Scene* scene;
 	Gun* gun;
+	Inventory* inven;
+	ItemBoxObject* rightInvenObj;
 
 	Animator animator;
 	
@@ -70,11 +73,16 @@ protected:
 	float ThirstDelay; 
 	float EnergyDelay; 
 
-	bool isMove;
+	//item
+	int ammo;
+	//int sgAmmo;
+	//int rfAmmo;
+	//int snAmmo;
+	int maxSGAmmo;
+	int maxRFAmmo;
+	int maxSNAmmo;
 
-	Inventory* inven;
-	ItemBoxObject* rightInvenObj;
-	
+	bool isMove;
 	bool isAlive;
 
 public:
@@ -117,6 +125,7 @@ public:
 	bool Energy() { return prevEnergyGuage == (int)energyGuage; }
 
 	void SetHp(int num);
+	void HealHp(int num);
 
 	void SetPlayerPos();
 	Vector2f SetLookDir();
@@ -133,5 +142,8 @@ public:
 	void GetItem(map<string, Item>* items);
 	Inventory* GetInventory() { return inven; }
 	void SetRigthInvenBox(ItemBoxObject* inven) { rightInvenObj = inven; }
+	void UseItems(int num);
+	void SetAmmo();
+	void Reload();
 };
 
