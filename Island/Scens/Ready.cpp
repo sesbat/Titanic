@@ -146,6 +146,14 @@ void Ready::Update(float dt)
 {
 	LayerSort();
 
+	if (craftNpc->GetShowCraft() || startNpc->GetShowMap())
+	{
+		player->SetMove(false);
+	}
+	else
+	{
+		player->SetMove(true);
+	}
 
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
 

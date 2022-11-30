@@ -6,7 +6,7 @@
 #include "../GameObject/TextObject.h"
 
 CraftItem::CraftItem(UiMgr* mgr)
-	:Button(mgr)
+	:Button(mgr), material(3)
 {
 	invenPos = { 0,0 };
 }

@@ -13,6 +13,8 @@ private:
 	int height;
 	Vector2i invenPos;
 	Vector2i invenGreedPos;
+
+	int material;
 public:
 	CraftItem(UiMgr* mgr);
 	virtual ~CraftItem();
@@ -29,6 +31,7 @@ public:
 	Vector2i GetGreedPos() { return invenGreedPos; }
 	int GetWidth() { return width; }
 	int GetHeight() { return height; }
+	int GetMetarial() { return material; }
 	void AddCount(int n);
 
 

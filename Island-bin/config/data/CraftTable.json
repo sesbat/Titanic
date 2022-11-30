@@ -1,0 +1,26 @@
+{
+  "Recoverykit": {
+    "useItem": [
+      {
+        "cnt": 1,
+        "id": "handsaw"
+      },
+      {
+        "cnt": 1,
+        "id": "Armor-1"
+      }
+    ]
+  },
+  "handsaw": {
+    "useItem": [
+      {
+        "cnt": 2,
+        "id": "Recoverykit"
+      },
+      {
+        "cnt": 1,
+        "id": "Armor-1"
+      }
+    ]
+  }
+}

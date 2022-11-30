@@ -6,6 +6,7 @@ class InvenItem;
 class CraftGreed;
 class CraftBox;
 class CraftItem;
+class Player;
 
 enum class CraftIdx
 {
@@ -20,6 +21,10 @@ private:
 
 	vector<Button*> categories;
 	vector<CraftBox*> categoryBox;
+	vector<CraftItem*> myUseItems;
+
+	CraftItem* material;
+
 	int categoryCount;
 
 	CraftBox* craftBox;
@@ -28,8 +33,8 @@ private:
 	CraftBox* prevCraft;
 
 	Button* craftGreed[(int)CraftIdx::Count];
-	vector<CraftItem*> myUseItems;
 
+	Player* player;
 
 	bool isShow;
 	int useIdx;
@@ -54,6 +59,7 @@ public:
 	void ReturnUseItem();
 	void ClearInven();
 	void ResetRightInven();
+	void OnClickCraftItem(const CraftingInfo& info);
 	CraftBox* GetPlayerInven() { return craftBox; }
 
 };

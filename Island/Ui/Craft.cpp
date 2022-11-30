@@ -11,6 +11,9 @@
 #include "../Framework/Framework.h"
 #include "Button.h"
 #include "CraftItem.h"
+#include "../Scens/SceneManager.h"
+#include "../Scens/Ready.h"
+#include "../GameObject/Player.h"
 
 Craft::Craft(UiMgr* mgr)
 	: Button(mgr), totalWeight(0.f), nowDrag(nullptr), prevCraft(nullptr), useIdx(-1),categoryCount(3)
@@ -24,29 +27,10 @@ Craft::~Craft()
 void Craft::Init()
 {
 	SetTexture(*RESOURCES_MGR->GetTexture("graphics/craftbk.png"), true);
-
-	String box[] = { "box1", "box2", "box3" };
-	for (int i = 0; i < 3; i++)
-	{
-		craftBox = new CraftBox(uimgr, this, Vector2i{ 512,64 });
-		craftBox->Init();
-		craftBox->SetName(box[i]);
-		craftBox->SetActive(false);
-		categoryBox.push_back(craftBox);
-	}
-	String items[] = { "Recoverykit", "handsaw", "Armor-1" };
-	for (int i = 0; i < myUseItems.size(); i++)
-	{
-		myUseItems[i] = nullptr;
-	}
-
-	requiredItem = new CraftBox(uimgr, this, Vector2i{ 512,704 });
-	requiredItem->SetBoxSize(10,4);
-	requiredItem->Init();
-	requiredItem->SetName("RightInventory");
-	initRequiredItem = requiredItem;
+	player = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
 
 	String itemList[] = { "1", "2", "3" };
+
 	for (int i = 0; i < 3; i++)
 	{
 		Button* button = new Button(uimgr);
@@ -57,6 +41,31 @@ void Craft::Init()
 		button->SetPos({ 300.f,100.f + FRAMEWORK->GetWindowSize().y/6 *i});
 		categories.push_back(button);
 	}
+
+	String box[] = { "box1", "box2", "box3" };
+	for (int i = 0; i < 3; i++)
+	{
+		craftBox = new CraftBox(uimgr, this, Vector2i{ 512,64 });
+		craftBox->SetClkColor(true);
+		craftBox->Init();
+		craftBox->SetName(box[i]);
+		//craftBox->SetPair((CraftBox*)player->GetInventory());
+		craftBox->SetActive(false);
+		categoryBox.push_back(craftBox);
+	}
+
+	String items[] = { "Recoverykit", "handsaw", "Armor-1" };
+	for (int i = 0; i < myUseItems.size(); i++)
+	{
+		myUseItems[i] = nullptr;
+	}
+
+	requiredItem = new CraftBox(uimgr, this, Vector2i{ 512,704 });
+	requiredItem->SetBoxSize(10, 4);
+	requiredItem->Init();
+	initRequiredItem = requiredItem;
+
+
 	
 	/*Vector2f invenPos[] = { {504.f,56.f},{504.f,696.f} };
 	string invenPath[] = { "craft-buy","craft-sel"};
@@ -68,6 +77,13 @@ void Craft::Init()
 		craftGreed[i]->SetPos(invenPos[i]);
 		craftGreed[i]->SetClkColor(false);
 	}*/
+
+
+	auto& map = FILE_MGR->GetAllCraft();
+	for (auto& n : map)
+	{
+		categoryBox[0]->AddItem(n.first);
+	}
 }
 
 void Craft::Update(float dt)
@@ -75,11 +91,17 @@ void Craft::Update(float dt)
 	if (!enabled)
 		return;
 
+	if (categoryBox[0]->IsClick())
+	{
+
+	}
+
 	for (auto& cg : categories)
 	{
 		cg->Update(dt);
 	}
-	Button::Update(dt);
+
+	//	Button::Update(dt);
 	
 	for (auto& btn : categoryBox)
 	{
@@ -286,6 +308,15 @@ void Craft::ResetRightInven()
 	requiredItem = initRequiredItem;
 	craftBox->SetPair(requiredItem);
 	requiredItem->SetPair(craftBox);
+}
+
+void Craft::OnClickCraftItem(const CraftingInfo& info)
+{
+	requiredItem->ClearInven();
+	for (auto& n : info.useItem)
+	{
+		requiredItem->AddItem(n.id, n.cnt);
+	}
 }
 
 CraftGreed* Craft::GetGreed(int i, int j)

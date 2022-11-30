@@ -9,6 +9,7 @@ private:
 	map<string, vector<ObjectData>> mapInfo;
 	map<string, vector<EditorObjs>> editorObjs;
 	map<string, ItemInfo> itemInfos;
+	map<string, CraftingInfo> craftItemInfo;
 	//cookieInfo[Jungle][Jump]
 public:
 	FileManager();
@@ -26,6 +27,8 @@ public:
 	const map<string, ItemInfo>& GetAllItems() { return itemInfos; }
 	const ItemInfo& GetItemInfo(string name) { return itemInfos[name]; }
 
+	const map<string, CraftingInfo>& GetAllCraft() { return craftItemInfo; }
+	const CraftingInfo& GetCraftItemInfo(string name) { return craftItemInfo[name]; }
 };
 
 #define FILE_MGR (FileManager::GetInstance())

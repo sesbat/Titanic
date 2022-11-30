@@ -136,7 +136,7 @@ void CraftGreed::Update(float dt)
 			}
 		}
 	}
-	Button::Update(dt);
+	//Button::Update(dt);
 }
 
 void CraftGreed::Draw(RenderWindow& window)

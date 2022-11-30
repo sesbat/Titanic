@@ -14,9 +14,9 @@ class NPC : public HitBoxObject
 {
 private:
     Player* player;
-    bool isShowMap;
     NPCType type;
 
+    bool isShowMap;
     bool isShowCraft;
 
     Inventory* NPCInven;

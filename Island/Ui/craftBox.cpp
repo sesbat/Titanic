@@ -43,58 +43,58 @@ void CraftBox::Update(float dt)
 	if (!enabled)
 		return;
 
-	if (nowDrag == nullptr)
-	{
-		for (auto& item : items)
-		{
-			item->Update(dt);
-			if (item->IsDown())
-			{
-				inven->SetDrag(item);
-				inven->SetPrevInven(this);
-				auto invenPos = nowDrag->GetGreedPos();
+	//if (nowDrag == nullptr)
+	//{
+	//	for (auto& item : items)
+	//	{
+	//		item->Update(dt);
+	//		if (item->IsDown())
+	//		{
+	//			inven->SetDrag(item);
+	//			inven->SetPrevInven(this);
+	//			auto invenPos = nowDrag->GetGreedPos();
 
-				for (int i = invenPos.x; i < invenPos.x + nowDrag->GetWidth(); i++)
-				{
-					for (int j = invenPos.y; j < invenPos.y + nowDrag->GetHeight(); j++)
-					{
-						allPos[j][i] = false;
-						itemGreed[j][i]->SetState(false, nullptr);
-					}
-				}
-				//items.erase(items.begin(), find(items.begin(), items.end(), item));
-				//items.push_back(item);
-				break;
-			}
-			else if (item->IsClickRight())
-			{
-				auto pos = pairInven->FindInvenPos(item->GetWidth(), item->GetHeight());
-				auto invenPos = item->GetGreedPos();
+	//			for (int i = invenPos.x; i < invenPos.x + nowDrag->GetWidth(); i++)
+	//			{
+	//				for (int j = invenPos.y; j < invenPos.y + nowDrag->GetHeight(); j++)
+	//				{
+	//					allPos[j][i] = false;
+	//					itemGreed[j][i]->SetState(false, nullptr);
+	//				}
+	//			}
+	//			//items.erase(items.begin(), find(items.begin(), items.end(), item));
+	//			//items.push_back(item);
+	//			break;
+	//		}
+	//		else if (item->IsClickRight())
+	//		{
+	//			auto pos = pairInven->FindInvenPos(item->GetWidth(), item->GetHeight());
+	//			auto invenPos = item->GetGreedPos();
 
 
-				if (pos != Vector2i{ -1,-1 })
-				{
-					for (int i = invenPos.x; i < invenPos.x + item->GetWidth(); i++)
-					{
-						for (int j = invenPos.y; j < invenPos.y + item->GetHeight(); j++)
-						{
-							allPos[j][i] = false;
-							itemGreed[j][i]->SetState(false, nullptr);
-						}
-					}
+	//			if (pos != Vector2i{ -1,-1 })
+	//			{
+	//				for (int i = invenPos.x; i < invenPos.x + item->GetWidth(); i++)
+	//				{
+	//					for (int j = invenPos.y; j < invenPos.y + item->GetHeight(); j++)
+	//					{
+	//						allPos[j][i] = false;
+	//						itemGreed[j][i]->SetState(false, nullptr);
+	//					}
+	//				}
 
-					pairInven->AddItem(item->GetName(), item->GetCount());
-					items.erase(find(items.begin(), items.end(), item));
-					break;
-				}
-				break;
-			}
-		}
-	}
-	else
-	{
-		nowDrag->Update(dt);
-	}
+	//				pairInven->AddItem(item->GetName(), item->GetCount());
+	//				items.erase(find(items.begin(), items.end(), item));
+	//				break;
+	//			}
+	//			break;
+	//		}
+	//	}
+	//}
+	//else
+	//{
+	//	nowDrag->Update(dt);
+	//}
 
 	Button::Update(dt);
 
@@ -103,6 +103,16 @@ void CraftBox::Update(float dt)
 		for (auto& greed : greedLine)
 		{
 			greed->Update(dt);
+			for (auto& n : items)
+			{
+				n->Update(dt);
+				if (n->IsClick())
+				{
+					cout << n->GetName() << endl;
+					inven->OnClickCraftItem(FILE_MGR->GetCraftItemInfo(n->GetName()));
+				}
+
+			}
 		}
 	}
 
