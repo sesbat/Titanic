@@ -26,7 +26,7 @@ Player::Player()
 	maxHungerGuage(255), maxThirstGuage(255), maxEnergyGuage(255),
 	staminaScale(1.f), staminaTime(5.f), dash(0.01f),
 	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true),
-	maxSGAmmo(10), maxRFAmmo(45), maxSNAmmo(5)
+	magazineSG(10), magazineRF(45), magazineSN(5)
 {
 }
 
@@ -43,7 +43,7 @@ void Player::Init()
 	gun = new Gun(GunType::None, User::Player);
 	gun->SetPlayer(this);
 	gun->Init();
-	ammo = maxSGAmmo;
+	ammo = magazineSG;
 	//rfAmmo = maxRFAmmo;
 	//snAmmo = maxSNAmmo;
 	animator.SetTarget(&sprite);
@@ -608,6 +608,7 @@ void Player::Reload()
 	switch (gun->GetgunType())
 	{
 	case GunType::Shotgun:
+		ammo = magazineSG - ammo;
 		break;
 	case GunType::Rifle:
 		break;

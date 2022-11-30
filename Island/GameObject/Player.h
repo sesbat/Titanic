@@ -79,12 +79,12 @@ protected:
 
 	//item
 	int ammo;
-	//int sgAmmo;
-	//int rfAmmo;
-	//int snAmmo;
-	int maxSGAmmo;
-	int maxRFAmmo;
-	int maxSNAmmo;
+	int sgAmmo;
+	int rfAmmo;
+	int snAmmo;
+	int magazineSG;
+	int magazineRF;
+	int magazineSN;
 
 	bool isMove;
 	bool isAlive;

@@ -267,7 +267,7 @@ void GameScene::Update(float dt)
 
 	//view sight pos
 	light.setPosition(player->GetPos());
-	//castAllLights();	
+	castAllLights();	
 
 	//mission
 	if (Utils::Distance(player->GetPos(), escapePoint) < 100.f)
