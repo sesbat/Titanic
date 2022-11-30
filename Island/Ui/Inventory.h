@@ -46,6 +46,7 @@ public:
 	void ReturnUseItem();
 	void ClearInven();
 	void ResetRightInven();
+	InvenItem* GetUsedItem(int i);
 	InventoryBox* GetPlayerInven() { return myInven; }
 
 };

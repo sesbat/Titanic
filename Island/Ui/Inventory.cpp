@@ -250,6 +250,10 @@ void Inventory::ResetRightInven()
 	myInven->SetPair(rightInven);
 	rightInven->SetPair(myInven);
 }
+InvenItem* Inventory::GetUsedItem(int i)
+{
+	return myUseItems[i];
+}
 
 InvenGreed* Inventory::GetGreed(int i, int j)
 {

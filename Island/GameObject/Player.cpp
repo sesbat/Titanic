@@ -38,7 +38,7 @@ void Player::Init()
 	hp = maxHp;
 	stamina = maxStamina;
 
-	gun = new Gun(GunType::Shotgun, User::Player);
+	gun = new Gun(GunType::None, User::Player);
 	gun->SetPlayer(this);
 	gun->Init();
 
@@ -184,10 +184,6 @@ void Player::Update(float dt)
 	if (InputMgr::GetKeyDown(Keyboard::Num2))
 	{
 		gun->SetGunType(GunType::Rifle);
-	}
-	if (InputMgr::GetKeyDown(Keyboard::Num3))
-	{
-		gun->SetGunType(GunType::Sniper);
 	}
 
 	if (stamina > 0.5f && InputMgr::GetKeyDown(Keyboard::LShift))

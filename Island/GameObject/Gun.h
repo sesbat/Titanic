@@ -4,6 +4,7 @@
 
 enum class GunType
 {
+    None,
     Shotgun,
     Rifle,
     Sniper,
