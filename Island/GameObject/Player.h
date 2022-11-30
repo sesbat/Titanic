@@ -31,6 +31,8 @@ public:
 protected:
 	Scene* scene;
 	Gun* gun;
+	Inventory* inven;
+	ItemBoxObject* rightInvenObj;
 
 	Animator animator;
 	
@@ -70,11 +72,16 @@ protected:
 	float ThirstDelay; 
 	float EnergyDelay; 
 
-	bool isMove;
+	//item
+	int ammo;
+	//int sgAmmo;
+	//int rfAmmo;
+	//int snAmmo;
+	int maxSGAmmo;
+	int maxRFAmmo;
+	int maxSNAmmo;
 
-	Inventory* inven;
-	ItemBoxObject* rightInvenObj;
-	
+	bool isMove;
 	bool isAlive;
 
 public:
@@ -117,6 +124,7 @@ public:
 	bool Energy() { return prevEnergyGuage == (int)energyGuage; }
 
 	void SetHp(int num);
+	void HealHp(int num);
 
 	void SetPlayerPos();
 	Vector2f SetLookDir();
@@ -134,5 +142,9 @@ public:
 	Inventory* GetInventory() { return inven; }
 	void SetRigthInvenBox(ItemBoxObject* inven) { rightInvenObj = inven; }
 	Gun* GetGun() { return gun; }
+	void UseItems(int num);
+	void SetAmmo();
+	void Reload();
+
 };
 
