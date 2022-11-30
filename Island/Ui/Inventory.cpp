@@ -63,6 +63,18 @@ void Inventory::Update(float dt)
 	{
 		myInven->AddItem("Armor-1");
 	}
+	if (InputMgr::GetKeyDown(Keyboard::I))
+	{
+		myInven->AddItem("Apple");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::O))
+	{
+		myInven->AddItem("Water");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::P))
+	{
+		myInven->AddItem("EnergyDrink");
+	}
 	if (InputMgr::GetKeyDown(Keyboard::E))
 	{
 		rightInven->AddItem("Recoverykit");

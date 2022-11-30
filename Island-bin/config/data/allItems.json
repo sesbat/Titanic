@@ -33,5 +33,26 @@
     "weight": 2.0,
     "width": 3,
     "height": 1
+  },
+  "Apple": {
+    "path": "graphics/items/apple.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1
+  },
+  "Water": {
+    "path": "graphics/items/water.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1
+  },
+  "EnergyDrink": {
+    "path": "graphics/items/drink.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1
   }
 }
