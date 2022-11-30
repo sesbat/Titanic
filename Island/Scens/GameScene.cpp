@@ -354,55 +354,11 @@ void GameScene::Draw(RenderWindow& window)
 
 	fog.clear();
 	fog.draw(light);
-	//window.draw(light);
 	window.draw(fog);
 	fog.display();
 
 	if (uiMgr != nullptr)
 		uiMgr->Draw(window);
-
-	//window.setView(worldView);
-
-	//{
-	//	window.setView(worldView);
-
-
-	//	int i = 0;
-	//	for (auto& obj : objList[LayerType::Tile])
-	//	{
-	//		for (auto& o : obj.second)
-	//		{
-	//			o->Draw(window);
-	//		}
-	//	}
-
-	//	for (auto& obj : another)
-	//	{
-	//		obj->Draw(window);
-	//	}
-	//	for (auto& obj : drawObjs)
-	//	{
-	//		obj->Draw(window);
-	//	}
-	//	for (auto& obj : objList[LayerType::Object])
-	//	{
-	//		if (obj.first == 0)
-	//			continue;
-	//		for (auto& o : obj.second)
-	//		{
-	//			o->Draw(window);
-	//		}
-	//	}
-
-	//	if (uiMgr != nullptr)
-	//		uiMgr->Draw(window);
-	//	
-	//}
-	//{
-	//	window.setView(worldView);
-	//	treeMap.draw(window);
-	//}
-	//Scene::Draw(window);
 }
 
 void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy)

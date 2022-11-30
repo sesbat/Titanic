@@ -39,7 +39,7 @@ protected:
 	States currState;
 	
 	float speed;
-	float maxSpeed;
+	const float maxSpeed;
 	Vector2f look;
 	Vector2f lookDir;
 	Vector2f prevLook;
@@ -59,14 +59,19 @@ protected:
 	float staminaScale;
 	bool isDash;
 	float stamina;
-	float maxStamina;
+	const float maxStamina;
 
 	float hungerGuage;
 	int prevHungerGuage;
+	const float maxHungerGuage;
+	
 	float thirstGuage;
 	int prevThirstGuage;
+	const float maxThirstGuage;
+	
 	float energyGuage;
 	int prevEnergyGuage;
+	const float maxEnergyGuage;
 
 	float hungerDelay; 
 	float ThirstDelay; 
@@ -125,6 +130,9 @@ public:
 
 	void SetHp(int num);
 	void HealHp(int num);
+	void HealHunger(float num);
+	void HealThirst(float num);
+	void HealEnergy(float num);
 
 	void SetPlayerPos();
 	Vector2f SetLookDir();
