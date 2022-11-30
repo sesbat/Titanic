@@ -21,7 +21,7 @@ Player::Player()
 	: currState(States::None), speed(200.f), maxSpeed(200.f),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	hp(10), maxHp(10), isDash(false), stamina(10.f), maxStamina(10.f),
+	hp(500), maxHp(500), isDash(false), stamina(10.f), maxStamina(10.f),
 	hungerGuage(255), thirstGuage(255), energyGuage(255),
 	staminaScale(1.f), staminaTime(5.f), dash(0.01f),
 	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true),
@@ -171,14 +171,14 @@ void Player::Update(float dt)
 		if (InputMgr::GetMouseButtonDown(Mouse::Left) && ammo > 0 && !inven->GetActive())
 		{
 			gun->Fire(GetPos(), true);
-			ammo--;
+			//ammo--;
 		}
 		break;
 	case GunType::Rifle:
 		if (InputMgr::GetMouseButton(Mouse::Left) && ammo > 0 && !inven->GetActive())
 		{
 			gun->Fire(GetPos(), true);
-			ammo--;
+			//ammo--;
 		}
 		break;
 	}
@@ -363,11 +363,8 @@ bool Player::EqualFloat(float a, float b)
 
 void Player::SetHp(int num)
 {
-	if (hp > 0)
-	{
-		hp -= num;
-	}
-	else
+	hp -= num;
+	if (hp <= 0)
 	{
 		hp = 0;
 	}
@@ -542,8 +539,8 @@ void Player::UseItems(int num)
 	string name = inven->GetUsedItem(num)->GetName();
 	if (name == "Recoverykit")
 	{
-		HealHp(2);
-		//inven->GetUsedItem(num)->AddCount(-1);
+		HealHp(maxHp / 2);
+		inven->GetUsedItem(num)->AddCount(-1);
 		return;
 	}
 	///////add other items/////////

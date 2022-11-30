@@ -76,10 +76,11 @@ void InvenItem::SetInvenPos(Vector2f invenGreedPos)
 void InvenItem::AddCount(int n)
 {
 	count += n;
-	if (count < 0)
+	if (count <= 0)
 	{
+
 		count = 0;
-		//return;
+		return;
 	}
 	if (maxCount != 1)
 		SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),

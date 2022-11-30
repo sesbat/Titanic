@@ -52,7 +52,7 @@ protected:
 	Vector2f playerNormalize;
 
 	int hp;
-	int maxHp;
+	const int maxHp;
 
 	float dash;
 	float staminaTime;

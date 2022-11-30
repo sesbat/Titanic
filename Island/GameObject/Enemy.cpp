@@ -15,8 +15,8 @@
 #include <stack>
 
 Enemy::Enemy()
-	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(15),
-	maxHp(15), barScaleX(60.f), look(1.f, 0.f), isHit(false)//, isMove(false)
+	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(500),
+	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false)//, isMove(false)
 {
 }
 
@@ -211,11 +211,8 @@ void Enemy::SetHp(int num)
 	astar->AstarSearch(*isGreedObject, startPos, destPos);
 	movePos = astar->GetCoordinate();
 
-	if ( hp > 0 )
-	{
-		hp -= num;
-	}
-	else
+	hp -= num;
+	if ( hp <= 0 )
 	{
 		hp = 0;
 	}
