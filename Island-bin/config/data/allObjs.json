@@ -61,12 +61,36 @@
     {
       "texPath": "graphics/tile2.png",
       "uiPaht": "graphics/editor/drawTile2.png"
+    },
+    {
+      "texPath": "graphics/tile3.png",
+      "uiPaht": "graphics/editor/drawTile3.png"
+    },
+    {
+      "texPath": "graphics/tile4.png",
+      "uiPaht": "graphics/editor/drawTile4.png"
+    },
+    {
+      "texPath": "graphics/tile5.png",
+      "uiPaht": "graphics/editor/drawTile5.png"
+    },
+    {
+      "texPath": "graphics/tile6.png",
+      "uiPaht": "graphics/editor/drawTile6.png"
     }
   ],
   "ENEMY": [
     {
       "texPath": "graphics/enemy1.png",
       "uiPaht": "graphics/editor/drawEnemy1.png"
+    },
+    {
+      "texPath": "graphics/enemy2.png",
+      "uiPaht": "graphics/editor/drawEnemy2.png"
+    },
+    {
+      "texPath": "graphics/enemy3.png",
+      "uiPaht": "graphics/editor/drawEnemy3.png"
     }
   ],
   "BOX": [

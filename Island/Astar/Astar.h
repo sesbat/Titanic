@@ -12,8 +12,8 @@ using namespace sf;
 typedef pair<int, int> Pair;
 typedef pair<double, pair<int, int> > pPair;
 
-const int g_maxX = 64;
-const int g_maxY = 36;
+const int g_maxX = 128;
+const int g_maxY = 72;
 
 class Astar
 {
