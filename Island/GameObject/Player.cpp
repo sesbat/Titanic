@@ -21,11 +21,12 @@ Player::Player()
 	: currState(States::None), speed(200.f), maxSpeed(200.f),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	hp(10), maxHp(10), isDash(false), stamina(10.f), maxStamina(10.f),
+	hp(500), maxHp(500), isDash(false), stamina(10.f), maxStamina(10.f),
 	hungerGuage(255), thirstGuage(255), energyGuage(255),
+	maxHungerGuage(255), maxThirstGuage(255), maxEnergyGuage(255),
 	staminaScale(1.f), staminaTime(5.f), dash(0.01f),
 	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true),
-	maxSGAmmo(10), maxRFAmmo(45), maxSNAmmo(5)
+	magazineSG(10), magazineRF(45), magazineSN(5)
 {
 }
 
@@ -42,7 +43,7 @@ void Player::Init()
 	gun = new Gun(GunType::None, User::Player);
 	gun->SetPlayer(this);
 	gun->Init();
-	ammo = maxSGAmmo;
+	ammo = magazineSG;
 	//rfAmmo = maxRFAmmo;
 	//snAmmo = maxSNAmmo;
 	animator.SetTarget(&sprite);
@@ -171,14 +172,14 @@ void Player::Update(float dt)
 		if (InputMgr::GetMouseButtonDown(Mouse::Left) && ammo > 0 && !inven->GetActive())
 		{
 			gun->Fire(GetPos(), true);
-			ammo--;
+			//ammo--;
 		}
 		break;
 	case GunType::Rifle:
 		if (InputMgr::GetMouseButton(Mouse::Left) && ammo > 0 && !inven->GetActive())
 		{
 			gun->Fire(GetPos(), true);
-			ammo--;
+			//ammo--;
 		}
 		break;
 	}
@@ -212,22 +213,18 @@ void Player::Update(float dt)
 	if (InputMgr::GetKeyDown(Keyboard::Num3))
 	{
 		UseItems(4);
-		//gun->SetGunType(GunType::Sniper);
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Num4))
 	{
 		UseItems(5);
-		//gun->SetGunType(GunType::Shotgun);
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Num5))
 	{
 		UseItems(6);
-		//gun->SetGunType(GunType::Rifle);
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Num6))
 	{
 		UseItems(7);
-		//gun->SetGunType(GunType::Sniper);
 	}
 
 	//dash
@@ -313,7 +310,6 @@ void Player::Draw(RenderWindow& window)
 		}
 	}
 	gun->Draw(window);
-	//window.draw(light);
 }
 
 void Player::Dash(float dt)
@@ -323,7 +319,6 @@ void Player::Dash(float dt)
 
 void Player::UpdateIdle(float dt)
 {
-	//attackHitbox->SetActive(false);
 	if (!EqualFloat(direction.x, 0.f))
 	{
 		SetState(States::Move);
@@ -363,11 +358,8 @@ bool Player::EqualFloat(float a, float b)
 
 void Player::SetHp(int num)
 {
-	if (hp > 0)
-	{
-		hp -= num;
-	}
-	else
+	hp -= num;
+	if (hp <= 0)
 	{
 		hp = 0;
 	}
@@ -379,6 +371,33 @@ void Player::HealHp(int num)
 	if (hp > maxHp)
 	{
 		hp = maxHp;
+	}
+}
+
+void Player::HealHunger(float num)
+{
+	hungerGuage += num;
+	if (hungerGuage > maxHungerGuage)
+	{
+		hungerGuage = maxHungerGuage;
+	}
+}
+
+void Player::HealThirst(float num)
+{
+	thirstGuage += num;
+	if (thirstGuage > maxThirstGuage)
+	{
+		thirstGuage = maxThirstGuage;
+	}
+}
+
+void Player::HealEnergy(float num)
+{
+	energyGuage += num;
+	if (energyGuage > maxEnergyGuage)
+	{
+		energyGuage = maxEnergyGuage;
 	}
 }
 
@@ -539,30 +558,33 @@ void Player::UseItems(int num)
 	{
 		return;
 	}
+	
 	string name = inven->GetUsedItem(num)->GetName();
 	if (name == "Recoverykit")
 	{
-		HealHp(2);
-		//inven->GetUsedItem(num)->AddCount(-1);
+		HealHp(maxHp / 2);
+		inven->GetUsedItem(num)->AddCount(-1);
 		return;
 	}
 	///////add other items/////////
-	else if (name == "Recoverykit")
+	else if (name == "Apple")
 	{
-		HealHp(2);
+		HealHunger(maxHungerGuage / 2);
+		inven->GetUsedItem(num)->AddCount(-1);
 		return;
 	}
-	else if (name == "Recoverykit")
+	else if (name == "Water")
 	{
-		HealHp(2);
+		HealThirst(maxThirstGuage / 2);
+		inven->GetUsedItem(num)->AddCount(-1);
 		return;
 	}
-	else if (name == "Recoverykit")
+	else if (name == "Energy")
 	{
-		HealHp(2);
+		HealEnergy(maxEnergyGuage / 2);
+		inven->GetUsedItem(num)->AddCount(-1);
 		return;
 	}
-	
 }
 
 void Player::SetAmmo()
@@ -586,6 +608,7 @@ void Player::Reload()
 	switch (gun->GetgunType())
 	{
 	case GunType::Shotgun:
+		ammo = magazineSG - ammo;
 		break;
 	case GunType::Rifle:
 		break;

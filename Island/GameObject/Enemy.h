@@ -71,6 +71,7 @@ protected:
 	map<string, Item> items;
 	vector<vector<bool>> *isGreedObject;
 
+	int type;
 	//dev
 	//bool isMove;
 
@@ -78,7 +79,7 @@ public:
 	Enemy();
 	virtual ~Enemy();
 
-	void Init(Player* player, int type = 1);
+	void Init(Player* player);
 
 	void SetState(States newState);
 	States GetState();
@@ -95,6 +96,8 @@ public:
 
 	void SetItem(map<string, Item> items) { this->items = items; }
 	void SetEnemyPos();
+
+	void SetType(int num) { type = num; }
 
 	Vector2f GetLookDir() { return lookDir; }
 	Vector2f GetPrevLookDir() { return prevLook; }
