@@ -328,10 +328,10 @@ void Player::SetPlayerPos()
 {
 	SetPos(prevPosition);
 
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(prevPosition);
-	}
+	//for (auto& hit : hitboxs)
+	//{
+	//	hit->SetPos(prevPosition);
+	//}
 	bottom->SetPos(prevPosition);
 }
 
@@ -392,10 +392,10 @@ void Player::Move(float dt)
 	prevPosition = GetPos();
 	Translate({ velocity.x * dt, 0.f });
 
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(GetPos());
-	}
+	//for (auto& hit : hitboxs)
+	//{
+	//	hit->SetPos(GetPos());
+	//}
 	//wall bound
 	Collision();
 
@@ -404,10 +404,10 @@ void Player::Move(float dt)
 	prevPosition = GetPos();
 	Translate({ 0.f, velocity.y * dt, });
 
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(GetPos());
-	}
+	//for (auto& hit : hitboxs)
+	//{
+	//	hit->SetPos(GetPos());
+	//}
 	//wall bound
 	Collision();
 }
@@ -415,27 +415,43 @@ void Player::Move(float dt)
 void Player::Collision()
 {
 	//wall bound
-	auto obj = scene->GetObjList();
+	//auto obj = scene->GetObjList();
 
-	for (auto& objects : obj[LayerType::Object][0])
+	//for (auto& objects : obj[LayerType::Object][0])
+	//{
+	//	auto hit = ((HitBoxObject*)objects)->GetBottom();
+	//	if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
+	//		continue;
+	//	if (!objects->GetActive())
+	//	{
+	//		continue;
+	//	}
+	//	if (objects->GetName() == "TREE" ||
+	//		objects->GetName() == "STONE" ||
+	//		objects->GetName() == "BLOCK" ||
+	//		objects->GetName() == "ENEMY")
+	//	{
+	//		if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+	//		{
+	//			//cout << objects->GetName() << endl;
+	//			SetPlayerPos();
+	//			break;
+	//		}
+	//	}
+	//}
+
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
-		auto hit = ((HitBoxObject*)objects)->GetBottom();
-		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
-			continue;
-		if (!objects->GetActive())
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+
+		for (auto obj : boundInObj)
 		{
-			continue;
-		}
-		if (objects->GetName() == "TREE" ||
-			objects->GetName() == "STONE" ||
-			objects->GetName() == "BLOCK" ||
-			objects->GetName() == "ENEMY")
-		{
-			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
 			{
-				//cout << objects->GetName() << endl;
-				SetPlayerPos();
-				break;
+				if (obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK" ||
+					obj->GetName() == "ENEMY")
+					SetPlayerPos();
 			}
 		}
 	}

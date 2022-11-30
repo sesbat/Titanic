@@ -47,12 +47,13 @@ public:
 	void SetLoadInit();
 
 	bool IsSave();
-	bool IsCancle();
+	//bool IsCancle();
 	bool IsLoad();
 	bool LoadActive();
 	string loadFile();
 	bool IsErase();
 	bool IsExit();
+	void CloseSaveWinow();
 
 	void SetItemBox(bool state);
 	void SetItemBox();

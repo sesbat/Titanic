@@ -132,7 +132,7 @@ void Ready::Exit()
 
 void Ready::Update(float dt)
 {
-	LayerSort();
+	//LayerSort();
 
 
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);

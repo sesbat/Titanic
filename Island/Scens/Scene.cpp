@@ -194,7 +194,8 @@ void Scene::LayerSort()
 			if (obj->GetName() == "TREE" || obj->GetName() == "BUSH")
 				alphaObj.push_back((HitBoxObject*)obj);
 
-			drawObjs.push_back(obj);
+			if(obj->GetActive())
+				drawObjs.push_back(obj);
 
 		}
 		else if (obj->GetName() == "ANOTHER")
@@ -205,7 +206,9 @@ void Scene::LayerSort()
 		{
 			if (obj->GetName() == "PLAYER")
 				player = ((HitBoxObject*)obj);
-			moves.push_back(obj);
+
+			if (obj->GetActive())
+				moves.push_back(obj);
 		}
 	}
 

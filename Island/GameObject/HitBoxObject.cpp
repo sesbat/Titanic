@@ -9,6 +9,25 @@ HitBoxObject::HitBoxObject()
 {
 }
 
+void HitBoxObject::SetPos(Vector2f pos)
+{
+	SpriteObject::SetPos(pos);
+	for (auto& hit : hitboxs)
+	{
+		hit->SetPos(GetPos());
+	}
+}
+
+void HitBoxObject::Translate(Vector2f dir)
+{
+	SpriteObject::Translate(dir);
+	;
+	for (auto& hit : hitboxs)
+	{
+		hit->SetPos(GetPos());
+	}
+}
+
 HitBoxObject::~HitBoxObject()
 {
 	for (auto& hit : hitboxs)
@@ -24,11 +43,6 @@ void HitBoxObject::Init()
 void HitBoxObject::Update(float dt)
 {
 	SpriteObject::Update(dt);
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(GetPos());
-
-	}
 	if (InputMgr::GetKeyDown(Keyboard::F1))
 	{
 		isHitBox = !isHitBox;
@@ -49,8 +63,6 @@ void HitBoxObject::Draw(RenderWindow& window)
 
 void HitBoxObject::SetHitBox(string path)
 {
-	if (hitboxs.size() != 0)
-		return;
 	auto hitData = FILE_MGR->GetHitBox(path);
 
 	if (hitData.size() == 0)

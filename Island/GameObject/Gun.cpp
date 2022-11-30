@@ -170,6 +170,11 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		float F4 = temp - (M_PI / 12) * 2;
 		Vector2f randomShot4 = { cos(F4),sin(F4) };
 
+		bullet->SetOrigin(Origins::MR);
+		bullet1->SetOrigin(Origins::MR);
+		bullet2->SetOrigin(Origins::MR);
+		bullet3->SetOrigin(Origins::MR);
+		bullet4->SetOrigin(Origins::MR);
 
 		bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 		bullet1->Fire(startPos, randomShot1, bulletSpeed, range, isplayer);
@@ -186,7 +191,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		range = 700;
 		Bullet* bullet = bulletPool.Get();
 		bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
-		
+		bullet->SetOrigin(Origins::MR);
 		bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 	}
 		break;

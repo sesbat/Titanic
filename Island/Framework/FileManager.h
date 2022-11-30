@@ -9,6 +9,7 @@ private:
 	map<string, vector<ObjectData>> mapInfo;
 	map<string, vector<EditorObjs>> editorObjs;
 	map<string, ItemInfo> itemInfos;
+	map<string, CraftingInfo> itemInfo;
 	//cookieInfo[Jungle][Jump]
 public:
 	FileManager();

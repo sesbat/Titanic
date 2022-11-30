@@ -22,17 +22,20 @@
 #include "../GameObject/ItemBoxObject.h"
 #include "../Ui/Inventory.h"
 #include "../Ui/InventoryBox.h"
-
+#include "../GameObject/HitBox.h"
+	
 using namespace std;
 using namespace sf;
 
+//explicit QuadTree(sf::FloatRect bounds,	size_t maxLevel, size_t maxObjects);
 GameScene::GameScene()
-	:Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f),qTree({0,0,1920,1080},15,8)
+	:Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f)
 {
 }
 
 GameScene::~GameScene()
 {
+	min(0, 1);
 }
 
 void GameScene::Init()
@@ -150,6 +153,9 @@ void GameScene::Init()
 	mapSize.height = (tiles.back())->GetPos().y;
 
 
+	{
+		treeMap.setFont(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"));
+	}
 	
 	//mission exit tile
 	//escapePoint = { 1200.f,1650.f };
@@ -192,8 +198,12 @@ void GameScene::Exit()
 
 void GameScene::Update(float dt)
 {
-	qTree.clear();
-	qTree.insert(objList[LayerType::Object][0]);
+	//FloatRect v;
+	//v.width = uiView.getSize().x;
+	//v.height = uiView.getSize().y;
+	//v.left = uiView.getCenter().x - 1920 / 2;
+	//v.top = uiView.getCenter().y - 1080 / 2;
+	//qTree.SetBound(v);
 	
 	//Time deltaTime = clock.restart();
 	//float fps = 1.0f / (deltaTime.asSeconds());
@@ -207,9 +217,6 @@ void GameScene::Update(float dt)
 		else
 			it++;
 	}
-
-
-	LayerSort();
 	
 
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
@@ -258,14 +265,74 @@ void GameScene::Update(float dt)
 		return;
 	}
 
+	treeMap.clear();
+	LayerSort();
 
+	//treeMap.insert(objList[LayerType::Object][0]);
+	treeMap.insert(drawObjs);
+	treeMap.update(drawObjs);
+
+	//for (auto&& found : treeMap.getObjectsInBound_unchecked(*player)) {
+	//	if (player != found && Utils::OBB(player->GetBottom()->GetHitbox(), found->GetBottom()->GetHitbox())) {
+	//		found->SetColor(Color::Red);
+	//		cout << found->GetName() << endl;
+	//	}
+	//}
 	Scene::Update(dt);
 }
+vector<HitBoxObject*> GameScene::ObjListObb(HitBoxObject* obj)
+{
+	return treeMap.getObjectsInBound_unchecked_notParent(*obj);
+}
+vector<HitBoxObject*> GameScene::ObjListObb(FloatRect obj)
+{
+	return treeMap.getObjectsInBound_unchecked_notParent(obj);
+}
+
 	
 void GameScene::Draw(RenderWindow& window)
 {
 	//window.setView(worldView);
-	Scene::Draw(window);
+	{
+		window.setView(worldView);
+
+
+		int i = 0;
+		for (auto& obj : objList[LayerType::Tile])
+		{
+			for (auto& o : obj.second)
+			{
+				o->Draw(window);
+			}
+		}
+
+		for (auto& obj : another)
+		{
+			obj->Draw(window);
+		}
+		for (auto& obj : drawObjs)
+		{
+			obj->Draw(window);
+		}
+		for (auto& obj : objList[LayerType::Object])
+		{
+			if (obj.first == 0)
+				continue;
+			for (auto& o : obj.second)
+			{
+				o->Draw(window);
+			}
+		}
+
+		if (uiMgr != nullptr)
+			uiMgr->Draw(window);
+		
+	}
+	{
+		window.setView(worldView);
+		treeMap.draw(window);
+	}
+	//Scene::Draw(window);
 }
 
 void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy)

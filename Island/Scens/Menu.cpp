@@ -51,12 +51,12 @@ void Menu::Release()
 void Menu::Enter()
 {
 	Init();
-	if (SOUND_MGR->GetNowBgm() != "sounds/menu.wav")
-	{
-		SOUND_MGR->StopAll();
-		SOUND_MGR->Play("sounds/menu.wav", true);
-		SOUND_MGR->SetNowBgm("sounds/menu.wav");
-	}
+	//if (SOUND_MGR->GetNowBgm() != "sounds/menu.wav")
+	//{
+	//	SOUND_MGR->StopAll();
+	//	SOUND_MGR->Play("sounds/menu.wav", true);
+	//	SOUND_MGR->SetNowBgm("sounds/menu.wav");
+	//}
 	SCENE_MGR->GetCurrScene()->GetWorldView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
 	SCENE_MGR->GetCurrScene()->GetWorldView().setSize({ WINDOW_WIDTH , WINDOW_HEIGHT });
 	SCENE_MGR->GetCurrScene()->GetUiView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });

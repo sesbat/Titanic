@@ -121,9 +121,14 @@ void EditorMapUiMgr::Update(float dt)
 {
 	if (saveWindow->GetActive())
 	{
+		saveBtn->Update(dt);
+		if (saveBtn->IsUp())
+		{
+			saveWindow->SetActive(!saveWindow->GetActive());
+		}
+		//if(saveWindow->IsCancle())
+		//	saveWindow->SetActive(false);
 		saveWindow->Update(dt);
-		if(saveWindow->IsCancle())
-			saveWindow->SetActive(false);
 		return;
 	}
 	if (loadWindow->GetActive())
@@ -145,7 +150,8 @@ void EditorMapUiMgr::Update(float dt)
 
 	if (saveBtn->IsUp())
 	{
-		saveWindow->SetActive(true);
+		saveWindow->SetActive(!saveWindow->GetActive());
+		//saveWindow->SetActive(true);
 		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeleteDraw();
 	}
 	if (loadBtn->IsUp())
@@ -224,10 +230,10 @@ bool EditorMapUiMgr::IsSave()
 	return saveWindow->IsSave();
 }
 
-bool EditorMapUiMgr::IsCancle()
-{
-	return saveWindow->IsCancle();
-}
+//bool EditorMapUiMgr::IsCancle()
+//{
+//	return saveWindow->IsCancle();
+//}
 
 bool EditorMapUiMgr::IsLoad()
 {
@@ -252,6 +258,11 @@ bool EditorMapUiMgr::IsErase()
 bool EditorMapUiMgr::IsExit()
 {
 	return exitBtn->IsDown() || exitBtn->IsClick();
+}
+
+void EditorMapUiMgr::CloseSaveWinow()
+{
+	saveWindow->SetActive(false);
 }
 
 void EditorMapUiMgr::SetItemBox(bool state)

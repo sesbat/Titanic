@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="3rd\QuadTree_SFML_DEMO.cpp" />
     <ClCompile Include="GameObject\ItemBoxObject.cpp" />
     <ClCompile Include="Ui\AddItemBox.cpp" />
     <ClCompile Include="GameObject\Bullet.cpp" />
@@ -161,9 +162,6 @@
     <ClCompile Include="GameObject\HitBoxObject.cpp" />
     <ClCompile Include="GameObject\Gun.cpp" />
     <ClCompile Include="GameObject\NPC.cpp" />
-    <ClCompile Include="QTree\Entity.cpp" />
-    <ClCompile Include="QTree\QuadTree.cpp" />
-    <ClCompile Include="QTree\QuadTreeNode.cpp" />
     <ClCompile Include="Ui\InventoryBox.cpp" />
     <ClCompile Include="Ui\InvenGreed.cpp" />
     <ClCompile Include="Ui\InvenItem.cpp" />
@@ -207,6 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\OBB.h" />
+    <ClInclude Include="3rd\QuadTree_SFML_DEMO.h" />
     <ClInclude Include="3rd\rapidcsv.h" />
     <ClInclude Include="3rd\SingleTon.h" />
     <ClInclude Include="GameObject\ItemBoxObject.h" />
@@ -221,11 +220,6 @@
     <ClInclude Include="GameObject\HitBoxObject.h" />
     <ClInclude Include="GameObject\Gun.h" />
     <ClInclude Include="GameObject\NPC.h" />
-    <ClInclude Include="QTree\Common.hpp" />
-    <ClInclude Include="QTree\Entity.hpp" />
-    <ClInclude Include="QTree\NonCopyable.hpp" />
-    <ClInclude Include="QTree\QuadTree.hpp" />
-    <ClInclude Include="QTree\QuadTreeNode.hpp" />
     <ClInclude Include="Ui\InventoryBox.h" />
     <ClInclude Include="Ui\InvenGreed.h" />
     <ClInclude Include="Ui\InvenItem.h" />

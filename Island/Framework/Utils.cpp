@@ -132,5 +132,15 @@ bool Utils::OBB(const vector<HitBox*> obb1, const HitBox* obb2)
 	}
 	return false;
 }
+bool Utils::OBB( FloatRect& obb1,  HitBox& obb2)
+{
+	Vector2f MTV;
+	bool isHit = false;
+	RectangleShape rect;
+	rect.setPosition(obb1.left, obb1.top);
+	rect.setSize({ obb1.width, obb1.height });
+	return testCollision(rect, obb2.GetHitbox(), MTV);
+	return false;
+}
 
 

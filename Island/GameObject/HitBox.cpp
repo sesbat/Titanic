@@ -73,6 +73,11 @@ void HitBox::SetHitbox(const FloatRect rect)
 	hitbox.setOutlineThickness(2.f);
 }
 
+void HitBox::SetRotate(float dir)
+{
+	hitbox.rotate(dir);
+}
+
 void HitBox::SetFillColor(Color color)
 {
 	hitbox.setFillColor(color);

@@ -314,22 +314,39 @@ void Enemy::MoveToPos(float dt)
 
 void Enemy::Collision()
 {
-	auto obj = scene->GetObjList();
-	//wall bound
-	for (auto& objects : obj[LayerType::Object][0])
+	//auto obj = scene->GetObjList();
+	////wall bound
+	//for (auto& objects : obj[LayerType::Object][0])
+	//{
+	//	auto hit = ((HitBoxObject*)objects)->GetBottom();
+	//	if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
+	//		continue;
+	//	if (objects->GetName() == "TREE" ||
+	//		objects->GetName() == "STONE" ||
+	//		objects->GetName() == "BLOCK" ||
+	//		objects->GetName() == "PLAYER")
+	//	{
+	//		if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+	//		{
+	//			SetEnemyPos();
+	//			break;
+	//		}
+	//	}
+	//}
+
+
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
-		auto hit = ((HitBoxObject*)objects)->GetBottom();
-		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
-			continue;
-		if (objects->GetName() == "TREE" ||
-			objects->GetName() == "STONE" ||
-			objects->GetName() == "BLOCK" ||
-			objects->GetName() == "PLAYER")
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+
+		for (auto obj : boundInObj)
 		{
-			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
 			{
-				SetEnemyPos();
-				break;
+				if (obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK" ||
+					obj->GetName() == "ENEMY")
+					SetEnemyPos();
 			}
 		}
 	}
