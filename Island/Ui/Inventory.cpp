@@ -63,9 +63,37 @@ void Inventory::Update(float dt)
 	{
 		myInven->AddItem("handsaw");
 	}
+	if (InputMgr::GetKeyDown(Keyboard::Y))
+	{
+		myInven->AddItem("Meat");
+	}
 	if (InputMgr::GetKeyDown(Keyboard::T))
 	{
 		myInven->AddItem("Armor-1");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::I))
+	{
+		myInven->AddItem("Apple");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::O))
+	{
+		myInven->AddItem("Water");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::P))
+	{
+		myInven->AddItem("EnergyDrink");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::J))
+	{
+		myInven->AddItem("RifleBullet");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::K))
+	{
+		myInven->AddItem("ShotGunBullet");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::L))
+	{
+		myInven->AddItem("SniperBullet");
 	}
 	if (InputMgr::GetKeyDown(Keyboard::E))
 	{

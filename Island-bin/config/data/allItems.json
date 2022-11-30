@@ -40,5 +40,54 @@
     "weight": 2.0,
     "width": 3,
     "height": 1
+  },
+  "Apple": {
+    "path": "graphics/items/apple.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1
+  },
+  "Water": {
+    "path": "graphics/items/water.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1
+  },
+  "EnergyDrink": {
+    "path": "graphics/items/drink.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1
+  },
+  "Meat": {
+    "path": "graphics/items/meat.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1
+  },
+  "RifleBullet": {
+    "path": "graphics/items/riflebullet.png",
+    "maxCount": 30,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1
+  },
+  "ShotGunBullet": {
+    "path": "graphics/items/shotgunbullet.png",
+    "maxCount": 10,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1
+  },
+  "SniperBullet": {
+    "path": "graphics/items/sniperbullet.png",
+    "maxCount": 5,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1
   }
 }
