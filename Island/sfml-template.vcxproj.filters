@@ -55,6 +55,7 @@
     <ClCompile Include="Ui\Ready\ReadyUiMgr.cpp" />
     <ClCompile Include="Ui\UiMgr.cpp" />
     <ClCompile Include="Ui\UiObject.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="Astar\Astar.cpp" />
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\Constants.cpp" />
@@ -65,6 +66,12 @@
     <ClCompile Include="src\Polygon.cpp" />
     <ClCompile Include="src\RadialLight.cpp" />
     <ClCompile Include="src\VertexArray.cpp" />
+=======
+    <ClCompile Include="Ui\CraftBox.cpp" />
+    <ClCompile Include="Ui\Craft.cpp" />
+    <ClCompile Include="Ui\CraftGreed.cpp" />
+    <ClCompile Include="Ui\CraftItem.cpp" />
+>>>>>>> feature/craft
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\OBB.h" />
@@ -127,7 +134,14 @@
     <ClInclude Include="Ui\Ready\ReadyUiMgr.h" />
     <ClInclude Include="Ui\UiMgr.h" />
     <ClInclude Include="Ui\UiObject.h" />
+<<<<<<< HEAD
     <ClInclude Include="Astar\Astar.h" />
+=======
+    <ClInclude Include="Ui\CraftBox.h" />
+    <ClInclude Include="Ui\Craft.h" />
+    <ClInclude Include="Ui\CraftGreed.h" />
+    <ClInclude Include="Ui\CraftItem.h" />
+>>>>>>> feature/craft
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

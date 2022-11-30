@@ -70,6 +70,8 @@ protected:
 	float ThirstDelay; 
 	float EnergyDelay; 
 
+	bool isMove;
+
 	Inventory* inven;
 	ItemBoxObject* rightInvenObj;
 	
@@ -101,6 +103,7 @@ public:
 	States GetCurrState() { return currState; }
 	float GetStaminaScale() { return staminaScale; }
 	bool GetIsDash() { return isDash; }
+	bool GetIsMove() { return isMove; }
 	int GetHp() { return hp; }
 	int GetMaxHp() { return maxHp; }
 	float GetStamina() { return stamina; }
@@ -119,6 +122,7 @@ public:
 	Vector2f SetLookDir();
 	void SetFlipX(bool flip);
 	void SetIsDash(bool dash);
+	void SetMove(bool move);
 	void SetPrevHungerGuage(int hunger);
 	void SetPrevThirstGuage(int thirst);
 	void SetPrevEnergyGuage(int energy);

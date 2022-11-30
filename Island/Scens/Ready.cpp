@@ -94,6 +94,18 @@ void Ready::Init()
 	shopNpc->SetHitBox("graphics/player.png");
 	objList[LayerType::Object][0].push_back(shopNpc);
 
+
+	craftNpc = new NPC();
+	craftNpc->SetNPCType(NPCType::Craft);
+	craftNpc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shopnpc.png"));
+	craftNpc->SetOrigin(Origins::BC);
+	craftNpc->SetPlayer(player);
+	craftNpc->SetPos({ 1800.f,1200.f });
+	craftNpc->SetName("NPC");
+	craftNpc->Init();
+	craftNpc->SetHitBox("graphics/player.png");
+	objList[LayerType::Object][0].push_back(craftNpc);
+
 	//npc = new NPC();
 	//npc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/npc.png"));
 	//npc->SetOrigin(Origins::MC);
@@ -134,6 +146,14 @@ void Ready::Update(float dt)
 {
 	LayerSort();
 
+	if (craftNpc->GetShowCraft() || startNpc->GetShowMap())
+	{
+		player->SetMove(false);
+	}
+	else
+	{
+		player->SetMove(true);
+	}
 
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
 

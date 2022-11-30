@@ -24,7 +24,7 @@ Player::Player()
 	hp(10), maxHp(10), isDash(false), stamina(10.f), maxStamina(10.f),
 	hungerGuage(255), thirstGuage(255), energyGuage(255),
 	staminaScale(1.f), staminaTime(5.f), dash(0.01f),
-	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true)
+	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true),isMove(true)
 {
 }
 
@@ -144,7 +144,8 @@ void Player::Update(float dt)
 	}
 
 	//Move
-	Move(dt);
+	if(isMove)
+		Move(dt);
 
 	//animation
 	animator.Update(dt);
@@ -359,6 +360,11 @@ void Player::SetFlipX(bool flip)
 void Player::SetIsDash(bool dash)
 {
 	isDash = dash;
+}
+
+void Player::SetMove(bool move)
+{
+	isMove = move;
 }
 
 void Player::SetPrevHungerGuage(int hunger)

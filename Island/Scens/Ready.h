@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "../../GameObject/Animation/Animator.h"
+
 class SpriteObject;
 class Button;
 class NPC;
@@ -10,8 +11,10 @@ class Ready : public Scene
 {
 protected:
 	Player* player;
+
 	NPC* startNpc;
 	NPC* shopNpc;
+	NPC* craftNpc;
 
 	float timer;
 	Clock clock;
@@ -29,6 +32,8 @@ public:
 	virtual void Reset() override;
 
 	Player* GetPlayer() { return player; }
-	NPC* GetNPC() { return startNpc; }
+	NPC* GetStartNPC() { return startNpc; }
+	NPC* GetShopNPC() { return shopNpc; }
+	NPC* GetCraftNPC() { return craftNpc; }
 };
 

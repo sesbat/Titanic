@@ -67,3 +67,16 @@ namespace ns {
 		int height;
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemInfo, path, maxCount, weight, width, height)
 	};
+
+	struct RequiredItem
+	{
+		string id;
+		int cnt;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(RequiredItem, id, cnt)
+	};
+
+	struct CraftingInfo
+	{
+		vector<RequiredItem> useItem;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(CraftingInfo, useItem)
+	};
