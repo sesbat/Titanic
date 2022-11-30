@@ -97,12 +97,14 @@ void Inventory::Update(float dt)
 				{
 				case 0:
 					if (itemName == "GUN1" || 
-						itemName == "GUN2")
+						itemName == "GUN2" ||
+						itemName == "GUN3")
 						isUseItemUp = true;
 					break;
 				case 1:
 					if (itemName == "GUN1" ||
-						itemName == "GUN2")
+						itemName == "GUN2" ||
+						itemName == "GUN3")
 						isUseItemUp = true;
 					break;
 				case 2:

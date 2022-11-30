@@ -32,6 +32,8 @@ protected:
 
 	UiMgr* uiMgr;
 
+	vector < std::vector<Object*>::iterator > deleteContainer;
+
 	vector<Object*> moves;
 	vector<Object*> another;
 	vector<Object*> drawObjs;

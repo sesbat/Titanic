@@ -33,5 +33,12 @@
     "weight": 2.0,
     "width": 3,
     "height": 1
+  },
+  "GUN3": {
+    "path": "graphics/items/GUN3.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 3,
+    "height": 1
   }
 }

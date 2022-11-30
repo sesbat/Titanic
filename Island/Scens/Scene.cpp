@@ -80,6 +80,12 @@ void Scene::Update(float dt)
 		}
 	}
 
+	for (auto& del : deleteContainer)
+	{
+		objList[LayerType::Object][0].erase(del);
+	}
+	deleteContainer.clear();
+
 	if(uiMgr != nullptr)
 		uiMgr->Update(dt);
 }

@@ -449,9 +449,8 @@ void GameScene::EmpytyInven(ItemBoxObject* inven)
 	if (inven->GetName() == "BOX")
 	{
 		auto it = find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), inven);
-		objList[LayerType::Object][0].erase(it);
-
-		delete inven;
+		deleteContainer.push_back(it);
+		(*it)->SetActive(false);
 	}
 }
 
