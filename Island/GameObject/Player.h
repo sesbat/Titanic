@@ -2,6 +2,8 @@
 #include "HitBoxObject.h"
 #include "Animation/Animator.h"
 #include "../Framework/ObjectPool.h"
+#include "Candle/RadialLight.hpp"
+#include "Candle/LightingArea.hpp"
 #include <list>
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -35,6 +37,7 @@ protected:
 	States currState;
 	
 	float speed;
+	float maxSpeed;
 	Vector2f look;
 	Vector2f lookDir;
 	Vector2f prevLook;
@@ -63,13 +66,15 @@ protected:
 	float energyGuage;
 	int prevEnergyGuage;
 
-	float hungerDelay = 3.f;
-	float ThirstDelay = 3.f;
-	float EnergyDelay = 3.f;
+	float hungerDelay; 
+	float ThirstDelay; 
+	float EnergyDelay; 
 
 	Inventory* inven;
 	ItemBoxObject* rightInvenObj;
-	//bool isAlive;
+	
+	bool isAlive;
+
 public:
 	Player();
 	virtual~Player();
@@ -102,6 +107,7 @@ public:
 	float GetHungerGuage() { return hungerGuage; }
 	float GetThirstGuage() { return thirstGuage; }
 	float GetEnergyGuage() { return energyGuage; }
+	bool GetIsAlive() { return isAlive; }
 
 	bool Hunger() { return prevHungerGuage == (int)hungerGuage; }
 	bool Thirst() { return prevThirstGuage == (int)thirstGuage; }
