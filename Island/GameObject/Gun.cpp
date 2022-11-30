@@ -56,6 +56,10 @@ void Gun::Init()
 		SetOrigin(Origins::MC);
 		break;
 	}
+
+	gunNameType["GUN1"] = GunType::Sniper;
+	gunNameType["GUN2"] = GunType::Shotgun;
+	gunNameType["GUN3"] = GunType::Rifle;
 	
 }
 
@@ -249,3 +253,8 @@ void Gun::SetGunType(GunType type)
 	}
 }
 
+
+GunType Gun::ItemNameToType(string name)
+{
+	return gunNameType[name];
+}

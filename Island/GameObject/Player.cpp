@@ -179,11 +179,29 @@ void Player::Update(float dt)
 
 	if (InputMgr::GetKeyDown(Keyboard::Num1))
 	{
-		gun->SetGunType(GunType::Shotgun);
+		auto myGun = inven->GetUsedItem(0);
+
+		if (myGun == nullptr)
+		{
+			gun->SetGunType(GunType::None);
+		}
+		else
+		{
+			gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+		}
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Num2))
 	{
-		gun->SetGunType(GunType::Rifle);
+		auto myGun = inven->GetUsedItem(1);
+
+		if (myGun == nullptr)
+		{
+			gun->SetGunType(GunType::None);
+		}
+		else
+		{
+			gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+		}
 	}
 
 	if (stamina > 0.5f && InputMgr::GetKeyDown(Keyboard::LShift))
