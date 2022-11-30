@@ -1,6 +1,6 @@
 #pragma once
-#define WIDTHCNT 64
-#define HEIGHTCNT 32
+#define WIDTHCNT 128
+#define HEIGHTCNT 72
 #include "../Scens/Scene.h"
 
 class Button;

@@ -133,5 +133,6 @@ public:
 	void GetItem(map<string, Item>* items);
 	Inventory* GetInventory() { return inven; }
 	void SetRigthInvenBox(ItemBoxObject* inven) { rightInvenObj = inven; }
+	Gun* GetGun() { return gun; }
 };
 

@@ -23,6 +23,7 @@ class AddItemBox : public Button
 private:
 	map<string,AddItem*> allItems;
 	map<string,Item>* nowObjectItems;
+	int addItemIdx = 0;
 	
 public:
 	AddItemBox(UiMgr* mgr);

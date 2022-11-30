@@ -8,6 +8,10 @@
 #include "InvenItem.h"
 #include "InventoryBox.h"
 #include "../Framework/info.h"
+#include "../GameObject/Player.h"
+#include "../Scens/SceneManager.h"
+#include "../Scens/GameScene.h"
+#include "../GameObject/Gun.h"
 
 Inventory::Inventory(UiMgr* mgr)
 	: Button(mgr), totalWeight(0.f), nowDrag(nullptr), prevInven(nullptr), useIdx(-1)
@@ -137,6 +141,13 @@ void Inventory::Update(float dt)
 						item->erase(find_item);
 
 					myUseItems[i] = nowDrag;
+					if (i == 0 || i == 1)
+					{
+						auto player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
+						auto gun = player->GetGun();
+						
+						gun->SetGunType(gun->ItemNameToType(nowDrag->GetName()));
+					}
 					SetDrag(nullptr);
 					useIdx = -1;
 				}
@@ -159,6 +170,14 @@ void Inventory::Update(float dt)
 				SetPrevInven(myInven);
 				useItem = nullptr;
 				useIdx = i;
+
+				if (i == 0 || i == 1)
+				{
+					auto player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
+					auto gun = player->GetGun();
+
+					gun->SetGunType(GunType::None);
+				}
 				break;
 			}
 		}
@@ -231,6 +250,14 @@ void Inventory::MoveInvenItem(InventoryBox* nextInven)
 void Inventory::ReturnUseItem()
 {
 	nowDrag->SetInvenPos(invenItemGreed[useIdx]->GetPos());
+
+	if (useIdx == 0 || useIdx == 1)
+	{
+		auto player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
+		auto gun = player->GetGun();
+
+		gun->SetGunType(gun->ItemNameToType(nowDrag->GetName()));
+	}
 	myUseItems[useIdx] = nowDrag;
 	SetDrag(nullptr);
 	SetPrevInven(nullptr);
@@ -249,6 +276,11 @@ void Inventory::ResetRightInven()
 	rightInven = initRightInven;
 	myInven->SetPair(rightInven);
 	rightInven->SetPair(myInven);
+}
+
+InvenItem* Inventory::GetUsedItem(int i)
+{
+	return myUseItems[i];
 }
 
 InvenGreed* Inventory::GetGreed(int i, int j)

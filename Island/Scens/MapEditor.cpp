@@ -124,13 +124,15 @@ void MapEditor::Update(float dt)
 	
 	if (InputMgr::GetMouseWheelUp())
 	{
-		if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
-			SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() - (Vector2f{19.2,10.8} * 3.f));
+		if (!((EditorMapUiMgr*)uiMgr)->GetItemBox()->GetActive())
+			if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
+				SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() - (Vector2f{ 19.2,10.8 } *3.f));
 	}
 	if (InputMgr::GetMouseWheelDown())
 	{
-		if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
-			SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *3.f));
+		if (!((EditorMapUiMgr*)uiMgr)->GetItemBox()->GetActive())
+			if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
+				SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *3.f));
 	}
 
 	if (uimgr->GetEvent())

@@ -4,6 +4,7 @@
 
 enum class GunType
 {
+    None,
     Shotgun,
     Rifle,
     Sniper,
@@ -40,6 +41,8 @@ private:
 
     Vector2f lookDir;
     Vector2f pos;
+
+    map<string, GunType> gunNameType;
 public:
     Gun();
     Gun(GunType type, User user);
@@ -56,5 +59,6 @@ public:
 
     void SetGunType(GunType type);
     GunType GetgunType() { return gunType; }
+    GunType ItemNameToType(string name);
 };
 

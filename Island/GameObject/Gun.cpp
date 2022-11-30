@@ -56,6 +56,10 @@ void Gun::Init()
 		SetOrigin(Origins::MC);
 		break;
 	}
+
+	gunNameType["GUN1"] = GunType::Sniper;
+	gunNameType["GUN2"] = GunType::Shotgun;
+	gunNameType["GUN3"] = GunType::Rifle;
 	
 }
 
@@ -142,6 +146,8 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 
 	switch (gunType)
 	{
+	case GunType::None:
+		break;
 	case GunType::Shotgun:
 	{	
 		Vector2f startPos;
@@ -215,20 +221,30 @@ void Gun::SetGunType(GunType type)
 	gunType = type;
 	switch (gunType)
 	{
+	case GunType::None:
+		SetOrigin(Origins::MC);
+		SetActive(false);
+		break;
 	case GunType::Shotgun:
+		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun.png"));
 		Damage = 30;
 		shootDelay = 0.5f;
+		SetOrigin(Origins::MC);
 		break;
 	case GunType::Rifle:
+		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/rifel.png"));
 		Damage = 50;
 		shootDelay = 0.1f;
+		SetOrigin(Origins::MC);
 		break;
 	case GunType::Sniper:
+		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniper.png"));
 		shootDelay = 1.f;
 		Damage = 500;
+		SetOrigin(Origins::MC);
 		break;
 	case GunType::TypeCount:
 		break;
@@ -237,3 +253,8 @@ void Gun::SetGunType(GunType type)
 	}
 }
 
+
+GunType Gun::ItemNameToType(string name)
+{
+	return gunNameType[name];
+}
