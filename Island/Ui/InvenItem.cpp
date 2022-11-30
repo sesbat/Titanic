@@ -86,4 +86,5 @@ void InvenItem::AddCount(int n)
 			20, Color::White, to_string(count), false);
 	GetTextObj()->SetOrigin(Origins::BR);
 	GetTextObj()->SetPos(position + Vector2f(60, 60));
+
 }

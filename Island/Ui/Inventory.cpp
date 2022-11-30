@@ -213,6 +213,14 @@ void Inventory::Update(float dt)
 		}
 		i++;
 	}
+
+	for (auto del : deleteUseItem)
+	{
+		int idx = del - myUseItems.begin();
+		delete* del;
+		myUseItems[idx] = nullptr;
+	}
+	deleteUseItem.clear();
 }
 
 void Inventory::Draw(RenderWindow& window)
@@ -311,6 +319,12 @@ void Inventory::ResetRightInven()
 InvenItem* Inventory::GetUsedItem(int i)
 {
 	return myUseItems[i];
+}
+
+void Inventory::AddDeleteObj(InvenItem* obj)
+{
+	auto it = find(myUseItems.begin(), myUseItems.end(), obj);
+	deleteUseItem.push_back(it);
 }
 
 InvenGreed* Inventory::GetGreed(int i, int j)

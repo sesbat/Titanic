@@ -543,7 +543,10 @@ void Player::UseItems(int num)
 	if (name == "Recoverykit")
 	{
 		HealHp(2);
-		//inven->GetUsedItem(num)->AddCount(-1);
+		inven->GetUsedItem(num)->AddCount(-1);
+		if (inven->GetUsedItem(num)->GetCount() <= 0)
+			inven->AddDeleteObj(inven->GetUsedItem(num));
+
 		return;
 	}
 	///////add other items/////////

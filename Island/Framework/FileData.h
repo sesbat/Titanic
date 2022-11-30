@@ -82,3 +82,24 @@ namespace ns {
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(CraftingInfo, useItem)
 	};
 	
+
+	struct UserInfo
+	{
+		int hp;
+		float hungerGuage;
+		float thirstGuage;
+		float energyGuage;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage)
+	};
+
+
+	struct InvenInvo
+	{
+		int x;
+		int y;
+		int cnt;
+		string path;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(InvenInvo, x, y, cnt, path)
+	};

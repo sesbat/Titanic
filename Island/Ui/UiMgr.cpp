@@ -117,6 +117,7 @@ void UiMgr::Update(float dt)
         }
         nowEvObj = nullptr;
     }
+
     nowEvent = isEvent;
 }
 

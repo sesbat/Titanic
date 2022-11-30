@@ -11,6 +11,7 @@ private:
 	map<string, ItemInfo> itemInfos;
 	map<string, CraftingInfo> craftItemInfo;
 	map<string, CraftingInfo> itemInfo;
+
 	//cookieInfo[Jungle][Jump]
 public:
 	FileManager();
