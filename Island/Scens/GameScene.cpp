@@ -34,7 +34,7 @@ GameScene::GameScene()
 	:Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f),
 	fog(candle::LightingArea::FOG,
 		sf::Vector2f(0.f, 0.f),
-		sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)), blockCount(0)
+		sf::Vector2f(WINDOW_WIDTH * 4, WINDOW_HEIGHT * 4)), blockCount(0)
 {
 
 }
@@ -51,8 +51,8 @@ void GameScene::Init()
 	auto& data = FILE_MGR->GetMap(sceneName);
 	isGreedObject.clear();
 
-	for (int i = 0; i < 36; i++)
-		isGreedObject.push_back(vector<bool>(64, false));
+	for (int i = 0; i < 72; i++)
+		isGreedObject.push_back(vector<bool>(128, false));
 
 	player = new Player();
 	player->SetName("PLAYER");
