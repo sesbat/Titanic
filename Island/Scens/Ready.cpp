@@ -14,13 +14,14 @@
 #include "../Framework/Framework.h"
 
 Ready::Ready()
-	:Scene(Scenes::Ready)
+	:Scene(Scenes::Ready), treeMap(treeRect, 16, 4)
 {
 
 }
 
 Ready::~Ready()
 {
+	treeMap.clear();
 	Release();
 }
 
@@ -75,7 +76,7 @@ void Ready::Init()
 	startNpc = new NPC();
 	startNpc->SetNPCType(NPCType::Start);
 	startNpc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/startnpc.png"));
-	startNpc->SetOrigin(Origins::BC);
+	startNpc->SetOrigin(Origins::MC);
 	startNpc->SetPlayer(player);
 	startNpc->SetPos({ 990.f,1740.f });
 	startNpc->SetName("NPC");
@@ -86,7 +87,7 @@ void Ready::Init()
 	shopNpc = new NPC();
 	shopNpc->SetNPCType(NPCType::Shop);
 	shopNpc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shopnpc.png"));
-	shopNpc->SetOrigin(Origins::BC);
+	shopNpc->SetOrigin(Origins::MC);
 	shopNpc->SetPlayer(player);
 	shopNpc->SetPos({ 1800.f,300.f });
 	shopNpc->SetName("NPC");
@@ -118,6 +119,7 @@ void Ready::Init()
 
 	uiMgr = new ReadyUiMgr(this);
 	uiMgr->Init();
+	treeMap.setFont(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"));
 }
 
 void Ready::Release()
@@ -139,6 +141,7 @@ void Ready::Enter()
 
 void Ready::Exit()
 {
+	treeMap.clear();
 	player->Save();
 	Release();
 }
@@ -147,14 +150,14 @@ void Ready::Update(float dt)
 {
 	//LayerSort();
 
-	if (craftNpc->GetShowCraft() || startNpc->GetShowMap())
-	{
-		player->SetMove(false);
-	}
-	else
-	{
-		player->SetMove(true);
-	}
+	//if (craftNpc->GetShowCraft() || startNpc->GetShowMap())
+	//{
+	//	player->SetMove(false);
+	//}
+	//else
+	//{
+	//	player->SetMove(true);
+	//}
 
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
 
@@ -176,9 +179,22 @@ void Ready::Update(float dt)
 	realcam.y = max((int)realcam.y, WINDOW_HEIGHT / 2);
 	realcam.y = min((int)realcam.y, mapSize.height - WINDOW_HEIGHT / 2);
 
-	worldView.setCenter(realcam);
+	if(player->GetIsMove())
+		worldView.setCenter(realcam);
+	LayerSort();
+	treeMap.insert(drawObjs);
+	treeMap.update(drawObjs);
 
 	Scene::Update(dt);
+}
+
+vector<HitBoxObject*> Ready::ObjListObb(HitBoxObject* obj)
+{
+	return treeMap.getObjectsInBound_unchecked_notParent(*obj);
+}
+vector<HitBoxObject*> Ready::ObjListObb(FloatRect obj)
+{
+	return treeMap.getObjectsInBound_unchecked_notParent(obj);
 }
 
 void Ready::Draw(RenderWindow& window)

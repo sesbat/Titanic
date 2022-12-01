@@ -82,7 +82,18 @@ void Scene::Update(float dt)
 
 	for (auto& del : deleteContainer)
 	{
-		objList[LayerType::Object][0].erase(del);
+		if (find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), *del) != objList[LayerType::Object][0].end())
+		{
+			auto deletObj = *del;
+			objList[LayerType::Object][0].erase(del);
+			delete deletObj;
+		}
+		else if (find(objList[LayerType::Object][1].begin(), objList[LayerType::Object][1].end(), *del) != objList[LayerType::Object][1].end())
+		{
+			auto deletObj = *del;
+			objList[LayerType::Object][1].erase(del);
+			delete deletObj;
+		}
 	}
 	deleteContainer.clear();
 
@@ -115,7 +126,6 @@ void Scene::Draw(RenderWindow& window)
 	}
 	else
 	{
-		LayerSort();
 		int i = 0;
 		for (auto& obj : objList[LayerType::Tile])
 		{
@@ -253,5 +263,15 @@ void Scene::LayerSort()
 		}
 	}
 
+}
+
+void Scene::AddDeleteObject(int layer_idx, Object* obj)
+{
+	auto it = find(objList[LayerType::Object][layer_idx].begin(), objList[LayerType::Object][layer_idx].end(), obj);
+	if (it != objList[LayerType::Object][layer_idx].end())
+	{
+		deleteContainer.push_back(it);
+		(*it)->SetActive(false);
+	}
 }
 

@@ -35,7 +35,7 @@ void ItemBoxObject::Update(float dt)
 {
 	HitBoxObject::Update(dt);
 
-	if (Utils::Distance(position, *playerPos) < 30 && InputMgr::GetKeyDown(Keyboard::F))
+	if (Utils::Distance(position, *playerPos) < 50 && InputMgr::GetKeyDown(Keyboard::F))
 	{
 		//((GameScene*)SCENE_MGR->GetCurrScene())->GetPlayer()->GetItem(&obj_items);;
 

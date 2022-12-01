@@ -9,12 +9,14 @@
 #include "Object.h"
 #include "HitBox.h"
 #include "../Scens/GameScene.h"
+#include "../Scens/Ready.h"
 #include <iostream>
 #include "Gun.h"
 #include "../Ui/Inventory.h"
 #include "../Ui/InventoryBox.h"
 #include "../Ui/InvenItem.h"
 #include "../GameObject/ItemBoxObject.h"
+#include "../GameObject/TextObject.h"
 
 
 Player::Player()
@@ -66,7 +68,7 @@ void Player::Init()
 	//light.setRange(300.f);
 
 	Load();
-	
+
 }
 
 void Player::SetState(States newState)
@@ -151,7 +153,7 @@ void Player::Update(float dt)
 	}
 
 	//Move
-	if(isMove)
+	if (isMove)
 		Move(dt);
 
 	//animation
@@ -166,24 +168,26 @@ void Player::Update(float dt)
 
 	gun->Update(dt);
 
-	//input
-	switch (gun->GetgunType())
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene && InputMgr::GetMouseButton(Mouse::Left))
 	{
-	case GunType::Shotgun:
-	case GunType::Sniper:
-		if (InputMgr::GetMouseButtonDown(Mouse::Left) && ammo > 0 && !inven->GetActive())
+		switch (gun->GetgunType())
 		{
-			gun->Fire(GetPos(), true);
-			//ammo--;
+		case GunType::Shotgun:
+		case GunType::Sniper:
+			if (ammo > 0 && !inven->GetActive())
+			{
+				gun->Fire(GetPos(), true);
+				//ammo--;
+			}
+			break;
+		case GunType::Rifle:
+			if (ammo > 0 && !inven->GetActive())
+			{
+				gun->Fire(GetPos(), true);
+				//ammo--;
+			}
+			break;
 		}
-		break;
-	case GunType::Rifle:
-		if (InputMgr::GetMouseButton(Mouse::Left) && ammo > 0 && !inven->GetActive())
-		{
-			gun->Fire(GetPos(), true);
-			//ammo--;
-		}
-		break;
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Num1))
 	{
@@ -243,10 +247,11 @@ void Player::Update(float dt)
 
 	if (InputMgr::GetKeyDown(Keyboard::Tab))
 	{
-		inven->SetActive(!(inven->GetActive()));
-		inven->ResetRightInven();
-		if (!inven->GetActive())
+		if (inven->GetActive() && !isMove)
 		{
+			SetMove(true);
+			inven->SetActive(!(inven->GetActive()));
+			inven->ResetRightInven();
 			if (inven->GetRightInven()->GetItems()->size() > 0)
 			{
 				auto rightInven = inven->GetRightInven()->GetItems();
@@ -264,7 +269,7 @@ void Player::Update(float dt)
 				}
 				((GameScene*)scene)->DropItems(dropItems, position);
 			}
-			if(rightInvenObj != nullptr)
+			if (rightInvenObj != nullptr)
 			{
 				auto items = rightInvenObj->GetInvenBox()->GetItems();
 				if (items->size() == 0)
@@ -273,14 +278,16 @@ void Player::Update(float dt)
 					rightInvenObj = nullptr;
 				}
 			}
-			inven->ClearInven();
 		}
-		else
+		else if (isMove)
 		{
+			inven->SetActive(true);
+			inven->ResetRightInven();
+			SetMove(false);
 			rightInvenObj = nullptr;
 		}
 	}
-	
+
 	//player stamina
 	if (isDash)
 	{
@@ -299,6 +306,7 @@ void Player::Update(float dt)
 			stamina = maxStamina;
 		}
 	}
+
 }
 
 void Player::Draw(RenderWindow& window)
@@ -540,6 +548,21 @@ void Player::Collision()
 			}
 		}
 	}
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::Ready)
+	{
+		auto boundInObj = ((Ready*)scene)->ObjListObb(this);
+
+		for (auto obj : boundInObj)
+		{
+			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
+			{
+				if (obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK" ||
+					obj->GetName() == "ENEMY")
+					SetPlayerPos();
+			}
+		}
+	}
 }
 
 
@@ -560,7 +583,7 @@ void Player::UseItems(int num)
 	{
 		return;
 	}
-	if(inven->GetUsedItem(num)->GetCount() == 0)
+	if (inven->GetUsedItem(num)->GetCount() == 0)
 		return;
 	string name = inven->GetUsedItem(num)->GetName();
 	if (name == "Recoverykit")
@@ -612,13 +635,13 @@ void Player::SetAmmo()
 	switch (gun->GetgunType())
 	{
 	case GunType::Shotgun:
-		
+
 		break;
 	case GunType::Rifle:
-		
+
 		break;
 	case GunType::Sniper:
-		
+
 		break;
 	}
 }
@@ -664,7 +687,7 @@ void Player::Load()
 
 	for (auto data : useItemData)
 	{
-		if(data.useIdx != -1)
+		if (data.useIdx != -1)
 			inven->SetUserItem(data);
 	}
 
@@ -677,7 +700,7 @@ void Player::Save()
 	nowInfo.hungerGuage = hungerGuage;
 	nowInfo.thirstGuage = thirstGuage;
 	nowInfo.energyGuage = energyGuage;
-	
+
 	FILE_MGR->SaveUserInfo(nowInfo);
 
 	auto nowInven = inven->GetPlayerInven()->GetItems();
@@ -691,7 +714,7 @@ void Player::Save()
 		d.invenPos = data->GetInvenPos();
 		d.invenGreedPos = data->GetGreedPos();
 		d.cnt = data->GetCount();
-			
+
 		d.path = data->GetPath();
 
 		saveInven.push_back(d);

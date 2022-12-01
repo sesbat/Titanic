@@ -13,6 +13,7 @@
 #include "../Astar/Astar.h"
 #include <iostream>
 #include <stack>
+#include "Ment.h"
 
 Enemy::Enemy()
 	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(500),
@@ -216,6 +217,18 @@ void Enemy::SetHp(int num)
 	{
 		hp = 0;
 	}
+
+	string ments[3] = { "Ouch..!", "Oh No!" , "Fuxx" };
+	Vector2f randPos = { Utils::RandomRange(-20,20) + GetPos().x,
+		Utils::RandomRange(-50,-40) + GetPos().y + 30.f };
+	Ment* ment = new Ment();
+	ment->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 30, Color::White, ments[Utils::RandomRange(0, 3)]);
+	ment->SetAlways(false);
+	ment->SetTimer(1.f);
+	ment->SetOrigin(Origins::BC);
+	ment->SetPos(randPos);
+	ment->SetActive(true);
+	SCENE_MGR->GetCurrScene()->AddGameObject(ment, LayerType::Object, 1);
 }
 
 void Enemy::SetHpBar()

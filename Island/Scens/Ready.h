@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "../../GameObject/Animation/Animator.h"
+#include "../3rd/QuadTree_SFML_DEMO.h"
 
 class SpriteObject;
 class Button;
@@ -20,6 +21,9 @@ protected:
 	Clock clock;
 
 	IntRect mapSize;
+	FloatRect MAP_BOUNDS = { 0, 0, 1920 * 4, 1080 * 4 };
+	TreeRect treeRect = { 0,0,1920 * 4,1080 * 4 };
+	QuadTree treeMap;
 public:
 	Ready();
 	~Ready();
@@ -28,6 +32,8 @@ public:
 	virtual void Enter() override;
 	virtual void Exit() override;
 	virtual void Update(float dt) override;
+	vector<HitBoxObject*> ObjListObb(HitBoxObject* obj);
+	vector<HitBoxObject*> ObjListObb(FloatRect obj);
 	virtual void Draw(RenderWindow& window) override;
 	virtual void Reset() override;
 

@@ -25,7 +25,6 @@
 #include "Candle/geometry/Polygon.hpp"
 
 #include "../GameObject/HitBox.h"
-#include "../3rd/QuadTree_SFML_DEMO.h"
 	
 using namespace std;
 using namespace sf;
@@ -232,7 +231,6 @@ void GameScene::Enter()
 void GameScene::Exit()
 {
 	treeMap.clear();
-	player->Save();
 	Release();
 }
 
@@ -258,9 +256,6 @@ void GameScene::Update(float dt)
 			it++;
 	}
 
-	LayerSort();
-	
-
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
 	
 	Vector2f dir;
@@ -281,7 +276,7 @@ void GameScene::Update(float dt)
 	realcam.y = max((int)realcam.y, WINDOW_HEIGHT / 2);
 	realcam.y = min((int)realcam.y, mapSize.height - WINDOW_HEIGHT / 2);
 
-	if(!player->GetInventory()->GetActive())
+	if(player->GetIsMove())
 		worldView.setCenter(realcam);
 
 	//view sight pos
@@ -309,6 +304,7 @@ void GameScene::Update(float dt)
 
 	if (escapeTimer <= 0.f)
 	{
+		player->Save();
 		SCENE_MGR->ChangeScene(Scenes::Ready);
 		return;
 	}
@@ -346,7 +342,6 @@ vector<HitBoxObject*> GameScene::ObjListObb(FloatRect obj)
 void GameScene::Draw(RenderWindow& window)
 {
 	window.setView(worldView);
-	LayerSort();
 	int i = 0;
 	for (auto& obj : objList[LayerType::Tile])
 	{

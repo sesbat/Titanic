@@ -144,35 +144,19 @@ void Inventory::Update(float dt)
 						isUseItemUp = true;
 					break;
 				case 4:
-					if (itemName == "Recoverykit" ||
-						itemName == "Meat" ||
-						itemName == "Apple" ||
-						itemName == "Water" ||
-						itemName == "EnergyDrink")
+					if (itemName == "Recoverykit")
 						isUseItemUp = true;
 					break;
 				case 5:
-					if (itemName == "Recoverykit" ||
-						itemName == "Meat" ||
-						itemName == "Apple" ||
-						itemName == "Water" ||
-						itemName == "EnergyDrink")
+					if (itemName == "Recoverykit")
 						isUseItemUp = true;
 					break;
 				case 6:
-					if (itemName == "Recoverykit" ||
-						itemName == "Meat" ||
-						itemName == "Apple" ||
-						itemName == "Water" ||
-						itemName == "EnergyDrink")
+					if (itemName == "Recoverykit")
 						isUseItemUp = true;
 					break;
 				case 7:
-					if (itemName == "Recoverykit" ||
-						itemName == "Meat" ||
-						itemName == "Apple" ||
-						itemName == "Water" ||
-						itemName == "EnergyDrink")
+					if (itemName == "Recoverykit")
 						isUseItemUp = true;
 					break;
 				}
