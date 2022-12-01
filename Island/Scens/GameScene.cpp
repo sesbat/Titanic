@@ -156,7 +156,7 @@ void GameScene::Init()
 			missionText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 80, Color::Green, to_string(escapeTimer));
 			missionText->SetTextLine(Color::Black, 1.f);
 			missionText->SetOrigin(Origins::BC);
-			missionText->SetPos(escapePoint);
+			missionText->SetPos({ escapePoint.x-150.f,escapePoint.y });
 			objList[LayerType::Object][1].push_back(missionText);
 			//HitBoxObject* exit = new HitBoxObject();
 			//exit->SetTexture(*RESOURCES_MGR->GetTexture("graphics/exit.png"));
@@ -281,7 +281,7 @@ void GameScene::Update(float dt)
 
 	//view sight pos
 	light.setPosition(player->GetPos());
-	fog.setPosition({ player->GetPos().x - 1920 / 2, player->GetPos().y - 1080 / 2 });
+	fog.setPosition({ player->GetPos().x - 1920 , player->GetPos().y - 1080  });
 	//castAllLights();	
 
 	//mission
@@ -293,6 +293,7 @@ void GameScene::Update(float dt)
 		missionText->SetActive(true);
 		string timer = to_string(escapeTimer); 
 		timer = timer.substr(0, timer.find('.') + 3);
+		missionText->SetPos({ player->GetPos().x - 300.f,player->GetPos().y - 100.f });
 		missionText->SetString("LEAVING IN " + timer);
 	}
 	else

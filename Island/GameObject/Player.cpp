@@ -575,20 +575,34 @@ void Player::UseItems(int num)
 	///////add other items/////////
 	else if (name == "Apple")
 	{
+		HealHunger(maxHungerGuage / 4);
+		inven->GetUsedItem(num)->AddCount(-1);
+		if (inven->GetUsedItem(num)->GetCount() <= 0)
+			inven->AddDeleteObj(inven->GetUsedItem(num));
+		return;
+	}
+	else if (name == "Meat")
+	{
 		HealHunger(maxHungerGuage / 2);
 		inven->GetUsedItem(num)->AddCount(-1);
+		if (inven->GetUsedItem(num)->GetCount() <= 0)
+			inven->AddDeleteObj(inven->GetUsedItem(num));
 		return;
 	}
 	else if (name == "Water")
 	{
-		HealThirst(maxThirstGuage / 2);
+		HealThirst(maxThirstGuage / 3);
 		inven->GetUsedItem(num)->AddCount(-1);
+		if (inven->GetUsedItem(num)->GetCount() <= 0)
+			inven->AddDeleteObj(inven->GetUsedItem(num));
 		return;
 	}
-	else if (name == "Energy")
+	else if (name == "EnergyDrink")
 	{
 		HealEnergy(maxEnergyGuage / 2);
 		inven->GetUsedItem(num)->AddCount(-1);
+		if (inven->GetUsedItem(num)->GetCount() <= 0)
+			inven->AddDeleteObj(inven->GetUsedItem(num));
 		return;
 	}
 }
