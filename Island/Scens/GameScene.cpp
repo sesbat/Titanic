@@ -291,6 +291,7 @@ void GameScene::Update(float dt)
 		missionText->SetActive(true);
 		string timer = to_string(escapeTimer); 
 		timer = timer.substr(0, timer.find('.') + 3);
+		missionText->SetPos({ player->GetPos().x - 300.f,player->GetPos().y - 100.f });
 		missionText->SetString("LEAVING IN " + timer);
 	}
 	else
