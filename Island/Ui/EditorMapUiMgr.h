@@ -48,7 +48,7 @@ public:
 	virtual void Draw(RenderWindow& window);
 	virtual void Select(DrawSelect* select);
 	DrawObj* GetDraw() { return nowDraw; }
-	void SetErase();
+	void SetErase(bool state = true);
 	void DeletDraw();
 	bool IsUnder();
 	void SetLoadPath(string path);

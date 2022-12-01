@@ -152,6 +152,7 @@ void EditorMapUiMgr::Update(float dt)
 		loadWindow->Update(dt);
 		return;
 	}
+
 	UiMgr::Update(dt);
 
 	if (eraseBtn->IsUp())
@@ -209,6 +210,7 @@ void EditorMapUiMgr::Update(float dt)
 		cout << "Box End" << endl;
 		return;
 	}
+
 	if (nowDraw != nullptr)
 	{
 		nowDraw->Update(dt);
@@ -277,13 +279,21 @@ void EditorMapUiMgr::Select(DrawSelect* select)
 	((MapEditor*)parentScene)->SetType(select->GetType());
 }
 
-void EditorMapUiMgr::SetErase()
+void EditorMapUiMgr::SetErase(bool state)
 {
-	delete nowDraw;
-	nowDraw = nullptr;
-	isErase = true;
+	if (state)
+	{
+		delete nowDraw;
+		nowDraw = nullptr;
+		isErase = true;
 
-	eraseBtn->GetTextObj()->SetColor(Color::Red);
+		eraseBtn->GetTextObj()->SetColor(Color::Red);
+	}
+	else
+	{
+		isErase = false;
+		eraseBtn->GetTextObj()->SetColor(Color::White);
+	}
 }
 
 void EditorMapUiMgr::DeletDraw()

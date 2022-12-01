@@ -100,7 +100,7 @@ void MapEditor::Update(float dt)
 
 	if (InputMgr::GetKeyDown(Keyboard::E))
 	{
-		((EditorMapUiMgr*)uiMgr)->SetErase();
+		((EditorMapUiMgr*)uiMgr)->SetErase(!((EditorMapUiMgr*)uiMgr)->IsErase());
 		return;
 	}
 
