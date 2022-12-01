@@ -26,7 +26,7 @@ Player::Player()
 	maxHungerGuage(255), maxThirstGuage(255), maxEnergyGuage(255),
 	staminaScale(1.f), staminaTime(5.f), dash(0.01f),
 	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true),
-	magazineSG(10), magazineRF(45), magazineSN(5), shootdelay(0.f)
+	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f), reloadDelay(0.f), isReloading(false)
 {
 }
 
@@ -156,11 +156,12 @@ void Player::Update(float dt)
 	prevLook = lookDir;
 
 	gun->Update(dt);
-	shootdelay -= dt;
-
+	shootDelay -= dt;
+	reloadDelay -= dt;
 	//input
-	if (ammo > 0 && shootdelay <= 0)
+	if (ammo > 0 && shootDelay <= 0 && reloadDelay <= 0)
 	{
+		isReloading = false;
 		switch (gun->GetgunType())
 		{
 		case GunType::Shotgun:
@@ -169,7 +170,7 @@ void Player::Update(float dt)
 			{
 				SetFireAmmo();
 				gun->Fire(GetPos(), true);
-				shootdelay = gun->GetpShootDelay();
+				shootDelay = gun->GetpShootDelay();
 			}
 			break;
 		case GunType::Rifle:
@@ -177,7 +178,7 @@ void Player::Update(float dt)
 			{
 				SetFireAmmo();
 				gun->Fire(GetPos(), true);
-				shootdelay = gun->GetpShootDelay();
+				shootDelay = gun->GetpShootDelay();
 			}
 			break;
 		}
@@ -651,7 +652,6 @@ void Player::SetAmmoType()
 void Player::Reload()
 {
 	int ammoCount = ammo;
-	cout << "ammo " << ammoCount << endl;
 	switch (gun->GetgunType())
 	{
 	case GunType::None:
@@ -665,7 +665,8 @@ void Player::Reload()
 		{
 			if (bt->GetName() == "ShotGunBullet")
 			{
-				cout << "count " << bt->GetCount() << endl;
+				reloadDelay = 1.5f;
+				isReloading = true;
 				if (bt->GetCount() < magazineSG)
 				{
 					ammo = bt->GetCount();
@@ -695,6 +696,8 @@ void Player::Reload()
 		{
 			if (bt->GetName() == "RifleBullet")
 			{
+				reloadDelay = 1.f;
+				isReloading = true;
 				if (bt->GetCount() < magazineRF)
 				{
 					ammo = bt->GetCount();
@@ -724,6 +727,8 @@ void Player::Reload()
 		{
 			if (bt->GetName() == "SniperBullet")
 			{
+				reloadDelay = 3.f;
+				isReloading = true;
 				if (bt->GetCount() < magazineSN)
 				{
 					ammo = bt->GetCount();
