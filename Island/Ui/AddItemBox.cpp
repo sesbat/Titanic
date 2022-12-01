@@ -48,7 +48,7 @@ void AddItemBox::Update(float dt)
 		return;
 	Button::Update(dt);
 
-	if (InputMgr::GetMouseWheelDown())
+	if (InputMgr::GetMouseWheelUp())
 	{
 		addItemIdx--;
 		addItemIdx = max(addItemIdx, 0);
@@ -65,7 +65,7 @@ void AddItemBox::Update(float dt)
 			i++;
 		}
 	}
-	if (InputMgr::GetMouseWheelUp())
+	if (InputMgr::GetMouseWheelDown())
 	{
 		addItemIdx++;
 		addItemIdx = min((int)allItems.size(), addItemIdx);
@@ -82,10 +82,9 @@ void AddItemBox::Update(float dt)
 			i++;
 		}
 	}
-
+	int i = 0;
 	for (auto& item : allItems)
 	{
-		int i = 0;
 		if (i >= addItemIdx && i < addItemIdx + 4)
 		{
 			item.second->Update(dt);
