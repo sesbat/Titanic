@@ -83,9 +83,9 @@ void AddItemBox::Update(float dt)
 		}
 	}
 
+	int i = 0;
 	for (auto& item : allItems)
 	{
-		int i = 0;
 		if (i >= addItemIdx && i < addItemIdx + 4)
 		{
 			item.second->Update(dt);
