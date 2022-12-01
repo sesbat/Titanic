@@ -36,9 +36,9 @@ Player::~Player()
 
 void Player::Init()
 {
+
 	HitBoxObject::Init();
-	hp = maxHp;
-	stamina = maxStamina;
+
 
 	gun = new Gun(GunType::None, User::Player);
 	gun->SetPlayer(this);
@@ -64,6 +64,8 @@ void Player::Init()
 	inven->SetActive(false);
 
 	//light.setRange(300.f);
+
+	Load();
 	
 }
 
@@ -558,12 +560,16 @@ void Player::UseItems(int num)
 	{
 		return;
 	}
-	
+	if(inven->GetUsedItem(num)->GetCount() == 0)
+		return;
 	string name = inven->GetUsedItem(num)->GetName();
 	if (name == "Recoverykit")
 	{
-		HealHp(maxHp / 2);
+		HealHp(maxHp / 4);
 		inven->GetUsedItem(num)->AddCount(-1);
+		if (inven->GetUsedItem(num)->GetCount() <= 0)
+			inven->AddDeleteObj(inven->GetUsedItem(num));
+
 		return;
 	}
 	///////add other items/////////
@@ -615,4 +621,91 @@ void Player::Reload()
 	case GunType::Sniper:
 		break;
 	}
+}
+
+void Player::Load()
+{
+	auto playerData = FILE_MGR->GetUserInfo();
+	hp = playerData.hp;
+	stamina = maxStamina;
+	hungerGuage = playerData.hungerGuage;
+	thirstGuage = playerData.thirstGuage;
+	energyGuage = playerData.energyGuage;
+
+	auto invenData = FILE_MGR->GetInvenInfo();
+
+	for (auto data : invenData)
+	{
+		string type = data.Type;
+		Vector2i invenPos = data.invenPos;
+		Vector2i invenGreedPos = data.invenGreedPos;
+		int cnt = data.cnt;
+		string path = data.path;
+
+		inven->GetPlayerInven()->AddItem(type, cnt, invenPos, invenGreedPos, path);
+	}
+
+
+	auto useItemData = FILE_MGR->GetUseItemInfo();
+
+	for (auto data : useItemData)
+	{
+		if(data.useIdx != -1)
+			inven->SetUserItem(data);
+	}
+
+}
+
+void Player::Save()
+{
+	UserInfo nowInfo;
+	nowInfo.hp = hp;
+	nowInfo.hungerGuage = hungerGuage;
+	nowInfo.thirstGuage = thirstGuage;
+	nowInfo.energyGuage = energyGuage;
+	
+	FILE_MGR->SaveUserInfo(nowInfo);
+
+	auto nowInven = inven->GetPlayerInven()->GetItems();
+	vector<InvenInfo> saveInven;
+	for (auto data : *nowInven)
+	{
+		if (data->GetCount() <= 0)
+			continue;
+		InvenInfo d;
+		d.Type = data->GetName();
+		d.invenPos = data->GetInvenPos();
+		d.invenGreedPos = data->GetGreedPos();
+		d.cnt = data->GetCount();
+			
+		d.path = data->GetPath();
+
+		saveInven.push_back(d);
+	}
+
+	FILE_MGR->SaveInvenInfo(saveInven);
+
+	auto nowUseItems = inven->GetUseItems();
+	vector<InvneUseInfo> saveUseItem;
+	int i = 0;
+	for (auto data : nowUseItems)
+	{
+		if (data == nullptr)
+		{
+			i++;
+			continue;
+		}
+		if (data->GetCount() <= 0)
+			continue;
+		InvneUseInfo d;
+		d.Type = data->GetName();
+		d.invenPos = data->GetInvenPos();
+		d.useIdx = i;
+		d.cnt = data->GetCount();
+		d.path = data->GetPath();
+		saveUseItem.push_back(d);
+		i++;
+	}
+
+	FILE_MGR->SaveUseItemInfo(saveUseItem);
 }

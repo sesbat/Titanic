@@ -16,7 +16,7 @@ private:
 
 public:
     Fade();
-    ~Fade() {  }
+    virtual ~Fade() {  }
 
     void SetFadeOut();
     void SetFadeIn();

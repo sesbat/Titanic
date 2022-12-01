@@ -22,6 +22,7 @@ public:
 	virtual void Init();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
+	void AddItem(string name, int cnt, Vector2i invenPos, Vector2i greedPos, string path);
 	void AddItem(string name, int count = 1);
 	Vector2i FindInvenPos(int i_width, int i_height);
 	InvenItem* GetNowDrag() { return nowDrag; }

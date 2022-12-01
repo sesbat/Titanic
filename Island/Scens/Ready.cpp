@@ -139,6 +139,7 @@ void Ready::Enter()
 
 void Ready::Exit()
 {
+	player->Save();
 	Release();
 }
 
