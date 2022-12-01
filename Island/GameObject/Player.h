@@ -39,7 +39,7 @@ protected:
 	States currState;
 	
 	float speed;
-	float maxSpeed;
+	const float maxSpeed;
 	Vector2f look;
 	Vector2f lookDir;
 	Vector2f prevLook;
@@ -52,21 +52,26 @@ protected:
 	Vector2f playerNormalize;
 
 	int hp;
-	int maxHp;
+	const int maxHp;
 
 	float dash;
 	float staminaTime;
 	float staminaScale;
 	bool isDash;
 	float stamina;
-	float maxStamina;
+	const float maxStamina;
 
 	float hungerGuage;
 	int prevHungerGuage;
+	const float maxHungerGuage;
+	
 	float thirstGuage;
 	int prevThirstGuage;
+	const float maxThirstGuage;
+	
 	float energyGuage;
 	int prevEnergyGuage;
+	const float maxEnergyGuage;
 
 	float hungerDelay; 
 	float ThirstDelay; 
@@ -74,12 +79,12 @@ protected:
 
 	//item
 	int ammo;
-	//int sgAmmo;
-	//int rfAmmo;
-	//int snAmmo;
-	int maxSGAmmo;
-	int maxRFAmmo;
-	int maxSNAmmo;
+	int sgAmmo;
+	int rfAmmo;
+	int snAmmo;
+	int magazineSG;
+	int magazineRF;
+	int magazineSN;
 
 	bool isMove;
 	bool isAlive;
@@ -125,6 +130,9 @@ public:
 
 	void SetHp(int num);
 	void HealHp(int num);
+	void HealHunger(float num);
+	void HealThirst(float num);
+	void HealEnergy(float num);
 
 	void SetPlayerPos();
 	Vector2f SetLookDir();
@@ -146,5 +154,7 @@ public:
 	void SetAmmo();
 	void Reload();
 
+	void Load();
+	void Save();
 };
 

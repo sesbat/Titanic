@@ -27,8 +27,6 @@ void Bullet::Init()
 
 void Bullet::Update(float dt)
 {
-
-
 	if (GetActive())
 	{
 		SpriteObject::Update(dt);
@@ -43,14 +41,13 @@ void Bullet::Update(float dt)
 			if (range >= 0.f)
 			{
 				Translate(dir * dt * speed);	
-				
-				
 			}
 			else
 			{
 				SetActive(false);
 			}
 		}
+		startPos = nextPos;
 		nextPos = GetPos() - dir * ((float)sprite.getLocalBounds().width);
 	}
 	if (InputMgr::GetKeyDown(Keyboard::P))
@@ -200,7 +197,7 @@ void Bullet::Collision()
 							it->GetHitbox()))
 						{
 							//cout << "hit" << endl;
-							enemy->SetHp(10);
+							enemy->SetHp(damage);
 							SetActive(false);
 							break;
 						}
@@ -220,7 +217,7 @@ void Bullet::Collision()
 					it->GetHitbox()))
 				{
 					//cout << "player hit" << endl;
-					player->SetHp(1);
+					player->SetHp(damage);
 					SetActive(false);
 					break;
 				}

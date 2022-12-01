@@ -137,15 +137,36 @@ void FileManager::LoadAll()
 	item_info.close();
 
 
+	userInfo.hp = 100.f;
+	userInfo.energyGuage = 255.f;
+	userInfo.hungerGuage = 255.f;
+	userInfo.thirstGuage = 255.f;
+
 	ifstream info_craft("config/data/CraftTable.json");
 	json info_craft_d = json::parse(info_craft);
 	craftItemInfo = info_craft_d;
 	info.close();
 
+	ifstream info_user("config/data/gameData/userInfo.json");
+	json info_user_d = json::parse(info_user);
+	userInfo = info_user_d;
+	info_user.close();
+
+	ifstream info_inven("config/data/gameData/invenInfo.json");
+	json info_inven_d = json::parse(info_inven);
+	invenAllItems = info_inven_d;
+	info_inven.close();
+
+	ifstream info_inven_use("config/data/gameData/invenUseInfo.json");
+	json info_inven_use_d = json::parse(info_inven_use);
+	useItemInfo = info_inven_use_d;
+	info_inven_use.close();
+
 	//ifstream hitbox("config/data/hitBox.json");
 	//json hit_d = json::parse(hitbox);
 	//hitBoxMap = hit_d;
 	//hitbox.close();
+
 
 }
 
@@ -165,6 +186,37 @@ void FileManager::SaveMap(vector<ObjectData> newData, string name)
 
 	json data = newData;
 	ofstream ofs("config/data/map/" + name + ".json");
+	ofs << data;
+	ofs.close();
+}
+
+void FileManager::SaveUserInfo(UserInfo datas)
+{
+	userInfo = datas;
+
+	json data = userInfo;
+	ofstream ofs("config/data/gameData/userInfo.json");
+	ofs << data;
+	ofs.close();
+
+}
+
+void FileManager::SaveInvenInfo(vector<InvenInfo> datas)
+{
+	invenAllItems = datas;
+
+	json data = invenAllItems;
+	ofstream ofs("config/data/gameData/invenInfo.json");
+	ofs << data;
+	ofs.close();
+}
+
+void FileManager::SaveUseItemInfo(vector<InvneUseInfo> datas)
+{
+	useItemInfo = datas;
+
+	json data = useItemInfo;
+	ofstream ofs("config/data/gameData/invenUseInfo.json");
 	ofs << data;
 	ofs.close();
 }

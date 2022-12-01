@@ -11,6 +11,11 @@ private:
 	map<string, ItemInfo> itemInfos;
 	map<string, CraftingInfo> craftItemInfo;
 	map<string, CraftingInfo> itemInfo;
+
+	UserInfo userInfo;
+	std::vector<InvenInfo> invenAllItems;
+	std::vector<InvneUseInfo> useItemInfo;
+
 	//cookieInfo[Jungle][Jump]
 public:
 	FileManager();
@@ -30,6 +35,14 @@ public:
 
 	const map<string, CraftingInfo>& GetAllCraft() { return craftItemInfo; }
 	const CraftingInfo& GetCraftItemInfo(string name) { return craftItemInfo[name]; }
+
+	void SaveUserInfo(UserInfo datas);
+	void SaveInvenInfo(vector<InvenInfo> datas);
+	void SaveUseItemInfo(vector<InvneUseInfo> datas);
+
+	const UserInfo& GetUserInfo() const { return userInfo; }
+	const vector<InvenInfo>& GetInvenInfo() const { return invenAllItems; }
+	const vector<InvneUseInfo>& GetUseItemInfo() const { return useItemInfo; }
 };
 
 #define FILE_MGR (FileManager::GetInstance())

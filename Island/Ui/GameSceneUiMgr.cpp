@@ -162,7 +162,7 @@ void GameSceneUiMgr::Reset()
 void GameSceneUiMgr::Update(float dt)
 {
 	//hp bar
-	hpBarSize = (float)player->GetHp() * 0.1f;
+	hpBarSize = (float)player->GetHp() / player->GetMaxHp();// *0.002f;
 	hpBar->GetSpriteObj()->SetScale({ hpBarSize,1.f });
 
 	//stamina

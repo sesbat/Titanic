@@ -12,6 +12,10 @@ protected:
 	bool isHitBox;
 	bool isHitPlayer;
 	QuadTree* qt = nullptr;
+
+	HitBoxObject(const HitBoxObject& ref) {}
+	HitBoxObject& operator= (const HitBoxObject& ref) { return *this; }
+
 public:
 	HitBoxObject();
 	virtual void SetPos(Vector2f pos);

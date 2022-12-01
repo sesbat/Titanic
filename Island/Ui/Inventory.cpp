@@ -144,19 +144,35 @@ void Inventory::Update(float dt)
 						isUseItemUp = true;
 					break;
 				case 4:
-					if (itemName == "Recoverykit")
+					if (itemName == "Recoverykit" ||
+						itemName == "Meat" ||
+						itemName == "Apple" ||
+						itemName == "Water" ||
+						itemName == "EnergyDrink")
 						isUseItemUp = true;
 					break;
 				case 5:
-					if (itemName == "Recoverykit")
+					if (itemName == "Recoverykit" ||
+						itemName == "Meat" ||
+						itemName == "Apple" ||
+						itemName == "Water" ||
+						itemName == "EnergyDrink")
 						isUseItemUp = true;
 					break;
 				case 6:
-					if (itemName == "Recoverykit")
+					if (itemName == "Recoverykit" ||
+						itemName == "Meat" ||
+						itemName == "Apple" ||
+						itemName == "Water" ||
+						itemName == "EnergyDrink")
 						isUseItemUp = true;
 					break;
 				case 7:
-					if (itemName == "Recoverykit")
+					if (itemName == "Recoverykit" ||
+						itemName == "Meat" ||
+						itemName == "Apple" ||
+						itemName == "Water" ||
+						itemName == "EnergyDrink")
 						isUseItemUp = true;
 					break;
 				}
@@ -213,6 +229,14 @@ void Inventory::Update(float dt)
 		}
 		i++;
 	}
+
+	for (auto del : deleteUseItem)
+	{
+		int idx = del - myUseItems.begin();
+		delete* del;
+		myUseItems[idx] = nullptr;
+	}
+	deleteUseItem.clear();
 }
 
 void Inventory::Draw(RenderWindow& window)
@@ -311,6 +335,30 @@ void Inventory::ResetRightInven()
 InvenItem* Inventory::GetUsedItem(int i)
 {
 	return myUseItems[i];
+}
+
+void Inventory::AddDeleteObj(InvenItem* obj)
+{
+	auto it = find(myUseItems.begin(), myUseItems.end(), obj);
+	deleteUseItem.push_back(it);
+}
+
+void Inventory::SetUserItem(InvneUseInfo data)
+{
+	auto itemData = FILE_MGR->GetItemInfo(data.Type);
+	this->myUseItems[data.useIdx] = new InvenItem(uimgr);
+	this->myUseItems[data.useIdx]->Init();
+	this->myUseItems[data.useIdx]->SetName(data.Type);
+	this->myUseItems[data.useIdx]->Set(itemData.width, itemData.height, data.invenPos, {-1, -1}, data.path, itemData.maxCount);
+	this->myUseItems[data.useIdx]->AddCount(data.cnt);
+
+	if (data.useIdx == 0 || data.useIdx == 1)
+	{
+		auto player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
+		auto gun = player->GetGun();
+
+		gun->SetGunType(gun->ItemNameToType(data.Type));
+	}
 }
 
 InvenGreed* Inventory::GetGreed(int i, int j)

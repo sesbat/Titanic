@@ -25,6 +25,7 @@
 #include "Candle/geometry/Polygon.hpp"
 
 #include "../GameObject/HitBox.h"
+#include "../3rd/QuadTree_SFML_DEMO.h"
 	
 using namespace std;
 using namespace sf;
@@ -34,14 +35,14 @@ GameScene::GameScene()
 	:Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f),
 	fog(candle::LightingArea::FOG,
 		sf::Vector2f(0.f, 0.f),
-		sf::Vector2f(WINDOW_WIDTH * 4, WINDOW_HEIGHT * 4)), blockCount(0)
+		sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)), blockCount(0), treeMap(treeRect, 16, 4)
 {
 
 }
 
 GameScene::~GameScene()
 {
-	min(0, 1);
+	treeMap.clear();
 }
 
 void GameScene::Init()
@@ -113,6 +114,18 @@ void GameScene::Init()
 			enemy->SetId(id++);
 			enemy->SetPos(obj.position);
 			enemy->SetHitBox(obj.path);
+			if (obj.path == "graphics/enemy1.png")
+			{
+				enemy->SetType(1);
+			}
+			else if (obj.path == "graphics/enemy2.png")
+			{
+				enemy->SetType(2);
+			}
+			else if (obj.path == "graphics/enemy3.png")
+			{
+				enemy->SetType(3);
+			}
 			enemy->SetItem(obj.item);
 			enemy->SetGreedObject(&isGreedObject);
 			enemies.push_back(enemy);
@@ -148,7 +161,7 @@ void GameScene::Init()
 			missionText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 80, Color::Green, to_string(escapeTimer));
 			missionText->SetTextLine(Color::Black, 1.f);
 			missionText->SetOrigin(Origins::BC);
-			missionText->SetPos(escapePoint);
+			missionText->SetPos({ escapePoint.x-150.f,escapePoint.y });
 			objList[LayerType::Object][1].push_back(missionText);
 			//HitBoxObject* exit = new HitBoxObject();
 			//exit->SetTexture(*RESOURCES_MGR->GetTexture("graphics/exit.png"));
@@ -170,9 +183,6 @@ void GameScene::Init()
 	mapSize.width = (tiles.back())->GetPos().x + 30;
 	mapSize.height = (tiles.back())->GetPos().y;
 
-	{
-		treeMap.setFont(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"));
-	}
 	
 	//mission exit tile
 	//escapePoint = { 1200.f,1650.f };
@@ -194,10 +204,13 @@ void GameScene::Init()
 
 	uiMgr = new GameSceneUiMgr(this);
 	uiMgr->Init();
+
+	treeMap.setFont(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"));
 }
 
 void GameScene::Release()
 {
+	player->Save();
 	Scene::Release();
 	enemies.clear();
 	blockPool.clear();
@@ -219,6 +232,7 @@ void GameScene::Enter()
 
 void GameScene::Exit()
 {
+	treeMap.clear();
 	Release();
 }
 
@@ -272,6 +286,7 @@ void GameScene::Update(float dt)
 
 	//view sight pos
 	light.setPosition(player->GetPos());
+	fog.setPosition({ player->GetPos().x - 1920 , player->GetPos().y - 1080  });
 	//castAllLights();	
 
 	//mission
@@ -283,6 +298,7 @@ void GameScene::Update(float dt)
 		missionText->SetActive(true);
 		string timer = to_string(escapeTimer); 
 		timer = timer.substr(0, timer.find('.') + 3);
+		missionText->SetPos({ player->GetPos().x - 300.f,player->GetPos().y - 100.f });
 		missionText->SetString("LEAVING IN " + timer);
 	}
 	else
@@ -293,6 +309,7 @@ void GameScene::Update(float dt)
 
 	if (escapeTimer <= 0.f)
 	{
+		player->Save();
 		SCENE_MGR->ChangeScene(Scenes::Ready);
 		return;
 	}
@@ -302,9 +319,9 @@ void GameScene::Update(float dt)
 		return;
 	}
 
-	treeMap.clear();
+	//treeMap.clear();
 	LayerSort();
-
+	//treeMap.~QuadTree();
 	//treeMap.insert(objList[LayerType::Object][0]);
 	treeMap.insert(drawObjs);
 	treeMap.update(drawObjs);
@@ -359,55 +376,11 @@ void GameScene::Draw(RenderWindow& window)
 
 	fog.clear();
 	fog.draw(light);
-	//window.draw(light);
 	window.draw(fog);
 	fog.display();
 
 	if (uiMgr != nullptr)
 		uiMgr->Draw(window);
-
-	//window.setView(worldView);
-
-	//{
-	//	window.setView(worldView);
-
-
-	//	int i = 0;
-	//	for (auto& obj : objList[LayerType::Tile])
-	//	{
-	//		for (auto& o : obj.second)
-	//		{
-	//			o->Draw(window);
-	//		}
-	//	}
-
-	//	for (auto& obj : another)
-	//	{
-	//		obj->Draw(window);
-	//	}
-	//	for (auto& obj : drawObjs)
-	//	{
-	//		obj->Draw(window);
-	//	}
-	//	for (auto& obj : objList[LayerType::Object])
-	//	{
-	//		if (obj.first == 0)
-	//			continue;
-	//		for (auto& o : obj.second)
-	//		{
-	//			o->Draw(window);
-	//		}
-	//	}
-
-	//	if (uiMgr != nullptr)
-	//		uiMgr->Draw(window);
-	//	
-	//}
-	//{
-	//	window.setView(worldView);
-	//	treeMap.draw(window);
-	//}
-	//Scene::Draw(window);
 }
 
 void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy)
