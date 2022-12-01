@@ -50,7 +50,7 @@ void EditorMapUiMgr::Init()
 	uiObjList[0].push_back(loadBtn);
 
 	eraseBtn = new Button(this);
-	eraseBtn->SetClkColor(true);
+	eraseBtn->SetClkColor(false);
 	eraseBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		75, Color::White, "ERASE", true);
 	eraseBtn->SetOrigin(Origins::TL);
@@ -147,13 +147,26 @@ void EditorMapUiMgr::Update(float dt)
 		if (loadBtn->IsUp())
 		{
 			loadWindow->SetActive(!loadWindow->GetActive());
-			((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeleteDraw();
+			((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeletDraw();
 		}
 		loadWindow->Update(dt);
 		return;
 	}
 	UiMgr::Update(dt);
 
+	if (eraseBtn->IsUp())
+	{
+		isErase = !isErase;
+		if (isErase)
+		{
+			SetErase();
+		}
+		else
+			eraseBtn->GetTextObj()->SetColor(Color::White);
+
+		boxingErase = isErase;
+		return;
+	}
 	if (boxBtn->IsUp())
 	{
 		cout << "Box Down" << endl;
@@ -163,7 +176,7 @@ void EditorMapUiMgr::Update(float dt)
 		else
 			boxBtn->GetTextObj()->SetColor(Color::White);
 
-		boxingErase = (nowDraw == nullptr);
+		boxingErase = isErase;
 
 		return;
 	}
@@ -205,16 +218,14 @@ void EditorMapUiMgr::Update(float dt)
 	{
 		saveWindow->SetActive(!saveWindow->GetActive());
 		//saveWindow->SetActive(true);
-		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeleteDraw();
+		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeletDraw();
 	}
 	if (loadBtn->IsUp())
 	{
 		loadWindow->SetActive(!loadWindow->GetActive());
-		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeleteDraw();
+		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeletDraw();
 	}
 
-	if (isBox)
-		return;
 	if (selectBtn->IsClick())
 	{
 		for (auto& obj : type_selects[selects[selIdx]])
@@ -232,7 +243,8 @@ void EditorMapUiMgr::Update(float dt)
 			obj->SetActive(true);
 		}
 
-		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeleteDraw();
+		DeletDraw();
+		((MapEditor*)(parentScene))->SetType(selects[selIdx]);
 	}
 
 }
@@ -249,6 +261,12 @@ void EditorMapUiMgr::Draw(RenderWindow& window)
 
 void EditorMapUiMgr::Select(DrawSelect* select)
 {
+	if (IsErase())
+	{
+		((MapEditor*)parentScene)->SetType(select->GetType());
+		return;
+	}
+
 	if(nowDraw == nullptr)
 		nowDraw = new DrawObj(this);
 	nowDraw->SetTexture(*RESOURCES_MGR->GetTexture(select->GetTexturePath()), true);
@@ -259,11 +277,21 @@ void EditorMapUiMgr::Select(DrawSelect* select)
 	((MapEditor*)parentScene)->SetType(select->GetType());
 }
 
-void EditorMapUiMgr::DeleteDraw()
+void EditorMapUiMgr::SetErase()
+{
+	delete nowDraw;
+	nowDraw = nullptr;
+	isErase = true;
+
+	eraseBtn->GetTextObj()->SetColor(Color::Red);
+}
+
+void EditorMapUiMgr::DeletDraw()
 {
 	delete nowDraw;
 	nowDraw = nullptr;
 }
+
 
 bool EditorMapUiMgr::IsUnder()
 {
@@ -305,11 +333,6 @@ bool EditorMapUiMgr::LoadActive()
 string EditorMapUiMgr::loadFile()
 {
 	return loadWindow->GetLoadPaht();
-}
-
-bool EditorMapUiMgr::IsErase()
-{
-	return eraseBtn->IsDown() || eraseBtn->IsClick();
 }
 
 bool EditorMapUiMgr::IsExit()

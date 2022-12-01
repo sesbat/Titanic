@@ -98,9 +98,9 @@ void MapEditor::Update(float dt)
 		return;
 	}
 
-	if (uimgr->IsErase() || InputMgr::GetKeyDown(Keyboard::E))
+	if (InputMgr::GetKeyDown(Keyboard::E))
 	{
-		((EditorMapUiMgr*)uiMgr)->DeleteDraw();
+		((EditorMapUiMgr*)uiMgr)->SetErase();
 		return;
 	}
 
@@ -142,7 +142,6 @@ void MapEditor::Update(float dt)
 
 	if (uimgr->GetIsBox())
 		return;
-
 	for (int i = 0; i < HEIGHTCNT; i++)
 	{
 		for (int j = 0; j < WIDTHCNT; j++)
@@ -372,7 +371,7 @@ bool MapEditor::DrawBox(int i, int j)
 		DrawObj* nowDraw = ((EditorMapUiMgr*)uiMgr)->GetDraw();
 		auto& nowGreedObjs = greedObjs[nowType];
 
-		if (nowDraw == nullptr || ((EditorMapUiMgr*)uiMgr)->IsUnder())
+		if (((EditorMapUiMgr*)uiMgr)->IsErase() || ((EditorMapUiMgr*)uiMgr)->IsUnder())
 		{
 			Button* findObj = nullptr;
 			if (nowGreedObjs.find(i) != nowGreedObjs.end())
@@ -389,7 +388,10 @@ bool MapEditor::DrawBox(int i, int j)
 			}
 			return false;
 		}
-
+		if (nowDraw == nullptr)
+		{
+			return true;
+		}
 		Button* findObj = nullptr;
 		if (nowGreedObjs.find(i) != nowGreedObjs.end())
 		{
