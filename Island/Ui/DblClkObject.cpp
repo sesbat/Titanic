@@ -24,7 +24,7 @@ void DblClkObject::Update(float dt)
 	{
 		timer += dt;
 
-		if (timer > 0.5f)
+		if (timer > 0.8f)
 		{
 			timer = 0.f;
 			dkStart = false;
@@ -49,7 +49,7 @@ void DblClkObject::Update(float dt)
 	{
 		timerR += dt;
 
-		if (timerR > 0.5f)
+		if (timerR > 0.8f)
 		{
 			timerR = 0.f;
 			dkRStart = false;

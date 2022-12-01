@@ -72,7 +72,7 @@ void MapEditor::Reset()
 void MapEditor::Update(float dt)
 {
 	Scene::Update(dt);
-	
+
 	auto uimgr = ((EditorMapUiMgr*)uiMgr);
 
 
@@ -104,7 +104,7 @@ void MapEditor::Update(float dt)
 		return;
 	}
 
-	if ((!InputMgr::GetKey(Keyboard::LControl)) && InputMgr::GetMouseButtonDown(Mouse::Right))
+	if (InputMgr::GetMouseButtonDown(Mouse::Right))
 	{
 		initMousePos = InputMgr::GetMousePos();
 		isMove = true;
@@ -121,7 +121,7 @@ void MapEditor::Update(float dt)
 		isMove = false;
 	}
 
-	
+
 	if (InputMgr::GetMouseWheelUp())
 	{
 		if (!((EditorMapUiMgr*)uiMgr)->GetItemBox()->GetActive())
@@ -145,11 +145,11 @@ void MapEditor::Update(float dt)
 		{
 			if (greeds[i][j]->IsClick())
 			{
-				if(((EditorMapUiMgr*)uiMgr)->IsUnder())
+				if (((EditorMapUiMgr*)uiMgr)->IsUnder())
 					return;
-				if (nowType == LayerType::Object &&playerPos == Vector2i{ i,j })
+				if (nowType == LayerType::Object && playerPos == Vector2i{ i,j })
 					return;
-				if (nowType == LayerType::Object &&exitPos== Vector2i{ i,j })
+				if (nowType == LayerType::Object && exitPos == Vector2i{ i,j })
 					return;
 
 				DrawObj* nowDraw = ((EditorMapUiMgr*)uiMgr)->GetDraw();
@@ -247,7 +247,7 @@ void MapEditor::Update(float dt)
 					exitPos = { i,j };
 				}
 			}
-			else if (InputMgr::GetKey(Keyboard::LControl))
+			else if (greeds[i][j]->IsUpRight())
 			{
 				if (nowType == LayerType::Tile)
 					continue;
@@ -255,15 +255,15 @@ void MapEditor::Update(float dt)
 					continue;
 				if (greedObjs[nowType][i].find(j) == greedObjs[nowType][i].end())
 					continue;
-				if((greedObjs[nowType][i][j]->GetType() != "ENEMY") && (greedObjs[nowType][i][j]->GetType() != "BOX"))
+				if ((greedObjs[nowType][i][j]->GetType() != "ENEMY") && (greedObjs[nowType][i][j]->GetType() != "BOX"))
 					continue;
 
-				if (greeds[i][j]->IsUpRight())
-				{
-					auto itemBox = ((EditorMapUiMgr*)uimgr)->GetItemBox();
-					itemBox->SetActive(!itemBox->GetActive());
-					itemBox->SetItems(greedObjs[nowType][i][j]->GetItem());
-				}
+				auto itemBox = ((EditorMapUiMgr*)uimgr)->GetItemBox();
+				itemBox->SetActive(!itemBox->GetActive());
+				itemBox->SetItems(greedObjs[nowType][i][j]->GetItem());
+
+				cout << i << endl;
+				cout << j << endl;
 			}
 		}
 	}
@@ -333,7 +333,7 @@ MapEditor::~MapEditor()
 
 void MapEditor::SetType(string t)
 {
-	if (t == "TREE" ||t=="BUSH"|| t == "STONE" || t == "ENEMY" || t == "PLAYER" ||
+	if (t == "TREE" || t == "BUSH" || t == "STONE" || t == "ENEMY" || t == "PLAYER" ||
 		t == "BLOCK" || t == "ANOTHER" || t == "BOX")
 	{
 		nowType = LayerType::Object;
@@ -348,7 +348,7 @@ void MapEditor::Save()
 {
 	saveObjs.clear();
 	string path = ((EditorMapUiMgr*)(uiMgr))->GetPath();
-	
+
 	for (auto& layer : greedObjs)
 	{
 
@@ -376,7 +376,7 @@ void MapEditor::Save()
 	FILE_MGR->SaveMap(saveObjs, path);
 	((EditorMapUiMgr*)uiMgr)->SetLoadInit();
 
-	
+
 }
 
 void MapEditor::Load(string path)
@@ -425,11 +425,11 @@ void MapEditor::Load(string path)
 		draw->SetMove(false);
 		draw->SetPos(obj.position);
 		draw->SetItem(obj.item);
-		
-		int i = ((int)obj.position.x-30) / 60;
+
+		int i = ((int)obj.position.x - 30) / 60;
 		int j = (int)obj.position.y / 60 - 1;
-		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "ENEMY" || 
-			obj.type == "PLAYER" || obj.type == "BLOCK" || obj.type == "ANOTHER" || obj.type == "BOX" )
+		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "ENEMY" ||
+			obj.type == "PLAYER" || obj.type == "BLOCK" || obj.type == "ANOTHER" || obj.type == "BOX")
 		{
 			objList[LayerType::Object][j].push_back(draw);
 			greedObjs[LayerType::Object][j][i] = draw;
