@@ -157,6 +157,30 @@
     {
       "texPath": "graphics/block6.png",
       "uiPaht": "graphics/editor/drawBlock6.png"
+    },
+    {
+      "texPath": "graphics/block7.png",
+      "uiPaht": "graphics/editor/drawBlock7.png"
+    },
+    {
+      "texPath": "graphics/block8.png",
+      "uiPaht": "graphics/editor/drawBlock8.png"
+    },
+    {
+      "texPath": "graphics/block9.png",
+      "uiPaht": "graphics/editor/drawBlock9.png"
+    },
+    {
+      "texPath": "graphics/block10.png",
+      "uiPaht": "graphics/editor/drawBlock10.png"
+    },
+    {
+      "texPath": "graphics/block11.png",
+      "uiPaht": "graphics/editor/drawBlock11.png"
+    },
+    {
+      "texPath": "graphics/block12.png",
+      "uiPaht": "graphics/editor/drawBlock12.png"
     }
   ],
   "ANOTHER": [
