@@ -1,5 +1,158 @@
-<<<<<<< HEAD
-[{"Type":"GUN3","cnt":1,"invenGreedPos":{"x":5,"y":0},"invenPos":{"x":483,"y":252},"path":"graphics/items/GUN3.png"},{"Type":"Recoverykit","cnt":2,"invenGreedPos":{"x":4,"y":0},"invenPos":{"x":419,"y":252},"path":"graphics/items/recoverykit.png"},{"Type":"handsaw","cnt":1,"invenGreedPos":{"x":2,"y":0},"invenPos":{"x":291,"y":252},"path":"graphics/items/handsaw.png"},{"Type":"Apple","cnt":1,"invenGreedPos":{"x":0,"y":0},"invenPos":{"x":163,"y":252},"path":"graphics/items/apple.png"},{"Type":"Water","cnt":1,"invenGreedPos":{"x":0,"y":1},"invenPos":{"x":163,"y":316},"path":"graphics/items/water.png"},{"Type":"EnergyDrink","cnt":1,"invenGreedPos":{"x":1,"y":1},"invenPos":{"x":227,"y":316},"path":"graphics/items/drink.png"},{"Type":"Recoverykit","cnt":1,"invenGreedPos":{"x":0,"y":2},"invenPos":{"x":163,"y":380},"path":"graphics/items/recoverykit.png"},{"Type":"SniperBullet","cnt":1,"invenGreedPos":{"x":2,"y":1},"invenPos":{"x":291,"y":316},"path":"graphics/items/sniperbullet.png"},{"Type":"ShotGunBullet","cnt":1,"invenGreedPos":{"x":3,"y":1},"invenPos":{"x":355,"y":316},"path":"graphics/items/shotgunbullet.png"},{"Type":"RifleBullet","cnt":1,"invenGreedPos":{"x":4,"y":1},"invenPos":{"x":419,"y":316},"path":"graphics/items/riflebullet.png"},{"Type":"Meat","cnt":1,"invenGreedPos":{"x":5,"y":1},"invenPos":{"x":483,"y":316},"path":"graphics/items/meat.png"},{"Type":"Armor-1","cnt":1,"invenGreedPos":{"x":6,"y":1},"invenPos":{"x":547,"y":316},"path":"graphics/items/Armor-1.png"}]
-=======
-[{"Type":"GUN3","cnt":1,"invenGreedPos":{"x":5,"y":0},"invenPos":{"x":483,"y":252},"path":"graphics/items/GUN3.png"},{"Type":"Recoverykit","cnt":2,"invenGreedPos":{"x":4,"y":0},"invenPos":{"x":419,"y":252},"path":"graphics/items/recoverykit.png"},{"Type":"GUN1","cnt":1,"invenGreedPos":{"x":0,"y":1},"invenPos":{"x":163,"y":316},"path":"graphics/items/GUN1.png"},{"Type":"GUN2","cnt":1,"invenGreedPos":{"x":0,"y":0},"invenPos":{"x":163,"y":252},"path":"graphics/items/GUN2.png"},{"Type":"GUN3","cnt":1,"invenGreedPos":{"x":5,"y":1},"invenPos":{"x":483,"y":316},"path":"graphics/items/GUN3.png"},{"Type":"Recoverykit","cnt":2,"invenGreedPos":{"x":0,"y":2},"invenPos":{"x":163,"y":380},"path":"graphics/items/recoverykit.png"},{"Type":"Recoverykit","cnt":2,"invenGreedPos":{"x":1,"y":2},"invenPos":{"x":227,"y":380},"path":"graphics/items/recoverykit.png"},{"Type":"Recoverykit","cnt":2,"invenGreedPos":{"x":2,"y":2},"invenPos":{"x":291,"y":380},"path":"graphics/items/recoverykit.png"},{"Type":"Recoverykit","cnt":2,"invenGreedPos":{"x":3,"y":2},"invenPos":{"x":355,"y":380},"path":"graphics/items/recoverykit.png"},{"Type":"Recoverykit","cnt":1,"invenGreedPos":{"x":4,"y":2},"invenPos":{"x":419,"y":380},"path":"graphics/items/recoverykit.png"},{"Type":"Meat","cnt":1,"invenGreedPos":{"x":1,"y":3},"invenPos":{"x":227,"y":444},"path":"graphics/items/meat.png"},{"Type":"Apple","cnt":1,"invenGreedPos":{"x":2,"y":3},"invenPos":{"x":291,"y":444},"path":"graphics/items/apple.png"},{"Type":"Water","cnt":1,"invenGreedPos":{"x":3,"y":3},"invenPos":{"x":355,"y":444},"path":"graphics/items/water.png"}]
->>>>>>> 4f66ded745e6956aea99f4ba54dcabadf22e5cc4
+[
+  {
+    "Type": "GUN3",
+    "cnt": 1,
+    "invenGreedPos": {
+      "x": 5,
+      "y": 0
+    },
+    "invenPos": {
+      "x": 483,
+      "y": 252
+    },
+    "path": "graphics/items/GUN3.png"
+  },
+  {
+    "Type": "Recoverykit",
+    "cnt": 2,
+    "invenGreedPos": {
+      "x": 4,
+      "y": 0
+    },
+    "invenPos": {
+      "x": 419,
+      "y": 252
+    },
+    "path": "graphics/items/recoverykit.png"
+  },
+  {
+    "Type": "handsaw",
+    "cnt": 1,
+    "invenGreedPos": {
+      "x": 2,
+      "y": 0
+    },
+    "invenPos": {
+      "x": 291,
+      "y": 252
+    },
+    "path": "graphics/items/handsaw.png"
+  },
+  {
+    "Type": "Apple",
+    "cnt": 1,
+    "invenGreedPos": {
+      "x": 0,
+      "y": 0
+    },
+    "invenPos": {
+      "x": 163,
+      "y": 252
+    },
+    "path": "graphics/items/apple.png"
+  },
+  {
+    "Type": "Water",
+    "cnt": 1,
+    "invenGreedPos": {
+      "x": 0,
+      "y": 1
+    },
+    "invenPos": {
+      "x": 163,
+      "y": 316
+    },
+    "path": "graphics/items/water.png"
+  },
+  {
+    "Type": "EnergyDrink",
+    "cnt": 1,
+    "invenGreedPos": {
+      "x": 1,
+      "y": 1
+    },
+    "invenPos": {
+      "x": 227,
+      "y": 316
+    },
+    "path": "graphics/items/drink.png"
+  },
+  {
+    "Type": "Recoverykit",
+    "cnt": 1,
+    "invenGreedPos": {
+      "x": 0,
+      "y": 2
+    },
+    "invenPos": {
+      "x": 163,
+      "y": 380
+    },
+    "path": "graphics/items/recoverykit.png"
+  },
+  {
+    "Type": "SniperBullet",
+    "cnt": 1,
+    "invenGreedPos": {
+      "x": 2,
+      "y": 1
+    },
+    "invenPos": {
+      "x": 291,
+      "y": 316
+    },
+    "path": "graphics/items/sniperbullet.png"
+  },
+  {
+    "Type": "ShotGunBullet",
+    "cnt": 1,
+    "invenGreedPos": {
+      "x": 3,
+      "y": 1
+    },
+    "invenPos": {
+      "x": 355,
+      "y": 316
+    },
+    "path": "graphics/items/shotgunbullet.png"
+  },
+  {
+    "Type": "RifleBullet",
+    "cnt": 1,
+    "invenGreedPos": {
+      "x": 4,
+      "y": 1
+    },
+    "invenPos": {
+      "x": 419,
+      "y": 316
+    },
+    "path": "graphics/items/riflebullet.png"
+  },
+  {
+    "Type": "Meat",
+    "cnt": 1,
+    "invenGreedPos": {
+      "x": 5,
+      "y": 1
+    },
+    "invenPos": {
+      "x": 483,
+      "y": 316
+    },
+    "path": "graphics/items/meat.png"
+  },
+  {
+    "Type": "Armor-1",
+    "cnt": 1,
+    "invenGreedPos": {
+      "x": 6,
+      "y": 1
+    },
+    "invenPos": {
+      "x": 547,
+      "y": 316
+    },
+    "path": "graphics/items/Armor-1.png"
+  }
+]

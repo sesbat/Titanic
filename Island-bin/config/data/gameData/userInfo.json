@@ -1,5 +1,6 @@
-<<<<<<< HEAD
-{"energyGuage":252.0,"hp":110,"hungerGuage":249.0,"thirstGuage":243.0}
-=======
-{"energyGuage":254.0,"hp":470,"hungerGuage":255.0,"thirstGuage":252.0}
->>>>>>> 4f66ded745e6956aea99f4ba54dcabadf22e5cc4
+{
+  "energyGuage": 252.0,
+  "hp": 110,
+  "hungerGuage": 249.0,
+  "thirstGuage": 243.0
+}
