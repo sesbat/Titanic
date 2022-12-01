@@ -7,6 +7,34 @@
     {
       "texPath": "graphics/tree2.png",
       "uiPaht": "graphics/editor/drawTree2.png"
+    },
+    {
+      "texPath": "graphics/tree3.png",
+      "uiPaht": "graphics/editor/drawTree3.png"
+    },
+    {
+      "texPath": "graphics/tree4.png",
+      "uiPaht": "graphics/editor/drawTree4.png"
+    },
+    {
+      "texPath": "graphics/tree5.png",
+      "uiPaht": "graphics/editor/drawTree5.png"
+    },
+    {
+      "texPath": "graphics/tree6.png",
+      "uiPaht": "graphics/editor/drawTree6.png"
+    },
+    {
+      "texPath": "graphics/tree7.png",
+      "uiPaht": "graphics/editor/drawTree7.png"
+    },
+    {
+      "texPath": "graphics/tree8.png",
+      "uiPaht": "graphics/editor/drawTree8.png"
+    },
+    {
+      "texPath": "graphics/tree9.png",
+      "uiPaht": "graphics/editor/drawTree9.png"
     }
   ],
   "BUSH": [

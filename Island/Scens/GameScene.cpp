@@ -58,6 +58,11 @@ void GameScene::Init()
 	player->SetName("PLAYER");
 	player->Init();
 
+	if (InputMgr::GetKeyDown(Keyboard::Escape))
+	{
+		SCENE_MGR->ChangeScene(Scenes::Menu);
+	}
+
 	//blockPool = new Blocks[36*64];
 
 	for (auto& obj : data)
