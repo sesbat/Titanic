@@ -340,8 +340,12 @@ InvenItem* Inventory::GetUsedItem(int i)
 void Inventory::AddDeleteObj(InvenItem* obj)
 {
 	auto it = find(myUseItems.begin(), myUseItems.end(), obj);
-	
 	deleteUseItem.push_back(it);
+}
+
+void Inventory::AddDeleteItem(InvenItem* item)
+{
+	myInven->DeleteItem(item);
 }
 
 void Inventory::SetUserItem(InvneUseInfo data)

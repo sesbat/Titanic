@@ -50,6 +50,7 @@ public:
 	InvenItem* GetUsedItem(int i);
 	InventoryBox* GetPlayerInven() { return myInven; }
 	void AddDeleteObj(InvenItem* obj);
+	void AddDeleteItem(InvenItem* item);
 	void SetUserItem(InvneUseInfo data);
 	const vector<InvenItem*>& GetUseItems() { return myUseItems; }
 };

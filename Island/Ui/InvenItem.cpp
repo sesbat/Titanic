@@ -78,7 +78,6 @@ void InvenItem::AddCount(int n)
 	count += n;
 	if (count <= 0)
 	{
-
 		count = 0;
 		return;
 	}

@@ -167,7 +167,6 @@ void Player::Update(float dt)
 		case GunType::Sniper:
 			if (InputMgr::GetMouseButtonDown(Mouse::Left) && !inven->GetActive())
 			{
-				cout << "fire" << endl;
 				SetFireAmmo();
 				gun->Fire(GetPos(), true);
 				shootdelay = gun->GetpShootDelay();
@@ -176,7 +175,6 @@ void Player::Update(float dt)
 		case GunType::Rifle:
 			if (InputMgr::GetMouseButton(Mouse::Left) && !inven->GetActive())
 			{
-				cout << "fire" << endl;
 				SetFireAmmo();
 				gun->Fire(GetPos(), true);
 				shootdelay = gun->GetpShootDelay();
@@ -620,40 +618,16 @@ void Player::SetFireAmmo()
 	switch (gun->GetgunType())
 	{
 	case GunType::Shotgun:
-		for (auto bt : *inven->GetPlayerInven()->GetItems())
-		{
-			if (bt->GetName() == "ShotGunBullet")
-			{
-				//bt->AddCount(-1);
-				ammo--;
-				sgAmmo = ammo;
-				return;
-			}
-		}
+		ammo--;
+		sgAmmo = ammo;
 		break;
 	case GunType::Rifle:
-		for (auto bt : *inven->GetPlayerInven()->GetItems())
-		{
-			if (bt->GetName() == "RifleBullet")
-			{
-				//bt->AddCount(-1);
-				ammo--;
-				rfAmmo = ammo;
-				return;
-			}
-		}
+		ammo--;
+		rfAmmo = ammo;
 		break;
 	case GunType::Sniper:
-		for (auto bt : *inven->GetPlayerInven()->GetItems())
-		{
-			if (bt->GetName() == "SniperBullet")
-			{
-				//bt->AddCount(-1);
-				ammo--;
-				snAmmo = ammo;
-				return;
-			}
-		}
+		ammo--;
+		snAmmo = ammo;
 		break;
 	}
 }
@@ -691,18 +665,22 @@ void Player::Reload()
 		{
 			if (bt->GetName() == "ShotGunBullet")
 			{
+				cout << "count " << bt->GetCount() << endl;
 				if (bt->GetCount() < magazineSG)
 				{
-					cout << "reload rf1" << endl;
 					ammo = bt->GetCount();
 					sgAmmo = ammo;
-					bt->AddCount(-(ammo));
+					bt->AddCount(-(magazineSG));
 				}
 				else
 				{
-					cout << "reload rf2" << endl;
 					ammo = sgAmmo = magazineSG;
 					bt->AddCount(-(magazineSG - ammoCount));
+				}
+				if (bt->GetCount() <= 0)
+				{
+					inven->AddDeleteItem(bt);
+					
 				}
 				return;
 			}
@@ -719,16 +697,19 @@ void Player::Reload()
 			{
 				if (bt->GetCount() < magazineRF)
 				{
-					cout << "reload rf1" << endl;
 					ammo = bt->GetCount();
 					rfAmmo = ammo;
-					bt->AddCount(-(ammo));
+					bt->AddCount(-(magazineRF));
 				}
 				else
 				{
-					cout << "reload rf2" << endl;
 					ammo = rfAmmo = magazineRF;
 					bt->AddCount(-(magazineRF - ammoCount));
+				}
+				if (bt->GetCount() <= 0)
+				{
+					inven->AddDeleteItem(bt);
+					
 				}
 				return;
 			}
@@ -745,16 +726,19 @@ void Player::Reload()
 			{
 				if (bt->GetCount() < magazineSN)
 				{
-					cout << "reload sn1" << endl;
 					ammo = bt->GetCount();
 					snAmmo = ammo;
-					bt->AddCount(-(ammo));
+					bt->AddCount(-(magazineSN));
 				}
 				else
 				{
-					cout << "reload sn2" << endl;
 					ammo = snAmmo = magazineSN;
 					bt->AddCount(-(magazineSN - ammoCount));
+				}
+				if (bt->GetCount() <= 0)
+				{
+					inven->AddDeleteItem(bt);
+					
 				}
 				return;
 			}

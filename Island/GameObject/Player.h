@@ -81,10 +81,10 @@ protected:
 
 	//ammo
 	int ammo;
-	int sgAmmo;
+	int sgAmmo;		//remaining ammo
 	int rfAmmo;
 	int snAmmo;
-	int magazineSG;
+	int magazineSG;		//magazine size
 	int magazineRF;
 	int magazineSN;
 
