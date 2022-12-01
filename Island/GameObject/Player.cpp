@@ -26,7 +26,7 @@ Player::Player()
 	maxHungerGuage(255), maxThirstGuage(255), maxEnergyGuage(255),
 	staminaScale(1.f), staminaTime(5.f), dash(0.01f),
 	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true),
-	magazineSG(10), magazineRF(45), magazineSN(5)
+	magazineSG(10), magazineRF(45), magazineSN(5), shootdelay(0.f)
 {
 }
 
@@ -38,7 +38,6 @@ void Player::Init()
 {
 
 	HitBoxObject::Init();
-
 
 	gun = new Gun(GunType::None, User::Player);
 	gun->SetPlayer(this);
@@ -105,15 +104,6 @@ void Player::Update(float dt)
 		break;
 	}
 
-	/*if (InputMgr::GetKeyDown(Keyboard::Num0))
-	{
-		hungerGuage = 255;
-	}
-	if (InputMgr::GetKeyDown(Keyboard::Num9))
-	{
-		hungerGuage = 50;
-	}*/
-
 	hungerDelay -= dt;
 	ThirstDelay -= dt;
 	EnergyDelay -= dt;
@@ -143,6 +133,7 @@ void Player::Update(float dt)
 		if (staminaScale < 0.f)
 			isDash = !isDash;
 	}
+	
 	//Dead
 	if (hp <= 0 || hungerGuage <= 0 ||
 		thirstGuage <= 0 || energyGuage <= 0)
@@ -165,26 +156,39 @@ void Player::Update(float dt)
 	prevLook = lookDir;
 
 	gun->Update(dt);
+	shootdelay -= dt;
 
 	//input
-	switch (gun->GetgunType())
+	if (ammo > 0 && shootdelay <= 0)
 	{
-	case GunType::Shotgun:
-	case GunType::Sniper:
-		if (InputMgr::GetMouseButtonDown(Mouse::Left) && ammo > 0 && !inven->GetActive())
+		switch (gun->GetgunType())
 		{
-			gun->Fire(GetPos(), true);
-			//ammo--;
+		case GunType::Shotgun:
+		case GunType::Sniper:
+			if (InputMgr::GetMouseButtonDown(Mouse::Left) && !inven->GetActive())
+			{
+				cout << "fire" << endl;
+				SetFireAmmo();
+				gun->Fire(GetPos(), true);
+				shootdelay = gun->GetpShootDelay();
+			}
+			break;
+		case GunType::Rifle:
+			if (InputMgr::GetMouseButton(Mouse::Left) && !inven->GetActive())
+			{
+				cout << "fire" << endl;
+				SetFireAmmo();
+				gun->Fire(GetPos(), true);
+				shootdelay = gun->GetpShootDelay();
+			}
+			break;
 		}
-		break;
-	case GunType::Rifle:
-		if (InputMgr::GetMouseButton(Mouse::Left) && ammo > 0 && !inven->GetActive())
-		{
-			gun->Fire(GetPos(), true);
-			//ammo--;
-		}
-		break;
 	}
+	if (InputMgr::GetKeyDown(Keyboard::R))
+	{
+		Reload();
+	}
+
 	if (InputMgr::GetKeyDown(Keyboard::Num1))
 	{
 		auto myGun = inven->GetUsedItem(0);
@@ -192,10 +196,12 @@ void Player::Update(float dt)
 		if (myGun == nullptr)
 		{
 			gun->SetGunType(GunType::None);
+			ammo = 0;
 		}
 		else
 		{
 			gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+			SetAmmoType();
 		}
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Num2))
@@ -205,10 +211,12 @@ void Player::Update(float dt)
 		if (myGun == nullptr)
 		{
 			gun->SetGunType(GunType::None);
+			ammo = 0;
 		}
 		else
 		{
 			gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+			SetAmmoType();
 		}
 	}
 	//use item
@@ -607,32 +615,150 @@ void Player::UseItems(int num)
 	}
 }
 
-void Player::SetAmmo()
+void Player::SetFireAmmo()
 {
 	switch (gun->GetgunType())
 	{
 	case GunType::Shotgun:
-		
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		{
+			if (bt->GetName() == "ShotGunBullet")
+			{
+				//bt->AddCount(-1);
+				ammo--;
+				sgAmmo = ammo;
+				return;
+			}
+		}
 		break;
 	case GunType::Rifle:
-		
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		{
+			if (bt->GetName() == "RifleBullet")
+			{
+				//bt->AddCount(-1);
+				ammo--;
+				rfAmmo = ammo;
+				return;
+			}
+		}
 		break;
 	case GunType::Sniper:
-		
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		{
+			if (bt->GetName() == "SniperBullet")
+			{
+				//bt->AddCount(-1);
+				ammo--;
+				snAmmo = ammo;
+				return;
+			}
+		}
+		break;
+	}
+}
+
+void Player::SetAmmoType()
+{
+	switch (gun->GetgunType())
+	{
+	case GunType::Shotgun:
+		ammo = sgAmmo;
+		break;
+	case GunType::Rifle:
+		ammo = rfAmmo;
+		break;
+	case GunType::Sniper:
+		ammo = snAmmo;
 		break;
 	}
 }
 
 void Player::Reload()
 {
+	int ammoCount = ammo;
+	cout << "ammo " << ammoCount << endl;
 	switch (gun->GetgunType())
 	{
+	case GunType::None:
+		break;
 	case GunType::Shotgun:
-		ammo = magazineSG - ammo;
+		if (ammo == magazineSG)
+		{
+			return;
+		}
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		{
+			if (bt->GetName() == "ShotGunBullet")
+			{
+				if (bt->GetCount() < magazineSG)
+				{
+					cout << "reload rf1" << endl;
+					ammo = bt->GetCount();
+					sgAmmo = ammo;
+					bt->AddCount(-(ammo));
+				}
+				else
+				{
+					cout << "reload rf2" << endl;
+					ammo = sgAmmo = magazineSG;
+					bt->AddCount(-(magazineSG - ammoCount));
+				}
+				return;
+			}
+		}
 		break;
 	case GunType::Rifle:
+		if (ammo == magazineRF)
+		{
+			return;
+		}
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		{
+			if (bt->GetName() == "RifleBullet")
+			{
+				if (bt->GetCount() < magazineRF)
+				{
+					cout << "reload rf1" << endl;
+					ammo = bt->GetCount();
+					rfAmmo = ammo;
+					bt->AddCount(-(ammo));
+				}
+				else
+				{
+					cout << "reload rf2" << endl;
+					ammo = rfAmmo = magazineRF;
+					bt->AddCount(-(magazineRF - ammoCount));
+				}
+				return;
+			}
+		}
 		break;
 	case GunType::Sniper:
+		if (ammo == magazineSN)
+		{
+			return;
+		}
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		{
+			if (bt->GetName() == "SniperBullet")
+			{
+				if (bt->GetCount() < magazineSN)
+				{
+					cout << "reload sn1" << endl;
+					ammo = bt->GetCount();
+					snAmmo = ammo;
+					bt->AddCount(-(ammo));
+				}
+				else
+				{
+					cout << "reload sn2" << endl;
+					ammo = snAmmo = magazineSN;
+					bt->AddCount(-(magazineSN - ammoCount));
+				}
+				return;
+			}
+		}
 		break;
 	}
 }

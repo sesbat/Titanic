@@ -99,10 +99,10 @@ void Inventory::Update(float dt)
 	{
 		rightInven->AddItem("Recoverykit");
 	}
-	if (InputMgr::GetKeyDown(Keyboard::R))
+	/*if (InputMgr::GetKeyDown(Keyboard::R))
 	{
 		rightInven->AddItem("handsaw");
-	}
+	}*/
 
 	if (nowDrag != nullptr && IsStay() )
 	{
@@ -325,8 +325,8 @@ void Inventory::ClearInven()
 
 void Inventory::ResetRightInven()
 {
-	cout << myInven->GetName() << endl;
-	cout << rightInven->GetName() << endl;
+	//cout << myInven->GetName() << endl;
+	//cout << rightInven->GetName() << endl;
 	rightInven = initRightInven;
 	myInven->SetPair(rightInven);
 	rightInven->SetPair(myInven);
@@ -340,6 +340,7 @@ InvenItem* Inventory::GetUsedItem(int i)
 void Inventory::AddDeleteObj(InvenItem* obj)
 {
 	auto it = find(myUseItems.begin(), myUseItems.end(), obj);
+	
 	deleteUseItem.push_back(it);
 }
 

@@ -77,7 +77,9 @@ protected:
 	float ThirstDelay; 
 	float EnergyDelay; 
 
-	//item
+	float shootdelay;
+
+	//ammo
 	int ammo;
 	int sgAmmo;
 	int rfAmmo;
@@ -85,6 +87,7 @@ protected:
 	int magazineSG;
 	int magazineRF;
 	int magazineSN;
+
 
 	bool isMove;
 	bool isAlive;
@@ -151,7 +154,8 @@ public:
 	void SetRigthInvenBox(ItemBoxObject* inven) { rightInvenObj = inven; }
 	Gun* GetGun() { return gun; }
 	void UseItems(int num);
-	void SetAmmo();
+	void SetFireAmmo();
+	void SetAmmoType();
 	void Reload();
 
 	void Load();

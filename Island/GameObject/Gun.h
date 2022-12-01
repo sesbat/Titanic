@@ -36,6 +36,7 @@ private:
     float bulletSpeed;
     float range;
     float shootDelay;
+    float pShootDelay;
     int Damage;
     bool isGunFlip;
 
@@ -60,5 +61,6 @@ public:
     void SetGunType(GunType type);
     GunType GetgunType() { return gunType; }
     GunType ItemNameToType(string name);
+    float GetpShootDelay() { return pShootDelay; }
 };
 
