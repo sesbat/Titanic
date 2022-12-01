@@ -129,6 +129,34 @@ void InventoryBox::Draw(RenderWindow& window)
 		nowDrag->Draw(window);
 }
 
+void InventoryBox::AddItem(string name, int cnt, Vector2i invenPos, Vector2i greedPos, string path)
+{
+	auto data = FILE_MGR->GetItemInfo(name);
+
+	InvenItem* item = new InvenItem(uimgr);
+	item->Init();
+	Vector2i findPos;
+	findPos.x = greedPos.y;
+	findPos.y = greedPos.x;
+	for (int i = findPos.x; i < findPos.x + data.height; i++)
+	{
+		for (int j = findPos.y; j < findPos.y + data.width; j++)
+		{
+			allPos[i][j] = true;
+			itemGreed[i][j]->SetState(true, item);
+
+		}
+	}
+	item->Set(data.width, data.height,
+		{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
+		{ findPos.y, findPos.x }, data.path, data.maxCount);
+	item->AddCount(cnt);
+	item->SetName(name);
+	item->Init();
+
+	items.push_back(item);
+}
+
 void InventoryBox::AddItem(string name, int count)
 {
 	auto data = FILE_MGR->GetItemInfo(name);

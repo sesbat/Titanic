@@ -327,6 +327,24 @@ void Inventory::AddDeleteObj(InvenItem* obj)
 	deleteUseItem.push_back(it);
 }
 
+void Inventory::SetUserItem(InvneUseInfo data)
+{
+	auto itemData = FILE_MGR->GetItemInfo(data.Type);
+	this->myUseItems[data.useIdx] = new InvenItem(uimgr);
+	this->myUseItems[data.useIdx]->Init();
+	this->myUseItems[data.useIdx]->SetName(data.Type);
+	this->myUseItems[data.useIdx]->Set(itemData.width, itemData.height, data.invenPos, {-1, -1}, data.path, itemData.maxCount);
+	this->myUseItems[data.useIdx]->AddCount(data.cnt);
+
+	if (data.useIdx == 0 || data.useIdx == 1)
+	{
+		auto player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
+		auto gun = player->GetGun();
+
+		gun->SetGunType(gun->ItemNameToType(data.Type));
+	}
+}
+
 InvenGreed* Inventory::GetGreed(int i, int j)
 {
 	InventoryBox* inven = GetNowInven();

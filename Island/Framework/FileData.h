@@ -94,12 +94,24 @@ namespace ns {
 	};
 
 
-	struct InvenInvo
+	struct InvenInfo
 	{
-		int x;
-		int y;
+		string Type;
+		sf::Vector2i invenPos;
+		sf::Vector2i invenGreedPos;
 		int cnt;
 		string path;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(InvenInvo, x, y, cnt, path)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(InvenInfo, Type, invenPos, invenGreedPos, cnt, path)
+	};
+
+	struct InvneUseInfo
+	{
+		string Type;
+		int useIdx;
+		sf::Vector2i invenPos;
+		int cnt;
+		string path;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(InvneUseInfo, Type, useIdx, invenPos, cnt, path)
 	};

@@ -45,7 +45,7 @@ protected:
 	vector<vector<bool>> isGreedObject;
 	FloatRect MAP_BOUNDS = { 0, 0, 1920*2, 1080*2 };
 	TreeRect treeRect = { 0,0,1920 * 2,1080 *2};
-	QuadTree treeMap = QuadTree(treeRect, 16, 4);
+	QuadTree treeMap;
 
 	//view sight
 	//std::vector<std::shared_ptr<candle::LightSource>> lights1;

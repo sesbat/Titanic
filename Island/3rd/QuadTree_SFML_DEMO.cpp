@@ -57,8 +57,9 @@ double TreeRect::getBottom() const noexcept { return y - (height * 0.5f); }
 //};
 //
 //** QuadTree **//
-QuadTree::QuadTree() : QuadTree({}, 0, 0) { }
-QuadTree::QuadTree(const QuadTree& other) : QuadTree(other.bounds, other.capacity, other.maxLevel) { }
+QuadTree::QuadTree() : QuadTree({}, 0, 0) {
+}
+//QuadTree::QuadTree(const QuadTree& other) : QuadTree(other.bounds, other.capacity, other.maxLevel) { }
 QuadTree::QuadTree(const TreeRect& _bound, unsigned _capacity, unsigned _maxLevel) :
     bounds(_bound),
     capacity(_capacity),
@@ -318,7 +319,9 @@ void QuadTree::draw(sf::RenderTarget& canvas) noexcept {
 void QuadTree::clear() noexcept {
     if (!objects.empty()) {
         for (auto&& obj : objects)
+        {
             obj->qt = nullptr;
+        }
         objects.clear();
     }
     if (!isLeaf) {
@@ -450,8 +453,12 @@ QuadTree* QuadTree::getChild(sf::FloatRect& hit)   noexcept {
 }
 QuadTree::~QuadTree() {
     clear();
-    if (children[0]) delete children[0];
-    if (children[1]) delete children[1];
-    if (children[2]) delete children[2];
-    if (children[3]) delete children[3];
+    if (children[0]) 
+        delete children[0];
+    if (children[1])
+        delete children[1];
+    if (children[2]) 
+        delete children[2];
+    if (children[3]) 
+        delete children[3];
 }

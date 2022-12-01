@@ -41,8 +41,6 @@ class QuadTree
 {
 public:
     QuadTree(const TreeRect &_bound, unsigned _capacity, unsigned _maxLevel);
-    QuadTree(const QuadTree&);
-    QuadTree();
 
     bool insert(HitBoxObject*obj);
     void insert(std::vector<Object*> obj);
@@ -67,9 +65,12 @@ public:
     std::vector<HitBoxObject*>& getObjects() { return objects; }
     
     QuadTree* getChild(sf::FloatRect& hit) noexcept;
-
+    
     ~QuadTree();
 private:
+    QuadTree();
+    QuadTree(const QuadTree& ref) {}
+    QuadTree& operator=(const QuadTree& ref) {}
     bool      isLeaf = true;
     unsigned  level  = 0;
     unsigned  capacity;
@@ -80,7 +81,6 @@ private:
     sf::Text  text;
     sf::RectangleShape	     shape;
     std::vector<HitBoxObject*> objects, foundObjects;
-    std::vector<QuadTree*> foundBound;
 
     void subdivide();
     void discardEmptyBuckets();

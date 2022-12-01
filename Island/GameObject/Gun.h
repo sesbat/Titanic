@@ -46,7 +46,7 @@ private:
 public:
     Gun();
     Gun(GunType type, User user);
-    ~Gun();
+    virtual ~Gun();
 
     virtual void Init();
     virtual void Update(float dt);

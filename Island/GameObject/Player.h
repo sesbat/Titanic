@@ -146,5 +146,7 @@ public:
 	void SetAmmo();
 	void Reload();
 
+	void Load();
+	void Save();
 };
 
