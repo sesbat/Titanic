@@ -43,8 +43,8 @@ protected:
 	float bombTimer;
 	TextObject* missionText;
 	vector<vector<bool>> isGreedObject;
-	FloatRect MAP_BOUNDS = { 0, 0, 1920*2, 1080*2 };
-	TreeRect treeRect = { 0,0,1920 * 2,1080 *2};
+	FloatRect MAP_BOUNDS = { 0, 0, 1920*4, 1080*4 };
+	TreeRect treeRect = { 0,0,1920 * 4,1080 *4};
 	QuadTree treeMap;
 
 	//view sight

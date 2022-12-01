@@ -113,6 +113,22 @@
     {
       "texPath": "graphics/block2.png",
       "uiPaht": "graphics/editor/drawBlock2.png"
+    },
+    {
+      "texPath": "graphics/block3.png",
+      "uiPaht": "graphics/editor/drawBlock3.png"
+    },
+    {
+      "texPath": "graphics/block4.png",
+      "uiPaht": "graphics/editor/drawBlock4.png"
+    },
+    {
+      "texPath": "graphics/block5.png",
+      "uiPaht": "graphics/editor/drawBlock5.png"
+    },
+    {
+      "texPath": "graphics/block6.png",
+      "uiPaht": "graphics/editor/drawBlock6.png"
     }
   ],
   "ANOTHER": [

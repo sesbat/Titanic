@@ -205,7 +205,6 @@ void GameScene::Init()
 
 void GameScene::Release()
 {
-	player->Save();
 	Scene::Release();
 	enemies.clear();
 	blockPool.clear();
@@ -228,6 +227,7 @@ void GameScene::Enter()
 void GameScene::Exit()
 {
 	treeMap.clear();
+	player->Save();
 	Release();
 }
 
@@ -303,7 +303,6 @@ void GameScene::Update(float dt)
 
 	if (escapeTimer <= 0.f)
 	{
-		player->Save();
 		SCENE_MGR->ChangeScene(Scenes::Ready);
 		return;
 	}
