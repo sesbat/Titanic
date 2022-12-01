@@ -139,113 +139,18 @@ void MapEditor::Update(float dt)
 	{
 		return;
 	}
+
+	if (uimgr->GetIsBox())
+		return;
+
 	for (int i = 0; i < HEIGHTCNT; i++)
 	{
 		for (int j = 0; j < WIDTHCNT; j++)
 		{
 			if (greeds[i][j]->IsClick())
 			{
-				if (((EditorMapUiMgr*)uiMgr)->IsUnder())
+				if(!DrawBox(i, j))
 					return;
-				if (nowType == LayerType::Object && playerPos == Vector2i{ i,j })
-					return;
-				if (nowType == LayerType::Object && exitPos == Vector2i{ i,j })
-					return;
-
-				DrawObj* nowDraw = ((EditorMapUiMgr*)uiMgr)->GetDraw();
-				auto& nowGreedObjs = greedObjs[nowType];
-
-				if (nowDraw == nullptr || ((EditorMapUiMgr*)uiMgr)->IsUnder())
-				{
-					Button* findObj = nullptr;
-					if (nowGreedObjs.find(i) != nowGreedObjs.end())
-					{
-						if (nowGreedObjs[i].find(j) != nowGreedObjs[i].end())
-						{
-							findObj = nowGreedObjs[i][j];
-							auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
-							objList[nowType][i].erase(deleteObj);
-							greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
-
-							delete findObj;
-						}
-					}
-					return;
-				}
-
-				Button* findObj = nullptr;
-				if (nowGreedObjs.find(i) != nowGreedObjs.end())
-				{
-					if (nowGreedObjs[i].find(j) != nowGreedObjs[i].end())
-					{
-						findObj = nowGreedObjs[i][j];
-
-						if (nowDraw->GetType() == "PLAYER")
-							return;
-
-						auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
-						objList[nowType][i].erase(deleteObj);
-						greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
-
-						delete findObj;
-					}
-				}
-
-				DrawObj* draw = new DrawObj(uiMgr);
-				draw->SetType(nowDraw->GetType());
-				draw->SetPath(nowDraw->GetPath());
-				draw->SetTexture(*RESOURCES_MGR->GetTexture(draw->GetPath()), true);
-				draw->SetOrigin(Origins::BC);
-				draw->SetMove(false);
-				draw->SetPos(greeds[i][j]->GetPos() + Vector2f{ 30.f, 60.f });
-				draw->SetData(nowDraw->GetData());
-				objList[nowType][i].push_back(draw);
-				greedObjs[nowType][i][j] = draw;
-
-				if (nowDraw->GetType() == "PLAYER")
-				{
-					if (player != nullptr)
-					{
-						int pi = playerPos.x;
-						int pj = playerPos.y;
-						if (nowGreedObjs.find(pi) != nowGreedObjs.end())
-						{
-							if (nowGreedObjs[pi].find(pj) != nowGreedObjs[pi].end())
-							{
-								findObj = nowGreedObjs[pi][pj];
-								auto deleteObj = find(objList[nowType][pi].begin(), objList[nowType][pi].end(), findObj);
-								objList[nowType][pi].erase(deleteObj);
-								greedObjs[nowType][pi].erase(nowGreedObjs[pi].find(pj));
-
-								delete findObj;
-							}
-						}
-					}
-					player = draw;
-					playerPos = { i,j };
-				}
-				if (nowDraw->GetType() == "ANOTHER")
-				{
-					if (now_exit != nullptr)
-					{
-						int ei = exitPos.x;
-						int ej = exitPos.y;
-						if (nowGreedObjs.find(ei) != nowGreedObjs.end())
-						{
-							if (nowGreedObjs[ei].find(ej) != nowGreedObjs[ei].end())
-							{
-								findObj = nowGreedObjs[ei][ej];
-								auto deleteObj = find(objList[nowType][ei].begin(), objList[nowType][ei].end(), findObj);
-								objList[nowType][ei].erase(deleteObj);
-								greedObjs[nowType][ei].erase(nowGreedObjs[ei].find(ej));
-
-								delete findObj;
-							}
-						}
-					}
-					now_exit = draw;
-					exitPos = { i,j };
-				}
 			}
 			else if (greeds[i][j]->IsUpRight())
 			{
@@ -453,4 +358,111 @@ void MapEditor::Load(string path)
 	}
 
 	((EditorMapUiMgr*)uiMgr)->SetLoadPath(path);
+}
+
+bool MapEditor::DrawBox(int i, int j)
+{
+		if (((EditorMapUiMgr*)uiMgr)->IsUnder())
+			return false;
+		if (nowType == LayerType::Object && playerPos == Vector2i{ i,j })
+			return false;
+		if (nowType == LayerType::Object && exitPos == Vector2i{ i,j })
+			return false;
+
+		DrawObj* nowDraw = ((EditorMapUiMgr*)uiMgr)->GetDraw();
+		auto& nowGreedObjs = greedObjs[nowType];
+
+		if (nowDraw == nullptr || ((EditorMapUiMgr*)uiMgr)->IsUnder())
+		{
+			Button* findObj = nullptr;
+			if (nowGreedObjs.find(i) != nowGreedObjs.end())
+			{
+				if (nowGreedObjs[i].find(j) != nowGreedObjs[i].end())
+				{
+					findObj = nowGreedObjs[i][j];
+					auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
+					objList[nowType][i].erase(deleteObj);
+					greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
+
+					delete findObj;
+				}
+			}
+			return false;
+		}
+
+		Button* findObj = nullptr;
+		if (nowGreedObjs.find(i) != nowGreedObjs.end())
+		{
+			if (nowGreedObjs[i].find(j) != nowGreedObjs[i].end())
+			{
+				findObj = nowGreedObjs[i][j];
+
+				if (nowDraw->GetType() == "PLAYER")
+					return false;
+
+				auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
+				objList[nowType][i].erase(deleteObj);
+				greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
+
+				delete findObj;
+			}
+		}
+
+		DrawObj* draw = new DrawObj(uiMgr);
+		draw->SetType(nowDraw->GetType());
+		draw->SetPath(nowDraw->GetPath());
+		draw->SetTexture(*RESOURCES_MGR->GetTexture(draw->GetPath()), true);
+		draw->SetOrigin(Origins::BC);
+		draw->SetMove(false);
+		draw->SetPos(greeds[i][j]->GetPos() + Vector2f{ 30.f, 60.f });
+		draw->SetData(nowDraw->GetData());
+		objList[nowType][i].push_back(draw);
+		greedObjs[nowType][i][j] = draw;
+
+		if (nowDraw->GetType() == "PLAYER")
+		{
+			if (player != nullptr)
+			{
+				int pi = playerPos.x;
+				int pj = playerPos.y;
+				if (nowGreedObjs.find(pi) != nowGreedObjs.end())
+				{
+					if (nowGreedObjs[pi].find(pj) != nowGreedObjs[pi].end())
+					{
+						findObj = nowGreedObjs[pi][pj];
+						auto deleteObj = find(objList[nowType][pi].begin(), objList[nowType][pi].end(), findObj);
+						objList[nowType][pi].erase(deleteObj);
+						greedObjs[nowType][pi].erase(nowGreedObjs[pi].find(pj));
+
+						delete findObj;
+					}
+				}
+			}
+			player = draw;
+			playerPos = { i,j };
+		}
+		if (nowDraw->GetType() == "ANOTHER")
+		{
+			if (now_exit != nullptr)
+			{
+				int ei = exitPos.x;
+				int ej = exitPos.y;
+				if (nowGreedObjs.find(ei) != nowGreedObjs.end())
+				{
+					if (nowGreedObjs[ei].find(ej) != nowGreedObjs[ei].end())
+					{
+						findObj = nowGreedObjs[ei][ej];
+						auto deleteObj = find(objList[nowType][ei].begin(), objList[nowType][ei].end(), findObj);
+						objList[nowType][ei].erase(deleteObj);
+						greedObjs[nowType][ei].erase(nowGreedObjs[ei].find(ej));
+
+						delete findObj;
+					}
+				}
+			}
+			now_exit = draw;
+			exitPos = { i,j };
+		}
+
+		return true;
 }

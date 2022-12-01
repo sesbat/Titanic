@@ -12,6 +12,7 @@
 #include "../Ui/AddItemBox.h"
 #include "SaveWindowBox.h"
 #include "LoadWindowBox.h"
+#include "../GameObject/TextObject.h"
 
 EditorMapUiMgr::EditorMapUiMgr(Scene* scene)
 	:UiMgr(scene)
@@ -63,6 +64,15 @@ void EditorMapUiMgr::Init()
 	exitBtn->SetOrigin(Origins::TL);
 	exitBtn->SetPos({ 50,260 });
 	uiObjList[0].push_back(exitBtn);
+
+	boxBtn = new Button(this);
+	boxBtn->SetClkColor(false);
+	boxBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		75, Color::White, "Box", true);
+	boxBtn->SetOrigin(Origins::TL);
+	boxBtn->SetPos({ 50,330 });
+	uiObjList[0].push_back(boxBtn);
+
 
 	selects = { "TILE","TREE","BUSH","STONE","BLOCK","PLAYER","ENEMY","BOX","ANOTHER"};
 	selectTxtSize = { 75,75,75,65,65,55,60,75,40 };
@@ -143,6 +153,49 @@ void EditorMapUiMgr::Update(float dt)
 		return;
 	}
 	UiMgr::Update(dt);
+
+	if (boxBtn->IsUp())
+	{
+		cout << "Box Down" << endl;
+		isBox = !isBox;
+		if (isBox)
+			boxBtn->GetTextObj()->SetColor(Color::Red);
+		else
+			boxBtn->GetTextObj()->SetColor(Color::White);
+
+		boxingErase = (nowDraw == nullptr);
+
+		return;
+	}
+	if (isBox && InputMgr::GetMouseButtonDown(Mouse::Left))
+	{
+		if (rect != nullptr)
+			delete rect;
+		rect = new RectangleShape();
+		rectStartPos = InputMgr::GetMousePos();
+		rectStartPos = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)rectStartPos);
+		rect->setFillColor(Color(255, 255, 255, 20));
+		rect->setPosition(rectStartPos);
+		cout << rectStartPos.x << endl;
+		cout << rectStartPos.y << endl;
+
+		return;
+	}
+	if (isBox && InputMgr::GetMouseButton(Mouse::Left))
+	{
+		auto mousePos = InputMgr::GetMousePos();
+		mousePos = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)mousePos);
+		rect->setSize(Vector2f{ mousePos.x - rectStartPos.x, mousePos.y - rectStartPos.y });
+		cout << "Box ing" << endl;
+
+		return;
+	}
+	if (isBox && InputMgr::GetMouseButtonUp(Mouse::Left))
+	{
+		BoxingEnd();
+		cout << "Box End" << endl;
+		return;
+	}
 	if (nowDraw != nullptr)
 	{
 		nowDraw->Update(dt);
@@ -160,6 +213,8 @@ void EditorMapUiMgr::Update(float dt)
 		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeleteDraw();
 	}
 
+	if (isBox)
+		return;
 	if (selectBtn->IsClick())
 	{
 		for (auto& obj : type_selects[selects[selIdx]])
@@ -188,6 +243,8 @@ void EditorMapUiMgr::Draw(RenderWindow& window)
 	UiMgr::Draw(window);
 	if (nowDraw != nullptr)
 		nowDraw->Draw(window);
+	if (rect != nullptr)
+		window.draw(*rect);
 }
 
 void EditorMapUiMgr::Select(DrawSelect* select)
@@ -278,4 +335,59 @@ void EditorMapUiMgr::SetItemBox()
 string EditorMapUiMgr::GetPath()
 {
 	return saveWindow->GetPath();
+}
+
+void EditorMapUiMgr::BoxingEnd()
+{
+	auto rectPos = rect->getPosition();;
+	rectPos = SCENE_MGR->GetCurrScene()->ScreenToWorld((Vector2i)rectPos);
+	auto rectBound = rect->getGlobalBounds();
+	float size_x = SCENE_MGR->GetCurrScene()->GetWorldView().getSize().x;
+	float scale = size_x / 1920.f;
+
+	int start_idx_x = (rectPos.x) / 60;
+	int start_idx_y = (rectPos.y) / 60;
+
+	int end_idx_x = ((rectPos.x + rectBound.width * scale)) / 60;
+	int end_idx_y = ((rectPos.y + rectBound.height * scale)) / 60;
+
+	start_idx_x = max(0,min(start_idx_x, 128));
+	start_idx_y = max(0, min(start_idx_y, 72));
+	end_idx_x = max(0, min(end_idx_x, 128));
+	end_idx_y = max(0, min(end_idx_y, 72));
+
+	for (int i = start_idx_x; i < end_idx_x; i++)
+	{
+		for (int j = start_idx_y; j < end_idx_y; j++)
+		{
+
+			((MapEditor*)parentScene)->DrawBox(j, i);
+		}
+
+	}
+
+	if (boxingErase)
+	{
+		cout << "Erase" << endl;
+		cout << start_idx_x << endl;
+		cout << start_idx_y << endl;
+		cout << end_idx_x << endl;
+		cout << end_idx_y << endl;
+	}
+	else
+	{
+		cout << "draw" << endl;
+		cout << start_idx_x << endl;
+		cout << start_idx_y << endl;
+		cout << end_idx_x << endl;
+		cout << end_idx_y << endl;
+	}
+
+
+	if (rect != nullptr)
+		delete rect;
+
+	rect = nullptr;
+
+
 }

@@ -15,6 +15,9 @@ private:
 	Button* eraseBtn;
 	Button* exitBtn;
 	Button* underUi;
+	Button* boxBtn;
+
+	bool isErase;
 
 	Button* selectBtn;
 	vector<string> selects;
@@ -30,6 +33,11 @@ private:
 	SaveWindowBox* saveWindow;
 	LoadWindowBox* loadWindow;
 	AddItemBox* itemBox;
+
+	bool isBox;
+	bool boxingErase;
+	RectangleShape* rect;
+	Vector2f rectStartPos;
 
 public:
 	EditorMapUiMgr(Scene* scene);
@@ -60,6 +68,9 @@ public:
 	AddItemBox* GetItemBox() { return itemBox; }
 
 	string GetPath();
+
+	void BoxingEnd();
+	bool GetIsBox() { return isBox; }
 
 };
 
