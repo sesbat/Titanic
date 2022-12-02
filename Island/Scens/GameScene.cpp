@@ -416,9 +416,17 @@ candle::EdgeVector GameScene::pushBlock(const sf::Vector2f& pos)
 
 void GameScene::castAllLights()
 {
+	candle::EdgeVector edges;
 	for (auto &it : blockPool)
 	{
-		light.castLight(it.edgePool.begin(), it.edgePool.end());
-		
+		if ((Utils::Distance(player->GetPos(), it.position) <= light.getRange()))
+		{
+			for (auto it2 = it.edgePool.begin(); it2 != it.edgePool.end(); it2++)
+			{
+				edges.push_back(*it2);
+			}
+			
+		}	
 	}
+	light.castLight(edges.begin(), edges.end());
 }
