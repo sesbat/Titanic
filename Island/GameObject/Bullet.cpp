@@ -7,6 +7,8 @@
 #include "../Framework/InputMgr.h"
 #include <iostream>
 
+#include "../Scens/GameScene.h"
+
 Bullet::Bullet()
 	:dir(), speed(0.f), range(0.f), showLine(false)
 {
@@ -18,7 +20,6 @@ Bullet::~Bullet()
 
 void Bullet::Init()
 {
-	SetOrigin(Origins::MR);
 	SpriteObject::Init();
 	scene = SCENE_MGR->GetCurrScene();
 
@@ -40,14 +41,13 @@ void Bullet::Update(float dt)
 			if (range >= 0.f)
 			{
 				Translate(dir * dt * speed);	
-				
-				
 			}
 			else
 			{
 				SetActive(false);
 			}
 		}
+		
 		nextPos = GetPos() - dir * ((float)sprite.getLocalBounds().width);
 	}
 	if (InputMgr::GetKeyDown(Keyboard::P))
@@ -85,6 +85,7 @@ void Bullet::Release()
 {
 	SpriteObject::Release();
 }
+
 
 void Bullet::Fire(const Vector2f& pos, const Vector2f& dir, float speed, float range, bool isplayer)
 {
@@ -150,7 +151,14 @@ bool Bullet::Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, floa
 void Bullet::Collision()
 {
 	auto obj = scene->GetObjList();
-	for (auto& objects : obj[LayerType::Object][0])
+
+	vector<HitBoxObject*> boundInObj;
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		boundInObj = ((GameScene*)scene)->ObjListObb(sprite.getGlobalBounds());
+	}
+	//for (auto& objects : obj[LayerType::Object][0])
+	for (auto& objects : boundInObj)
 	{
 		auto hit = ((HitBoxObject*)objects)->GetBottom();
 		//cout << hit->GetHitbox().getPosition().x << " " 
@@ -170,7 +178,7 @@ void Bullet::Collision()
 			{
 				speed = 0;
 				SetActive(false);
-				cout << "hit" << endl;
+				//cout << "hit" << endl;
 				break;
 			}
 		}
@@ -188,8 +196,8 @@ void Bullet::Collision()
 							nextPos,
 							it->GetHitbox()))
 						{
-							cout << "hit" << endl;
-							enemy->SetHp(10);
+							//cout << "hit" << endl;
+							enemy->SetHp(damage);
 							SetActive(false);
 							break;
 						}
@@ -208,8 +216,8 @@ void Bullet::Collision()
 					nextPos,
 					it->GetHitbox()))
 				{
-					cout << "player hit" << endl;
-					player->SetHp(1);
+					//cout << "player hit" << endl;
+					player->SetHp(damage);
 					SetActive(false);
 					break;
 				}

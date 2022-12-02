@@ -2,11 +2,15 @@
 #include "HitBoxObject.h"
 #include "Animation/Animator.h"
 
+typedef pair<int, int> Pair;
+typedef pair<double, pair<int, int> > pPair;
+
 class VertexArrayObj;
 class HitBox;
 class Player;
 class Scene;
 class Gun;
+class Astar;
 
 class Enemy : public HitBoxObject
 {
@@ -23,14 +27,15 @@ protected:
 	Player* player;
 	Scene* scene;
 	Gun* gun;
+	Astar* astar;
 
 	Animator animator;
 
 	RectangleShape healthBar;
 
 	States currState;
-	States prevState;
 
+	//move
 	float speed;
 	Vector2f look;
 	Vector2f lookDir;
@@ -38,21 +43,37 @@ protected:
 	Vector2f velocity;
 	Vector2f direction;
 	Vector2f lastDirection;
-	Vector2f dir;
+	Vector2f moveDir;
 	Vector2f prevPosition;
 	bool isFlip;
+	
+	//a star dir
+	Vector2f playerPos;
+	list<Vector2f> movePos;
+	Pair startPos;
+	Pair destPos;
+	Vector2f bottomPos;
 
+	//timer
 	float moveTime;
 	float hitTime;
 	float getAttackTime;
 
+	//attack
 	bool attack;
-
+	bool isHit;
+	
+	//hp
 	int maxHp;
 	int hp;
 	float barScaleX;
 
 	map<string, Item> items;
+	vector<vector<bool>> *isGreedObject;
+
+	int type;
+	//dev
+	//bool isMove;
 
 public:
 	Enemy();
@@ -73,12 +94,20 @@ public:
 	void SetHp(int num);
 	void SetHpBar();
 
+	void SetItem(map<string, Item> items) { this->items = items; }
 	void SetEnemyPos();
+
+	void SetType(int num) { type = num; }
+
 	Vector2f GetLookDir() { return lookDir; }
 	Vector2f GetPrevLookDir() { return prevLook; }
 
 	void AttackPattern(float dt);
 	void Move(float dt);
+	void MoveToPos(float dt);
 	void Collision();
-	void SetItem(map<string, Item> items) { this->items = items; }
+	
+	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
+
+	void FindGrid();
 };

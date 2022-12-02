@@ -15,7 +15,7 @@ private:
 	InvenItem* nowItem;
 public:
 	InvenGreed(UiMgr* mgr, Inventory* inven, InventoryBox* invenBox);
-	~InvenGreed();
+	virtual ~InvenGreed();
 	virtual void Init();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);

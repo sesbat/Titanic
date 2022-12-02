@@ -4,6 +4,7 @@
 
 enum class GunType
 {
+    None,
     Shotgun,
     Rifle,
     Sniper,
@@ -35,15 +36,18 @@ private:
     float bulletSpeed;
     float range;
     float shootDelay;
+    float pShootDelay;
     int Damage;
     bool isGunFlip;
 
     Vector2f lookDir;
     Vector2f pos;
+
+    map<string, GunType> gunNameType;
 public:
     Gun();
     Gun(GunType type, User user);
-    ~Gun();
+    virtual ~Gun();
 
     virtual void Init();
     virtual void Update(float dt);
@@ -56,5 +60,7 @@ public:
 
     void SetGunType(GunType type);
     GunType GetgunType() { return gunType; }
+    GunType ItemNameToType(string name);
+    float GetpShootDelay() { return pShootDelay; }
 };
 

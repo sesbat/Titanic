@@ -20,17 +20,28 @@
 #include "../Ui/GameSceneUiMgr.h"
 #include "../GameObject/NPC.h"
 #include "../GameObject/ItemBoxObject.h"
+#include "../Ui/Inventory.h"
+#include "../Ui/InventoryBox.h"
+#include "Candle/geometry/Polygon.hpp"
 
+#include "../GameObject/HitBox.h"
+	
 using namespace std;
 using namespace sf;
 
+//explicit QuadTree(sf::FloatRect bounds,	size_t maxLevel, size_t maxObjects);
 GameScene::GameScene()
-	:Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f)
+	:Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f),
+	fog(candle::LightingArea::FOG,
+		sf::Vector2f(0.f, 0.f),
+		sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)), blockCount(0), treeMap(treeRect, 16, 4)
 {
+
 }
 
 GameScene::~GameScene()
 {
+	treeMap.clear();
 }
 
 void GameScene::Init()
@@ -38,10 +49,43 @@ void GameScene::Init()
 	int id = 0;
 	isMap = true;
 	auto& data = FILE_MGR->GetMap(sceneName);
+	isGreedObject.clear();
+
+	for (int i = 0; i < 72; i++)
+		isGreedObject.push_back(vector<bool>(128, false));
+
+	player = new Player();
+	player->SetName("PLAYER");
+	player->Init();
+
+	if (InputMgr::GetKeyDown(Keyboard::Escape))
+	{
+		SCENE_MGR->ChangeScene(Scenes::Menu);
+	}
 
 	for (auto& obj : data)
 	{
-		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "BLOCK")
+		if (obj.type == "STONE"   || obj.type == "BLOCK")
+		{
+			isGreedObject[obj.greedIdx.x][obj.greedIdx.y] = true;
+			Blocks block = { obj.position, pushBlock(obj.position) };
+			blockPool.push_back(block);
+			//blockCount++;
+		}
+		if (obj.type == "BOX" || obj.type == "BOX-ENEMY")
+		{
+			ItemBoxObject* box = new ItemBoxObject();
+			box->SetPlayerPos(player->GetPosPtr());
+			box->SetItems(obj.item);
+			box->SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/box.png"));
+			box->SetName(obj.type);
+			box->SetOrigin(Origins::BC);
+			box->SetPos(obj.position);
+			box->SetHitBox(obj.path);
+			objList[LayerType::Object][0].push_back(box);
+		}
+		else if (obj.type == "TREE" || obj.type == "BUSH" || 
+			obj.type == "STONE" || obj.type == "BLOCK")
 		{
 			HitBoxObject* draw = new HitBoxObject();
 			draw->SetName(obj.type);
@@ -49,14 +93,12 @@ void GameScene::Init()
 			draw->SetOrigin(Origins::BC);
 			draw->SetPos(obj.position);
 			draw->SetHitBox(obj.path);
-
 			objList[LayerType::Object][0].push_back(draw);
+			
+
 		}
 		else if(obj.type == "PLAYER")
 		{
-			player = new Player();
-			player->SetName(obj.type);
-			player->Init();
 			player->SetPos(obj.position);
 			player->SetHitBox(obj.path);
 
@@ -69,7 +111,20 @@ void GameScene::Init()
 			enemy->SetId(id++);
 			enemy->SetPos(obj.position);
 			enemy->SetHitBox(obj.path);
+			if (obj.path == "graphics/enemy1.png")
+			{
+				enemy->SetType(1);
+			}
+			else if (obj.path == "graphics/enemy2.png")
+			{
+				enemy->SetType(2);
+			}
+			else if (obj.path == "graphics/enemy3.png")
+			{
+				enemy->SetType(3);
+			}
 			enemy->SetItem(obj.item);
+			enemy->SetGreedObject(&isGreedObject);
 			enemies.push_back(enemy);
 
 			objList[LayerType::Object][0].push_back(enemy);
@@ -103,7 +158,7 @@ void GameScene::Init()
 			missionText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 80, Color::Green, to_string(escapeTimer));
 			missionText->SetTextLine(Color::Black, 1.f);
 			missionText->SetOrigin(Origins::BC);
-			missionText->SetPos(escapePoint);
+			missionText->SetPos({ escapePoint.x-150.f,escapePoint.y });
 			objList[LayerType::Object][1].push_back(missionText);
 			//HitBoxObject* exit = new HitBoxObject();
 			//exit->SetTexture(*RESOURCES_MGR->GetTexture("graphics/exit.png"));
@@ -112,43 +167,40 @@ void GameScene::Init()
 			//objList[LayerType::Object][0].push_back(exit);
 		}
 	}
-
+	
 	for (auto& enemy : enemies)
 	{
 		enemy->Init(player);
 	}
+
 
 	auto& tiles = objList[LayerType::Tile][0];
 	mapSize.left = 0;
 	mapSize.top = 0;
 	mapSize.width = (tiles.back())->GetPos().x + 30;
 	mapSize.height = (tiles.back())->GetPos().y;
-
 	
-	//mission exit tile
-	//escapePoint = { 1200.f,1650.f };
-
-	//missionText = new TextObject();
-	//missionText->SetActive(false);
-	//missionText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 80, Color::Green, to_string(escapeTimer));
-	//missionText->SetTextLine(Color::Black, 1.f);
-	//missionText->SetOrigin(Origins::MC);
-	//missionText->SetPos(escapePoint);
-	//objList[LayerType::Object][1].push_back(missionText);
-	
+	//view sight
+	light.setRange(700.f);
+	fog.setAreaColor(Color(0, 0, 0, 245));
 
 	uiMgr = new GameSceneUiMgr(this);
 	uiMgr->Init();
+
+	treeMap.setFont(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"));
 }
 
 void GameScene::Release()
 {
 	Scene::Release();
 	enemies.clear();
+	blockPool.clear();
 }
 
 void GameScene::Enter()
 {
+	enemies.clear();
+
 	Init();
 
 	SCENE_MGR->GetCurrScene()->GetWorldView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
@@ -161,14 +213,12 @@ void GameScene::Enter()
 
 void GameScene::Exit()
 {
+	treeMap.clear();
 	Release();
 }
 
 void GameScene::Update(float dt)
 {
-	//Time deltaTime = clock.restart();
-	//float fps = 1.0f / (deltaTime.asSeconds());
-	//cout << "fps: " << fps << endl;
 	for (auto it = enemies.begin(); it != enemies.end(); )
 	{
 		if (!(*it)->GetActive())
@@ -178,10 +228,6 @@ void GameScene::Update(float dt)
 		else
 			it++;
 	}
-
-
-	LayerSort();
-	
 
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
 	
@@ -203,17 +249,22 @@ void GameScene::Update(float dt)
 	realcam.y = max((int)realcam.y, WINDOW_HEIGHT / 2);
 	realcam.y = min((int)realcam.y, mapSize.height - WINDOW_HEIGHT / 2);
 
-	worldView.setCenter(realcam);
+	if(player->GetIsMove())
+		worldView.setCenter(realcam);
+
+	//view sight pos
+	light.setPosition(player->GetPos());
+	fog.setPosition({ player->GetPos().x - 1920 , player->GetPos().y - 1080  });
+	//castAllLights();	
 
 	//mission
 	if (Utils::Distance(player->GetPos(), escapePoint) < 100.f)
 	{
-		//string et = to_string(escapeTimer);
-		//et = et.substr(0, et.find('.') + 2);
 		escapeTimer -= dt;
 		missionText->SetActive(true);
 		string timer = to_string(escapeTimer); 
 		timer = timer.substr(0, timer.find('.') + 3);
+		missionText->SetPos({ player->GetPos().x - 300.f,player->GetPos().y - 100.f });
 		missionText->SetString("LEAVING IN " + timer);
 	}
 	else
@@ -224,20 +275,80 @@ void GameScene::Update(float dt)
 
 	if (escapeTimer <= 0.f)
 	{
+		player->Save();
+		SCENE_MGR->ChangeScene(Scenes::Ready);
+		return;
+	}
+	if (!player->GetIsAlive())
+	{
 		SCENE_MGR->ChangeScene(Scenes::Ready);
 		return;
 	}
 
+	//treeMap.clear();
+	LayerSort();
+	//treeMap.~QuadTree();
+	//treeMap.insert(objList[LayerType::Object][0]);
+	treeMap.insert(drawObjs);
+	treeMap.update(drawObjs);
+
+	//for (auto&& found : treeMap.getObjectsInBound_unchecked(*player)) {
+	//	if (player != found && Utils::OBB(player->GetBottom()->GetHitbox(), found->GetBottom()->GetHitbox())) {
+	//		found->SetColor(Color::Red);
+	//		cout << found->GetName() << endl;
+	//	}
+	//}
 	Scene::Update(dt);
 }
+vector<HitBoxObject*> GameScene::ObjListObb(HitBoxObject* obj)
+{
+	return treeMap.getObjectsInBound_unchecked_notParent(*obj);
+}
+vector<HitBoxObject*> GameScene::ObjListObb(FloatRect obj)
+{
+	return treeMap.getObjectsInBound_unchecked_notParent(obj);
+}
+
 	
 void GameScene::Draw(RenderWindow& window)
 {
 	window.setView(worldView);
-	Scene::Draw(window);
+	int i = 0;
+	for (auto& obj : objList[LayerType::Tile])
+	{
+		for (auto& o : obj.second)
+		{
+			o->Draw(window);
+		}
+	}
+	for (auto& obj : another)
+	{
+		obj->Draw(window);
+	}
+	for (auto& obj : drawObjs)
+	{
+		obj->Draw(window);
+	}
+	for (auto& obj : objList[LayerType::Object])
+	{
+		if (obj.first == 0)
+			continue;
+		for (auto& o : obj.second)
+		{
+			o->Draw(window);
+		}
+	}
+
+	fog.clear();
+	fog.draw(light);
+	window.draw(fog);
+	fog.display();
+
+	if (uiMgr != nullptr)
+		uiMgr->Draw(window);
 }
 
-void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos)
+void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy)
 {
 	ItemBoxObject* box = new ItemBoxObject();
 	box->SetItems(items);
@@ -246,23 +357,68 @@ void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos)
 	box->SetOrigin(Origins::MC);
 	box->SetHitBox("graphics/enemy1-die.png");
 	box->SetPos(pos);
+	box->SetName("BOX-ENEMY");
+	box->SetPlayerPos(player->GetPosPtr());
+
+	auto boxPos = ((HitBoxObject*)(box))->GetBottomPos() + box->GetGlobalBound().height / 2;
+
+	auto it = find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), enemy);
+	objList[LayerType::Object][0].insert(it, box);
+}
+
+void GameScene::DropItems(map<string, Item> items, Vector2f pos)
+{
+	ItemBoxObject* box = new ItemBoxObject();
+	box->SetItems(items);
+	box->SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/box.png"));
+
+	box->SetOrigin(Origins::MC);
+	box->SetHitBox("graphics/items/box.png");
+	box->SetPos(pos);
 	box->SetName("BOX");
 	box->SetPlayerPos(player->GetPosPtr());
 
-	for (auto& obj : objList[LayerType::Object][0])
-	{
-		if (((HitBoxObject*)(box))->GetBottomPos() < ((HitBoxObject*)(obj))->GetBottomPos())
-		{
-			objList[LayerType::Object][0].insert(find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), obj), box);
-			break;
-		}
-	}
+	auto boxPos = ((HitBoxObject*)(box))->GetBottomPos() + box->GetGlobalBound().height / 2;
 
-	//objList[LayerType::Object][0].push_back(box);
-	
+	auto it = find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), player);
+	objList[LayerType::Object][0].insert(it, box);
 }
 
-void GameScene::GetItem(map<string, Item>* items)
+void GameScene::EmpytyInven(ItemBoxObject* inven)
 {
-	((GameSceneUiMgr*)(uiMgr))->GetItem(items);
+	if (inven == nullptr)
+		return;
+
+	if (inven->GetName() == "BOX")
+	{
+		deleteContainer.push_back(inven);
+		treeMap.remove(inven);
+		inven->SetActive(false);
+	}
+}
+
+candle::EdgeVector GameScene::pushBlock(const sf::Vector2f& pos)
+{
+	candle::EdgeVector edge;
+	const sf::Vector2f points[] = {
+			{pos.x - 30, pos.y -75.f} ,
+			{pos.x + 30, pos.y -75.f} ,
+			{pos.x + 30, pos.y } ,
+			{pos.x - 30, pos.y } ,
+	};
+	sfu::Polygon p(points, 4);
+	for (auto& l : p.lines)
+	{
+		edge.push_back(l);
+	}
+	return edge;
+}
+
+void GameScene::castAllLights()
+{
+	for (auto &it : blockPool)
+	{
+		light.castLight(it.edgePool.begin(), it.edgePool.end());
+		
+	}
 }

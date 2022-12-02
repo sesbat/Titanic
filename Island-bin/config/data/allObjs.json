@@ -7,6 +7,34 @@
     {
       "texPath": "graphics/tree2.png",
       "uiPaht": "graphics/editor/drawTree2.png"
+    },
+    {
+      "texPath": "graphics/tree3.png",
+      "uiPaht": "graphics/editor/drawTree3.png"
+    },
+    {
+      "texPath": "graphics/tree4.png",
+      "uiPaht": "graphics/editor/drawTree4.png"
+    },
+    {
+      "texPath": "graphics/tree5.png",
+      "uiPaht": "graphics/editor/drawTree5.png"
+    },
+    {
+      "texPath": "graphics/tree6.png",
+      "uiPaht": "graphics/editor/drawTree6.png"
+    },
+    {
+      "texPath": "graphics/tree7.png",
+      "uiPaht": "graphics/editor/drawTree7.png"
+    },
+    {
+      "texPath": "graphics/tree8.png",
+      "uiPaht": "graphics/editor/drawTree8.png"
+    },
+    {
+      "texPath": "graphics/tree9.png",
+      "uiPaht": "graphics/editor/drawTree9.png"
     }
   ],
   "BUSH": [
@@ -61,12 +89,42 @@
     {
       "texPath": "graphics/tile2.png",
       "uiPaht": "graphics/editor/drawTile2.png"
+    },
+    {
+      "texPath": "graphics/tile3.png",
+      "uiPaht": "graphics/editor/drawTile3.png"
+    },
+    {
+      "texPath": "graphics/tile4.png",
+      "uiPaht": "graphics/editor/drawTile4.png"
+    },
+    {
+      "texPath": "graphics/tile5.png",
+      "uiPaht": "graphics/editor/drawTile5.png"
+    },
+    {
+      "texPath": "graphics/tile6.png",
+      "uiPaht": "graphics/editor/drawTile6.png"
     }
   ],
   "ENEMY": [
     {
       "texPath": "graphics/enemy1.png",
       "uiPaht": "graphics/editor/drawEnemy1.png"
+    },
+    {
+      "texPath": "graphics/enemy2.png",
+      "uiPaht": "graphics/editor/drawEnemy2.png"
+    },
+    {
+      "texPath": "graphics/enemy3.png",
+      "uiPaht": "graphics/editor/drawEnemy3.png"
+    }
+  ],
+  "BOX": [
+    {
+      "texPath": "graphics/items/box.png",
+      "uiPaht": "graphics/editor/drawBox1.png"
     }
   ],
   "PLAYER": [
@@ -83,6 +141,46 @@
     {
       "texPath": "graphics/block2.png",
       "uiPaht": "graphics/editor/drawBlock2.png"
+    },
+    {
+      "texPath": "graphics/block3.png",
+      "uiPaht": "graphics/editor/drawBlock3.png"
+    },
+    {
+      "texPath": "graphics/block4.png",
+      "uiPaht": "graphics/editor/drawBlock4.png"
+    },
+    {
+      "texPath": "graphics/block5.png",
+      "uiPaht": "graphics/editor/drawBlock5.png"
+    },
+    {
+      "texPath": "graphics/block6.png",
+      "uiPaht": "graphics/editor/drawBlock6.png"
+    },
+    {
+      "texPath": "graphics/block7.png",
+      "uiPaht": "graphics/editor/drawBlock7.png"
+    },
+    {
+      "texPath": "graphics/block8.png",
+      "uiPaht": "graphics/editor/drawBlock8.png"
+    },
+    {
+      "texPath": "graphics/block9.png",
+      "uiPaht": "graphics/editor/drawBlock9.png"
+    },
+    {
+      "texPath": "graphics/block10.png",
+      "uiPaht": "graphics/editor/drawBlock10.png"
+    },
+    {
+      "texPath": "graphics/block11.png",
+      "uiPaht": "graphics/editor/drawBlock11.png"
+    },
+    {
+      "texPath": "graphics/block12.png",
+      "uiPaht": "graphics/editor/drawBlock12.png"
     }
   ],
   "ANOTHER": [

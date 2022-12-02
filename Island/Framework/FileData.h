@@ -43,8 +43,8 @@ namespace ns {
 	
 	struct ObjectData
 	{
-		string type; // ¹Ù´Ú, Ç®, (³ª¹«, ¹ÙÀ§, »óÀÚ, º®(Æ¯¼ö)) ¿¡³Ê¹Ì
-		string path; // ½ºÇÁ¶óÀÌÆ® ÆÄÀÏ
+		string type; // ï¿½Ù´ï¿½, Ç®, (ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½(Æ¯ï¿½ï¿½)) ï¿½ï¿½ï¿½Ê¹ï¿½
+		string path; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
 		sf::Vector2f position;
 		sf::Vector2i greedIdx;
 		map<string,Item> item;
@@ -66,4 +66,52 @@ namespace ns {
 		int width;
 		int height;
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemInfo, path, maxCount, weight, width, height)
+	};
+
+	struct RequiredItem
+	{
+		string id;
+		int cnt;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(RequiredItem, id, cnt)
+	};
+
+
+	struct CraftingInfo
+	{
+		vector<RequiredItem> useItem;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(CraftingInfo, useItem)
+	};
+	
+
+	struct UserInfo
+	{
+		int hp;
+		float hungerGuage;
+		float thirstGuage;
+		float energyGuage;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage)
+	};
+
+
+	struct InvenInfo
+	{
+		string Type;
+		sf::Vector2i invenPos;
+		sf::Vector2i invenGreedPos;
+		int cnt;
+		string path;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(InvenInfo, Type, invenPos, invenGreedPos, cnt, path)
+	};
+
+	struct InvneUseInfo
+	{
+		string Type;
+		int useIdx;
+		sf::Vector2i invenPos;
+		int cnt;
+		string path;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(InvneUseInfo, Type, useIdx, invenPos, cnt, path)
 	};

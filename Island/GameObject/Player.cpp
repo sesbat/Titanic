@@ -9,17 +9,26 @@
 #include "Object.h"
 #include "HitBox.h"
 #include "../Scens/GameScene.h"
+#include "../Scens/Ready.h"
 #include <iostream>
 #include "Gun.h"
+#include "../Ui/Inventory.h"
+#include "../Ui/InventoryBox.h"
+#include "../Ui/InvenItem.h"
+#include "../GameObject/ItemBoxObject.h"
+#include "../GameObject/TextObject.h"
 
 
 Player::Player()
-	: currState(States::None), speed(500.f),
+	: currState(States::None), speed(2000.f), maxSpeed(5000.f),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	hp(10), maxHp(10), isDash(false), stamina(10.f), maxStamina(10.f),
-	hungerGuage(255),thirstGuage(255),energyGuage(255),
-	staminaScale(1.f),staminaTime(5.f),dash(0.01f)
+	hp(500), maxHp(500), isDash(false), stamina(10.f), maxStamina(10.f),
+	hungerGuage(255), thirstGuage(255), energyGuage(255),
+	maxHungerGuage(255), maxThirstGuage(255), maxEnergyGuage(255),
+	staminaScale(1.f), staminaTime(5.f), dash(0.01f),
+	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true),
+	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f), reloadDelay(0.f), isReloading(false)
 {
 }
 
@@ -29,26 +38,36 @@ Player::~Player()
 
 void Player::Init()
 {
-	HitBoxObject::Init();
-	hp = maxHp;
-	stamina = maxStamina;
 
-	gun = new Gun(GunType::Shotgun, User::Player);
+	HitBoxObject::Init();
+
+	gun = new Gun(GunType::None, User::Player);
 	gun->SetPlayer(this);
 	gun->Init();
-	
+	ammo = magazineSG;
+	//rfAmmo = maxRFAmmo;
+	//snAmmo = maxSNAmmo;
 	animator.SetTarget(&sprite);
 
 	//animation
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerIdle"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerMove"));
-	
+
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerIdleLeft"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerMoveLeft"));
-	
+
 	scene = SCENE_MGR->GetCurrScene();
-	
+
 	SetState(States::Idle);
+
+	inven = new Inventory(scene->GetUiMgr());
+	inven->Init();
+	inven->SetActive(false);
+
+	//light.setRange(300.f);
+
+	Load();
+
 }
 
 void Player::SetState(States newState)
@@ -87,51 +106,46 @@ void Player::Update(float dt)
 		break;
 	}
 
-	if (InputMgr::GetKeyDown(Keyboard::Num0))
-	{
-		hungerGuage = 255;
-	}
-	if (InputMgr::GetKeyDown(Keyboard::Num9))
-	{
-		hungerGuage = 50;
-	}
 	hungerDelay -= dt;
 	ThirstDelay -= dt;
 	EnergyDelay -= dt;
 	if (hungerDelay < 0.f && hungerGuage > 0.f)
 	{
 		hungerGuage -= 1.f;
-		hungerDelay = 0.01f;
+		hungerDelay = 30.f;
 	}
 	if (ThirstDelay < 0.f && thirstGuage > 0.f)
 	{
 		thirstGuage -= 1.f;
-		ThirstDelay = 0.01f;
+		ThirstDelay = 20.f;
 	}
 	if (EnergyDelay < 0.f && energyGuage > 0.f)
 	{
 		energyGuage -= 1.f;
-		EnergyDelay = 0.01f;
+		EnergyDelay = 40.f;
 	}
-	
-	if (staminaScale < 0.99f&&!isDash)
+
+	if (staminaScale < 0.99f && !isDash)
 	{
 		staminaScale += dash;
 	}
-	if (staminaScale > 0.f&&isDash)
+	if (staminaScale > 0.f && isDash)
 	{
 		staminaScale -= dash / staminaTime;
 		if (staminaScale < 0.f)
 			isDash = !isDash;
 	}
+
 	//Dead
-	/*if ( hp <= 0 )
+	if (hp <= 0 || hungerGuage <= 0 ||
+		thirstGuage <= 0 || energyGuage <= 0)
 	{
-		SetState(States::Dead);
-	}*/
+		isAlive = false;
+	}
 
 	//Move
-	Move(dt);
+	if (isMove)
+		Move(dt);
 
 	//animation
 	animator.Update(dt);
@@ -140,71 +154,175 @@ void Player::Update(float dt)
 	{
 		lastDirection = direction;
 	}
-
+	bottomPos = bottom->GetHitBottomPos();
 	prevLook = lookDir;
 
 	gun->Update(dt);
 
 	//input
-	switch (gun->GetgunType())
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
-	case GunType::Shotgun:
-	case GunType::Sniper:
-		if (InputMgr::GetMouseButtonDown(Mouse::Left))
+		shootDelay -= dt;
+		reloadDelay -= dt;
+		//fire
+		if (ammo > 0 && shootDelay <= 0 && reloadDelay <= 0)
 		{
-			gun->Fire(GetPos(), true);
+			isReloading = false;
+			switch (gun->GetgunType())
+			{
+			case GunType::Shotgun:
+			case GunType::Sniper:
+				if (InputMgr::GetMouseButtonDown(Mouse::Left) && !inven->GetActive())
+				{
+					SetFireAmmo();
+					gun->Fire(GetPos(), true);
+					shootDelay = gun->GetpShootDelay();
+				}
+				break;
+			case GunType::Rifle:
+				if (InputMgr::GetMouseButton(Mouse::Left) && !inven->GetActive())
+				{
+					SetFireAmmo();
+					gun->Fire(GetPos(), true);
+					shootDelay = gun->GetpShootDelay();
+
+				}
+				break;
+			}
 		}
-		break;
-	case GunType::Rifle:
-		if (InputMgr::GetMouseButtonDown(Mouse::Left))
+		//reload
+		if (InputMgr::GetKeyDown(Keyboard::R))
 		{
-			gun->Fire(GetPos(), true);
+			Reload();
 		}
-		break;
 	}
+	
 
 	if (InputMgr::GetKeyDown(Keyboard::Num1))
 	{
-		gun->SetGunType(GunType::Shotgun);
+		auto myGun = inven->GetUsedItem(0);
+
+		if (myGun == nullptr)
+		{
+			gun->SetGunType(GunType::None);
+			ammo = 0;
+		}
+		else
+		{
+			gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+			SetAmmoType();
+		}
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Num2))
 	{
-		gun->SetGunType(GunType::Rifle);
+		auto myGun = inven->GetUsedItem(1);
+
+		if (myGun == nullptr)
+		{
+			gun->SetGunType(GunType::None);
+			ammo = 0;
+		}
+		else
+		{
+			gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+			SetAmmoType();
+		}
 	}
+	//use item
 	if (InputMgr::GetKeyDown(Keyboard::Num3))
 	{
-		gun->SetGunType(GunType::Sniper);
+		UseItems(4);
 	}
-	
+	if (InputMgr::GetKeyDown(Keyboard::Num4))
+	{
+		UseItems(5);
+	}
+	if (InputMgr::GetKeyDown(Keyboard::Num5))
+	{
+		UseItems(6);
+	}
+	if (InputMgr::GetKeyDown(Keyboard::Num6))
+	{
+		UseItems(7);
+	}
+
+	//dash
 	if (stamina > 0.5f && InputMgr::GetKeyDown(Keyboard::LShift))
 	{
-		speed = 800.f;
+		speed = 400.f;
 		isDash = true;
 	}
-	
 	if (InputMgr::GetKeyUp(Keyboard::LShift))
 	{
-		speed = 500.f;
+		speed = maxSpeed;
 		isDash = false;
 	}
 
+	if (InputMgr::GetKeyDown(Keyboard::Tab))
+	{
+		if (inven->GetActive() && !isMove)	
+		{
+			SetMove(true);
+			inven->SetActive(!(inven->GetActive()));
+			//inven->ResetRightInven();
+			//cout << inven->GetRightInven()->GetName() << endl;
+			if (inven->GetRightInven()->GetItems()->size() > 0 && isInven)
+			{
+				auto rightInven = inven->GetRightInven()->GetItems();
+				map<string, Item> dropItems;
+				for (auto& item : *rightInven)
+				{
+					if (dropItems.find(item->GetName()) == dropItems.end())
+					{
+						dropItems[item->GetName()] = { item->GetName(), item->GetPath(),item->GetCount() };
+					}
+					else
+					{
+						dropItems[item->GetName()].count += item->GetCount();
+					}
+				}
+				((GameScene*)scene)->DropItems(dropItems, position);
+			}
+			if (rightInvenObj != nullptr)
+			{
+				auto items = rightInvenObj->GetInvenBox()->GetItems();
+				if (items->size() == 0)
+				{
+					((GameScene*)scene)->EmpytyInven(rightInvenObj);
+					rightInvenObj = nullptr;
+				}
+			}
+		}
+		else if (isMove)
+		{
+			SetIsInven(true);
+			inven->SetActive(true);
+			inven->ResetRightInven();
+			inven->ClearInven();
+			SetMove(false);
+			rightInvenObj = nullptr;
+		}
+	}
+
+	//player stamina
 	if (isDash)
 	{
-		stamina -= 0.01f;
+		stamina -= 0.1f;
 		if (stamina < 0.f)
 		{
 			stamina = 0.f;
-			speed = 500.f;
+			speed = maxSpeed;
 		}
 	}
 	else
 	{
-		stamina += 0.01f;
+		stamina += 0.05f;
 		if (stamina >= maxStamina)
 		{
 			stamina = maxStamina;
 		}
 	}
+
 }
 
 void Player::Draw(RenderWindow& window)
@@ -227,12 +345,11 @@ void Player::Dash(float dt)
 
 void Player::UpdateIdle(float dt)
 {
-	//attackHitbox->SetActive(false);
-	if ( !EqualFloat(direction.x, 0.f) )
+	if (!EqualFloat(direction.x, 0.f))
 	{
 		SetState(States::Move);
 	}
-	else if ( !EqualFloat(direction.y, 0.f) )
+	else if (!EqualFloat(direction.y, 0.f))
 	{
 		SetState(States::Move);
 	}
@@ -251,7 +368,7 @@ void Player::UpdateMove(float dt)
 		return;
 	}
 
-	if ( (lookDir.x > 0 && prevLook.x < 0) || 
+	if ((lookDir.x > 0 && prevLook.x < 0) ||
 		(lookDir.x < 0 && prevLook.x > 0))
 	{
 		//animator.Play((lookDir.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
@@ -267,47 +384,59 @@ bool Player::EqualFloat(float a, float b)
 
 void Player::SetHp(int num)
 {
-	if ( hp > 0 )
-	{
-		hp -= num;
-	}
-	else
+	hp -= num;
+	if (hp <= 0)
 	{
 		hp = 0;
 	}
 }
 
-//void Player::OnPickupItem(Item* item)
-//{
-//	switch ( item->GetType() )
-//	{
-//	case Item::Types::Potion:
-//		cout << "potion" << endl;
-//		hp += item->GetValue();
-//		if ( hp >= maxHp )
-//			hp = maxHp;
-//		break;
-//	case Item::Types::Coin:
-//		cout << "coin" << endl;
-//		//exp += item->GetValue();
-//		break;
-//	case Item::Types::Key:
-//		cout << "key" << endl;
-//		item->SetIsKey();
-//		isKey = true;
-//		break;
-//	}
-//}
+void Player::HealHp(int num)
+{
+	hp += num;
+	if (hp > maxHp)
+	{
+		hp = maxHp;
+	}
+}
+
+void Player::HealHunger(float num)
+{
+	hungerGuage += num;
+	if (hungerGuage > maxHungerGuage)
+	{
+		hungerGuage = maxHungerGuage;
+	}
+}
+
+void Player::HealThirst(float num)
+{
+	thirstGuage += num;
+	if (thirstGuage > maxThirstGuage)
+	{
+		thirstGuage = maxThirstGuage;
+	}
+}
+
+void Player::HealEnergy(float num)
+{
+	energyGuage += num;
+	if (energyGuage > maxEnergyGuage)
+	{
+		energyGuage = maxEnergyGuage;
+	}
+}
 
 void Player::SetPlayerPos()
 {
 	SetPos(prevPosition);
-	
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(prevPosition);
-	}
+
+	//for (auto& hit : hitboxs)
+	//{
+	//	hit->SetPos(prevPosition);
+	//}
 	bottom->SetPos(prevPosition);
+
 }
 
 Vector2f Player::SetLookDir()
@@ -327,6 +456,11 @@ void Player::SetFlipX(bool flip)
 void Player::SetIsDash(bool dash)
 {
 	isDash = dash;
+}
+
+void Player::SetMove(bool move)
+{
+	isMove = move;
 }
 
 void Player::SetPrevHungerGuage(int hunger)
@@ -367,10 +501,10 @@ void Player::Move(float dt)
 	prevPosition = GetPos();
 	Translate({ velocity.x * dt, 0.f });
 
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(GetPos());
-	}
+	//for (auto& hit : hitboxs)
+	//{
+	//	hit->SetPos(GetPos());
+	//}
 	//wall bound
 	Collision();
 
@@ -379,10 +513,10 @@ void Player::Move(float dt)
 	prevPosition = GetPos();
 	Translate({ 0.f, velocity.y * dt, });
 
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(GetPos());
-	}
+	//for (auto& hit : hitboxs)
+	//{
+	//	hit->SetPos(GetPos());
+	//}
 	//wall bound
 	Collision();
 }
@@ -390,28 +524,350 @@ void Player::Move(float dt)
 void Player::Collision()
 {
 	//wall bound
-	auto obj = scene->GetObjList();
+	//auto obj = scene->GetObjList();
 
-	for (auto& objects : obj[LayerType::Object][0])
+	//for (auto& objects : obj[LayerType::Object][0])
+	//{
+	//	auto hit = ((HitBoxObject*)objects)->GetBottom();
+	//	if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
+	//		continue;
+	//	if (!objects->GetActive())
+	//	{
+	//		continue;
+	//	}
+	//	if (objects->GetName() == "TREE" ||
+	//		objects->GetName() == "STONE" ||
+	//		objects->GetName() == "BLOCK" ||
+	//		objects->GetName() == "ENEMY")
+	//	{
+	//		if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+	//		{
+	//			//cout << objects->GetName() << endl;
+	//			SetPlayerPos();
+	//			break;
+	//		}
+	//	}
+	//}
+
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
-		auto hit = ((HitBoxObject*)objects)->GetBottom();
-		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
-			continue;
-		if (!objects->GetActive())
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+
+		for (auto obj : boundInObj)
 		{
-			continue;
-		}
-		if (objects->GetName() == "TREE" ||
-			objects->GetName() == "STONE" ||
-			objects->GetName() == "BLOCK" ||
-			objects->GetName() == "ENEMY")
-		{
-			if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
+			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
 			{
-				cout << objects->GetName() << endl;
-				SetPlayerPos();
-				break;
+				if (obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK" //||
+					//obj->GetName() == "ENEMY"
+					)
+					SetPlayerPos();
 			}
 		}
 	}
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::Ready)
+	{
+		auto boundInObj = ((Ready*)scene)->ObjListObb(this);
+
+		for (auto obj : boundInObj)
+		{
+			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
+			{
+				if (obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK" ||
+					obj->GetName() == "ENEMY")
+					SetPlayerPos();
+			}
+		}
+	}
+}
+
+
+void Player::GetItem(map<string, Item>* items)
+{
+	inven->SetActive(true);
+	auto right_inven = inven->GetRightInven();
+
+	for (auto item : *items)
+	{
+		right_inven->AddItem(item.second.type);
+	}
+}
+
+void Player::UseItems(int num)
+{
+	if (inven->GetUsedItem(num) == nullptr)
+	{
+		return;
+	}
+	if (inven->GetUsedItem(num)->GetCount() == 0)
+		return;
+	string name = inven->GetUsedItem(num)->GetName();
+	if (name == "Recoverykit")
+	{
+		HealHp(maxHp / 4);
+		inven->GetUsedItem(num)->AddCount(-1);
+		if (inven->GetUsedItem(num)->GetCount() <= 0)
+			inven->AddDeleteObj(inven->GetUsedItem(num));
+
+		return;
+	}
+	///////add other items/////////
+	else if (name == "Apple")
+	{
+		HealHunger(maxHungerGuage / 4);
+		inven->GetUsedItem(num)->AddCount(-1);
+		if (inven->GetUsedItem(num)->GetCount() <= 0)
+			inven->AddDeleteObj(inven->GetUsedItem(num));
+		return;
+	}
+	else if (name == "Meat")
+	{
+		HealHunger(maxHungerGuage / 2);
+		inven->GetUsedItem(num)->AddCount(-1);
+		if (inven->GetUsedItem(num)->GetCount() <= 0)
+			inven->AddDeleteObj(inven->GetUsedItem(num));
+		return;
+	}
+	else if (name == "Water")
+	{
+		HealThirst(maxThirstGuage / 3);
+		inven->GetUsedItem(num)->AddCount(-1);
+		if (inven->GetUsedItem(num)->GetCount() <= 0)
+			inven->AddDeleteObj(inven->GetUsedItem(num));
+		return;
+	}
+	else if (name == "EnergyDrink")
+	{
+		HealEnergy(maxEnergyGuage / 2);
+		inven->GetUsedItem(num)->AddCount(-1);
+		if (inven->GetUsedItem(num)->GetCount() <= 0)
+			inven->AddDeleteObj(inven->GetUsedItem(num));
+		return;
+	}
+}
+
+void Player::SetFireAmmo()
+{
+	switch (gun->GetgunType())
+	{
+	case GunType::Shotgun:
+		ammo--;
+		sgAmmo = ammo;
+		break;
+	case GunType::Rifle:
+		ammo--;
+		rfAmmo = ammo;
+		break;
+	case GunType::Sniper:
+		ammo--;
+		snAmmo = ammo;
+		break;
+	}
+}
+
+void Player::SetAmmoType()
+{
+	switch (gun->GetgunType())
+	{
+	case GunType::Shotgun:
+		ammo = sgAmmo;
+		break;
+	case GunType::Rifle:
+		ammo = rfAmmo;
+		break;
+	case GunType::Sniper:
+		ammo = snAmmo;
+		break;
+	}
+}
+
+void Player::Reload()
+{
+	int ammoCount = ammo;
+	switch (gun->GetgunType())
+	{
+	case GunType::None:
+		break;
+	case GunType::Shotgun:
+		if (ammo == magazineSG)
+		{
+			return;
+		}
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		{
+			if (bt->GetName() == "ShotGunBullet")
+			{
+				reloadDelay = 1.5f;
+				isReloading = true;
+				if (bt->GetCount() < magazineSG)
+				{
+					ammo = bt->GetCount();
+					sgAmmo = ammo;
+					bt->AddCount(-(magazineSG));
+				}
+				else
+				{
+					ammo = sgAmmo = magazineSG;
+					bt->AddCount(-(magazineSG - ammoCount));
+				}
+				if (bt->GetCount() <= 0)
+				{
+					inven->AddDeleteItem(bt);
+
+				}
+				return;
+			}
+		}
+		break;
+	case GunType::Rifle:
+		if (ammo == magazineRF)
+		{
+			return;
+		}
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		{
+			if (bt->GetName() == "RifleBullet")
+			{
+				reloadDelay = 1.f;
+				isReloading = true;
+				if (bt->GetCount() < magazineRF)
+				{
+					ammo = bt->GetCount();
+					rfAmmo = ammo;
+					bt->AddCount(-(magazineRF));
+				}
+				else
+				{
+					ammo = rfAmmo = magazineRF;
+					bt->AddCount(-(magazineRF - ammoCount));
+				}
+				if (bt->GetCount() <= 0)
+				{
+					inven->AddDeleteItem(bt);
+
+				}
+				return;
+			}
+		}
+		break;
+	case GunType::Sniper:
+		if (ammo == magazineSN)
+		{
+			return;
+		}
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		{
+			if (bt->GetName() == "SniperBullet")
+			{
+				reloadDelay = 3.f;
+				isReloading = true;
+				if (bt->GetCount() < magazineSN)
+				{
+					ammo = bt->GetCount();
+					snAmmo = ammo;
+					bt->AddCount(-(magazineSN));
+				}
+				else
+				{
+					ammo = snAmmo = magazineSN;
+					bt->AddCount(-(magazineSN - ammoCount));
+				}
+				if (bt->GetCount() <= 0)
+				{
+					inven->AddDeleteItem(bt);
+
+				}
+				return;
+			}
+		}
+		break;
+	}
+}
+
+void Player::Load()
+{
+	auto playerData = FILE_MGR->GetUserInfo();
+	hp = playerData.hp;
+	stamina = maxStamina;
+	hungerGuage = playerData.hungerGuage;
+	thirstGuage = playerData.thirstGuage;
+	energyGuage = playerData.energyGuage;
+
+	auto invenData = FILE_MGR->GetInvenInfo();
+
+	for (auto data : invenData)
+	{
+		string type = data.Type;
+		Vector2i invenPos = data.invenPos;
+		Vector2i invenGreedPos = data.invenGreedPos;
+		int cnt = data.cnt;
+		string path = data.path;
+
+		inven->GetPlayerInven()->AddItem(type, cnt, invenPos, invenGreedPos, path);
+	}
+
+
+	auto useItemData = FILE_MGR->GetUseItemInfo();
+
+	for (auto data : useItemData)
+	{
+		if (data.useIdx != -1)
+			inven->SetUserItem(data);
+	}
+
+}
+
+void Player::Save()
+{
+	UserInfo nowInfo;
+	nowInfo.hp = hp;
+	nowInfo.hungerGuage = hungerGuage;
+	nowInfo.thirstGuage = thirstGuage;
+	nowInfo.energyGuage = energyGuage;
+
+	FILE_MGR->SaveUserInfo(nowInfo);
+
+	auto nowInven = inven->GetPlayerInven()->GetItems();
+	vector<InvenInfo> saveInven;
+	for (auto data : *nowInven)
+	{
+		if (data->GetCount() <= 0)
+			continue;
+		InvenInfo d;
+		d.Type = data->GetName();
+		d.invenPos = data->GetInvenPos();
+		d.invenGreedPos = data->GetGreedPos();
+		d.cnt = data->GetCount();
+
+		d.path = data->GetPath();
+
+		saveInven.push_back(d);
+	}
+
+	FILE_MGR->SaveInvenInfo(saveInven);
+
+	auto nowUseItems = inven->GetUseItems();
+	vector<InvneUseInfo> saveUseItem;
+	int i = 0;
+	for (auto data : nowUseItems)
+	{
+		if (data == nullptr)
+		{
+			i++;
+			continue;
+		}
+		if (data->GetCount() <= 0)
+			continue;
+		InvneUseInfo d;
+		d.Type = data->GetName();
+		d.invenPos = data->GetInvenPos();
+		d.useIdx = i;
+		d.cnt = data->GetCount();
+		d.path = data->GetPath();
+		saveUseItem.push_back(d);
+		i++;
+	}
+
+	FILE_MGR->SaveUseItemInfo(saveUseItem);
 }

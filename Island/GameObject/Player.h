@@ -2,6 +2,8 @@
 #include "HitBoxObject.h"
 #include "Animation/Animator.h"
 #include "../Framework/ObjectPool.h"
+#include "Candle/RadialLight.hpp"
+#include "Candle/LightingArea.hpp"
 #include <list>
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -13,6 +15,8 @@ class HitBox;
 class Scene;
 class Gun;
 class Bullet;
+class Inventory;
+class ItemBoxObject;
 
 class Player : public HitBoxObject
 {
@@ -27,12 +31,15 @@ public:
 protected:
 	Scene* scene;
 	Gun* gun;
+	Inventory* inven;
+	ItemBoxObject* rightInvenObj;
 
 	Animator animator;
 	
 	States currState;
 	
 	float speed;
+	const float maxSpeed;
 	Vector2f look;
 	Vector2f lookDir;
 	Vector2f prevLook;
@@ -41,34 +48,53 @@ protected:
 	Vector2f lastDirection;
 	Vector2f prevPosition;
 	bool isFlip;
-
+	Vector2f bottomPos;
 	Vector2f playerNormalize;
 
-	SpriteObject* background;
-
 	int hp;
-	int maxHp;
+	const int maxHp;
 
 	float dash;
 	float staminaTime;
 	float staminaScale;
 	bool isDash;
 	float stamina;
-	float maxStamina;
+	const float maxStamina;
 
 	float hungerGuage;
 	int prevHungerGuage;
+	const float maxHungerGuage;
+	
 	float thirstGuage;
 	int prevThirstGuage;
+	const float maxThirstGuage;
+	
 	float energyGuage;
 	int prevEnergyGuage;
+	const float maxEnergyGuage;
 
-	float hungerDelay = 3.f;
-	float ThirstDelay = 3.f;
-	float EnergyDelay = 3.f;
+	float hungerDelay; 
+	float ThirstDelay; 
+	float EnergyDelay; 
 
+	float shootDelay;
+	float reloadDelay;
 
-	//bool isAlive;
+	//ammo
+	int ammo;
+	int sgAmmo;		//remaining ammo
+	int rfAmmo;
+	int snAmmo;
+	int magazineSG;		//magazine size
+	int magazineRF;
+	int magazineSN;
+
+	bool isMove;
+	bool isAlive;
+	bool isReloading;
+
+	bool isInven;
+
 public:
 	Player();
 	virtual~Player();
@@ -91,28 +117,34 @@ public:
 	Vector2f GetPlayerLastDir() { return lastDirection; }
 	Vector2f GetLookDir() { return lookDir; }
 	Vector2f GetPrevLookDir() { return prevLook; }
-	//int GetDamage() { return damage; }
+	Vector2f GetPlayerBottom() { return bottomPos; }
 	States GetCurrState() { return currState; }
 	float GetStaminaScale() { return staminaScale; }
 	bool GetIsDash() { return isDash; }
+	bool GetIsMove() { return isMove; }
 	int GetHp() { return hp; }
 	int GetMaxHp() { return maxHp; }
 	float GetStamina() { return stamina; }
 	float GetHungerGuage() { return hungerGuage; }
 	float GetThirstGuage() { return thirstGuage; }
 	float GetEnergyGuage() { return energyGuage; }
+	bool GetIsAlive() { return isAlive; }
 
 	bool Hunger() { return prevHungerGuage == (int)hungerGuage; }
 	bool Thirst() { return prevThirstGuage == (int)thirstGuage; }
 	bool Energy() { return prevEnergyGuage == (int)energyGuage; }
 
 	void SetHp(int num);
+	void HealHp(int num);
+	void HealHunger(float num);
+	void HealThirst(float num);
+	void HealEnergy(float num);
 
-	//void OnPickupItem(Item* item);
 	void SetPlayerPos();
 	Vector2f SetLookDir();
 	void SetFlipX(bool flip);
 	void SetIsDash(bool dash);
+	void SetMove(bool move);
 	void SetPrevHungerGuage(int hunger);
 	void SetPrevThirstGuage(int thirst);
 	void SetPrevEnergyGuage(int energy);
@@ -120,5 +152,20 @@ public:
 	void Move(float dt);
 	void Collision();
 	Vector2f* GetPosPtr() { return &position; }
+	void GetItem(map<string, Item>* items);
+	Inventory* GetInventory() { return inven; }
+	void SetRigthInvenBox(ItemBoxObject* inven) { rightInvenObj = inven; }
+	Gun* GetGun() { return gun; }
+	bool GetIsReloading() { return isReloading; }
+	void UseItems(int num);
+	void SetFireAmmo();
+	void SetAmmoType();
+	void Reload();
+
+	void Load();
+	void Save();
+
+	void SetIsInven(bool state) { isInven = state; }
+	bool IsInven() { return isInven; }
 };
 

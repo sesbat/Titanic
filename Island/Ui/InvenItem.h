@@ -31,6 +31,7 @@ public:
 	Vector2i GetGreedPos() { return invenGreedPos; }
 	int GetWidth() { return width; }
 	int GetHeight() { return height; }
+	string GetPath() { return path; }
 	void AddCount(int n);
 
 	

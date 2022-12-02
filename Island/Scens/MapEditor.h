@@ -1,6 +1,6 @@
 #pragma once
-#define WIDTHCNT 64
-#define HEIGHTCNT 32
+#define WIDTHCNT 128
+#define HEIGHTCNT 72
 #include "../Scens/Scene.h"
 
 class Button;
@@ -38,5 +38,7 @@ public:
 
 	void Save();
 	void Load(string path);
+	bool DrawBox(int x, int y);
+	Button* GetGreee(int x, int y) { return greeds[x][y]; }
 };
 

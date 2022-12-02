@@ -17,6 +17,7 @@ private:
 	InvenItem* nowDrag;
 
 	InventoryBox* myInven;
+	InventoryBox* initRightInven;
 	InventoryBox* rightInven;
 	InventoryBox* prevInven;
 
@@ -25,6 +26,7 @@ private:
 
 	int useIdx;
 
+	vector<vector<InvenItem*>::iterator> deleteUseItem;
 
 public:
 	Inventory(UiMgr* mgr);
@@ -40,8 +42,16 @@ public:
 	InventoryBox* GetRightInven();
 	InventoryBox* GetPairBox(InventoryBox* now);
 	void SetPrevInven(InventoryBox* inven) { this->prevInven = inven; }
+	void SetRightInven(InventoryBox* inven) { rightInven = inven; }
 	void MoveInvenItem(InventoryBox* nextInven);
 	void ReturnUseItem();
 	void ClearInven();
-
+	void ResetRightInven();
+	InvenItem* GetUsedItem(int i);
+	InventoryBox* GetPlayerInven() { return myInven; }
+	void AddDeleteObj(InvenItem* obj);
+	void AddDeleteItem(InvenItem* item);
+	void SetUserItem(InvneUseInfo data);
+	const vector<InvenItem*>& GetUseItems() { return myUseItems; }
+	int GetUseIdx() { return useIdx; }
 };

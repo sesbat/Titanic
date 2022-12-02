@@ -10,6 +10,9 @@
 #include "../../Framework/Framework.h"
 #include "../UiMgr.h"
 #include "../../Framework/FileManager.h"
+#include "../../GameObject/Player.h"
+#include "../../Ui/Inventory.h"
+#include "../Craft.h"
 
 ReadyUiMgr::ReadyUiMgr(Scene* scene)
 	:UiMgr(scene)
@@ -20,7 +23,11 @@ ReadyUiMgr::ReadyUiMgr(Scene* scene)
 void ReadyUiMgr::Init()
 {
 	player = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
-	npc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetNPC();
+	startNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetStartNPC();
+	craftNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetCraftNPC();
+
+	inVen = player->GetInventory();
+	uiObjList[1].push_back(inVen);
 
 	mapsBK = new Button(this);
 	mapsBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/mapsbk.png"), false);
@@ -29,6 +36,18 @@ void ReadyUiMgr::Init()
 	mapsBK->SetOrigin(Origins::MC);
 	mapsBK->SetActive(false);
 	uiObjList[0].push_back(mapsBK);
+
+	craft = new Craft(this);
+	craft->Init();
+	uiObjList[0].push_back(craft);
+
+	categoryBK = new Button(this);
+	categoryBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/craftbk.png"),false);
+	categoryBK->SetPos({
+		(float)FRAMEWORK->GetWindowSize().x / 2,(float)FRAMEWORK->GetWindowSize().y / 2 });
+	categoryBK->SetOrigin(Origins::MC);
+	categoryBK->SetActive(false);
+	uiObjList[0].push_back(categoryBK);
 
 
 	auto& mapData = FILE_MGR->GetAllMap();
@@ -42,7 +61,7 @@ void ReadyUiMgr::Init()
 		map->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 50, Color::White
 			,data.first, true);
 		map->SetPos({ 400,tmpY });
-		tmpY -= 50.f;
+		tmpY += 50.f;
 		map->SetName(data.first);
 		maps.push_back(map);
 	}
@@ -69,7 +88,7 @@ void ReadyUiMgr::Init()
 void ReadyUiMgr::Update(float dt)
 {
 	UiMgr::Update(dt);
-	if (npc->GetShowMap())
+	if (startNpc->GetShowMap())
 	{
 		mapsBK->SetActive(true);
 		for (auto& map : maps)
@@ -90,6 +109,14 @@ void ReadyUiMgr::Update(float dt)
 		{
 			map->SetActive(false);
 		}
+	}
+	if (craftNpc->GetShowCraft())
+	{
+		craft->SetActive(true);
+	}
+	else
+	{
+		craft->SetActive(false);
 	}
 }
 

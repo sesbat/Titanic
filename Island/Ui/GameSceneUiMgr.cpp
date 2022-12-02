@@ -125,10 +125,8 @@ void GameSceneUiMgr::Init()
 	energyBK->SetPos({ 700,100 });
 	uiObjList[0].push_back(energyBK);
 
-	inven = new Inventory(this);
-	inven->Init();
+	inven = player->GetInventory();
 	uiObjList[1].push_back(inven);
-	inven->SetActive(false);
 
 
 	hungerTex = new Button(this);
@@ -164,7 +162,7 @@ void GameSceneUiMgr::Reset()
 void GameSceneUiMgr::Update(float dt)
 {
 	//hp bar
-	hpBarSize = (float)player->GetHp() * 0.1f;
+	hpBarSize = (float)player->GetHp() / player->GetMaxHp();// *0.002f;
 	hpBar->GetSpriteObj()->SetScale({ hpBarSize,1.f });
 
 	//stamina
@@ -220,12 +218,6 @@ void GameSceneUiMgr::Update(float dt)
 
 	UiMgr::Update(dt);
 
-	if (InputMgr::GetKeyDown(Keyboard::Tab))
-	{
-		inven->SetActive(!(inven->GetActive()));
-		if(!inven->GetActive())
-			inven->ClearInven();
-	}
 }
 
 void GameSceneUiMgr::Draw(RenderWindow& window)
@@ -233,16 +225,4 @@ void GameSceneUiMgr::Draw(RenderWindow& window)
 	window.setView(parentScene->GetUiView());
 	UiMgr::Draw(window);
 }
-
-void GameSceneUiMgr::GetItem(map<string, Item>* items)
-{
-	inven->SetActive(true);
-	auto right_inven = inven->GetRightInven();
-
-	for (auto item : *items)
-	{
-		right_inven->AddItem(item.second.type);
-	}
-}
-
 

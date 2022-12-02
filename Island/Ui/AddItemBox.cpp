@@ -47,51 +47,94 @@ void AddItemBox::Update(float dt)
 	if (!enabled)
 		return;
 	Button::Update(dt);
-	for (auto& item : allItems)
+
+	if (InputMgr::GetMouseWheelUp())
 	{
-		item.second->Update(dt);
+		addItemIdx--;
+		addItemIdx = max(addItemIdx, 0);
 
-		auto& now = item.second;
-
-		if (now->addCnt->IsUp())
+		Vector2f pos = { 1400,160 };
+		int i = 0;
+		for (auto& item : allItems)
 		{
-			now->item.count++;
-			auto find_item = nowObjectItems->find(now->item.type);
-
-			if (find_item == nowObjectItems->end())
+			if (i >= addItemIdx && i < addItemIdx + 4)
 			{
-				(*nowObjectItems)[now->item.type].path = now->item.path;
-				(*nowObjectItems)[now->item.type].type = now->item.type;
-				(*nowObjectItems)[now->item.type].count = 1;
+				item.second->SetPosition(pos);
+				pos.y += 200.f;
 			}
-			else
-			{
-				(*find_item).second.count++;
-				(*nowObjectItems)[now->item.type].count = (*find_item).second.count;
-			}
-			now->text->SetString(to_string(now->item.count));
-		}
-		if (now->minCnt->IsUp())
-		{
-			now->item.count--;
-			now->item.count = max(0, now->item.count);
-
-			auto find_item = nowObjectItems->find(now->item.type);
-			if (find_item == nowObjectItems->end())
-				return;
-			else
-			{
-				if (now->item.count == 0)
-					nowObjectItems->erase(find_item);
-				else
-				{
-					(*find_item).second.count--;
-					(*nowObjectItems)[now->item.type].count = (*find_item).second.count;
-				}
-			}
-			now->text->SetString(to_string(now->item.count));
+			i++;
 		}
 	}
+	if (InputMgr::GetMouseWheelDown())
+	{
+		addItemIdx++;
+		addItemIdx = min((int)allItems.size(), addItemIdx);
+
+		Vector2f pos = { 1400,160 };
+		int i = 0;
+		for (auto& item : allItems)
+		{
+			if (i >= addItemIdx && i < addItemIdx + 4)
+			{
+				item.second->SetPosition(pos);
+				pos.y += 200.f;
+			}
+			i++;
+		}
+	}
+
+	int i = 0;
+	for (auto& item : allItems)
+	{
+		if (i >= addItemIdx && i < addItemIdx + 4)
+		{
+			item.second->Update(dt);
+
+			auto& now = item.second;
+
+			if (now->addCnt->IsUp())
+			{
+				now->item.count++;
+				auto find_item = nowObjectItems->find(now->item.type);
+
+				if (find_item == nowObjectItems->end())
+				{
+					(*nowObjectItems)[now->item.type].path = now->item.path;
+					(*nowObjectItems)[now->item.type].type = now->item.type;
+					(*nowObjectItems)[now->item.type].count = 1;
+				}
+				else
+				{
+					(*find_item).second.count++;
+					(*nowObjectItems)[now->item.type].count = (*find_item).second.count;
+				}
+				now->text->SetString(to_string(now->item.count));
+			}
+			if (now->minCnt->IsUp())
+			{
+				now->item.count--;
+				now->item.count = max(0, now->item.count);
+
+				auto find_item = nowObjectItems->find(now->item.type);
+				if (find_item == nowObjectItems->end())
+					return;
+				else
+				{
+					if (now->item.count == 0)
+						nowObjectItems->erase(find_item);
+					else
+					{
+						(*find_item).second.count--;
+						(*nowObjectItems)[now->item.type].count = (*find_item).second.count;
+					}
+				}
+				now->text->SetString(to_string(now->item.count));
+			}
+		}
+		i++;
+
+	}
+
 
 }
 
@@ -100,9 +143,15 @@ void AddItemBox::Draw(RenderWindow& window)
 	if (!enabled)
 		return;
 	Button::Draw(window);
+	int i = 0;
 	for (auto& item : allItems)
 	{
-		item.second->Draw(window);
+		if (i >= addItemIdx && i < addItemIdx + 4)
+		{
+			item.second->Draw(window);
+		}
+		i++;
+
 	}
 }
 

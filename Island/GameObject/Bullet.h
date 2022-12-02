@@ -6,8 +6,8 @@ class HitBox;
 class Enemy;
 class Player;
 
-class Bullet
-	:public SpriteObject
+
+class Bullet :public SpriteObject
 {
 private:
 	Scene* scene;
@@ -20,6 +20,8 @@ private:
 
 	Vector2f startPos;
 	Vector2f nextPos;
+
+	int damage;
 
 	bool isplayer;
 	bool showLine;
@@ -40,6 +42,7 @@ public:
 
 	void SetPlayer(Player* player){this->player = player;}
 	void SetEnemyList(list<Enemy*>* list) { enemies = list; }
+	void SetDamage(int num) { damage = num; }
 
 	bool LineRect(Vector2f bulletpos, Vector2f bulletPrevPos, RectangleShape hitObject);
 	bool Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, float y3, float x4, float y4);

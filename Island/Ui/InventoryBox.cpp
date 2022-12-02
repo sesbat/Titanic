@@ -49,7 +49,6 @@ void InventoryBox::Update(float dt)
 			item->Update(dt);
 			if (item->IsDown())
 			{
-				cout << GetName() << endl;
 				inven->SetDrag(item);
 				inven->SetPrevInven(this);
 				auto invenPos = nowDrag->GetGreedPos();
@@ -68,13 +67,7 @@ void InventoryBox::Update(float dt)
 			}
 			else if (item->IsClickRight())
 			{
-				auto pair = inven->GetPairBox(inven->GetNowInven());
-
-				cout << pair->GetName() << endl;
-				auto pos = pair->FindInvenPos(item->GetWidth(), item->GetHeight());
-
-				cout << pos.x << endl;
-				cout << pos.y << endl;
+				auto pos = pairInven->FindInvenPos(item->GetWidth(), item->GetHeight());
 				auto invenPos = item->GetGreedPos();
 
 
@@ -89,7 +82,7 @@ void InventoryBox::Update(float dt)
 						}
 					}
 
-					pair->AddItem(item->GetName(), item->GetCount());
+					pairInven->AddItem(item->GetName(), item->GetCount());
 					items.erase(find(items.begin(), items.end(), item));
 					break;
 				}
@@ -136,10 +129,37 @@ void InventoryBox::Draw(RenderWindow& window)
 		nowDrag->Draw(window);
 }
 
-void InventoryBox::AddItem(string name, int count)
+void InventoryBox::AddItem(string name, int cnt, Vector2i invenPos, Vector2i greedPos, string path)
 {
 	auto data = FILE_MGR->GetItemInfo(name);
 
+	InvenItem* item = new InvenItem(uimgr);
+	item->Init();
+	Vector2i findPos;
+	findPos.x = greedPos.y;
+	findPos.y = greedPos.x;
+	for (int i = findPos.x; i < findPos.x + data.height; i++)
+	{
+		for (int j = findPos.y; j < findPos.y + data.width; j++)
+		{
+			allPos[i][j] = true;
+			itemGreed[i][j]->SetState(true, item);
+
+		}
+	}
+	item->Set(data.width, data.height,
+		{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
+		{ findPos.y, findPos.x }, data.path, data.maxCount);
+	item->AddCount(cnt);
+	item->SetName(name);
+	item->Init();
+
+	items.push_back(item);
+}
+
+void InventoryBox::AddItem(string name, int count)
+{
+	auto data = FILE_MGR->GetItemInfo(name);
 	for (auto& item : items)
 	{
 		if (item->GetName() == name)
@@ -159,7 +179,7 @@ void InventoryBox::AddItem(string name, int count)
 		}
 	}
 
-	auto findPos = FindInvenPos(data.weight, data.height);
+	auto findPos = FindInvenPos(data.width, data.height);
 
 	if (findPos == Vector2i{ -1, -1 })
 	{
@@ -171,12 +191,11 @@ void InventoryBox::AddItem(string name, int count)
 	InvenItem* item = new InvenItem(uimgr);
 	for (int i = findPos.x; i < findPos.x + data.height; i++)
 	{
-		for (int j = findPos.y; j < findPos.y + data.weight; j++)
+		for (int j = findPos.y; j < findPos.y + data.width; j++)
 		{
 			allPos[i][j] = true;
 			itemGreed[i][j]->SetState(true, item);
-			cout << "unRock_i:" << i << endl;
-			cout << "unRock_j:" << j << endl;
+
 		}
 	}
 	item->Set(data.width, data.height,
@@ -257,10 +276,12 @@ void InventoryBox::MoveItem(int i, int j)
 
 	if (find(items.begin(), items.end(), nowDrag) == items.end())
 	{
-		items.push_back(nowDrag);
+		cout << "this11" << endl;
+		//items.push_back(nowDrag);
 	}
 
 	inven->MoveInvenItem(this);
+
 	inven->SetDrag(nullptr);
 	inven->SetPrevInven(nullptr);
 }
@@ -294,9 +315,27 @@ void InventoryBox::ReturnItem()
 	inven->SetPrevInven(nullptr);
 }
 
+void InventoryBox::DeleteItem(InvenItem* item)
+{
+	
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			if (itemGreed[j][i]->GetItem() == item)
+			{
+				allPos[j][i] = false;
+				itemGreed[j][i]->SetState(false, nullptr);
+				items.erase(find(items.begin(), items.end(), item));
+				return;
+			}
+		}
+	}
+}
+
 void InventoryBox::ClearInven()
 {
-	for (auto& item :items)
+	for (auto item :items)
 	{
 		delete item;
 	}

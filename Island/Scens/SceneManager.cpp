@@ -24,6 +24,10 @@ Scene* SceneManager::GetCurrScene()
 {
 	return sceneMap[currScene];
 }
+Scenes SceneManager::GetCurrSceneType()
+{
+	return currScene;
+}
 
 Scene* SceneManager::GetScene(Scenes scene)
 {

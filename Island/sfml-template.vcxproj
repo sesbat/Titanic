@@ -150,7 +150,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Astar\Astar.cpp" />
+    <ClCompile Include="GameObject\Ment.cpp" />
+    <ClCompile Include="Ui\CraftItem.cpp" />
+    <ClCompile Include="Ui\CraftGreed.cpp" />
+    <ClCompile Include="Ui\Craft.cpp" />
+    <ClCompile Include="Ui\CraftBox.cpp" />
+    <ClCompile Include="3rd\QuadTree_SFML_DEMO.cpp" />
     <ClCompile Include="GameObject\ItemBoxObject.cpp" />
+    <ClCompile Include="src\Color.cpp" />
+    <ClCompile Include="src\Constants.cpp" />
+    <ClCompile Include="src\DirectedLight.cpp" />
+    <ClCompile Include="src\LightingArea.cpp" />
+    <ClCompile Include="src\LightSource.cpp" />
+    <ClCompile Include="src\Line.cpp" />
+    <ClCompile Include="src\Polygon.cpp" />
+    <ClCompile Include="src\RadialLight.cpp" />
+    <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="Ui\AddItemBox.cpp" />
     <ClCompile Include="GameObject\Bullet.cpp" />
     <ClCompile Include="DataTable\DataTable.cpp" />
@@ -204,8 +220,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\OBB.h" />
+    <ClInclude Include="3rd\QuadTree_SFML_DEMO.h" />
     <ClInclude Include="3rd\rapidcsv.h" />
     <ClInclude Include="3rd\SingleTon.h" />
+    <ClInclude Include="Astar\Astar.h" />
+    <ClInclude Include="GameObject\Ment.h" />
+    <ClInclude Include="Ui\CraftItem.h" />
+    <ClInclude Include="Ui\CraftGreed.h" />
+    <ClInclude Include="Ui\Craft.h" />
+    <ClInclude Include="Ui\CraftBox.h" />
     <ClInclude Include="GameObject\ItemBoxObject.h" />
     <ClInclude Include="Ui\AddItemBox.h" />
     <ClInclude Include="GameObject\Bullet.h" />

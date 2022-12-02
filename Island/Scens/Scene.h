@@ -14,6 +14,7 @@ enum class Scenes
 {
 	None = -1, Menu,Ready,MapEditor,Count,GameScene
 };
+
 // �ٴ�, Ǯ, ������Ʈ + ��(Ư��), ���ʹ�
 enum class LayerType
 {
@@ -30,6 +31,8 @@ protected:
 	View uiView;
 
 	UiMgr* uiMgr;
+
+	vector <Object*> deleteContainer;
 
 	vector<Object*> moves;
 	vector<Object*> another;
@@ -64,5 +67,6 @@ public:
 	virtual void LayerSort();
 	void SetSceneName(string name) { sceneName = name; }
 	string GetSceneName() { return sceneName; }
+	void AddDeleteObject(int idx,Object* obj);
 };
 bool sorting(Object* p1, Object* p2);

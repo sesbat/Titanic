@@ -14,13 +14,14 @@
 #include "../Framework/Framework.h"
 
 Ready::Ready()
-	:Scene(Scenes::Ready)
+	:Scene(Scenes::Ready), treeMap(treeRect, 16, 4)
 {
 
 }
 
 Ready::~Ready()
 {
+	treeMap.clear();
 	Release();
 }
 
@@ -32,7 +33,7 @@ void Ready::Init()
 
 	for (auto& obj : data)
 	{
-		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "BLOCK")
+		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "BLOCK"|| obj.type == "BOX" || obj.type == "BOX-ENEMY")
 		{
 			HitBoxObject* draw = new HitBoxObject();
 			draw->SetName(obj.type);
@@ -72,15 +73,39 @@ void Ready::Init()
 	mapSize.width = (tiles.back())->GetPos().x + 30;
 	mapSize.height = (tiles.back())->GetPos().y;
 
-	npc = new NPC();
-	npc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/npc.png"));
-	npc->SetOrigin(Origins::BC);
-	npc->SetPlayer(player);
-	npc->SetPos({ 990.f,1740.f });
-	npc->SetName("NPC");
-	npc->Init();
-	npc->SetHitBox("graphics/player.png");
-	objList[LayerType::Object][0].push_back(npc);
+	startNpc = new NPC();
+	startNpc->SetNPCType(NPCType::Start);
+	startNpc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/startnpc.png"));
+	startNpc->SetOrigin(Origins::MC);
+	startNpc->SetPlayer(player);
+	startNpc->SetPos({ 990.f,1740.f });
+	startNpc->SetName("NPC");
+	startNpc->Init();
+	startNpc->SetHitBox("graphics/player.png");
+	objList[LayerType::Object][0].push_back(startNpc);
+
+	shopNpc = new NPC();
+	shopNpc->SetNPCType(NPCType::Shop);
+	shopNpc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shopnpc.png"));
+	shopNpc->SetOrigin(Origins::MC);
+	shopNpc->SetPlayer(player);
+	shopNpc->SetPos({ 1800.f,300.f });
+	shopNpc->SetName("NPC");
+	shopNpc->Init();
+	shopNpc->SetHitBox("graphics/player.png");
+	objList[LayerType::Object][0].push_back(shopNpc);
+
+
+	craftNpc = new NPC();
+	craftNpc->SetNPCType(NPCType::Craft);
+	craftNpc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shopnpc.png"));
+	craftNpc->SetOrigin(Origins::BC);
+	craftNpc->SetPlayer(player);
+	craftNpc->SetPos({ 1800.f,1200.f });
+	craftNpc->SetName("NPC");
+	craftNpc->Init();
+	craftNpc->SetHitBox("graphics/player.png");
+	objList[LayerType::Object][0].push_back(craftNpc);
 
 	//npc = new NPC();
 	//npc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/npc.png"));
@@ -94,6 +119,7 @@ void Ready::Init()
 
 	uiMgr = new ReadyUiMgr(this);
 	uiMgr->Init();
+	treeMap.setFont(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"));
 }
 
 void Ready::Release()
@@ -115,13 +141,23 @@ void Ready::Enter()
 
 void Ready::Exit()
 {
+	treeMap.clear();
+	player->Save();
 	Release();
 }
 
 void Ready::Update(float dt)
 {
-	LayerSort();
+	//LayerSort();
 
+	//if (craftNpc->GetShowCraft() || startNpc->GetShowMap())
+	//{
+	//	player->SetMove(false);
+	//}
+	//else
+	//{
+	//	player->SetMove(true);
+	//}
 
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
 
@@ -143,9 +179,22 @@ void Ready::Update(float dt)
 	realcam.y = max((int)realcam.y, WINDOW_HEIGHT / 2);
 	realcam.y = min((int)realcam.y, mapSize.height - WINDOW_HEIGHT / 2);
 
-	worldView.setCenter(realcam);
+	if(player->GetIsMove())
+		worldView.setCenter(realcam);
+	LayerSort();
+	treeMap.insert(drawObjs);
+	treeMap.update(drawObjs);
 
 	Scene::Update(dt);
+}
+
+vector<HitBoxObject*> Ready::ObjListObb(HitBoxObject* obj)
+{
+	return treeMap.getObjectsInBound_unchecked_notParent(*obj);
+}
+vector<HitBoxObject*> Ready::ObjListObb(FloatRect obj)
+{
+	return treeMap.getObjectsInBound_unchecked_notParent(obj);
 }
 
 void Ready::Draw(RenderWindow& window)

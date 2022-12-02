@@ -80,6 +80,32 @@ void Scene::Update(float dt)
 		}
 	}
 
+	for (auto& del : deleteContainer)
+	{
+		auto it = find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), del);
+		if (it != objList[LayerType::Object][0].end())
+		{
+			auto ptr = *it;
+			objList[LayerType::Object][0].erase(it);
+			delete ptr;
+			continue;
+		}
+
+		it = find(objList[LayerType::Object][1].begin(), objList[LayerType::Object][1].end(), del);
+		if (it != objList[LayerType::Object][1].end())
+		{
+			auto ptr = *it;
+			objList[LayerType::Object][1].erase(it);
+			delete ptr;
+			continue;
+		}
+	}
+	if (deleteContainer.size() > 0)
+	{
+		LayerSort();
+	}
+	deleteContainer.clear();
+
 	if(uiMgr != nullptr)
 		uiMgr->Update(dt);
 }
@@ -109,7 +135,6 @@ void Scene::Draw(RenderWindow& window)
 	}
 	else
 	{
-		LayerSort();
 		int i = 0;
 		for (auto& obj : objList[LayerType::Tile])
 		{
@@ -188,16 +213,14 @@ void Scene::LayerSort()
 		{
 			continue;
 		}
-		if (obj->GetName() == "TREE" || obj->GetName() == "BUSH" || obj->GetName() == "STONE" || obj->GetName() == "BLOCK" || obj->GetName() == "BOX")
+		if (obj->GetName() == "TREE" || obj->GetName() == "BUSH" || obj->GetName() == "STONE" ||
+			obj->GetName() == "BLOCK" || obj->GetName() == "BOX" || obj->GetName() == "BOX-ENEMY")
 		{
 			if (obj->GetName() == "TREE" || obj->GetName() == "BUSH")
 				alphaObj.push_back((HitBoxObject*)obj);
 
-			if (obj->GetName() == "BOX")
-			{
-				cout << "BOX" << endl;
-			}
-			drawObjs.push_back(obj);
+			if(obj->GetActive())
+				drawObjs.push_back(obj);
 
 		}
 		else if (obj->GetName() == "ANOTHER")
@@ -208,7 +231,9 @@ void Scene::LayerSort()
 		{
 			if (obj->GetName() == "PLAYER")
 				player = ((HitBoxObject*)obj);
-			moves.push_back(obj);
+
+			if (obj->GetActive())
+				moves.push_back(obj);
 		}
 	}
 
@@ -247,5 +272,15 @@ void Scene::LayerSort()
 		}
 	}
 
+}
+
+void Scene::AddDeleteObject(int layer_idx, Object* obj)
+{
+	auto it = find(objList[LayerType::Object][layer_idx].begin(), objList[LayerType::Object][layer_idx].end(), obj);
+	if (it != objList[LayerType::Object][layer_idx].end())
+	{
+		deleteContainer.push_back(*it);
+		(*it)->SetActive(false);
+	}
 }
 
