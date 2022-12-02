@@ -10,7 +10,7 @@ private:
 	const int padding = 4;
 	const int width = 8;
 	const int height = 11;
-	vector<vector<bool>> itemPos;
+	vector<vector<bool>> allPos;
 	vector<vector<InvenGreed*>> itemGreed;
 	vector<InvenItem*> items;
 	InvenItem* nowDrag;
@@ -27,10 +27,11 @@ public:
 	InvenGreed* GetGreed(int i, int j);
 	void MoveItem(int i, int j);
 	void ReturnItem();
-	bool IsGreedItem(int i, int j) { return itemPos[i][j]; }
+	bool IsGreedItem(int i, int j) { return allPos[i][j]; }
 	int GetWidth() { return width; }
 	int GetHeight() { return height; }
 	void SetDrag(InvenItem* nowDrag) { this->nowDrag = nowDrag; }
 	vector<InvenItem*>* GetItems() { return &items; }
+	void ClearInven();
 };
 

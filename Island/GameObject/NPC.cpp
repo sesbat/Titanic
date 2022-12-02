@@ -34,7 +34,7 @@ void NPC::Release()
 void NPC::Update(float dt)
 {
 	SpriteObject::Update(dt);
-	cout << GetPos().x<<" "<< GetPos().y << endl;
+	//cout << GetPos().x<<" "<< GetPos().y << endl;
 	if (Utils::Distance(GetPos(), player->GetPos()) < 100 &&
 		InputMgr::GetKeyDown(Keyboard::F))
 	{

@@ -150,6 +150,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObject\ItemBoxObject.cpp" />
+    <ClCompile Include="Ui\AddItemBox.cpp" />
     <ClCompile Include="GameObject\Bullet.cpp" />
     <ClCompile Include="DataTable\DataTable.cpp" />
     <ClCompile Include="DataTable\DataTableMGR.cpp" />
@@ -204,6 +206,8 @@
     <ClInclude Include="3rd\OBB.h" />
     <ClInclude Include="3rd\rapidcsv.h" />
     <ClInclude Include="3rd\SingleTon.h" />
+    <ClInclude Include="GameObject\ItemBoxObject.h" />
+    <ClInclude Include="Ui\AddItemBox.h" />
     <ClInclude Include="GameObject\Bullet.h" />
     <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="DataTable\DataTableMGR.h" />

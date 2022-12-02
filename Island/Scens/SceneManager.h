@@ -21,6 +21,7 @@ public:
 	bool LoadPath();
 	bool Init();
 	void ChangeScene(Scenes scene);
+	void ChangeScene(Scenes scene, string sceneName);
 	void Update(float dt);
 	void Draw(RenderWindow& window);
 };

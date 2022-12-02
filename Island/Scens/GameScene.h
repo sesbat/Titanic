@@ -16,7 +16,6 @@ class GameScene :public Scene
 	
 protected:
 	Player* player;
-	NPC* npc;
 
 	list<Enemy*> enemies;
 
@@ -24,7 +23,6 @@ protected:
 	Clock clock;
 
 	IntRect mapSize;
-
 	
 
 	//mission
@@ -51,5 +49,6 @@ public:
 	Player* GetPlayer(){ return player; }
 	float GetEscapeTimer() { return escapeTimer; }
 	Vector2f GetEscapePoint() { return escapePoint; }
-	NPC* GetNPC() { return npc; }
+	void SetDeadEnemy(map<string, Item> items, Vector2f pos);
+	void GetItem(map<string, Item>* items);
 };

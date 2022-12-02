@@ -8,6 +8,8 @@
 #include "../Framework/ResourceManager.h"
 #include "../Framework/InputMgr.h"
 #include "../Framework/SoundManager.h"
+#include "../Ui/GameSceneUiMgr.h"
+#include "../Scens/GameScene.h"
 #include <iostream>
 
 Enemy::Enemy()
@@ -67,6 +69,7 @@ void Enemy::SetState(States newState)
 		animator.Play((direction.x > 0.f) ? "EnemyMove" : "EnemyMoveLeft");
 		break;
 	case Enemy::States::Dead:
+		((GameScene*)(SCENE_MGR->GetCurrScene()))->SetDeadEnemy(items, position);
 		SetActive(false);
 		break;
 	}

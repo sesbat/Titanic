@@ -37,8 +37,8 @@ namespace ns {
 	{
 		string type;
 		string path;
-		int pers = 100;
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Item, type, path, pers)
+		int count = 0;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Item, type, path, count)
 	};
 	
 	struct ObjectData
@@ -47,7 +47,7 @@ namespace ns {
 		string path; // 스프라이트 파일
 		sf::Vector2f position;
 		sf::Vector2i greedIdx;
-		vector<Item> item;
+		map<string,Item> item;
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ObjectData, type, path, position, greedIdx, item)
 	};
 

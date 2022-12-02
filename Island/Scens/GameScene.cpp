@@ -19,6 +19,7 @@
 #include <cmath>
 #include "../Ui/GameSceneUiMgr.h"
 #include "../GameObject/NPC.h"
+#include "../GameObject/ItemBoxObject.h"
 
 using namespace std;
 using namespace sf;
@@ -36,7 +37,7 @@ void GameScene::Init()
 {
 	int id = 0;
 	isMap = true;
-	auto& data = FILE_MGR->GetMap("TUTORIAL");
+	auto& data = FILE_MGR->GetMap(sceneName);
 
 	for (auto& obj : data)
 	{
@@ -68,6 +69,7 @@ void GameScene::Init()
 			enemy->SetId(id++);
 			enemy->SetPos(obj.position);
 			enemy->SetHitBox(obj.path);
+			enemy->SetItem(obj.item);
 			enemies.push_back(enemy);
 
 			objList[LayerType::Object][0].push_back(enemy);
@@ -83,15 +85,33 @@ void GameScene::Init()
 
 			objList[LayerType::Tile][0].push_back(draw);
 		}
+		else if (obj.type == "ANOTHER")
+		{
+			HitBoxObject* draw = new HitBoxObject();
+			draw->SetName(obj.type);
+			draw->SetTexture(*RESOURCES_MGR->GetTexture(obj.path));
+			draw->SetOrigin(Origins::BC);
+			draw->SetPos(obj.position);
+			draw->SetHitBox(obj.path);
+			escapePoint = obj.position;
+			escapePoint.y -= 100.f;
+
+			objList[LayerType::Object][0].push_back(draw);
+
+			missionText = new TextObject();
+			missionText->SetActive(false);
+			missionText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 80, Color::Green, to_string(escapeTimer));
+			missionText->SetTextLine(Color::Black, 1.f);
+			missionText->SetOrigin(Origins::BC);
+			missionText->SetPos(escapePoint);
+			objList[LayerType::Object][1].push_back(missionText);
+			//HitBoxObject* exit = new HitBoxObject();
+			//exit->SetTexture(*RESOURCES_MGR->GetTexture("graphics/exit.png"));
+			//exit->SetOrigin(Origins::BC);
+			//exit->SetPos(obj.position);
+			//objList[LayerType::Object][0].push_back(exit);
+		}
 	}
-	npc = new NPC();
-	npc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/npc.png"));
-	npc->SetOrigin(Origins::MC);
-	npc->SetPlayer(player);
-	npc->SetPos({ 100.f,100.f });
-	npc->SetName("NPC");
-	npc->Init();
-	objList[LayerType::Object][0].push_back(npc);
 
 	for (auto& enemy : enemies)
 	{
@@ -106,22 +126,16 @@ void GameScene::Init()
 
 	
 	//mission exit tile
-	escapePoint = { 1200.f,1650.f };
-	HitBoxObject* exit = new HitBoxObject();
-	exit->SetName("EXIT");
-	exit->SetTexture(*RESOURCES_MGR->GetTexture("graphics/exit.png"));
-	exit->SetOrigin(Origins::BC);
-	exit->SetPos(escapePoint);
-	objList[LayerType::Tile][0].push_back(exit);
+	//escapePoint = { 1200.f,1650.f };
 
-	missionText = new TextObject();
-	missionText->SetActive(false);
-	missionText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 80, Color::Green, to_string(escapeTimer));
-	missionText->SetTextLine(Color::Black, 1.f);
-	missionText->SetOrigin(Origins::MC);
-	missionText->SetPos(escapePoint);
-	objList[LayerType::Object][1].push_back(missionText);
-	//
+	//missionText = new TextObject();
+	//missionText->SetActive(false);
+	//missionText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 80, Color::Green, to_string(escapeTimer));
+	//missionText->SetTextLine(Color::Black, 1.f);
+	//missionText->SetOrigin(Origins::MC);
+	//missionText->SetPos(escapePoint);
+	//objList[LayerType::Object][1].push_back(missionText);
+	
 
 	uiMgr = new GameSceneUiMgr(this);
 	uiMgr->Init();
@@ -165,11 +179,6 @@ void GameScene::Update(float dt)
 			it++;
 	}
 
-	if (((GameSceneUiMgr*)uiMgr)->IsExit() || InputMgr::GetKeyDown(Keyboard::Escape))
-	{
-		SCENE_MGR->ChangeScene(Scenes::Menu);
-		return;
-	}
 
 	LayerSort();
 	
@@ -203,7 +212,9 @@ void GameScene::Update(float dt)
 		//et = et.substr(0, et.find('.') + 2);
 		escapeTimer -= dt;
 		missionText->SetActive(true);
-		missionText->SetString("LEAVING IN " + to_string(escapeTimer));
+		string timer = to_string(escapeTimer); 
+		timer = timer.substr(0, timer.find('.') + 3);
+		missionText->SetString("LEAVING IN " + timer);
 	}
 	else
 	{
@@ -213,15 +224,45 @@ void GameScene::Update(float dt)
 
 	if (escapeTimer <= 0.f)
 	{
-		SCENE_MGR->ChangeScene(Scenes::Menu);
+		SCENE_MGR->ChangeScene(Scenes::Ready);
 		return;
 	}
 
 	Scene::Update(dt);
 }
-
+	
 void GameScene::Draw(RenderWindow& window)
 {
 	window.setView(worldView);
 	Scene::Draw(window);
+}
+
+void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos)
+{
+	ItemBoxObject* box = new ItemBoxObject();
+	box->SetItems(items);
+	box->SetTexture(*RESOURCES_MGR->GetTexture("graphics/enemy1-die.png"));
+
+	box->SetOrigin(Origins::MC);
+	box->SetHitBox("graphics/enemy1-die.png");
+	box->SetPos(pos);
+	box->SetName("BOX");
+	box->SetPlayerPos(player->GetPosPtr());
+
+	for (auto& obj : objList[LayerType::Object][0])
+	{
+		if (((HitBoxObject*)(box))->GetBottomPos() < ((HitBoxObject*)(obj))->GetBottomPos())
+		{
+			objList[LayerType::Object][0].insert(find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), obj), box);
+			break;
+		}
+	}
+
+	//objList[LayerType::Object][0].push_back(box);
+	
+}
+
+void GameScene::GetItem(map<string, Item>* items)
+{
+	((GameSceneUiMgr*)(uiMgr))->GetItem(items);
 }

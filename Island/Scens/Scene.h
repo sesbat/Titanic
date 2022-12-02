@@ -14,7 +14,7 @@ enum class Scenes
 {
 	None = -1, Menu,Ready,MapEditor,Count,GameScene
 };
-// ¹Ù´Ú, Ç®, ¿ÀºêÁ§Æ® + º®(Æ¯¼ö), ¿¡³Ê¹Ì
+// ï¿½Ù´ï¿½, Ç®, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® + ï¿½ï¿½(Æ¯ï¿½ï¿½), ï¿½ï¿½ï¿½Ê¹ï¿½
 enum class LayerType
 {
 	None, Back, Tile, Object
@@ -32,10 +32,12 @@ protected:
 	UiMgr* uiMgr;
 
 	vector<Object*> moves;
+	vector<Object*> another;
 	vector<Object*> drawObjs;
 	vector<HitBoxObject*> alphaObj;
 	bool isMap;
 
+	string sceneName;
 public:
 	Scene(Scenes type);
 	virtual ~Scene();
@@ -60,5 +62,7 @@ public:
 	UiMgr* GetUiMgr() { return uiMgr; }
 	map<LayerType, map<int, vector<Object*>>> GetObjList() { return objList; }
 	virtual void LayerSort();
+	void SetSceneName(string name) { sceneName = name; }
+	string GetSceneName() { return sceneName; }
 };
 bool sorting(Object* p1, Object* p2);

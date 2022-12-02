@@ -1,10 +1,9 @@
 #pragma once
-#include "SpriteObject.h"
+#include "HitBoxObject.h"
 
 class Player;
 class Button;
-class NPC :
-    public SpriteObject
+class NPC : public HitBoxObject
 {
 private:
     Player* player;

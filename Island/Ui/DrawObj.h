@@ -7,6 +7,7 @@ private:
 	string path;
 	bool isMove;
 	EditorObjs data;
+	map<string,Item> items;
 public:
 	DrawObj(UiMgr* uimgr);
 	~DrawObj();
@@ -19,6 +20,8 @@ public:
 	string GetType() { return type; }
 	EditorObjs GetData()  { return data; }
 	void SetData(EditorObjs d) { data = d; }
+	void SetItem(map<string, Item> items) { this->items = items; }
+	map<string, Item>& GetItem() { return items; }
 
 };
 

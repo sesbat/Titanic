@@ -50,6 +50,8 @@
     <ClCompile Include="Ui\InvenGreed.cpp" />
     <ClCompile Include="Ui\InventoryBox.cpp" />
     <ClCompile Include="GameObject\NPC.cpp" />
+    <ClCompile Include="Ui\AddItemBox.cpp" />
+    <ClCompile Include="GameObject\ItemBoxObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -105,6 +107,8 @@
     <ClInclude Include="Ui\InvenGreed.h" />
     <ClInclude Include="Ui\InventoryBox.h" />
     <ClInclude Include="GameObject\NPC.h" />
+    <ClInclude Include="Ui\AddItemBox.h" />
+    <ClInclude Include="GameObject\ItemBoxObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

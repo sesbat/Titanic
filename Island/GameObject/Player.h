@@ -119,5 +119,6 @@ public:
 
 	void Move(float dt);
 	void Collision();
+	Vector2f* GetPosPtr() { return &position; }
 };
 
