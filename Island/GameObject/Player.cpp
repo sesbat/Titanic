@@ -307,16 +307,16 @@ void Player::Update(float dt)
 	//player stamina
 	if (isDash)
 	{
-		stamina -= 0.01f;
+		stamina -= 0.1f;
 		if (stamina < 0.f)
 		{
 			stamina = 0.f;
-			speed = 500.f;
+			speed = maxSpeed;
 		}
 	}
 	else
 	{
-		stamina += 0.01f;
+		stamina += 0.05f;
 		if (stamina >= maxStamina)
 		{
 			stamina = maxStamina;

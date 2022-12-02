@@ -25,7 +25,7 @@ void Ment::Update(float dt)
 			SCENE_MGR->GetCurrScene()->AddDeleteObject(1, this);
 			SetActive(false);
 
-			std::cout << "Add Delete" << std::endl;
+			//std::cout << "Add Delete" << std::endl;
 		}
 	}
 

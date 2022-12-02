@@ -181,8 +181,8 @@ void GameScene::Init()
 	mapSize.height = (tiles.back())->GetPos().y;
 	
 	//view sight
-	light.setRange(800.f);
-	fog.setAreaColor(Color(0, 0, 0, 200));
+	light.setRange(700.f);
+	fog.setAreaColor(Color(0, 0, 0, 245));
 
 	uiMgr = new GameSceneUiMgr(this);
 	uiMgr->Init();
