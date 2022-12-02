@@ -99,10 +99,6 @@ void Inventory::Update(float dt)
 	{
 		rightInven->AddItem("Recoverykit");
 	}
-	/*if (InputMgr::GetKeyDown(Keyboard::R))
-	{
-		rightInven->AddItem("handsaw");
-	}*/
 
 	if (nowDrag != nullptr && IsStay() )
 	{
@@ -144,19 +140,35 @@ void Inventory::Update(float dt)
 						isUseItemUp = true;
 					break;
 				case 4:
-					if (itemName == "Recoverykit")
+					if (itemName == "Recoverykit" ||
+						itemName == "Apple" ||
+						itemName == "Meat" ||
+						itemName == "Water" ||
+						itemName == "EnergyDrink")
 						isUseItemUp = true;
 					break;
 				case 5:
-					if (itemName == "Recoverykit")
+					if (itemName == "Recoverykit" ||
+						itemName == "Apple" ||
+						itemName == "Meat" ||
+						itemName == "Water" ||
+						itemName == "EnergyDrink")
 						isUseItemUp = true;
 					break;
 				case 6:
-					if (itemName == "Recoverykit")
+					if (itemName == "Recoverykit" ||
+						itemName == "Apple" ||
+						itemName == "Meat" ||
+						itemName == "Water" ||
+						itemName == "EnergyDrink")
 						isUseItemUp = true;
 					break;
 				case 7:
-					if (itemName == "Recoverykit")
+					if (itemName == "Recoverykit" ||
+						itemName == "Apple" ||
+						itemName == "Meat" ||
+						itemName == "Water" ||
+						itemName == "EnergyDrink")
 						isUseItemUp = true;
 					break;
 				}

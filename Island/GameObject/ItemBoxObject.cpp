@@ -41,11 +41,17 @@ void ItemBoxObject::Update(float dt)
 
 		auto scene = ((GameScene*)SCENE_MGR->GetCurrScene());
 		auto player = scene->GetPlayer();
+
+		if (!player->GetIsMove())
+			return;
+
+		player->SetIsInven(false);
 		player->GetInventory()->SetRightInven(invenBox);
 		player->GetInventory()->SetActive(true);
 		player->GetInventory()->GetPlayerInven()->SetPair(invenBox);
 		player->SetRigthInvenBox(this);
 		invenBox->SetActive(true);
+		player->SetMove(false);
 	}
 }
 

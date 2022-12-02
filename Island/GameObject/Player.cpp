@@ -260,12 +260,13 @@ void Player::Update(float dt)
 
 	if (InputMgr::GetKeyDown(Keyboard::Tab))
 	{
-		if (inven->GetActive() && !isMove)
+		if (inven->GetActive() && !isMove)	
 		{
 			SetMove(true);
 			inven->SetActive(!(inven->GetActive()));
-			inven->ResetRightInven();
-			if (inven->GetRightInven()->GetItems()->size() > 0)
+			//inven->ResetRightInven();
+			//cout << inven->GetRightInven()->GetName() << endl;
+			if (inven->GetRightInven()->GetItems()->size() > 0 && isInven)
 			{
 				auto rightInven = inven->GetRightInven()->GetItems();
 				map<string, Item> dropItems;
@@ -294,8 +295,10 @@ void Player::Update(float dt)
 		}
 		else if (isMove)
 		{
+			SetIsInven(true);
 			inven->SetActive(true);
 			inven->ResetRightInven();
+			inven->ClearInven();
 			SetMove(false);
 			rightInvenObj = nullptr;
 		}
@@ -555,8 +558,9 @@ void Player::Collision()
 			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
 			{
 				if (obj->GetName() == "STONE" ||
-					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "ENEMY")
+					obj->GetName() == "BLOCK" //||
+					//obj->GetName() == "ENEMY"
+					)
 					SetPlayerPos();
 			}
 		}

@@ -93,6 +93,8 @@ protected:
 	bool isAlive;
 	bool isReloading;
 
+	bool isInven;
+
 public:
 	Player();
 	virtual~Player();
@@ -162,5 +164,8 @@ public:
 
 	void Load();
 	void Save();
+
+	void SetIsInven(bool state) { isInven = state; }
+	bool IsInven() { return isInven; }
 };
 

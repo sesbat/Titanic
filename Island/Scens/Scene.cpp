@@ -82,18 +82,27 @@ void Scene::Update(float dt)
 
 	for (auto& del : deleteContainer)
 	{
-		if (find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), *del) != objList[LayerType::Object][0].end())
+		auto it = find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), del);
+		if (it != objList[LayerType::Object][0].end())
 		{
-			auto deletObj = *del;
-			objList[LayerType::Object][0].erase(del);
-			delete deletObj;
+			auto ptr = *it;
+			objList[LayerType::Object][0].erase(it);
+			delete ptr;
+			continue;
 		}
-		else if (find(objList[LayerType::Object][1].begin(), objList[LayerType::Object][1].end(), *del) != objList[LayerType::Object][1].end())
+
+		it = find(objList[LayerType::Object][1].begin(), objList[LayerType::Object][1].end(), del);
+		if (it != objList[LayerType::Object][1].end())
 		{
-			auto deletObj = *del;
-			objList[LayerType::Object][1].erase(del);
-			delete deletObj;
+			auto ptr = *it;
+			objList[LayerType::Object][1].erase(it);
+			delete ptr;
+			continue;
 		}
+	}
+	if (deleteContainer.size() > 0)
+	{
+		LayerSort();
 	}
 	deleteContainer.clear();
 
@@ -270,7 +279,7 @@ void Scene::AddDeleteObject(int layer_idx, Object* obj)
 	auto it = find(objList[LayerType::Object][layer_idx].begin(), objList[LayerType::Object][layer_idx].end(), obj);
 	if (it != objList[LayerType::Object][layer_idx].end())
 	{
-		deleteContainer.push_back(it);
+		deleteContainer.push_back(*it);
 		(*it)->SetActive(false);
 	}
 }

@@ -115,6 +115,7 @@ void Enemy::Update(float dt)
 	if (hp <= 0)
 	{
 		SetState(States::Dead);
+
 	}
 
 	//enemy attack
@@ -218,7 +219,8 @@ void Enemy::SetHp(int num)
 		hp = 0;
 	}
 
-	/*string ments[3] = { "Ouch..!", "Oh No!" , "Fuxx" };
+
+	string ments[3] = { "Ouch..!", "Oh No!" , "Fuxx" };
 	Vector2f randPos = { Utils::RandomRange(-20,20) + GetPos().x,
 		Utils::RandomRange(-50,-40) + GetPos().y + 30.f };
 	Ment* ment = new Ment();
@@ -228,7 +230,7 @@ void Enemy::SetHp(int num)
 	ment->SetOrigin(Origins::BC);
 	ment->SetPos(randPos);
 	ment->SetActive(true);
-	SCENE_MGR->GetCurrScene()->AddGameObject(ment, LayerType::Object, 1);*/
+	SCENE_MGR->GetCurrScene()->AddGameObject(ment, LayerType::Object, 1);
 }
 
 void Enemy::SetHpBar()

@@ -53,4 +53,5 @@ public:
 	void AddDeleteItem(InvenItem* item);
 	void SetUserItem(InvneUseInfo data);
 	const vector<InvenItem*>& GetUseItems() { return myUseItems; }
+	int GetUseIdx() { return useIdx; }
 };

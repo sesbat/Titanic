@@ -63,8 +63,6 @@ void GameScene::Init()
 		SCENE_MGR->ChangeScene(Scenes::Menu);
 	}
 
-	//blockPool = new Blocks[36*64];
-
 	for (auto& obj : data)
 	{
 		if (obj.type == "STONE"   || obj.type == "BLOCK")
@@ -181,24 +179,9 @@ void GameScene::Init()
 	mapSize.top = 0;
 	mapSize.width = (tiles.back())->GetPos().x + 30;
 	mapSize.height = (tiles.back())->GetPos().y;
-
-	
-	//mission exit tile
-	//escapePoint = { 1200.f,1650.f };
-
-	//missionText = new TextObject();
-	//missionText->SetActive(false);
-	//missionText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 80, Color::Green, to_string(escapeTimer));
-	//missionText->SetTextLine(Color::Black, 1.f);
-	//missionText->SetOrigin(Origins::MC);
-	//missionText->SetPos(escapePoint);
-	//objList[LayerType::Object][1].push_back(missionText);
 	
 	//view sight
 	light.setRange(800.f);
-
-	//fog.setMode(candle::LightingArea::FOG);
-	//fog.setScale({ WINDOW_WIDTH,WINDOW_HEIGHT });
 	fog.setAreaColor(Color(0, 0, 0, 200));
 
 	uiMgr = new GameSceneUiMgr(this);
@@ -236,16 +219,6 @@ void GameScene::Exit()
 
 void GameScene::Update(float dt)
 {
-	//FloatRect v;
-	//v.width = uiView.getSize().x;
-	//v.height = uiView.getSize().y;
-	//v.left = uiView.getCenter().x - 1920 / 2;
-	//v.top = uiView.getCenter().y - 1080 / 2;
-	//qTree.SetBound(v);
-	
-	//Time deltaTime = clock.restart();
-	//float fps = 1.0f / (deltaTime.asSeconds());
-	//cout << "fps: " << fps << endl;
 	for (auto it = enemies.begin(); it != enemies.end(); )
 	{
 		if (!(*it)->GetActive())
@@ -287,8 +260,6 @@ void GameScene::Update(float dt)
 	//mission
 	if (Utils::Distance(player->GetPos(), escapePoint) < 100.f)
 	{
-		//string et = to_string(escapeTimer);
-		//et = et.substr(0, et.find('.') + 2);
 		escapeTimer -= dt;
 		missionText->SetActive(true);
 		string timer = to_string(escapeTimer); 
@@ -420,15 +391,10 @@ void GameScene::EmpytyInven(ItemBoxObject* inven)
 
 	if (inven->GetName() == "BOX")
 	{
-		auto it = find(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), inven);
-		deleteContainer.push_back(it);
-		(*it)->SetActive(false);
+		deleteContainer.push_back(inven);
+		treeMap.remove(inven);
+		inven->SetActive(false);
 	}
-}
-
-void GameScene::pushEdge(const sfu::Line& edge)
-{
-	//edgePool.push_back(edge);
 }
 
 candle::EdgeVector GameScene::pushBlock(const sf::Vector2f& pos)
@@ -453,25 +419,6 @@ void GameScene::castAllLights()
 	for (auto &it : blockPool)
 	{
 		light.castLight(it.edgePool.begin(), it.edgePool.end());
-		/*if ((Utils::Distance(player->GetPos(), it.position) >= light.getRange()/2))
-		{
-			continue;
-		}
-		else
-		{
-			light.castLight(it.edgePool.begin(), it.edgePool.end());
-		}*/
-	}
-	/*for (int i = 0; i < blockCount; i++)
-	{
-		if ((Utils::Distance(player->GetPos(), blockPool[i].position) >= light.getRange()))
-		{
-			continue;
-		}
-		else
-		{
-			light.castLight(blockPool[i].edgePool.begin(), blockPool[i].edgePool.end());
-		}
 		
-	}*/
+	}
 }
