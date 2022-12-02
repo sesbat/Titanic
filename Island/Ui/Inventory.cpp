@@ -337,6 +337,7 @@ void Inventory::AddDeleteObj(InvenItem* obj)
 {
 	auto it = find(myUseItems.begin(), myUseItems.end(), obj);
 	deleteUseItem.push_back(it);
+	myUseItems[it - myUseItems.begin()] = nullptr;
 }
 
 void Inventory::AddDeleteItem(InvenItem* item)

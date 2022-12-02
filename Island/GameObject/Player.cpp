@@ -20,7 +20,7 @@
 
 
 Player::Player()
-	: currState(States::None), speed(200.f), maxSpeed(200.f),
+	: currState(States::None), speed(2000.f), maxSpeed(5000.f),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
 	hp(500), maxHp(500), isDash(false), stamina(10.f), maxStamina(10.f),
@@ -307,16 +307,16 @@ void Player::Update(float dt)
 	//player stamina
 	if (isDash)
 	{
-		stamina -= 0.01f;
+		stamina -= 0.1f;
 		if (stamina < 0.f)
 		{
 			stamina = 0.f;
-			speed = 500.f;
+			speed = maxSpeed;
 		}
 	}
 	else
 	{
-		stamina += 0.01f;
+		stamina += 0.05f;
 		if (stamina >= maxStamina)
 		{
 			stamina = maxStamina;
