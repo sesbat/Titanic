@@ -1,5 +1,6 @@
 #include "Ment.h"
 #include "../Scens/SceneManager.h"
+#include <iostream>
 
 Ment::Ment()
 	:timer(0.f), nowTime(0.f), always(true)
@@ -22,6 +23,9 @@ void Ment::Update(float dt)
 		if (nowTime >= timer)
 		{
 			SCENE_MGR->GetCurrScene()->AddDeleteObject(1, this);
+			SetActive(false);
+
+			std::cout << "Add Delete" << std::endl;
 		}
 	}
 

@@ -218,10 +218,12 @@ void Enemy::SetHp(int num)
 		hp = 0;
 	}
 
+	std::cout << "Enemy Add Ment" << std::endl;
 	string ments[3] = { "Ouch..!", "Oh No!" , "Fuxx" };
 	Vector2f randPos = { Utils::RandomRange(-20,20) + GetPos().x,
 		Utils::RandomRange(-50,-40) + GetPos().y + 30.f };
 	Ment* ment = new Ment();
+	std::cout << "ment ptr : " << ment << std::endl;
 	ment->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 30, Color::White, ments[Utils::RandomRange(0, 3)]);
 	ment->SetAlways(false);
 	ment->SetTimer(1.f);
