@@ -61,7 +61,7 @@ void ReadyUiMgr::Init()
 		map->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 50, Color::White
 			,data.first, true);
 		map->SetPos({ 400,tmpY });
-		tmpY -= 50.f;
+		tmpY += 50.f;
 		map->SetName(data.first);
 		maps.push_back(map);
 	}

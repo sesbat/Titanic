@@ -57,6 +57,7 @@ void UiObject::StateClear()
 }
 void UiObject::Update(float dt)
 {
+	isEvent = false;
 	auto mousePos = InputMgr::GetMousePos();
 	if(isUiView)
 		mousePos = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)mousePos);

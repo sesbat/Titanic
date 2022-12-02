@@ -38,5 +38,7 @@ public:
 
 	void Save();
 	void Load(string path);
+	bool DrawBox(int x, int y);
+	Button* GetGreee(int x, int y) { return greeds[x][y]; }
 };
 

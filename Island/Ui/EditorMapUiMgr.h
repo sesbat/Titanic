@@ -15,6 +15,9 @@ private:
 	Button* eraseBtn;
 	Button* exitBtn;
 	Button* underUi;
+	Button* boxBtn;
+
+	bool isErase;
 
 	Button* selectBtn;
 	vector<string> selects;
@@ -31,6 +34,11 @@ private:
 	LoadWindowBox* loadWindow;
 	AddItemBox* itemBox;
 
+	bool isBox;
+	bool boxingErase;
+	RectangleShape* rect;
+	Vector2f rectStartPos;
+
 public:
 	EditorMapUiMgr(Scene* scene);
 	virtual ~EditorMapUiMgr();
@@ -40,7 +48,8 @@ public:
 	virtual void Draw(RenderWindow& window);
 	virtual void Select(DrawSelect* select);
 	DrawObj* GetDraw() { return nowDraw; }
-	void DeleteDraw();
+	void SetErase(bool state = true);
+	void DeletDraw();
 	bool IsUnder();
 	void SetLoadPath(string path);
 
@@ -51,7 +60,7 @@ public:
 	bool IsLoad();
 	bool LoadActive();
 	string loadFile();
-	bool IsErase();
+	bool IsErase() { return isErase; }
 	bool IsExit();
 	void CloseSaveWinow();
 
@@ -60,6 +69,9 @@ public:
 	AddItemBox* GetItemBox() { return itemBox; }
 
 	string GetPath();
+
+	void BoxingEnd();
+	bool GetIsBox() { return isBox; }
 
 };
 

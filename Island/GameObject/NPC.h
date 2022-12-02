@@ -6,6 +6,7 @@ class Button;
 class InventoryBox;
 class Inventory;
 class Scene;
+class Ment;
 enum class NPCType
 {
     Start,Shop,Craft,Count,
@@ -22,6 +23,8 @@ private:
     Inventory* NPCInven;
     InventoryBox* shop;
     Scene* scene;
+
+    Ment* ment;
 public:
     NPC();
     virtual ~NPC();

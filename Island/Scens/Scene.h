@@ -67,5 +67,6 @@ public:
 	virtual void LayerSort();
 	void SetSceneName(string name) { sceneName = name; }
 	string GetSceneName() { return sceneName; }
+	void AddDeleteObject(int idx,Object* obj);
 };
 bool sorting(Object* p1, Object* p2);
