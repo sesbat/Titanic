@@ -204,8 +204,20 @@ void Scene::LayerSort()
 	{
 		((HitBoxObject*)(obj))->SetHitPlayer(false);
 	}
-
 	alphaObj.clear();
+
+
+	Vector2i startIdx;
+	Vector2i endIdx;
+
+	auto camCenter = worldView.getCenter();
+	auto camSzie = worldView.getSize();
+
+	startIdx.x = (camCenter.x - camSzie.x / 2.f) / 60.f;
+	startIdx.y = (camCenter.y - camSzie.y / 2.f) / 60.f;
+
+	endIdx.x = (camCenter.x + camSzie.x / 2.f) / 60.f;
+	endIdx.y = (camCenter.y + camSzie.y / 2.f) / 60.f;
 
 	for (auto& obj : objList[LayerType::Object][0])
 	{

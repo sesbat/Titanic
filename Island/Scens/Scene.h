@@ -27,6 +27,7 @@ protected:
 	Scenes type;
 
 	map<LayerType, map<int, vector<Object*>>> objList;
+	
 	View worldView;
 	View uiView;
 

@@ -167,7 +167,9 @@ void GameScene::Init()
 			//objList[LayerType::Object][0].push_back(exit);
 		}
 	}
-	
+
+	treeMap.insert(objList[LayerType::Object][0]);
+
 	for (auto& enemy : enemies)
 	{
 		enemy->Init(player);
@@ -289,7 +291,7 @@ void GameScene::Update(float dt)
 	LayerSort();
 	//treeMap.~QuadTree();
 	//treeMap.insert(objList[LayerType::Object][0]);
-	treeMap.insert(drawObjs);
+	//treeMap.insert(drawObjs);
 	treeMap.update(drawObjs);
 
 	//for (auto&& found : treeMap.getObjectsInBound_unchecked(*player)) {
