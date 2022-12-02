@@ -48,6 +48,7 @@ void MapEditor::Reset()
 	draw->SetMove(false);
 	draw->SetPos(greeds[0][0]->GetPos() + Vector2f{ 30.f, 60.f });
 	draw->SetData(playerData[0]);
+	playerPos = Vector2i{ 0,0 };
 	objList[nowType][0].push_back(draw);
 	greedObjs[nowType][0][0] = draw;
 
@@ -63,7 +64,8 @@ void MapEditor::Reset()
 	exit->SetPos(greeds[0][1]->GetPos() + Vector2f{ 30.f, 60.f });
 	exit->SetData(exitData[0]);
 	objList[nowType][0].push_back(exit);
-	greedObjs[nowType][0][0] = exit;
+	greedObjs[nowType][0][1] = exit;
+	exitPos = Vector2i{ 0,1 };
 
 	now_exit = exit;
 

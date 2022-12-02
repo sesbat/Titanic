@@ -39,4 +39,3 @@ public:
 	void SetPair(InventoryBox* pair) { this->pairInven = pair; }
 	InventoryBox* GetPair() { return pairInven; }
 };
-

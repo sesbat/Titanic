@@ -228,13 +228,34 @@ void EditorMapUiMgr::Update(float dt)
 		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeletDraw();
 	}
 
-	if (selectBtn->IsClick())
+	if (selectBtn->IsUp())
 	{
 		for (auto& obj : type_selects[selects[selIdx]])
 		{
 			obj->SetActive(false);
 		}
 		selIdx = (selects.size() + selIdx + 1) % selects.size();
+		selectBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+			selectTxtSize[selIdx], Color::White, selects[selIdx], true); //TILE TREE STONE PLAYER ENEMY BOX ANOTHER
+		selectBtn->SetOrigin(Origins::MC);
+		selectBtn->SetPos(underUi->GetPos() + Vector2f{ 205, selectPosY[selIdx]});
+
+		for (auto& obj : type_selects[selects[selIdx]])
+		{
+			obj->SetActive(true);
+		}
+
+		DeletDraw();
+		((MapEditor*)(parentScene))->SetType(selects[selIdx]);
+	}
+
+	if (selectBtn->IsUpRight())
+	{
+		for (auto& obj : type_selects[selects[selIdx]])
+		{
+			obj->SetActive(false);
+		}
+		selIdx = (selects.size() + selIdx - 1) % selects.size();
 		selectBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 			selectTxtSize[selIdx], Color::White, selects[selIdx], true); //TILE TREE STONE PLAYER ENEMY BOX ANOTHER
 		selectBtn->SetOrigin(Origins::MC);
