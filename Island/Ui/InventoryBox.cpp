@@ -315,6 +315,24 @@ void InventoryBox::ReturnItem()
 	inven->SetPrevInven(nullptr);
 }
 
+void InventoryBox::DeleteItem(InvenItem* item)
+{
+	
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			if (itemGreed[j][i]->GetItem() == item)
+			{
+				allPos[j][i] = false;
+				itemGreed[j][i]->SetState(false, nullptr);
+				items.erase(find(items.begin(), items.end(), item));
+				return;
+			}
+		}
+	}
+}
+
 void InventoryBox::ClearInven()
 {
 	for (auto item :items)

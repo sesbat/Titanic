@@ -29,6 +29,7 @@ public:
 	InvenGreed* GetGreed(int i, int j);
 	void MoveItem(int i, int j);
 	void ReturnItem();
+	void DeleteItem(InvenItem* item);
 	bool IsGreedItem(int i, int j) { return allPos[i][j]; }
 	int GetWidth() { return width; }
 	int GetHeight() { return height; }
