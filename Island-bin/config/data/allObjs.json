@@ -73,6 +73,10 @@
     {
       "texPath": "graphics/p9.png",
       "uiPaht": "graphics/editor/drawP9.png"
+    },
+    {
+      "texPath": "graphics/p10.png",
+      "uiPaht": "graphics/editor/drawP10.png"
     }
   ],
   "STONE": [
