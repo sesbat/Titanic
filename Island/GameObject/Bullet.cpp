@@ -47,7 +47,7 @@ void Bullet::Update(float dt)
 				SetActive(false);
 			}
 		}
-		startPos = nextPos;
+		
 		nextPos = GetPos() - dir * ((float)sprite.getLocalBounds().width);
 	}
 	if (InputMgr::GetKeyDown(Keyboard::P))
