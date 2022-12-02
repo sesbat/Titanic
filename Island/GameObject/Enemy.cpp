@@ -115,6 +115,7 @@ void Enemy::Update(float dt)
 	if (hp <= 0)
 	{
 		SetState(States::Dead);
+
 	}
 
 	//enemy attack

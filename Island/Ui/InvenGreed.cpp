@@ -101,7 +101,7 @@ void InvenGreed::Update(float dt)
 						isReturn = false;
 
 						auto items = inven->GetPrevInven()->GetItems();
-						items->erase(find(items->begin(), items->end(), dragItem));
+						items->erase(find(items->begin(), items->end(), dragItem));//bug ²¨³»¼­ ÇÕÄ¥ ¶§ ÅÍÁü
 
 						delete dragItem;
 						inven->SetDrag(nullptr);

@@ -34,7 +34,7 @@ protected:
 
 	IntRect mapSize;
 	
-	vector<SpriteObject*> sprObj;
+	//vector<SpriteObject*> sprObj;
 
 	//mission
 	Vector2f escapePoint;
@@ -54,8 +54,8 @@ protected:
 	
 	//list<candle::EdgeVector>blockPool;
 	vector<Blocks> blockPool;
-	//Blocks blockPool[36*64];
 	int blockCount;
+
 public:
 	GameScene();
 	virtual ~GameScene();
@@ -78,10 +78,9 @@ public:
 	void SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy);
 	void DropItems(map<string, Item> items, Vector2f pos);
 	void EmpytyInven(ItemBoxObject* inven);
-	void SetDeadEnemy(map<string, Item> items, Vector2f pos);
+	//void SetDeadEnemy(map<string, Item> items, Vector2f pos);
 	vector<vector<bool>> GetGreedObj() { return isGreedObject; }
 
-	void pushEdge(const sfu::Line& edge);
 	candle::EdgeVector pushBlock(const sf::Vector2f& pos);
 	void castAllLights();
 };

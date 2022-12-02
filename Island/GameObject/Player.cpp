@@ -555,8 +555,9 @@ void Player::Collision()
 			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
 			{
 				if (obj->GetName() == "STONE" ||
-					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "ENEMY")
+					obj->GetName() == "BLOCK" //||
+					//obj->GetName() == "ENEMY"
+					)
 					SetPlayerPos();
 			}
 		}
