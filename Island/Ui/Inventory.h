@@ -25,6 +25,7 @@ protected:
 	vector<InvenItem*> myUseItems;
 
 	int useIdx;
+	TextObject* txtMoney;
 
 	vector<vector<InvenItem*>::iterator> deleteUseItem;
 
@@ -54,4 +55,6 @@ public:
 	void SetUserItem(InvneUseInfo data);
 	const vector<InvenItem*>& GetUseItems() { return myUseItems; }
 	int GetUseIdx() { return useIdx; }
+
+	TextObject* GetMoneyTxt() { return txtMoney; }
 };

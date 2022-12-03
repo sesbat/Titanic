@@ -65,7 +65,8 @@ namespace ns {
 		float weight;
 		int width;
 		int height;
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemInfo, path, maxCount, weight, width, height)
+		int price;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemInfo, path, maxCount, weight, width, height, price)
 	};
 
 	struct RequiredItem
@@ -89,8 +90,9 @@ namespace ns {
 		float hungerGuage;
 		float thirstGuage;
 		float energyGuage;
+		int money;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, money)
 	};
 
 

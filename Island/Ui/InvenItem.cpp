@@ -47,7 +47,7 @@ void InvenItem::Draw(RenderWindow& window)
 	MoveObject::Draw(window);
 }
 
-void InvenItem::Set(int width, int height, Vector2i invenPos,Vector2i invenGreedPos, string path, int maxCount)
+void InvenItem::Set(int width, int height, Vector2i invenPos,Vector2i invenGreedPos, string path, int maxCount, int price)
 {
 	this->width = width;
 	this->height = height;
@@ -55,6 +55,7 @@ void InvenItem::Set(int width, int height, Vector2i invenPos,Vector2i invenGreed
 	this->invenGreedPos = invenGreedPos;
 	this->path = path;
 	this->maxCount = maxCount;
+	this->price = price;
 	
 
 	SetPos((Vector2f)invenPos);

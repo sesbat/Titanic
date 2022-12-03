@@ -793,6 +793,7 @@ void Player::Load()
 	hungerGuage = playerData.hungerGuage;
 	thirstGuage = playerData.thirstGuage;
 	energyGuage = playerData.energyGuage;
+	money = playerData.money;
 
 	auto invenData = FILE_MGR->GetInvenInfo();
 
@@ -825,6 +826,7 @@ void Player::Save()
 	nowInfo.hungerGuage = hungerGuage;
 	nowInfo.thirstGuage = thirstGuage;
 	nowInfo.energyGuage = energyGuage;
+	nowInfo.money = money;
 
 	FILE_MGR->SaveUserInfo(nowInfo);
 
@@ -870,4 +872,20 @@ void Player::Save()
 	}
 
 	FILE_MGR->SaveUseItemInfo(saveUseItem);
+}
+
+void Player::AddMoney(int p)
+{
+	money += p;
+	auto txt = inven->GetMoneyTxt();
+	txt->SetString(to_string(money));
+	txt->SetOrigin(Origins::MR);
+}
+
+void Player::SetMoney(int p)
+{
+	money = p;
+	auto txt = inven->GetMoneyTxt();
+	txt->SetString(to_string(money));
+	txt->SetOrigin(Origins::MR);
 }

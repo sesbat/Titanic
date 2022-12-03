@@ -24,6 +24,7 @@ protected:
 	FloatRect MAP_BOUNDS = { 0, 0, 1920 * 4, 1080 * 4 };
 	TreeRect treeRect = { 0,0,1920 * 4,1080 * 4 };
 	QuadTree treeMap;
+
 public:
 	Ready();
 	~Ready();
@@ -41,5 +42,6 @@ public:
 	NPC* GetStartNPC() { return startNpc; }
 	NPC* GetShopNPC() { return shopNpc; }
 	NPC* GetCraftNPC() { return craftNpc; }
+
 };
 

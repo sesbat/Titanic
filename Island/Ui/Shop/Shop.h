@@ -2,6 +2,7 @@
 #include "../Inventory.h"
 
 class InventoryBox;
+class TextObject;
 class Shop : public Inventory
 {
 	InventoryBox* playerInven;
@@ -14,10 +15,15 @@ class Shop : public Inventory
 	vector<InvenItem*>* sell_items;
 	vector<InvenItem*>* buy_items;
 
-	vector<InvenItem*> init_player_items;
-	vector<InvenItem*> init_npc_items;
 
 	map<InvenItem*, Vector2i> itemPrevPos;
+
+	Button* dealBtn;
+	TextObject* txtPrice;
+	
+
+	int price;
+	int money;
 public:
 	Shop(UiMgr* mgr);
 	~Shop();
@@ -25,6 +31,8 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
 	virtual void SetActive(bool state);
+	void ClearShop();
+	void Deal();
 	virtual void SetDrag(InvenItem* item) {}
 };
 

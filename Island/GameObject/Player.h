@@ -95,6 +95,9 @@ protected:
 
 	bool isInven;
 
+
+	int money;
+
 public:
 	Player();
 	virtual~Player();
@@ -167,5 +170,9 @@ public:
 
 	void SetIsInven(bool state) { isInven = state; }
 	bool IsInven() { return isInven; }
+
+	int GetMoney() { return money; }
+	void AddMoney(int p);
+	void SetMoney(int p);
 };
 

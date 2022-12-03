@@ -42,4 +42,5 @@ public:
 	void SetPair(InventoryBox* pair) { this->pairInven = pair; }
 	InventoryBox* GetPair() { return pairInven; }
 	void SetInvenSize(int w, int h) { width = w; height = h; }
+	virtual void Reset();
 };

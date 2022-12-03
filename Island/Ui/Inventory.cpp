@@ -45,6 +45,11 @@ void Inventory::Init()
 		invenItemGreed[i]->SetClkColor(false);
 	}
 	myUseItems = { nullptr,nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+
+	txtMoney = new TextObject();
+	txtMoney->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 20, Color::White, to_string(((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer()->GetMoney()));
+	txtMoney->SetPos(Vector2f{ 660.f,990.f });
+	txtMoney->SetOrigin(Origins::MR);
 }
 
 void Inventory::Update(float dt)
@@ -253,6 +258,7 @@ void Inventory::Draw(RenderWindow& window)
 	}
 	myInven->Draw(window);
 	rightInven->Draw(window);
+	txtMoney->Draw(window);
 
 }
 
@@ -351,7 +357,7 @@ void Inventory::SetUserItem(InvneUseInfo data)
 	this->myUseItems[data.useIdx] = new InvenItem(uimgr);
 	this->myUseItems[data.useIdx]->Init();
 	this->myUseItems[data.useIdx]->SetName(data.Type);
-	this->myUseItems[data.useIdx]->Set(itemData.width, itemData.height, data.invenPos, {-1, -1}, data.path, itemData.maxCount);
+	this->myUseItems[data.useIdx]->Set(itemData.width, itemData.height, data.invenPos, {-1, -1}, data.path, itemData.maxCount, itemData.price);
 	this->myUseItems[data.useIdx]->AddCount(data.cnt);
 
 	if (data.useIdx == 0 || data.useIdx == 1)

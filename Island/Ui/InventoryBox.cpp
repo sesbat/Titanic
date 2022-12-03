@@ -149,7 +149,7 @@ void InventoryBox::AddItem(string name, int cnt, Vector2i invenPos, Vector2i gre
 	}
 	item->Set(data.width, data.height,
 		{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
-		{ findPos.y, findPos.x }, data.path, data.maxCount);
+		{ findPos.y, findPos.x }, data.path, data.maxCount, data.price);
 	item->AddCount(cnt);
 	item->SetName(name);
 	item->Init();
@@ -179,33 +179,39 @@ void InventoryBox::AddItem(string name, int count)
 		}
 	}
 
-	auto findPos = FindInvenPos(data.width, data.height);
-
-	if (findPos == Vector2i{ -1, -1 })
-	{
-		return;
-	}
-
 	int maxCnt = data.maxCount;
 
-	InvenItem* item = new InvenItem(uimgr);
-	for (int i = findPos.x; i < findPos.x + data.height; i++)
+	while (count != 0)
 	{
-		for (int j = findPos.y; j < findPos.y + data.width; j++)
+		auto findPos = FindInvenPos(data.width, data.height);
+
+		if (findPos == Vector2i{ -1, -1 })
 		{
-			allPos[i][j] = true;
-			itemGreed[i][j]->SetState(true, item);
-
+			return;
 		}
-	}
-	item->Set(data.width, data.height,
-		{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
-		{ findPos.y, findPos.x }, data.path, data.maxCount);
-	item->AddCount(count);
-	item->SetName(name);
-	item->Init();
 
-	items.push_back(item);
+
+		InvenItem* item = new InvenItem(uimgr);
+		for (int i = findPos.x; i < findPos.x + data.height; i++)
+		{
+			for (int j = findPos.y; j < findPos.y + data.width; j++)
+			{
+				allPos[i][j] = true;
+				itemGreed[i][j]->SetState(true, item);
+
+			}
+		}
+		item->Set(data.width, data.height,
+			{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
+			{ findPos.y, findPos.x }, data.path, data.maxCount, data.price);
+		item->AddCount(count >= maxCnt ? maxCnt : count);
+		item->SetName(name);
+		item->Init();
+
+		count -= maxCnt;
+		count = max(count, 0);
+		items.push_back(item);
+	}
 	inven->SetDrag(nullptr);
 }
 void InventoryBox::AddItem(string name, int count, Vector2i findPos)
@@ -224,7 +230,7 @@ void InventoryBox::AddItem(string name, int count, Vector2i findPos)
 	}
 	item->Set(data.width, data.height,
 		{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
-		{ findPos.y, findPos.x }, data.path, data.maxCount);
+		{ findPos.y, findPos.x }, data.path, data.maxCount, data.price);
 	item->AddCount(count);
 	item->SetName(name);
 	item->Init();
@@ -325,7 +331,7 @@ void InventoryBox::MoveItem(InvenItem* item, Vector2i move_pos)
 	}
 	item->Set(data.width, data.height,
 		{ startPos.x + move_pos.x * 60 + padding * move_pos.x , startPos.y + move_pos.y * 60 + padding * move_pos.y },
-		{ move_pos.x, move_pos.y }, data.path, data.maxCount);
+		{ move_pos.x, move_pos.y }, data.path, data.maxCount, data.price);
 	item->SetCount(item->GetCount());
 	item->Init();
 
@@ -390,7 +396,9 @@ void InventoryBox::DeleteItem(InvenItem* item,Vector2i startPos, Vector2i size)
 		}
 	}
 
-	items.erase(find(items.begin(), items.end(), item));
+	auto it = find(items.begin(), items.end(), item);
+	if(it != items.end())
+		items.erase(it);
 }
 
 void InventoryBox::ClearInven()
@@ -413,6 +421,18 @@ void InventoryBox::ClearInven()
 		for (auto pos : pos_line)
 		{
 			pos = false;
+		}
+	}
+}
+
+void InventoryBox::Reset()
+{
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			itemGreed[i][j]->SetState(false, nullptr);
+			allPos[i][j] = false;
 		}
 	}
 }
