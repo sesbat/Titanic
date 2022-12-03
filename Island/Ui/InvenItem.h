@@ -20,6 +20,7 @@ public:
 	virtual ~InvenItem();
 	virtual void Init();
 	virtual void Update(float dt);
+	void ButtonUpdate(float dt);
 	virtual void Draw(RenderWindow& window);
 
 	int GetCount() { return count; }
@@ -33,6 +34,8 @@ public:
 	int GetHeight() { return height; }
 	string GetPath() { return path; }
 	void AddCount(int n);
+
+	void SetCount(int n);
 
 	
 };

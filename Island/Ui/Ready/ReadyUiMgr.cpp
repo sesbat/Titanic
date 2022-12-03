@@ -13,6 +13,7 @@
 #include "../../GameObject/Player.h"
 #include "../../Ui/Inventory.h"
 #include "../Craft.h"
+#include "../Shop/Shop.h"
 
 ReadyUiMgr::ReadyUiMgr(Scene* scene)
 	:UiMgr(scene)
@@ -25,6 +26,7 @@ void ReadyUiMgr::Init()
 	player = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
 	startNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetStartNPC();
 	craftNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetCraftNPC();
+	shopNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetShopNPC();
 
 	inVen = player->GetInventory();
 	uiObjList[1].push_back(inVen);
@@ -40,6 +42,10 @@ void ReadyUiMgr::Init()
 	craft = new Craft(this);
 	craft->Init();
 	uiObjList[0].push_back(craft);
+
+	shop = new Shop(this);
+	shop->Init();
+	uiObjList[0].push_back(shop);
 
 	categoryBK = new Button(this);
 	categoryBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/craftbk.png"),false);
@@ -117,6 +123,14 @@ void ReadyUiMgr::Update(float dt)
 	else
 	{
 		craft->SetActive(false);
+	}
+	if (shopNpc->GetShowShop())
+	{
+		shop->SetActive(true);
+	}
+	else
+	{
+		shop->SetActive(false);
 	}
 }
 

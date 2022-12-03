@@ -11,7 +11,7 @@ enum class InvenIdx
 };
 class Inventory : public Button
 {
-private:
+protected:
 	float totalWeight;
 
 	InvenItem* nowDrag;
@@ -34,7 +34,7 @@ public:
 	virtual void Init();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
-	void SetDrag(InvenItem* item);
+	virtual void SetDrag(InvenItem* item);
 	InvenItem* GetNowDrag() { return nowDrag; }
 	InvenGreed* GetGreed(int i, int j);
 	InventoryBox* GetNowInven();

@@ -31,6 +31,14 @@ void InvenItem::Update(float dt)
 		GetTextObj()->SetPos(position + Vector2f(bound.width, bound.height));
 	}
 }
+void InvenItem::ButtonUpdate(float dt)
+{
+	if (!enabled)
+		return;
+
+	Button::Update(dt);
+	drag = false;
+}
 
 void InvenItem::Draw(RenderWindow& window)
 {
@@ -76,6 +84,22 @@ void InvenItem::SetInvenPos(Vector2f invenGreedPos)
 void InvenItem::AddCount(int n)
 {
 	count += n;
+	if (count <= 0)
+	{
+		count = 0;
+		return;
+	}
+	if (maxCount != 1)
+		SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+			20, Color::White, to_string(count), false);
+	GetTextObj()->SetOrigin(Origins::BR);
+	GetTextObj()->SetPos(position + Vector2f(60, 60));
+
+}
+
+void InvenItem::SetCount(int n)
+{
+	count = n;
 	if (count <= 0)
 	{
 		count = 0;

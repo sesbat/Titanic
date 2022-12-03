@@ -64,20 +64,28 @@ Vector2f Scene::ScreenToUiPosition(Vector2i screenPos)
 }
 void Scene::Update(float dt)
 {
-	for (auto& layer : objList)
-	{
-		for (auto& obj_pair : layer.second)
-		{
-			auto objs = obj_pair.second;
+	//for (auto& layer : objList)
+	//{
+	//	for (auto& obj_pair : layer.second)
+	//	{
+	//		auto objs = obj_pair.second;
 
-			for (auto& obj : objs)
-			{
-				if (obj->GetActive())
-				{
-					obj->Update(dt);
-				}
-			}
-		}
+	//		for (auto& obj : objs)
+	//		{
+	//			if (obj->GetActive())
+	//			{
+	//				obj->Update(dt);
+	//			}
+	//		}
+	//	}
+	//}
+	for (auto& obj : drawObjs)
+	{
+		obj->Update(dt);
+	}
+	for (auto& obj : objList[LayerType::Object][1])
+	{
+		obj->Update(dt);
 	}
 
 	for (auto& del : deleteContainer)
@@ -140,7 +148,8 @@ void Scene::Draw(RenderWindow& window)
 		{
 			for (auto& o : obj.second)
 			{
-				o->Draw(window);
+				if (((SpriteObject*)o)->IsInView())
+					o->Draw(window);
 			}
 		}
 		for (auto& obj : another)

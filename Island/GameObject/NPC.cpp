@@ -6,10 +6,8 @@
 #include "../Framework/ResourceManager.h"
 #include "../Ui/Button.h"
 #include "../Framework/Framework.h"
-#include "../Ui/InventoryBox.h"
 #include "../Scens/SceneManager.h"
 #include "../Scens/Scene.h"
-#include "../Ui/Inventory.h"
 #include "Ment.h"
 
 NPC::NPC()
@@ -34,10 +32,6 @@ void NPC::SetNPCType(NPCType type)
 void NPC::Init()
 {
 	scene = SCENE_MGR->GetCurrScene();
-	shop = new InventoryBox(scene->GetUiMgr(),player->GetInventory(), Vector2i{ 1248,252 });
-	shop->Init();
-	NPCInven = player->GetInventory();
-	NPCInven->SetRightInven(shop);
 
 	ment = new Ment();
 	ment->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 40, Color::White, "[F]");
@@ -89,6 +83,16 @@ void NPC::Update(float dt)
 				}
 				break;
 			case NPCType::Shop:
+				if (player->GetIsMove())
+				{
+					isShowShop = true;
+					player->SetMove(false);
+				}
+				else if (isShowShop)
+				{
+					isShowShop = false;
+					player->SetMove(true);
+				}
 				break;
 			case NPCType::Craft:
 				if (player->GetIsMove())
