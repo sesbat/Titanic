@@ -104,7 +104,7 @@ void Gun::Update(float dt)
 
 		Transform transform = translation * rotation;
 		gunhitbox->SetPos(transform.transformPoint(55.f, 5.f));
-		//gunhitbox->SetRotate(angle);
+		
 		shootDelay -= dt;
 	}
 		break;
@@ -118,6 +118,16 @@ void Gun::Update(float dt)
 		GetSprite().setRotation(angle);
 
 		SetPos({ enemy->GetPos().x,enemy->GetPos().y + 10.f });
+
+		Transform translation;
+		translation.translate(GetPos());
+		float angle2 = Utils::Angle(lookDir);
+		Transform rotation;
+		rotation.rotate(angle2);
+
+		Transform transform = translation * rotation;
+		gunhitbox->SetPos(transform.transformPoint(55.f, 5.f));
+
 		shootDelay -= dt;
 	}
 		break;
@@ -175,7 +185,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		case GunType::Shotgun:
 		{
 			Vector2f startPos;
-			startPos = transform.transformPoint(50, 0);
+			startPos = transform.transformPoint(70, 0);
 			bulletSpeed = 2000;
 			range = 800;
 			shootDelay = 0.3f;

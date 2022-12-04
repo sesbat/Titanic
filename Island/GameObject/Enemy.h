@@ -108,6 +108,6 @@ public:
 	void Collision();
 	
 	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
-
 	void FindGrid();
+	void CheckIsInWall();
 };

@@ -563,21 +563,29 @@ void Player::Collision()
 					)
 					SetPlayerPos();
 			}
+		}
+	}
+	//gun fire
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+
+		for (auto obj : boundInObj)
+		{
 			if (Utils::OBB(obj->GetBottom()->GetHitbox(), gun->GetHitbox()))
 			{
-				
+
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK")
 				{
-					cout << "wall" << endl;
+					//cout << "wall" << endl;
 					gun->SetIsInWall(false);
 					break;
 				}
-				
 			}
 			else
 			{
-				cout << "not wall" << endl;
+				//cout << "not wall" << endl;
 				gun->SetIsInWall(true);
 			}
 		}
@@ -719,9 +727,26 @@ void Player::Reload()
 				isReloading = true;
 				if (bt->GetCount() < magazineSG)
 				{
-					ammo = bt->GetCount();
-					sgAmmo = ammo;
-					bt->AddCount(-(magazineSG));
+					if (ammo > 0)
+					{
+						if (ammo + bt->GetCount() >= magazineSG)
+						{
+							ammo = sgAmmo = magazineSG;
+							bt->AddCount(-(magazineSG - ammoCount));
+							
+						}
+						else
+						{
+							ammo = ammo + bt->GetCount();
+							bt->AddCount(-(magazineSG));
+						}
+					}
+					else
+					{
+						ammo = bt->GetCount();
+						sgAmmo = ammo;
+						bt->AddCount(-(magazineSG));
+					}
 				}
 				else
 				{
@@ -750,9 +775,25 @@ void Player::Reload()
 				isReloading = true;
 				if (bt->GetCount() < magazineRF)
 				{
-					ammo = bt->GetCount();
-					rfAmmo = ammo;
-					bt->AddCount(-(magazineRF));
+					if (ammo > 0)
+					{
+						if (ammo + bt->GetCount() >= magazineRF)
+						{
+							ammo = rfAmmo = magazineRF;
+							bt->AddCount(-(magazineRF - ammoCount));
+						}
+						else
+						{
+							ammo = ammo + bt->GetCount();
+							bt->AddCount(-(magazineRF));
+						}
+					}
+					else
+					{
+						ammo = bt->GetCount();
+						rfAmmo = ammo;
+						bt->AddCount(-(magazineRF));
+					}
 				}
 				else
 				{
@@ -781,9 +822,26 @@ void Player::Reload()
 				isReloading = true;
 				if (bt->GetCount() < magazineSN)
 				{
-					ammo = bt->GetCount();
-					snAmmo = ammo;
-					bt->AddCount(-(magazineSN));
+					if (ammo > 0)
+					{
+						if (ammo + bt->GetCount() >= magazineSN)
+						{
+							ammo = snAmmo = magazineSN;
+							bt->AddCount(-(magazineSN - ammoCount));
+							
+						}
+						else
+						{
+							ammo = ammo + bt->GetCount();
+							bt->AddCount(-(magazineSN));
+						}
+					}
+					else
+					{
+						ammo = bt->GetCount();
+						snAmmo = ammo;
+						bt->AddCount(-(magazineSN));
+					}
 				}
 				else
 				{
@@ -798,6 +856,29 @@ void Player::Reload()
 				return;
 			}
 		}
+		break;
+	}
+}
+
+string Player::GetAmmos()
+{
+	if (isReloading)
+	{
+		return "Reloading";
+	}
+	switch (gun->GetgunType())
+	{
+	case GunType::None:
+		return ("No Guns");
+		break;
+	case GunType::Shotgun:
+		return (to_string(ammo) + "/" + to_string(magazineSG));
+		break;
+	case GunType::Rifle:
+		return (to_string(ammo) + "/" + to_string(magazineRF));
+		break;
+	case GunType::Sniper:
+		return (to_string(ammo) + "/" + to_string(magazineSN));
 		break;
 	}
 }

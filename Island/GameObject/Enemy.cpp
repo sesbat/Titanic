@@ -274,8 +274,9 @@ void Enemy::SetEnemyPos()
 
 void Enemy::AttackPattern(float dt)
 {
+	CheckIsInWall();
 	//attack motion
-	if (hitTime >= 0.8f && (Utils::Distance(player->GetPos(), GetPos()) < 500.f))
+	if (hitTime >= 0.8f && (Utils::Distance(player->GetPos(), GetPos()) < 500.f) && gun->GetIsInWall())
 	{
 		gun->Fire(GetPos(), false);
 		hitTime = 0.f;
@@ -425,4 +426,33 @@ void Enemy::FindGrid()
 	destPos.first = (int)player->GetPlayerBottom().x / 60;
 	destPos.second = (int)player->GetPlayerBottom().y / 60;
 	//cout << "dest pos" << destPos.first << " " << destPos.second << endl;
+}
+
+void Enemy::CheckIsInWall()
+{
+	//gun fire
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+
+		for (auto obj : boundInObj)
+		{
+			if (Utils::OBB(obj->GetBottom()->GetHitbox(), gun->GetHitbox()))
+			{
+
+				if (obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK")
+				{
+					//cout << "wall" << endl;
+					gun->SetIsInWall(false);
+					break;
+				}
+			}
+			else
+			{
+				//cout << "not wall" << endl;
+				gun->SetIsInWall(true);
+			}
+		}
+	}
 }
