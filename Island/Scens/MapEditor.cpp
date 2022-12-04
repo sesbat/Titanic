@@ -88,21 +88,21 @@ void MapEditor::Update(float dt)
 	veiw_end_pos.x = min(veiw_end_pos.x, 128);
 	veiw_end_pos.y = min(veiw_end_pos.y, 72);
 
-	auto mousePos = (Vector2i)ScreenToWorld((Vector2i)InputMgr::GetMousePos());
+	//auto mousePos = (Vector2i)ScreenToWorld((Vector2i)InputMgr::GetMousePos());
 
-	Vector2i update_start_pos = mousePos - Vector2i{ 120, 120 };
-	Vector2i update_end_pos = mousePos + Vector2i{120, 120};
-	update_start_pos /= 60;
-	update_end_pos /= 60;
+	//Vector2i update_start_pos = mousePos - Vector2i{ 120, 120 };
+	//Vector2i update_end_pos = mousePos + Vector2i{120, 120};
+	//update_start_pos /= 60;
+	//update_end_pos /= 60;
 
-	update_start_pos.x = max(update_start_pos.x, 0);
-	update_start_pos.y = max(update_start_pos.y, 0);
-	update_end_pos.x = min(update_end_pos.x, 128);
-	update_end_pos.y = min(update_end_pos.y, 72);
+	//update_start_pos.x = max(update_start_pos.x, 0);
+	//update_start_pos.y = max(update_start_pos.y, 0);
+	//update_end_pos.x = min(update_end_pos.x, 128);
+	//update_end_pos.y = min(update_end_pos.y, 72);
 	
-	for (int i = update_start_pos.x; i < update_end_pos.x; i++)
+	for (int i = view_start_pos.x; i < veiw_end_pos.x; i++)
 	{
-		for (int j = update_start_pos.y; j < update_end_pos.y; j++)
+		for (int j = view_start_pos.y; j < veiw_end_pos.y; j++)
 		{
 			greeds[j][i]->Update(dt);
 			if (greedObjs[LayerType::Object][j][i] != nullptr)
