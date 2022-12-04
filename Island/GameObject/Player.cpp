@@ -20,7 +20,7 @@
 
 
 Player::Player()
-	: currState(States::None), speed(200.f), maxSpeed(200.f),
+	: currState(States::None), speed(400.f), maxSpeed(200.f),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
 	hp(500), maxHp(500), isDash(false), stamina(10.f), maxStamina(10.f),
@@ -165,7 +165,7 @@ void Player::Update(float dt)
 		shootDelay -= dt;
 		reloadDelay -= dt;
 		//fire
-		if (ammo > 0 && shootDelay <= 0 && reloadDelay <= 0)
+		if (ammo > 0 && shootDelay <= 0 && reloadDelay <= 0 && gun->GetIsInWall())
 		{
 			isReloading = false;
 			switch (gun->GetgunType())
@@ -562,6 +562,23 @@ void Player::Collision()
 					//obj->GetName() == "ENEMY"
 					)
 					SetPlayerPos();
+			}
+			if (Utils::OBB(obj->GetBottom()->GetHitbox(), gun->GetHitbox()))
+			{
+				
+				if (obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK")
+				{
+					cout << "wall" << endl;
+					gun->SetIsInWall(false);
+					break;
+				}
+				
+			}
+			else
+			{
+				cout << "not wall" << endl;
+				gun->SetIsInWall(true);
 			}
 		}
 	}

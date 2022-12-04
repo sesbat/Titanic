@@ -424,8 +424,7 @@ void GameScene::castAllLights()
 			for (auto it2 = it.edgePool.begin(); it2 != it.edgePool.end(); it2++)
 			{
 				edges.push_back(*it2);
-			}
-			
+ 			}
 		}	
 	}
 	light.castLight(edges.begin(), edges.end());

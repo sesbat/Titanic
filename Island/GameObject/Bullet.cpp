@@ -35,7 +35,7 @@ void Bullet::Update(float dt)
 		range -= Utils::Magnitude(dir * dt * speed);
 		
 		// collision
-		Collision();
+		
 		if (GetActive())
 		{
 			if (range >= 0.f)
@@ -47,9 +47,11 @@ void Bullet::Update(float dt)
 				SetActive(false);
 			}
 		}
-		
+		startPos = nextPos;
 		nextPos = GetPos() - dir * ((float)sprite.getLocalBounds().width);
+		Collision();
 	}
+
 	if (InputMgr::GetKeyDown(Keyboard::P))
 	{
 		showLine = !showLine;
@@ -63,9 +65,9 @@ void Bullet::Draw(RenderWindow& window)
 	lines[1].position = { nextPos };
 	if (showLine)
 	{
-		window.draw(lines);
+		//window.draw(lines);
 	}
-	
+	window.draw(lines);
 	SpriteObject::Draw(window);
 	
 }
@@ -180,6 +182,7 @@ void Bullet::Collision()
 				SetActive(false);
 				//cout << "hit" << endl;
 				break;
+				
 			}
 		}
 		else if (isplayer && objects->GetName() == "ENEMY")
