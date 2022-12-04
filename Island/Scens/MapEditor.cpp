@@ -75,6 +75,7 @@ void MapEditor::Reset()
 void MapEditor::Update(float dt)
 {
 	auto uimgr = ((EditorMapUiMgr*)uiMgr);
+
 	Vector2i cam_pos = (Vector2i)GetWorldView().getCenter();
 	Vector2i cam_size = (Vector2i)GetWorldView().getSize();
 	cam_pos = cam_pos - Vector2i{ cam_size.x / 2, cam_size.y / 2 };

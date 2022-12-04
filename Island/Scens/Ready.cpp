@@ -120,6 +120,7 @@ void Ready::Init()
 	uiMgr = new ReadyUiMgr(this);
 	uiMgr->Init();
 	treeMap.setFont(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"));
+	treeMap.insert(objList[LayerType::Object][0]);
 }
 
 void Ready::Release()
@@ -182,7 +183,7 @@ void Ready::Update(float dt)
 	if(player->GetIsMove())
 		worldView.setCenter(realcam);
 	LayerSort();
-	treeMap.insert(drawObjs);
+	//treeMap.insert(drawObjs);
 	treeMap.update(drawObjs);
 
 	Scene::Update(dt);

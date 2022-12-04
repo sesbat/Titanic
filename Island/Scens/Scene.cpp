@@ -5,6 +5,8 @@
 #include "../Ui/Menu/MenuUiMgr.h"
 #include "../GameObject/HitBoxObject.h"
 #include "../GameObject/HitBox.h"
+#include "../Scens/GameScene.h"
+#include "../Scens/Ready.h"
 
 Scene::Scene(Scenes type) :type(type), uiMgr(nullptr), isGameScene(false)
 {
@@ -89,6 +91,7 @@ void Scene::Update(float dt)
 	for (auto& obj : drawObjs)
 	{
 		obj->Update(dt);
+
 	}
 	for (auto& obj : objList[LayerType::Object][1])
 	{
