@@ -22,6 +22,7 @@ GameSceneUiMgr::GameSceneUiMgr(Scene* scene)
 
 GameSceneUiMgr::~GameSceneUiMgr()
 {
+	player->Save();
 }
 
 void GameSceneUiMgr::Init()
@@ -189,7 +190,7 @@ void GameSceneUiMgr::Update(float dt)
 	{
 		player->SetPrevThirstGuage(player->GetThirstGuage());
 		int result = ((player->GetThirstGuage() / 255) * 100);
-		thirstTex->GetTextObj()->SetString(to_string(result));
+		thirstTex->GetTextObj()->SetString(to_string((int)result));
 		thirst->GetSpriteObj()->SetColor(Color(0, 145, 255, (int)player->GetThirstGuage()));
 		if (result < 30.f)
 		{
@@ -204,7 +205,7 @@ void GameSceneUiMgr::Update(float dt)
 	{
 		player->SetPrevEnergyGuage(player->GetEnergyGuage());
 		int result = ((player->GetEnergyGuage() / 255) * 100);
-		energyTex->GetTextObj()->SetString(to_string(result));
+		energyTex->GetTextObj()->SetString(to_string((result)));
 		energy->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)player->GetEnergyGuage()));
 		if (result < 30.f)
 		{

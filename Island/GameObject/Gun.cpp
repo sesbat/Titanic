@@ -180,11 +180,11 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			float F4 = temp - (M_PI / 12) * 2;
 			Vector2f randomShot4 = { cos(F4),sin(F4) };
 
-			bullet->SetOrigin(Origins::MR);
-			bullet1->SetOrigin(Origins::MR);
-			bullet2->SetOrigin(Origins::MR);
-			bullet3->SetOrigin(Origins::MR);
-			bullet4->SetOrigin(Origins::MR);
+			bullet->SetOrigin(Origins::MC);
+			bullet1->SetOrigin(Origins::MC);
+			bullet2->SetOrigin(Origins::MC);
+			bullet3->SetOrigin(Origins::MC);
+			bullet4->SetOrigin(Origins::MC);
 
 			bullet->SetDamage(Damage);
 			bullet1->SetDamage(Damage);
@@ -202,28 +202,29 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		case GunType::Rifle:
 		{
 			Vector2f startPos;
-			startPos = transform.transformPoint(80, 0);
+			startPos = transform.transformPoint(30, 0);
 			bulletSpeed = 2000;
 			range = 1000;
 			shootDelay = 0.1f;
 
 			Bullet* bullet = bulletPool.Get();
 			bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
-			bullet->SetOrigin(Origins::MR);
+			bullet->SetOrigin(Origins::MC);
 			bullet->SetDamage(Damage);
 			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 		}
 		break;
 		case GunType::Sniper:
 		{
-			Vector2f startPos;
-			startPos = transform.transformPoint(180, -5);
-			bulletSpeed = 5000;
+			Vector2f startPos = GetPos();
+			//startPos = transform.transformPoint(180, -5);
+			startPos += lookDir * 50.f;
+			bulletSpeed = 500;
 			range = 2000;
 			shootDelay = 1.f;
 
 			Bullet* bullet = bulletPool.Get();
-			bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniperbullet.png"));
+			//bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniperbullet.png"));
 			bullet->SetOrigin(Origins::MR);
 			bullet->SetDamage(Damage);
 			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);

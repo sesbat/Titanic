@@ -20,7 +20,7 @@ private:
 public:
 	FileManager();
 	~FileManager();
-
+		
 	void LoadAll();
 	const vector<ns::RectangleInfo>& GetHitBox(string name);
 

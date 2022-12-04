@@ -4,9 +4,13 @@
 #include "../GameObject/SpriteObject.h"
 #include "../GameObject/TextObject.h"
 #include "../Framework/FileManager.h"
+#include "../Scens/SceneManager.h"
+#include "../Scens/GameScene.h"
 #include "InvenItem.h"
 #include "Craft.h"
 #include "CraftItem.h"
+#include "../GameObject/Player.h"
+#include "Inventory.h"
 
 CraftBox::CraftBox(UiMgr* mgr, Craft* inven, Vector2i startPos)
 	: Button(mgr), nowDrag(nullptr), inven(inven), startPos(startPos)
@@ -36,6 +40,7 @@ void CraftBox::Init()
 		allPos.push_back(line);
 		itemGreed.push_back(greedLine);
 	}
+	player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
 }
 
 void CraftBox::Update(float dt)
@@ -110,6 +115,14 @@ void CraftBox::Update(float dt)
 				{
 					cout << n->GetName() << endl;
 					inven->OnClickCraftItem(FILE_MGR->GetCraftItemInfo(n->GetName()));
+					for(auto& k : player->GetInventory()->GetUseItems())
+					{
+						if (n->IsClickRight() && k->GetCount() >= n->GetCount())
+						{
+							
+
+						}
+					}
 				}
 
 			}

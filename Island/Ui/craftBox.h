@@ -3,6 +3,7 @@
 #include "CraftGreed.h"
 class UiMgr;
 class InvenItem;
+class Player;
 class Craft;
 class CraftItem;
 class CraftBox: public Button
@@ -18,6 +19,7 @@ private:
 	CraftItem* nowDrag;
 	Craft* inven;
 	CraftBox* pairInven;
+	Player* player;
 public:
 	CraftBox(UiMgr* mgr, Craft* inven, Vector2i startPos);
 	virtual ~CraftBox();

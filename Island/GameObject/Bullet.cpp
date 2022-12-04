@@ -35,7 +35,7 @@ void Bullet::Update(float dt)
 		range -= Utils::Magnitude(dir * dt * speed);
 		
 		// collision
-		Collision();
+		
 		if (GetActive())
 		{
 			if (range >= 0.f)
@@ -47,8 +47,11 @@ void Bullet::Update(float dt)
 				SetActive(false);
 			}
 		}
-		
-		nextPos = GetPos() - dir * ((float)sprite.getLocalBounds().width);
+
+		startPos = nextPos;
+		nextPos = GetPos();// -dir * ((float)sprite.getLocalBounds().width);
+
+		Collision();
 	}
 	if (InputMgr::GetKeyDown(Keyboard::P))
 	{
@@ -63,9 +66,9 @@ void Bullet::Draw(RenderWindow& window)
 	lines[1].position = { nextPos };
 	if (showLine)
 	{
-		window.draw(lines);
+		
 	}
-	
+	window.draw(lines);
 	SpriteObject::Draw(window);
 	
 }
