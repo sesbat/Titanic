@@ -156,9 +156,9 @@ void GameSceneUiMgr::Init()
 	ammoText = new Button(this);
 	ammoText->SetClkColor(true);
 	ammoText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		20, Color::White, player->GetAmmos(), true);
+		40, Color::White, player->GetAmmos(), true);
 	ammoText->SetOrigin(Origins::MC);
-	ammoText->SetPos({ 50,200 });
+	ammoText->SetPos({ 150,200 });
 	uiObjList[0].push_back(ammoText);
 }
 

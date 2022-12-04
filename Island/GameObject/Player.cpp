@@ -27,7 +27,7 @@ Player::Player()
 	hungerGuage(255), thirstGuage(255), energyGuage(255),
 	maxHungerGuage(255), maxThirstGuage(255), maxEnergyGuage(255),
 	staminaScale(1.f), staminaTime(5.f), dash(0.01f),
-	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true),
+	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true), ammo(0),
 	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f), reloadDelay(0.f), isReloading(false)
 {
 }
@@ -44,9 +44,7 @@ void Player::Init()
 	gun = new Gun(GunType::None, User::Player);
 	gun->SetPlayer(this);
 	gun->Init();
-	ammo = magazineSG;
-	//rfAmmo = maxRFAmmo;
-	//snAmmo = maxSNAmmo;
+	
 	animator.SetTarget(&sprite);
 
 	//animation
@@ -197,37 +195,40 @@ void Player::Update(float dt)
 		}
 	}
 	
-
-	if (InputMgr::GetKeyDown(Keyboard::Num1))
+	if (!isReloading)
 	{
-		auto myGun = inven->GetUsedItem(0);
+		if (InputMgr::GetKeyDown(Keyboard::Num1))
+		{
+			auto myGun = inven->GetUsedItem(0);
 
-		if (myGun == nullptr)
-		{
-			gun->SetGunType(GunType::None);
-			ammo = 0;
+			if (myGun == nullptr)
+			{
+				gun->SetGunType(GunType::None);
+				ammo = 0;
+			}
+			else
+			{
+				gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+				SetAmmoType();
+			}
 		}
-		else
+		if (InputMgr::GetKeyDown(Keyboard::Num2))
 		{
-			gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
-			SetAmmoType();
+			auto myGun = inven->GetUsedItem(1);
+
+			if (myGun == nullptr)
+			{
+				gun->SetGunType(GunType::None);
+				ammo = 0;
+			}
+			else
+			{
+				gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+				SetAmmoType();
+			}
 		}
 	}
-	if (InputMgr::GetKeyDown(Keyboard::Num2))
-	{
-		auto myGun = inven->GetUsedItem(1);
-
-		if (myGun == nullptr)
-		{
-			gun->SetGunType(GunType::None);
-			ammo = 0;
-		}
-		else
-		{
-			gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
-			SetAmmoType();
-		}
-	}
+	
 	//use item
 	if (InputMgr::GetKeyDown(Keyboard::Num3))
 	{
