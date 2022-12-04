@@ -185,7 +185,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		case GunType::Shotgun:
 		{
 			Vector2f startPos;
-			startPos = transform.transformPoint(70, 0);
+			startPos = transform.transformPoint(80, 0);
 			bulletSpeed = 2000;
 			range = 800;
 			shootDelay = 0.3f;
@@ -249,8 +249,8 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		case GunType::Sniper:
 		{
 			Vector2f startPos;
-			startPos = transform.transformPoint(180, -5);
-			bulletSpeed = 500;
+			startPos = transform.transformPoint(80, 0);
+			bulletSpeed = 3000;
 			range = 2000;
 			shootDelay = 1.f;
 
