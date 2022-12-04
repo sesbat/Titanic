@@ -138,7 +138,7 @@ void Scene::Draw(RenderWindow& window)
 				auto objs = obj_pair.second;
 				for (auto& obj : objs)
 				{
-					if (obj->GetActive() && obj->IsInView())
+					if (obj->GetActive())
 					{
 						obj->Draw(window);
 					}

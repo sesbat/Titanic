@@ -18,7 +18,7 @@ enum class Scenes
 // �ٴ�, Ǯ, ������Ʈ + ��(Ư��), ���ʹ�
 enum class LayerType
 {
-	None, Back, Tile, Object
+	None, Back, Tile, Object, COUNT
 };
 
 class Scene
