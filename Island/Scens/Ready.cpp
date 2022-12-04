@@ -28,7 +28,7 @@ Ready::~Ready()
 void Ready::Init()
 {
 	int id = 0;
-	isMap = true;
+	isGameScene = true;
 	auto& data = FILE_MGR->GetMap("READYSCENE");
 
 	for (auto& obj : data)

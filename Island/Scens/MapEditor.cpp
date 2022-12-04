@@ -73,6 +73,7 @@ void MapEditor::Reset()
 
 void MapEditor::Update(float dt)
 {
+
 	Scene::Update(dt);
 
 	auto uimgr = ((EditorMapUiMgr*)uiMgr);

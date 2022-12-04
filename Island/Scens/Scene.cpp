@@ -6,7 +6,7 @@
 #include "../GameObject/HitBoxObject.h"
 #include "../GameObject/HitBox.h"
 
-Scene::Scene(Scenes type) :type(type), uiMgr(nullptr), isMap(false)
+Scene::Scene(Scenes type) :type(type), uiMgr(nullptr), isGameScene(false)
 {
 }
 
@@ -64,21 +64,28 @@ Vector2f Scene::ScreenToUiPosition(Vector2i screenPos)
 }
 void Scene::Update(float dt)
 {
-	//for (auto& layer : objList)
-	//{
-	//	for (auto& obj_pair : layer.second)
-	//	{
-	//		auto objs = obj_pair.second;
+	if (!isGameScene)
+	{
+		for (auto& layer : objList)
+		{
+			for (auto& obj_pair : layer.second)
+			{
+				auto objs = obj_pair.second;
 
-	//		for (auto& obj : objs)
-	//		{
-	//			if (obj->GetActive())
-	//			{
-	//				obj->Update(dt);
-	//			}
-	//		}
-	//	}
-	//}
+				for (auto& obj : objs)
+				{
+					if (obj->GetActive())
+					{
+						obj->Update(dt);
+					}
+				}
+			}
+		}
+		if (uiMgr != nullptr)
+			uiMgr->Update(dt);
+
+		return;
+	}
 	for (auto& obj : drawObjs)
 	{
 		obj->Update(dt);
@@ -122,7 +129,7 @@ void Scene::Draw(RenderWindow& window)
 {
 	window.setView(worldView);
 
-	if (!isMap)
+	if (!isGameScene)
 	{
 		for (auto& layer : objList)
 		{
@@ -131,7 +138,7 @@ void Scene::Draw(RenderWindow& window)
 				auto objs = obj_pair.second;
 				for (auto& obj : objs)
 				{
-					if (obj->GetActive())
+					if (obj->GetActive() && obj->IsInView())
 					{
 						obj->Draw(window);
 					}

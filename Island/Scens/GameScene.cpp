@@ -47,7 +47,7 @@ GameScene::~GameScene()
 void GameScene::Init()
 {
 	int id = 0;
-	isMap = true;
+	isGameScene = true;
 	auto& data = FILE_MGR->GetMap(sceneName);
 	isGreedObject.clear();
 

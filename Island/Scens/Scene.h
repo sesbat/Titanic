@@ -38,7 +38,7 @@ protected:
 	vector<Object*> another;
 	vector<Object*> drawObjs;
 	vector<HitBoxObject*> alphaObj;
-	bool isMap;
+	bool isGameScene;
 
 	string sceneName;
 public:

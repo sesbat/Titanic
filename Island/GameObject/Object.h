@@ -41,7 +41,7 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
 	void SetUI(bool u) { isUi = u; }
-	bool IsInView();
+	virtual bool IsInView() { return true; };
 	void SetId(int id) { this->id = id; }
 	void SetName(string name) { this->name = name; }
 	const string& GetName() const { return name; }
