@@ -112,10 +112,8 @@ void CraftBox::Update(float dt)
 			for (auto& n : items)
 			{
 				n->Update(dt);
-				//?´ë¦­ ?ì„??
 				if (!isRequired && n->IsClick())
 				{
-					//?„ì´???•ë³´ë¶ˆëŸ¬?¤ê¸°
 					//cout << n->GetName() << endl;
 					inven->OnClickCraftItem(FILE_MGR->GetCraftItemInfo(n->GetName()));
 					craftingItmeName = n->GetName();

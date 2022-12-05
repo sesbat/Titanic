@@ -23,7 +23,7 @@ Player::Player()
 	: currState(States::None), speed(200.f), maxSpeed(200.f),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	hp(500), maxHp(500), isDash(false), stamina(10.f), maxStamina(10.f),
+	hp(1000), maxHp(1000), isDash(false), stamina(10.f), maxStamina(10.f),
 	hungerGuage(255), thirstGuage(255), energyGuage(255),
 	maxHungerGuage(255), maxThirstGuage(255), maxEnergyGuage(255),
 	staminaScale(1.f), staminaTime(5.f), dash(0.01f),

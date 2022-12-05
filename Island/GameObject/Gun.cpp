@@ -280,14 +280,14 @@ void Gun::SetGunType(GunType type)
 	case GunType::Shotgun:
 		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun.png"));
-		Damage = 30;
+		Damage = 300;
 		pShootDelay = 0.3f;
 		SetOrigin(Origins::MC);
 		break;
 	case GunType::Rifle:
 		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/rifel.png"));
-		Damage = 50;
+		Damage = 200;
 		pShootDelay = 0.1f;
 		SetOrigin(Origins::MC);
 		break;
