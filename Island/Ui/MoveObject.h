@@ -9,6 +9,7 @@ private:
 public:
 	MoveObject(UiMgr* scene);
 	virtual ~MoveObject();
+	virtual void Release();
 	virtual void Update(float dt);
 	virtual void Init();
 	virtual void Reset();

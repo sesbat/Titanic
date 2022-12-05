@@ -7,6 +7,7 @@ HitBox::HitBox()
 
 HitBox::~HitBox()
 {
+	Release();
 }
 
 void HitBox::SetActive(bool active)

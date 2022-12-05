@@ -20,6 +20,38 @@ Inventory::Inventory(UiMgr* mgr)
 
 Inventory::~Inventory()
 {
+	Release();
+}
+
+void Inventory::Release()
+{
+	for (auto& useItem : invenItemGreed)
+	{
+		if (useItem != nullptr)
+		{
+			delete useItem;
+			useItem = nullptr;
+		}
+	}
+	for (auto& useItem : myUseItems)
+	{
+		delete useItem;
+	}
+	myUseItems.clear();
+
+	if (myInven != nullptr)
+		delete myInven;
+	myInven = nullptr;
+
+	if (rightInven != nullptr)
+		delete rightInven;
+	rightInven = nullptr;
+
+	if (txtMoney != nullptr)
+		delete txtMoney;
+	txtMoney = nullptr;
+
+	Button::Release();
 }
 
 void Inventory::Init()

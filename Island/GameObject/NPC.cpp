@@ -17,6 +17,7 @@ NPC::NPC()
 
 NPC::~NPC()
 {
+	Release();
 }
 
 void NPC::SetPlayer(Player* player)
@@ -46,14 +47,12 @@ void NPC::Init()
 
 void NPC::Release()
 {
-	SpriteObject::Release();
+	HitBoxObject::Release();
 }
 
 void NPC::Update(float dt)
 {
 	SpriteObject::Update(dt);
-	//cout << GetPos().x<<" "<< GetPos().y << endl;
-
 
 	if (!ment->GetActive() && Utils::Distance(GetPos(), player->GetPos()) < 100)
 	{
@@ -64,14 +63,14 @@ void NPC::Update(float dt)
 		ment->SetActive(false);
 	}
 
-	if (InputMgr::GetKeyDown(Keyboard::F))
+	if (InputMgr::GetKeyDown(Keyboard::F) || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		if (Utils::Distance(GetPos(), player->GetPos()) < 100)
 		{
 			switch (type)
 			{
 			case NPCType::Start:
-				if (player->GetIsMove())
+				if (player->GetIsMove() && !InputMgr::GetKeyDown(Keyboard::Escape))
 				{
 					isShowMap = true;
 					player->SetMove(false);
@@ -80,10 +79,11 @@ void NPC::Update(float dt)
 				{
 					isShowMap = false;
 					player->SetMove(true);
+					InputMgr::Clear();
 				}
 				break;
 			case NPCType::Shop:
-				if (player->GetIsMove())
+				if (player->GetIsMove() && !InputMgr::GetKeyDown(Keyboard::Escape))
 				{
 					isShowShop = true;
 					player->SetMove(false);
@@ -92,10 +92,11 @@ void NPC::Update(float dt)
 				{
 					isShowShop = false;
 					player->SetMove(true);
+					InputMgr::Clear();
 				}
 				break;
 			case NPCType::Craft:
-				if (player->GetIsMove())
+				if (player->GetIsMove() && !InputMgr::GetKeyDown(Keyboard::Escape))
 				{
 					isShowCraft = true;
 					player->SetMove(false);
@@ -104,6 +105,7 @@ void NPC::Update(float dt)
 				{
 					isShowCraft = false;
 					player->SetMove(true);
+					InputMgr::Clear();
 				}
 				break;
 			case NPCType::Count:
@@ -117,49 +119,6 @@ void NPC::Update(float dt)
 			ment->SetActive(false);
 		}
 	}
-
-	//if (InputMgr::GetKeyDown(Keyboard::F))
-	//{
-	//	if (isShowMap && !player->GetIsMove())
-	//	{
-	//		switch (type)
-	//		{
-	//		case NPCType::Start:
-	//			isShowMap = false;
-	//			break;
-	//		case NPCType::Shop:
-	//			break;
-	//		case NPCType::Craft:
-	//			isShowCraft = false;
-	//			break;
-	//		case NPCType::Count:
-	//			break;
-	//		default:
-	//			break;
-	//		}
-
-	//		player->SetMove(true);
-	//	}
-	//	else if (!isShowMap && player->GetIsMove() && Utils::Distance(GetPos(), player->GetPos()) < 100)
-	//	{
-	//		switch (type)
-	//		{
-	//		case NPCType::Start:
-	//			isShowMap = true;
-	//			break;
-	//		case NPCType::Shop:
-	//			break;
-	//		case NPCType::Craft:
-	//			isShowCraft = true;
-	//			break;
-	//		case NPCType::Count:
-	//			break;
-	//		default:
-	//			break;
-	//		}
-	//		player->SetMove(false);
-	//	}
-	//}
 }
 
 void NPC::Draw(RenderWindow& window)

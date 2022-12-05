@@ -9,6 +9,7 @@ DrawSelect::DrawSelect(UiMgr* uimgr)
 
 DrawSelect::~DrawSelect()
 {
+	Release();
 }
 
 void DrawSelect::Set(string type, string path, string drawPath)
@@ -26,5 +27,10 @@ void DrawSelect::Update(float dt)
 		//cout << "Click" << endl;
 		((EditorMapUiMgr*)uimgr)->Select(this);
 	}
+}
+
+void DrawSelect::Release()
+{
+	Button::Release();
 }
 

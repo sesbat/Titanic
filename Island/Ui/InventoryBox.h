@@ -20,6 +20,7 @@ public:
 	InventoryBox(UiMgr* mgr, Inventory* inven, Vector2i startPos);
 	virtual ~InventoryBox();
 	virtual void Init();
+	virtual void Release();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
 	void AddItem(string name, int cnt, Vector2i invenPos, Vector2i greedPos, string path);

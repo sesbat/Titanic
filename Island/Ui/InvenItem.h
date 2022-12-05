@@ -19,6 +19,7 @@ private:
 public:
 	InvenItem(UiMgr* mgr);
 	virtual ~InvenItem();
+	virtual void Release();
 	virtual void Init();
 	virtual void Update(float dt);
 	void ButtonUpdate(float dt);

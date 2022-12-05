@@ -12,6 +12,7 @@ AddItemBox::AddItemBox(UiMgr* mgr)
 
 AddItemBox::~AddItemBox()
 {
+	Release();
 }
 
 void AddItemBox::Init()
@@ -155,6 +156,15 @@ void AddItemBox::Draw(RenderWindow& window)
 	}
 }
 
+void AddItemBox::Release()
+{
+	for (auto item : allItems)
+	{
+		delete item.second;
+	}
+	allItems.clear();
+}
+
 void AddItemBox::SetItems(map<string,Item>& items)
 {
 	nowObjectItems = &items;
@@ -185,6 +195,25 @@ AddItem::AddItem(UiMgr* mgr)
 	text = new TextObject();
 	text->SetOrigin(Origins::MC);
 	item.count = 0;
+}
+
+AddItem::~AddItem()
+{
+	if (sprite != nullptr)
+		delete sprite;
+	sprite = nullptr;
+
+	if (text != nullptr)
+		delete text;
+	text = nullptr;
+
+	if (addCnt != nullptr)
+		delete addCnt;
+	addCnt = nullptr;
+
+	if (minCnt != nullptr)
+		delete minCnt;
+	minCnt = nullptr;
 }
 
 void AddItem::SetPosition(Vector2f pos)

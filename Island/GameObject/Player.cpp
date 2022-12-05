@@ -34,11 +34,11 @@ Player::Player()
 
 Player::~Player()
 {
+	Release();
 }
 
 void Player::Init()
 {
-
 	HitBoxObject::Init();
 
 	gun = new Gun(GunType::None, User::Player);
@@ -262,12 +262,13 @@ void Player::Update(float dt)
 		isDash = false;
 	}
 
-	if (InputMgr::GetKeyDown(Keyboard::Tab))
+	if (InputMgr::GetKeyDown(Keyboard::Tab) || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		if (inven->GetActive() && !isMove)	
 		{
 			SetMove(true);
 			inven->SetActive(!(inven->GetActive()));
+			InputMgr::Clear();
 			//inven->ResetRightInven();
 			//cout << inven->GetRightInven()->GetName() << endl;
 			if (inven->GetRightInven()->GetItems()->size() > 0 && isInven)
@@ -297,7 +298,7 @@ void Player::Update(float dt)
 				}
 			}
 		}
-		else if (isMove)
+		else if (isMove && !InputMgr::GetKeyDown(Keyboard::Escape))
 		{
 			SetIsInven(true);
 			inven->SetActive(true);
@@ -339,6 +340,7 @@ void Player::Draw(RenderWindow& window)
 			hit->Draw(window);
 		}
 	}
+
 	gun->Draw(window);
 }
 
@@ -989,4 +991,11 @@ void Player::SetMoney(int p)
 	auto txt = inven->GetMoneyTxt();
 	txt->SetString(to_string(money));
 	txt->SetOrigin(Origins::MR);
+}
+
+void Player::Release()
+{
+	if (gun != nullptr)
+		delete gun;
+	gun = nullptr;
 }

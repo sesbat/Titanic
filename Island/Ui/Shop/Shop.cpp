@@ -20,6 +20,34 @@ Shop::Shop(UiMgr* mgr)
 
 Shop::~Shop()
 {
+	Release();
+}
+
+void Shop::Release()
+{
+	if (npcInvne != nullptr)
+		delete npcInvne;
+	npcInvne = nullptr;
+
+	if (sellInven != nullptr)
+		delete sellInven;
+	sellInven = nullptr;
+
+	if (buyInven != nullptr)
+		delete buyInven;
+	buyInven = nullptr;
+
+	if (txtMoney != nullptr)
+		delete txtMoney;
+	txtMoney = nullptr;
+
+	if (dealBtn != nullptr)
+		delete dealBtn;
+	dealBtn = nullptr;
+
+	if (txtPrice != nullptr)
+		delete txtPrice;
+	txtPrice = nullptr;
 }
 
 void Shop::Init()

@@ -175,5 +175,7 @@ public:
 	int GetMoney() { return money; }
 	void AddMoney(int p);
 	void SetMoney(int p);
+
+	virtual void Release();
 };
 

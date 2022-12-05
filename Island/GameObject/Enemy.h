@@ -78,6 +78,7 @@ protected:
 public:
 	Enemy();
 	virtual ~Enemy();
+	virtual void Release();
 
 	void Init(Player* player);
 

@@ -13,6 +13,7 @@ SpriteObject::~SpriteObject()
 
 void SpriteObject::Init()
 {
+	Object::Init();
 }
 
 void SpriteObject::Update(float dt)

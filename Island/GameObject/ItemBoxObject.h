@@ -4,6 +4,8 @@
 class InvenGreed;
 class InvenItem;
 class InventoryBox;
+class Ment;
+class Player;
 class ItemBoxObject : public HitBoxObject
 {
 private:
@@ -13,10 +15,14 @@ private:
 
 	InventoryBox* invenBox;
 
+	Player* player;
+	Ment* ment;
+
 public:
 	ItemBoxObject();
 	~ItemBoxObject();
 	virtual void Init();
+	void SetPlayer(Player* player);
 	virtual void Reset();
 	virtual void Release();
 	virtual void Update(float dt);

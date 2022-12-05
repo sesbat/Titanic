@@ -18,5 +18,6 @@ public:
 	string GetPath() { return path; }
 	void SetData(EditorObjs d) { data = d; }
 	EditorObjs GetData() { return data; }
+	virtual void Release();
 };
 

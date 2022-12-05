@@ -21,6 +21,7 @@ public:
 	virtual void Update(float dt);
 	virtual void Reset();
 	virtual void Init();
+	virtual void Release();
 
 	virtual bool IsDoubleClick() { return isDK; }
 	virtual bool IsDoubleClickRight() { return isDKR; }

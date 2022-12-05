@@ -14,6 +14,7 @@ InventoryBox::InventoryBox(UiMgr* mgr, Inventory* inven, Vector2i startPos)
 
 InventoryBox::~InventoryBox()
 {
+	Release();
 }
 
 void InventoryBox::Init()
@@ -35,6 +36,32 @@ void InventoryBox::Init()
 		allPos.push_back(line);
 		itemGreed.push_back(greedLine);
 	}
+}
+
+void InventoryBox::Release()
+{
+	for (auto greeds : itemGreed)
+	{
+		for (auto greed : greeds)
+		{
+			if (greed != nullptr)
+				delete greed;
+			greed = nullptr;
+		}
+	}
+
+	itemGreed.clear();
+
+	for (auto item : items)
+	{
+		if (item != nullptr)
+			delete item;
+		item = nullptr;
+	}
+	items.clear();
+	allPos.clear();
+
+	Button::Release();
 }
 
 void InventoryBox::Update(float dt)

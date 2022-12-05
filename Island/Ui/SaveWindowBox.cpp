@@ -11,21 +11,7 @@ SaveWindowBox::SaveWindowBox(UiMgr* mgr)
 
 SaveWindowBox::~SaveWindowBox()
 {
-	if (save != nullptr)
-	{
-		delete save;
-		save = nullptr;
-	}
-	//if (cancle != nullptr)
-	//{
-	//	delete cancle;
-	//	cancle = nullptr;
-	//}
-	if (txt != nullptr)
-	{
-		delete txt;
-		txt = nullptr;
-	}
+	Release();
 }
 
 void SaveWindowBox::Init()
@@ -102,11 +88,6 @@ void SaveWindowBox::Release()
 		delete save;
 		save = nullptr;
 	}
-	//if (cancle != nullptr)
-	//{
-	//	delete cancle;
-	//	cancle = nullptr;
-	//}
 	if (txt != nullptr)
 	{
 		delete txt;

@@ -10,6 +10,7 @@ Ment::Ment()
 
 Ment::~Ment()
 {
+	
 }
 
 void Ment::Update(float dt)

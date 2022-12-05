@@ -12,6 +12,12 @@ InvenItem::InvenItem(UiMgr* mgr)
 
 InvenItem::~InvenItem()
 {
+	Release();
+}
+
+void InvenItem::Release()
+{
+	MoveObject::Release();
 }
 
 void InvenItem::Init()

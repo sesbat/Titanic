@@ -37,6 +37,7 @@ Gun::Gun(GunType type, User user)
 
 Gun::~Gun()
 {
+	delete gunhitbox;
 }
 
 void Gun::Init()
@@ -149,6 +150,7 @@ void Gun::Draw(RenderWindow& window)
 
 void Gun::Relaese()
 {
+	delete gunhitbox;
 	SpriteObject::Release();
 }
 

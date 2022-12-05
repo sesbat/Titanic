@@ -42,7 +42,7 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
-    treeMap.clear();
+    Release();
 }
 
 void GameScene::Init()
@@ -61,11 +61,6 @@ void GameScene::Init()
     player = new Player();
     player->SetName("PLAYER");
     player->Init();
-
-    if (InputMgr::GetKeyDown(Keyboard::Escape))
-    {
-        SCENE_MGR->ChangeScene(Scenes::Menu);
-    }
 
     for (auto& obj : data)
     {
@@ -86,6 +81,8 @@ void GameScene::Init()
             box->SetOrigin(Origins::BC);
             box->SetPos(obj.position);
             box->SetHitBox(obj.path);
+            box->SetPlayer(player);
+            box->Init();
             objList[LayerType::Object][0].push_back(box);
         }
         else if (obj.type == "TREE" || obj.type == "BUSH" ||
@@ -164,11 +161,6 @@ void GameScene::Init()
             missionText->SetOrigin(Origins::BC);
             missionText->SetPos({ escapePoint.x - 150.f,escapePoint.y });
             objList[LayerType::Object][1].push_back(missionText);
-            //HitBoxObject* exit = new HitBoxObject();
-            //exit->SetTexture(*RESOURCES_MGR->GetTexture("graphics/exit.png"));
-            //exit->SetOrigin(Origins::BC);
-            //exit->SetPos(obj.position);
-            //objList[LayerType::Object][0].push_back(exit);
         }
     }
 
@@ -202,6 +194,7 @@ void GameScene::Release()
     Scene::Release();
     enemies.clear();
     blockPool.clear();
+    treeMap.clear();
 }
 
 void GameScene::Enter()
@@ -262,7 +255,6 @@ void GameScene::Update(float dt)
     //view sight pos
     light.setPosition(player->GetPos());
     fog.setPosition({ player->GetPos().x - 1920 , player->GetPos().y - 1080  });
-    //castAllLights();   
 
     //mission
     if (Utils::Distance(player->GetPos(), escapePoint) < 100.f)
@@ -292,30 +284,27 @@ void GameScene::Update(float dt)
         return;
     }
 
-    //treeMap.clear();
     LayerSort();
-    //treeMap.~QuadTree();
-    //treeMap.insert(objList[LayerType::Object][0]);
-    //treeMap.insert(drawObjs);
     treeMap.update(drawObjs);
 
-    //for (auto&& found : treeMap.getObjectsInBound_unchecked(*player)) {
-    //   if (player != found && Utils::OBB(player->GetBottom()->GetHitbox(), found->GetBottom()->GetHitbox())) {
-    //      found->SetColor(Color::Red);
-    //      cout << found->GetName() << endl;
-    //   }
-    //}
+    if (InputMgr::GetKeyDown(Keyboard::Escape))
+    {
+        SCENE_MGR->ChangeScene(Scenes::Ready);
+        return;
+    }
     Scene::Update(dt);
+
 }
+
 vector<HitBoxObject*> GameScene::ObjListObb(HitBoxObject* obj)
 {
     return treeMap.getObjectsInBound_unchecked_notParent(*obj);
 }
+
 vector<HitBoxObject*> GameScene::ObjListObb(FloatRect obj)
 {
     return treeMap.getObjectsInBound_unchecked_notParent(obj);
 }
-
 
 void GameScene::Draw(RenderWindow& window)
 {
@@ -380,6 +369,8 @@ void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy
     box->SetPos(pos);
     box->SetName("BOX-ENEMY");
     box->SetPlayerPos(player->GetPosPtr());
+    box->SetPlayer(player);
+    box->Init();
 
     auto boxPos = ((HitBoxObject*)(box))->GetBottomPos() + box->GetGlobalBound().height / 2;
 
@@ -399,6 +390,8 @@ void GameScene::DropItems(map<string, Item> items, Vector2f pos)
     box->SetPos(pos);
     box->SetName("BOX");
     box->SetPlayerPos(player->GetPosPtr());
+    box->SetPlayer(player);
+    box->Init();
 
     auto boxPos = ((HitBoxObject*)(box))->GetBottomPos() + box->GetGlobalBound().height / 2;
 

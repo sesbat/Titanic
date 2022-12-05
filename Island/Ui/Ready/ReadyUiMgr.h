@@ -20,7 +20,6 @@ private:
 	NPC* craftNpc;
 	NPC* shopNpc;
 
-	Inventory* inVen;
 	Craft* craft;
 	Shop* shop;
 
@@ -56,14 +55,10 @@ private:
 	float staminaBarSize;
 public:
 	ReadyUiMgr(Scene* scene);
+	~ReadyUiMgr();
 	virtual void Init();
 	virtual void Release();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
-
-	void ClickEpisodeBtn();
-
-	void ClickEditortBtn();
-
 };
 

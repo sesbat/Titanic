@@ -18,16 +18,7 @@ Button::Button(UiMgr* mgr)
 
 Button::~Button()
 {
-	if (sprite != nullptr)
-	{
-		delete sprite;
-		sprite = nullptr;
-	}
-	if (text != nullptr)
-	{
-		delete text;
-		text = nullptr;
-	}
+	Release();
 }
 
 void Button::Init()

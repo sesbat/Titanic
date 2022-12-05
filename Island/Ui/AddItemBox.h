@@ -13,6 +13,7 @@ struct AddItem
 	Button* minCnt;
 
 	AddItem(UiMgr* mgr);
+	~AddItem();
 	void SetPosition(Vector2f pos);
 	void Update(float dt);
 	void Draw(RenderWindow& window);
@@ -31,6 +32,7 @@ public:
 	virtual void Init();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
+	virtual void Release();
 	void SetItems(map<string,Item>& items);
 };
 

@@ -15,16 +15,12 @@ enum class CraftIdx
 class Craft : public Button
 {
 private:
-	float totalWeight;
-
 	CraftItem* nowDrag;
 
 	vector<Button*> categories;
 	vector<CraftBox*> categoryBox;
-	vector<CraftItem*> myUseItems;
 
 	CraftItem* material;
-
 	int categoryCount;
 
 	CraftBox* craftBox;
@@ -33,12 +29,9 @@ private:
 	CraftBox* prevCraft;
 
 	Button* craftGreed[(int)CraftIdx::Count];
-
 	Player* player;
 
 	bool isShow;
-	int useIdx;
-
 
 public:
 	Craft(UiMgr* mgr);
@@ -56,7 +49,6 @@ public:
 	void SetPrevInven(CraftBox* inven) { this->prevCraft = inven; }
 	void SetRightInven(CraftBox* inven) { requiredItem = inven; }
 	void MoveInvenItem(CraftBox* nextInven);
-	void ReturnUseItem();
 	void ClearInven();
 	void ResetRightInven();
 	void OnClickCraftItem(const CraftingInfo& info);

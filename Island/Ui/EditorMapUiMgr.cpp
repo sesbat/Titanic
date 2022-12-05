@@ -21,6 +21,18 @@ EditorMapUiMgr::EditorMapUiMgr(Scene* scene)
 
 EditorMapUiMgr::~EditorMapUiMgr()
 {
+	Release();
+}
+
+void EditorMapUiMgr::Release()
+{
+	if (nowDraw != nullptr)
+		delete nowDraw;
+	nowDraw = nullptr;
+	if (rect != nullptr)
+		delete rect;
+	rect = nullptr;
+	UiMgr::Release();
 }
 
 void EditorMapUiMgr::Init()

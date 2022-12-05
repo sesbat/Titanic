@@ -29,7 +29,7 @@ void Scene::Release()
 	another.clear();
 	if (uiMgr != nullptr)
 	{
-		((MenuUiMgr*)uiMgr)->Release();
+		uiMgr->Release();
 		uiMgr = nullptr;
 	}
 	uiMgr = nullptr;
@@ -37,14 +37,13 @@ void Scene::Release()
 	{
 		for (auto& obj_pair : layer.second)
 		{
-			auto objs = obj_pair.second;
-
-			for (auto& obj : objs)
+			for (auto& obj : obj_pair.second)
 			{
 				if(obj != nullptr)
 					delete obj;
+				obj = nullptr;
 			}
-			objs.clear();
+			obj_pair.second.clear();
 		}
 		layer.second.clear();
 	}

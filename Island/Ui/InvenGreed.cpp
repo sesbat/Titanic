@@ -15,6 +15,7 @@ InvenGreed::InvenGreed(UiMgr* mgr, Inventory* inven, InventoryBox* invenbox)
 
 InvenGreed::~InvenGreed()
 {
+	Button::Release();
 }
 
 void InvenGreed::Init()

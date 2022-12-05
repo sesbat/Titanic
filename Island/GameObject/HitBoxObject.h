@@ -31,6 +31,7 @@ public:
 	float GetBottomPos();
 	void SetHitPlayer(bool h);
 	bool GetHitColor() { return isHitPlayer; }
+	virtual void Release();
 
 };
 

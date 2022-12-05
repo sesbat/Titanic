@@ -9,7 +9,6 @@ class GameSceneUiMgr : public UiMgr
 {
 protected:
 	Player* player;
-	Inventory* inven;
 
 	Button* hpBar;
 	Button* hpBarBK;
@@ -42,7 +41,6 @@ public:
 	virtual void Reset();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
-
-	void SetPlayer(Player* player);
+	virtual void Releas();
 };
 

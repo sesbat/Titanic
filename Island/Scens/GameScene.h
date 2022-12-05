@@ -25,17 +25,12 @@ public:
 	};
 protected:
 	Player* player;
-
 	list<Enemy*> enemies;
-
 
 	float timer;
 	Clock clock;
-
 	IntRect mapSize;
 	
-	//vector<SpriteObject*> sprObj;
-
 	//mission
 	Vector2f escapePoint;
 	float escapeTimer;
@@ -48,11 +43,8 @@ protected:
 	QuadTree treeMap;
 
 	//view sight
-	//std::vector<std::shared_ptr<candle::LightSource>> lights1;
 	candle::RadialLight light;
 	candle::LightingArea fog;
-	
-	//list<candle::EdgeVector>blockPool;
 	vector<Blocks> blockPool;
 	int blockCount;
 

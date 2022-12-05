@@ -23,6 +23,22 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
+	Release();
+}
+
+void Enemy::Release()
+{
+
+	if (gun != nullptr)
+		delete gun;
+	gun = nullptr;
+
+	if (astar != nullptr)
+		delete astar;
+	astar = nullptr;
+
+
+	HitBoxObject::Release();
 }
 
 void Enemy::Init(Player* player)

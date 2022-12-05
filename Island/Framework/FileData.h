@@ -8,14 +8,6 @@
 using json = nlohmann::json;
 using namespace std;	
 
-enum class FileTypes
-{
-	EpisodeInfo,
-	HitBoxInfo,
-	CookieHitBox,
-};
-
-
 namespace sf {
 	void to_json(json& j, const Vector2f& p);
 	void from_json(const json& j, Vector2f& p);

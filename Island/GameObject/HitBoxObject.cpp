@@ -30,14 +30,12 @@ void HitBoxObject::Translate(Vector2f dir)
 
 HitBoxObject::~HitBoxObject()
 {
-	for (auto& hit : hitboxs)
-	{
-		delete hit;
-	}
+	Release();
 }
 
 void HitBoxObject::Init()
 {
+	SpriteObject::Init();
 }
 
 void HitBoxObject::Update(float dt)
@@ -104,4 +102,13 @@ void HitBoxObject::SetHitPlayer(bool h)
 {
 	isHitPlayer = h;
 	SetColor(h ? Color(255, 255, 255, 100): Color::White);
+}
+
+void HitBoxObject::Release()
+{
+	for (auto& hit : hitboxs)
+	{
+		delete hit;
+	}
+	hitboxs.clear();
 }

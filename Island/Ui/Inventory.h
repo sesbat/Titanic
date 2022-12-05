@@ -32,6 +32,7 @@ protected:
 public:
 	Inventory(UiMgr* mgr);
 	virtual ~Inventory();
+	virtual void Release();
 	virtual void Init();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
