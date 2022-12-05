@@ -35,7 +35,7 @@ void Bullet::Update(float dt)
 		range -= Utils::Magnitude(dir * dt * speed);
 		
 		// collision
-		
+		startPos = GetPos() - dir * ((float)sprite.getLocalBounds().width);;
 		if (GetActive())
 		{
 			if (range >= 0.f)
@@ -47,8 +47,7 @@ void Bullet::Update(float dt)
 				SetActive(false);
 			}
 		}
-		startPos = nextPos;
-		nextPos = GetPos() - dir * ((float)sprite.getLocalBounds().width);
+		nextPos = GetPos();// -dir * ((float)sprite.getLocalBounds().width);
 		Collision();
 	}
 
@@ -61,7 +60,8 @@ void Bullet::Update(float dt)
 void Bullet::Draw(RenderWindow& window)
 {
 	VertexArray lines(LineStrip, 2);
-	lines[0].position = { startPos - dir * ((float)sprite.getLocalBounds().width) };
+	//lines[0].position = { startPos - dir * ((float)sprite.getLocalBounds().width) };
+	lines[0].position = { startPos };
 	lines[1].position = { nextPos };
 	if (showLine)
 	{
@@ -93,7 +93,7 @@ void Bullet::Fire(const Vector2f& pos, const Vector2f& dir, float speed, float r
 {
 	sprite.setRotation(Utils::Angle(dir));
 	startPos = pos;
-	nextPos = startPos - dir * ((float)sprite.getLocalBounds().width);
+	nextPos = startPos + dir * ((float)sprite.getLocalBounds().width);
 	SetPos(pos);
 	this->isplayer = isplayer;
 	SetActive(true);
@@ -152,20 +152,14 @@ bool Bullet::Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, floa
 
 void Bullet::Collision()
 {
-	auto obj = scene->GetObjList();
-
 	vector<HitBoxObject*> boundInObj;
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
 		boundInObj = ((GameScene*)scene)->ObjListObb(sprite.getGlobalBounds());
 	}
-	//for (auto& objects : obj[LayerType::Object][0])
 	for (auto& objects : boundInObj)
 	{
 		auto hit = ((HitBoxObject*)objects)->GetBottom();
-		//cout << hit->GetHitbox().getPosition().x << " " 
-		//	<< hit->GetHitbox().getPosition().y << endl;
-
 		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
 			continue;
 
@@ -174,13 +168,12 @@ void Bullet::Collision()
 			objects->GetName() == "BLOCK")
 		{
 			if (LineRect(
-				startPos - dir * ((float)sprite.getLocalBounds().width),
+				startPos,// - dir * ((float)sprite.getLocalBounds().width),
 				nextPos,
 				hit->GetHitbox()))
 			{
 				speed = 0;
 				SetActive(false);
-				//cout << "hit" << endl;
 				break;
 				
 			}
@@ -199,12 +192,11 @@ void Bullet::Collision()
 							nextPos,
 							it->GetHitbox()))
 						{
-							//cout << "hit" << endl;
 							enemy->SetHp(damage);
 							SetActive(false);
 							break;
 						}
-						break;
+						//break;
 					}
 				}
 			}
@@ -215,11 +207,10 @@ void Bullet::Collision()
 			for (auto it : hb)
 			{
 				if (LineRect(
-					startPos - dir * ((float)sprite.getLocalBounds().width),
+					startPos,// - dir * ((float)sprite.getLocalBounds().width),
 					nextPos,
 					it->GetHitbox()))
 				{
-					//cout << "player hit" << endl;
 					player->SetHp(damage);
 					SetActive(false);
 					break;

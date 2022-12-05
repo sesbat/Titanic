@@ -56,11 +56,12 @@ void Gun::Init()
 	case User::Player:
 		SetPos({ player->GetPos().x,player->GetPos().y + 10.f });
 		SetOrigin(Origins::MC);
-		//gunhitbox->SetPos(GetPos());
+		gunhitbox->SetPos(GetPos());
 		break;
 	case User::Enemy:
 		SetPos({ enemy->GetPos().x,enemy->GetPos().y + 10.f });
 		SetOrigin(Origins::MC);
+		gunhitbox->SetPos(GetPos());
 		break;
 	}
 
@@ -132,16 +133,18 @@ void Gun::Update(float dt)
 	}
 		break;
 	}
-	//Collision();
 }
 
 void Gun::Draw(RenderWindow& window)
 {
-	SpriteObject::Draw(window);
+	 SpriteObject::Draw(window);
 	const auto& bulletList = bulletPool.GetUseList();
 	for (auto bullet : bulletList)
 	{
-		bullet->Draw(window);
+		if (bullet->GetActive())
+		{
+			bullet->Draw(window);
+		}
 	}
 	gunhitbox->Draw(window);
 }
@@ -195,11 +198,11 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			Bullet* bullet2 = bulletPool.Get();
 			Bullet* bullet3 = bulletPool.Get();
 			Bullet* bullet4 = bulletPool.Get();
-			bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
-			bullet1->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
-			bullet2->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
-			bullet3->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
-			bullet4->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
+			//bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
+			//bullet1->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
+			//bullet2->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
+			//bullet3->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
+			//bullet4->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
 
 			float temp = atan2(lookDir.y, lookDir.x);
 			float F1 = temp + M_PI / 12;
@@ -240,7 +243,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			shootDelay = 0.1f;
 
 			Bullet* bullet = bulletPool.Get();
-			bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
+			//bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
 			bullet->SetOrigin(Origins::MR);
 			bullet->SetDamage(Damage);
 			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);

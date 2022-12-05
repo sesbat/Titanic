@@ -156,7 +156,7 @@ void Player::Update(float dt)
 	prevLook = lookDir;
 
 	gun->Update(dt);
-
+	SetAmmoType();
 	//input
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
@@ -738,7 +738,7 @@ void Player::Reload()
 						}
 						else
 						{
-							ammo = ammo + bt->GetCount();
+							ammo = sgAmmo = ammo + bt->GetCount();
 							bt->AddCount(-(magazineSG));
 						}
 					}
@@ -785,7 +785,7 @@ void Player::Reload()
 						}
 						else
 						{
-							ammo = ammo + bt->GetCount();
+							ammo = rfAmmo = ammo + bt->GetCount();
 							bt->AddCount(-(magazineRF));
 						}
 					}
@@ -833,7 +833,7 @@ void Player::Reload()
 						}
 						else
 						{
-							ammo = ammo + bt->GetCount();
+							ammo = snAmmo = ammo + bt->GetCount();
 							bt->AddCount(-(magazineSN));
 						}
 					}
