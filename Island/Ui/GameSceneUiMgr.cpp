@@ -135,7 +135,7 @@ void GameSceneUiMgr::Init()
 	hungerTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		20, Color::White, to_string(((player->GetHungerGuage() / 255) * 100)), true);
 	hungerTex->SetOrigin(Origins::MC);
-	hungerTex->SetPos({ 350,40 });
+	hungerTex->SetPos({ 380,40 });
 	uiObjList[0].push_back(hungerTex);
 
 	thirstTex = new Button(this);
@@ -143,7 +143,7 @@ void GameSceneUiMgr::Init()
 	thirstTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		20, Color::White, to_string(((player->GetThirstGuage() / 255) * 100)), true);
 	thirstTex->SetOrigin(Origins::MC);
-	thirstTex->SetPos({ 450,40 });
+	thirstTex->SetPos({ 480,40 });
 	uiObjList[0].push_back(thirstTex);
 
 	energyTex = new Button(this);
@@ -151,7 +151,7 @@ void GameSceneUiMgr::Init()
 	energyTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		20, Color::White, to_string(((player->GetEnergyGuage() / 255) * 100)), true);
 	energyTex->SetOrigin(Origins::MC);
-	energyTex->SetPos({ 550,40 });
+	energyTex->SetPos({ 580,40 });
 	uiObjList[0].push_back(energyTex);
 
 	ammoText = new Button(this);
