@@ -166,31 +166,36 @@ void Player::Update(float dt)
 		shootDelay -= dt;
 		reloadDelay -= dt;
 		//fire
-		if (ammo > 0 && shootDelay <= 0 && reloadDelay <= 0 && gun->GetIsInWall())
+		if (reloadDelay <= 0)
 		{
 			isReloading = false;
-			switch (gun->GetgunType())
+			if (ammo > 0 &&shootDelay <= 0 && gun->GetIsInWall())
 			{
-			case GunType::Shotgun:
-			case GunType::Sniper:
-				if (InputMgr::GetMouseButtonDown(Mouse::Left) && !inven->GetActive())
+				//isReloading = false;
+				switch (gun->GetgunType())
 				{
-					SetFireAmmo();
-					gun->Fire(GetPos(), true);
-					shootDelay = gun->GetpShootDelay();
-				}
-				break;
-			case GunType::Rifle:
-				if (InputMgr::GetMouseButton(Mouse::Left) && !inven->GetActive())
-				{
-					SetFireAmmo();
-					gun->Fire(GetPos(), true);
-					shootDelay = gun->GetpShootDelay();
+				case GunType::Shotgun:
+				case GunType::Sniper:
+					if (InputMgr::GetMouseButtonDown(Mouse::Left) && !inven->GetActive())
+					{
+						SetFireAmmo();
+						gun->Fire(GetPos(), true);
+						shootDelay = gun->GetpShootDelay();
+					}
+					break;
+				case GunType::Rifle:
+					if (InputMgr::GetMouseButton(Mouse::Left) && !inven->GetActive())
+					{
+						SetFireAmmo();
+						gun->Fire(GetPos(), true);
+						shootDelay = gun->GetpShootDelay();
 
+					}
+					break;
 				}
-				break;
 			}
 		}
+		
 		//reload
 		if (InputMgr::GetKeyDown(Keyboard::R))
 		{

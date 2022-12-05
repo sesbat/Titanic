@@ -355,6 +355,8 @@ void MapEditor::Save()
 			int i = objs.first;
 			for (auto& obj : objs.second)
 			{
+				if (obj.second == nullptr)
+					continue;
 				int j = obj.first;
 				auto& nowObject = obj.second;
 				ObjectData data;
