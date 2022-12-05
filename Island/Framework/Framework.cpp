@@ -43,8 +43,8 @@ bool Framework::Init()
 {
     InputMgr::Init();
     RESOURCES_MGR->LoadAll();
-    SOUND_MGR->Init();
     FILE_MGR->LoadAll();
+    SOUND_MGR->Init();
    // DATATABLE_MGR->Init();
     SCENE_MGR->Init();
     

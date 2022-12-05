@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "../Scens/SceneManager.h"
 #include "../Framework/InputMgr.h"
+#include "../Framework/SoundManager.h"
 #include <iostream>
 
 #include "../Scens/GameScene.h"

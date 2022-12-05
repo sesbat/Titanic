@@ -195,6 +195,8 @@ void GameScene::Init()
 
     treeMap.setFont(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"));
     treeMap.insert(objList[LayerType::Object][0]);
+
+    SOUND_MGR->Play("sounds/gameBGM.ogg", true);
 }
 
 void GameScene::Release()
@@ -215,11 +217,12 @@ void GameScene::Enter()
     SCENE_MGR->GetCurrScene()->GetUiView().setCenter({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
     SCENE_MGR->GetCurrScene()->GetUiView().setSize({ WINDOW_WIDTH , WINDOW_HEIGHT });
 
-    SOUND_MGR->StopAll();
+    
 }
 
 void GameScene::Exit()
 {
+    SOUND_MGR->StopAll();
     treeMap.clear();
     Release();
 }

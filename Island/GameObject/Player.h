@@ -79,6 +79,7 @@ protected:
 
 	float shootDelay;
 	float reloadDelay;
+	float soundDelay;
 
 	//ammo
 	int ammo;
