@@ -85,6 +85,7 @@ void Craft::Init()
 	{
 		categoryBox[0]->AddItem(n.first);
 	}
+	categoryBox[0]->SetActive(true);
 }
 
 void Craft::Update(float dt)

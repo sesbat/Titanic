@@ -41,6 +41,13 @@ void CraftBox::Init()
 		allPos.push_back(line);
 		itemGreed.push_back(greedLine);
 	}
+	craftButton = new Button(uimgr);
+	craftButton->SetClkColor(true);
+	craftButton->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		50, Color::White, "Craft", true);
+	craftButton->SetOrigin(Origins::MC);
+	craftButton->SetPos({ 1500.f,800.f});
+
 	player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
 }
 
@@ -101,7 +108,7 @@ void CraftBox::Update(float dt)
 	//{
 	//	nowDrag->Update(dt);
 	//}
-
+	craftButton->Update(dt);
 	Button::Update(dt);
 
 	for (auto& greedLine : itemGreed)
@@ -122,7 +129,7 @@ void CraftBox::Update(float dt)
 		}
 	}
 
-	if (!isRequired && InputMgr::GetKeyDown(Keyboard::Space))
+	if (!isRequired && craftButton->IsClick())
 	{
 		if (Crafting(craftingItmeName))
 		{
@@ -224,6 +231,7 @@ void CraftBox::Draw(RenderWindow& window)
 			continue;
 		item->Draw(window);
 	}
+	craftButton->Draw(window);
 	if (nowDrag != nullptr)
 		nowDrag->Draw(window);
 }

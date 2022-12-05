@@ -21,6 +21,8 @@ private:
 	CraftBox* pairInven;
 	Player* player;
 
+	Button* craftButton;
+
 public:
 	bool isRequired = false;
 	string craftingItmeName = "";

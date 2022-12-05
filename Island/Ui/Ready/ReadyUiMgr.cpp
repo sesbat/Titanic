@@ -38,14 +38,14 @@ void ReadyUiMgr::Init()
 	hpBar->SetClkColor(false);
 	hpBar->SetTexture(*RESOURCES_MGR->GetTexture("graphics/hpbar.png"), false);
 	hpBar->SetOrigin(Origins::ML);
-	hpBar->SetPos({ 300,100 });
+	hpBar->SetPos({ 100,100 });
 	uiObjList[0].push_back(hpBar);
 
 	hpBarBK = new Button(this);
 	hpBarBK->SetClkColor(false);
 	hpBarBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/hpbarbk.png"), false);
 	hpBarBK->SetOrigin(Origins::ML);
-	hpBarBK->SetPos({ 300,100 });
+	hpBarBK->SetPos({ 100,100 });
 	uiObjList[0].push_back(hpBarBK);
 
 	hpSprite = new Button(this);
@@ -53,7 +53,7 @@ void ReadyUiMgr::Init()
 	hpSprite->SetTexture(*RESOURCES_MGR->GetTexture("graphics/hpsprite.png"), false);
 	hpSprite->SetOrigin(Origins::MC);
 	hpSprite->GetSpriteObj()->SetScale({ 0.8f,0.8f });
-	hpSprite->SetPos({ 250,100 });
+	hpSprite->SetPos({ 50,100 });
 	uiObjList[0].push_back(hpSprite);
 
 	//stamina
@@ -61,14 +61,14 @@ void ReadyUiMgr::Init()
 	staminaBar->SetClkColor(false);
 	staminaBar->SetTexture(*RESOURCES_MGR->GetTexture("graphics/stamina.png"), false);
 	staminaBar->SetOrigin(Origins::ML);
-	staminaBar->SetPos({ 300,150 });
+	staminaBar->SetPos({ 100,150 });
 	uiObjList[0].push_back(staminaBar);
 
 	staminaBK = new Button(this);
 	staminaBK->SetClkColor(false);
 	staminaBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/staminabk.png"), false);
 	staminaBK->SetOrigin(Origins::ML);
-	staminaBK->SetPos({ 300,150 });
+	staminaBK->SetPos({ 100,150 });
 	uiObjList[0].push_back(staminaBK);
 
 	staminaSprite = new Button(this);
@@ -76,7 +76,7 @@ void ReadyUiMgr::Init()
 	staminaSprite->SetTexture(*RESOURCES_MGR->GetTexture("graphics/staminasprite.png"), false);
 	staminaSprite->SetOrigin(Origins::MC);
 	staminaSprite->GetSpriteObj()->SetScale({ 0.5f,0.5f });
-	staminaSprite->SetPos({ 250,150 });
+	staminaSprite->SetPos({ 50,150 });
 	uiObjList[0].push_back(staminaSprite);
 
 	//hunger
@@ -86,14 +86,14 @@ void ReadyUiMgr::Init()
 	hunger->GetSpriteObj()->SetColor(Color(169, 57, 53, (int)player->GetHungerGuage()));
 	hunger->SetOrigin(Origins::MC);
 	//hunger->GetSpriteObj()->SetScale({ 0.5f,0.5f });
-	hunger->SetPos({ 500,100 });
+	hunger->SetPos({ 350,100 });
 	uiObjList[0].push_back(hunger);
 
 	hungerBK = new Button(this);
 	hungerBK->SetClkColor(false);
 	hungerBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/hungerbk.png"), false);
 	hungerBK->SetOrigin(Origins::MC);
-	hungerBK->SetPos({ 500,100 });
+	hungerBK->SetPos({ 350,100 });
 	uiObjList[0].push_back(hungerBK);
 
 	//thirst
@@ -102,14 +102,14 @@ void ReadyUiMgr::Init()
 	thirst->SetTexture(*RESOURCES_MGR->GetTexture("graphics/thirst.png"), false);
 	thirst->GetSpriteObj()->SetColor(Color(0, 145, 255, (int)player->GetThirstGuage()));
 	thirst->SetOrigin(Origins::MC);
-	thirst->SetPos({ 600,100 });
+	thirst->SetPos({ 450,100 });
 	uiObjList[0].push_back(thirst);
 
 	thirstBK = new Button(this);
 	thirstBK->SetClkColor(false);
 	thirstBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/thirstbk.png"), false);
 	thirstBK->SetOrigin(Origins::MC);
-	thirstBK->SetPos({ 600,100 });
+	thirstBK->SetPos({ 450,100 });
 	uiObjList[0].push_back(thirstBK);
 
 	//energy
@@ -119,7 +119,7 @@ void ReadyUiMgr::Init()
 	energy->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)player->GetEnergyGuage()));
 	energy->SetOrigin(Origins::MC);
 	energy->GetSpriteObj()->SetScale({ 1.5f,1.5f });
-	energy->SetPos({ 700,100 });
+	energy->SetPos({ 550,100 });
 	uiObjList[0].push_back(energy);
 
 	energyBK = new Button(this);
@@ -127,31 +127,31 @@ void ReadyUiMgr::Init()
 	energyBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/energybk.png"), false);
 	energyBK->SetOrigin(Origins::MC);
 	energyBK->GetSpriteObj()->SetScale({ 1.5f,1.5f });
-	energyBK->SetPos({ 700,100 });
+	energyBK->SetPos({ 550,100 });
 	uiObjList[0].push_back(energyBK);
 
 	hungerTex = new Button(this);
 	hungerTex->SetClkColor(true);
 	hungerTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		20, Color::White, to_string(((int)(player->GetHungerGuage() / 255) * 100)), true);
+		20, Color::White, to_string(((player->GetHungerGuage() / 255) * 100)), true);
 	hungerTex->SetOrigin(Origins::MC);
-	hungerTex->SetPos({ 490,50 });
+	hungerTex->SetPos({ 380,40 });
 	uiObjList[0].push_back(hungerTex);
 
 	thirstTex = new Button(this);
 	thirstTex->SetClkColor(true);
 	thirstTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		20, Color::White, to_string(((int)(player->GetThirstGuage() / 255) * 100)), true);
+		20, Color::White, to_string(((player->GetThirstGuage() / 255) * 100)), true);
 	thirstTex->SetOrigin(Origins::MC);
-	thirstTex->SetPos({ 590,50 });
+	thirstTex->SetPos({ 480,40 });
 	uiObjList[0].push_back(thirstTex);
 
 	energyTex = new Button(this);
 	energyTex->SetClkColor(true);
 	energyTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		20, Color::White, to_string(((int)(player->GetEnergyGuage() / 255) * 100)), true);
+		20, Color::White, to_string(((player->GetEnergyGuage() / 255) * 100)), true);
 	energyTex->SetOrigin(Origins::MC);
-	energyTex->SetPos({ 690,50 });
+	energyTex->SetPos({ 580,40 });
 	uiObjList[0].push_back(energyTex);
 
 	mapsBK = new Button(this);
