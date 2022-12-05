@@ -20,14 +20,14 @@
 
 
 Player::Player()
-	: currState(States::None), speed(200.f), maxSpeed(200.f),
+	: currState(States::None), speed(400.f), maxSpeed(200.f),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
 	hp(500), maxHp(500), isDash(false), stamina(10.f), maxStamina(10.f),
 	hungerGuage(255), thirstGuage(255), energyGuage(255),
 	maxHungerGuage(255), maxThirstGuage(255), maxEnergyGuage(255),
 	staminaScale(1.f), staminaTime(5.f), dash(0.01f),
-	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true),
+	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true), ammo(0),
 	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f), reloadDelay(0.f), isReloading(false)
 {
 }
@@ -44,9 +44,7 @@ void Player::Init()
 	gun = new Gun(GunType::None, User::Player);
 	gun->SetPlayer(this);
 	gun->Init();
-	ammo = magazineSG;
-	//rfAmmo = maxRFAmmo;
-	//snAmmo = maxSNAmmo;
+	
 	animator.SetTarget(&sprite);
 
 	//animation
@@ -160,14 +158,14 @@ void Player::Update(float dt)
 	prevLook = lookDir;
 
 	gun->Update(dt);
-
+	SetAmmoType();
 	//input
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
 		shootDelay -= dt;
 		reloadDelay -= dt;
 		//fire
-		if (ammo > 0 && shootDelay <= 0 && reloadDelay <= 0)
+		if (ammo > 0 && shootDelay <= 0 && reloadDelay <= 0 && gun->GetIsInWall())
 		{
 			isReloading = false;
 			switch (gun->GetgunType())
@@ -199,37 +197,40 @@ void Player::Update(float dt)
 		}
 	}
 	
-
-	if (InputMgr::GetKeyDown(Keyboard::Num1))
+	if (!isReloading)
 	{
-		auto myGun = inven->GetUsedItem(0);
+		if (InputMgr::GetKeyDown(Keyboard::Num1))
+		{
+			auto myGun = inven->GetUsedItem(0);
 
-		if (myGun == nullptr)
-		{
-			gun->SetGunType(GunType::None);
-			ammo = 0;
+			if (myGun == nullptr)
+			{
+				gun->SetGunType(GunType::None);
+				ammo = 0;
+			}
+			else
+			{
+				gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+				SetAmmoType();
+			}
 		}
-		else
+		if (InputMgr::GetKeyDown(Keyboard::Num2))
 		{
-			gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
-			SetAmmoType();
+			auto myGun = inven->GetUsedItem(1);
+
+			if (myGun == nullptr)
+			{
+				gun->SetGunType(GunType::None);
+				ammo = 0;
+			}
+			else
+			{
+				gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+				SetAmmoType();
+			}
 		}
 	}
-	if (InputMgr::GetKeyDown(Keyboard::Num2))
-	{
-		auto myGun = inven->GetUsedItem(1);
-
-		if (myGun == nullptr)
-		{
-			gun->SetGunType(GunType::None);
-			ammo = 0;
-		}
-		else
-		{
-			gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
-			SetAmmoType();
-		}
-	}
+	
 	//use item
 	if (InputMgr::GetKeyDown(Keyboard::Num3))
 	{
@@ -567,6 +568,31 @@ void Player::Collision()
 			}
 		}
 	}
+	//gun fire
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+
+		for (auto obj : boundInObj)
+		{
+			if (Utils::OBB(obj->GetBottom()->GetHitbox(), gun->GetHitbox()))
+			{
+
+				if (obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK")
+				{
+					//cout << "wall" << endl;
+					gun->SetIsInWall(false);
+					break;
+				}
+			}
+			else
+			{
+				//cout << "not wall" << endl;
+				gun->SetIsInWall(true);
+			}
+		}
+	}
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::Ready)
 	{
 		auto boundInObj = ((Ready*)scene)->ObjListObb(this);
@@ -704,9 +730,26 @@ void Player::Reload()
 				isReloading = true;
 				if (bt->GetCount() < magazineSG)
 				{
-					ammo = bt->GetCount();
-					sgAmmo = ammo;
-					bt->AddCount(-(magazineSG));
+					if (ammo > 0)
+					{
+						if (ammo + bt->GetCount() >= magazineSG)
+						{
+							ammo = sgAmmo = magazineSG;
+							bt->AddCount(-(magazineSG - ammoCount));
+							
+						}
+						else
+						{
+							ammo = sgAmmo = ammo + bt->GetCount();
+							bt->AddCount(-(magazineSG));
+						}
+					}
+					else
+					{
+						ammo = bt->GetCount();
+						sgAmmo = ammo;
+						bt->AddCount(-(magazineSG));
+					}
 				}
 				else
 				{
@@ -735,9 +778,25 @@ void Player::Reload()
 				isReloading = true;
 				if (bt->GetCount() < magazineRF)
 				{
-					ammo = bt->GetCount();
-					rfAmmo = ammo;
-					bt->AddCount(-(magazineRF));
+					if (ammo > 0)
+					{
+						if (ammo + bt->GetCount() >= magazineRF)
+						{
+							ammo = rfAmmo = magazineRF;
+							bt->AddCount(-(magazineRF - ammoCount));
+						}
+						else
+						{
+							ammo = rfAmmo = ammo + bt->GetCount();
+							bt->AddCount(-(magazineRF));
+						}
+					}
+					else
+					{
+						ammo = bt->GetCount();
+						rfAmmo = ammo;
+						bt->AddCount(-(magazineRF));
+					}
 				}
 				else
 				{
@@ -766,9 +825,26 @@ void Player::Reload()
 				isReloading = true;
 				if (bt->GetCount() < magazineSN)
 				{
-					ammo = bt->GetCount();
-					snAmmo = ammo;
-					bt->AddCount(-(magazineSN));
+					if (ammo > 0)
+					{
+						if (ammo + bt->GetCount() >= magazineSN)
+						{
+							ammo = snAmmo = magazineSN;
+							bt->AddCount(-(magazineSN - ammoCount));
+							
+						}
+						else
+						{
+							ammo = snAmmo = ammo + bt->GetCount();
+							bt->AddCount(-(magazineSN));
+						}
+					}
+					else
+					{
+						ammo = bt->GetCount();
+						snAmmo = ammo;
+						bt->AddCount(-(magazineSN));
+					}
 				}
 				else
 				{
@@ -783,6 +859,29 @@ void Player::Reload()
 				return;
 			}
 		}
+		break;
+	}
+}
+
+string Player::GetAmmos()
+{
+	if (isReloading)
+	{
+		return "Reloading";
+	}
+	switch (gun->GetgunType())
+	{
+	case GunType::None:
+		return ("No Guns");
+		break;
+	case GunType::Shotgun:
+		return (to_string(ammo) + "/" + to_string(magazineSG));
+		break;
+	case GunType::Rifle:
+		return (to_string(ammo) + "/" + to_string(magazineRF));
+		break;
+	case GunType::Sniper:
+		return (to_string(ammo) + "/" + to_string(magazineSN));
 		break;
 	}
 }

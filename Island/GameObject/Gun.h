@@ -1,5 +1,6 @@
 #pragma once
 #include "SpriteObject.h"
+#include "HitBoxObject.h"
 #include "../Framework/ObjectPool.h"
 
 enum class GunType
@@ -20,16 +21,21 @@ enum class User
 class Player;
 class Bullet;
 class Enemy;
+class HitBox;
+class Scene;
 
 class Gun :
-    public SpriteObject
+    public HitBoxObject
 {
 private:
     Player* player;
     Enemy* enemy;
+    Scene* scene;
 
     GunType gunType;
     User user;
+
+    HitBox *gunhitbox;
 
     ObjectPool<Bullet> bulletPool;
 
@@ -39,6 +45,7 @@ private:
     float pShootDelay;
     int Damage;
     bool isGunFlip;
+    bool isInWall;
 
     Vector2f lookDir;
     Vector2f pos;
@@ -62,5 +69,8 @@ public:
     GunType GetgunType() { return gunType; }
     GunType ItemNameToType(string name);
     float GetpShootDelay() { return pShootDelay; }
+    const RectangleShape& GetHitbox() const;
+    void SetIsInWall(bool wall) { isInWall = wall; }
+    bool GetIsInWall() { return isInWall; }
 };
 

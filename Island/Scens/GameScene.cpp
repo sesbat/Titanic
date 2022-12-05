@@ -448,6 +448,7 @@ candle::EdgeVector GameScene::pushBlock(const sf::Vector2f& pos)
 
 void GameScene::castAllLights()
 {
+
     for (auto& it : blockPool)
     {
         //light.castLight(it.edgePool.begin(), it.edgePool.end());

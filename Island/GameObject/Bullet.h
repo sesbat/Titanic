@@ -24,7 +24,7 @@ private:
 	int damage;
 
 	bool isplayer;
-	bool showLine;
+
 public:
 	Bullet();
 	~Bullet();

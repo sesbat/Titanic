@@ -31,6 +31,8 @@ protected:
 	Button* energyBK;
 	Button* energyTex;
 
+	Button* ammoText;
+
 	float hpBarSize;
 	float staminaBarSize;
 public:

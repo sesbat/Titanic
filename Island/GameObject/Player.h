@@ -164,6 +164,7 @@ public:
 	void SetFireAmmo();
 	void SetAmmoType();
 	void Reload();
+	string GetAmmos();
 
 	void Load();
 	void Save();
