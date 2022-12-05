@@ -153,7 +153,7 @@ void ReadyUiMgr::Init()
 	hungerTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		20, Color::White, to_string(((int)(player->GetHungerGuage() / 255) * 100)), true);
 	hungerTex->SetOrigin(Origins::MC);
-	hungerTex->SetPos({ 500,50 });
+	hungerTex->SetPos({ 490,50 });
 	uiObjList[0].push_back(hungerTex);
 
 	thirstTex = new Button(this);
@@ -161,7 +161,7 @@ void ReadyUiMgr::Init()
 	thirstTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		20, Color::White, to_string(((int)(player->GetThirstGuage() / 255) * 100)), true);
 	thirstTex->SetOrigin(Origins::MC);
-	thirstTex->SetPos({ 600,50 });
+	thirstTex->SetPos({ 590,50 });
 	uiObjList[0].push_back(thirstTex);
 
 	energyTex = new Button(this);
@@ -169,7 +169,7 @@ void ReadyUiMgr::Init()
 	energyTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		20, Color::White, to_string(((int)(player->GetEnergyGuage() / 255) * 100)), true);
 	energyTex->SetOrigin(Origins::MC);
-	energyTex->SetPos({ 700,50 });
+	energyTex->SetPos({ 690,50 });
 	uiObjList[0].push_back(energyTex);
 
 

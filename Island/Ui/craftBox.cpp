@@ -11,6 +11,7 @@
 #include "CraftItem.h"
 #include "../GameObject/Player.h"
 #include "Inventory.h"
+#include "InventoryBox.h"
 
 CraftBox::CraftBox(UiMgr* mgr, Craft* inven, Vector2i startPos)
 	: Button(mgr), nowDrag(nullptr), inven(inven), startPos(startPos)
@@ -111,26 +112,102 @@ void CraftBox::Update(float dt)
 			for (auto& n : items)
 			{
 				n->Update(dt);
+				//클릭 됐을때
 				if (n->IsClick())
 				{
+					//아이템 정보불러오기
 					cout << n->GetName() << endl;
 					inven->OnClickCraftItem(FILE_MGR->GetCraftItemInfo(n->GetName()));
-					for(auto& k : player->GetInventory()->GetUseItems())
-					{
-						if (n->IsClickRight() && k->GetCount() >= n->GetCount())
-						{
-							
-
-						}
-					}
+					craftingItmeName = n->GetName();
 				}
-
 			}
 		}
 	}
 
-}
+	if (!isRequired && InputMgr::GetKeyDown(Keyboard::Space))
+	{
+		if (Crafting(craftingItmeName))
+		{
+			player->GetInventory()->GetPlayerInven()->AddItem(craftingItmeName);
+			DeletePlayerItem(craftingItmeName);
+		}
+		else
+		{
+			//cout << "Not Making" << endl;
+			//cout << craftingItmeName << endl;
+			//cout << this << endl;
+		}
 
+	}
+}
+bool CraftBox::Crafting(string itemName)
+{
+	if (itemName == "")
+		return false;
+	auto data = FILE_MGR->GetCraftItemInfo(itemName);
+	auto craftUseItem = data.useItem;
+	vector<bool> isItems;
+	auto playerItems = *player->GetInventory()->GetPlayerInven()->GetItems();
+	for (auto i : craftUseItem)
+	{
+		auto name = i.id;
+		auto cnt = i.cnt;
+		bool isItem = false;
+		for (auto item : playerItems)
+		{
+			if (item->GetName() == name)
+			{
+				isItem = true;
+				cnt -= item->GetCount();
+
+				if (cnt <= 0)
+				{
+					isItems.push_back(true);
+					break;
+				}
+			}
+		}
+		if (!isItem)
+			return false;
+	}
+
+	for (auto test : isItems)
+	{
+		if (!test)
+			return false;
+	}
+	return true;
+}
+void CraftBox::DeletePlayerItem(string itemName)
+{
+	auto data = FILE_MGR->GetCraftItemInfo(itemName);
+	auto craftUseItem = data.useItem;
+	auto playerItems = player->GetInventory()->GetPlayerInven()->GetItems();
+	auto playerInven = player->GetInventory();
+	auto playerInvenBox = player->GetInventory()->GetPlayerInven();
+	for (auto i : craftUseItem)
+	{
+		auto name = i.id;
+		auto cnt = i.cnt;
+		for (auto item : *playerItems)
+		{
+			if (item->GetName() == name)
+			{
+				auto tmpCnt = cnt > item->GetCount() ? item->GetCount() : cnt;
+				
+				playerInvenBox->AddItem(name, -tmpCnt);
+				if (item->GetCount() <= 0)
+				{
+					playerInven->AddDeleteItem(item);
+				}
+				cnt -= tmpCnt;
+
+				if(cnt <= 0)
+					break;
+			}
+		}
+	}
+}
 void CraftBox::Draw(RenderWindow& window)
 {
 	if (!enabled)
