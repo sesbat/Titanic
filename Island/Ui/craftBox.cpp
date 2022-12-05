@@ -253,7 +253,7 @@ void CraftBox::AddItem(string name, int count)
 		}
 	}
 
-	auto findPos = FindInvenPos(data.weight, data.height);
+	auto findPos = FindInvenPos(data.width, data.height);
 
 	if (findPos == Vector2i{ -1, -1 })
 	{
@@ -265,7 +265,7 @@ void CraftBox::AddItem(string name, int count)
 	CraftItem* item = new CraftItem(uimgr);
 	for (int i = findPos.x; i < findPos.x + data.height; i++)
 	{
-		for (int j = findPos.y; j < findPos.y + data.weight; j++)
+		for (int j = findPos.y; j < findPos.y + data.width; j++)
 		{
 			allPos[i][j] = true;
 			itemGreed[i][j]->SetState(true, item);

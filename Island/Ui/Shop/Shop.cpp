@@ -224,7 +224,7 @@ void Shop::ClearShop()
 
 void Shop::Deal()
 {
-	if (price < 0)
+	if (((Ready*)SCENE_MGR->GetCurrScene())->GetPlayer()->GetMoney() + price < 0)
 	{
 		return;
 	}

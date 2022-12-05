@@ -67,6 +67,8 @@ void Player::Init()
 	//light.setRange(300.f);
 
 	Load();
+	inven->GetMoneyTxt()->SetString(to_string(money));
+	inven->GetMoneyTxt()->SetOrigin(Origins::MR);
 
 }
 
@@ -816,7 +818,6 @@ void Player::Load()
 		if (data.useIdx != -1)
 			inven->SetUserItem(data);
 	}
-
 }
 
 void Player::Save()
