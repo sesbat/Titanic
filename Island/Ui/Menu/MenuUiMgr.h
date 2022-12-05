@@ -13,8 +13,6 @@ private:
 	Button* startBtn2;
 	Button* startBtn3;
 
-	Fade* fade;
-
 	MoveObject* move;
 public:
 	MenuUiMgr(Scene* scene);

@@ -42,12 +42,12 @@ void MenuUiMgr::Update(float dt)
 		{
 			exit(1);
 		}
-		if (InputMgr::GetKeyDown(Keyboard::Enter))
+		/*if (InputMgr::GetKeyDown(Keyboard::Enter))
 		{
 			fade->SetSkip();
-		}
+		}*/
 	}
-	fade->Update(dt);
+	//fade->Update(dt);
 }
 
 void MenuUiMgr::Init()
@@ -103,10 +103,10 @@ void MenuUiMgr::Init()
 	move->SetPos(Vector2f{ 0 , 0 });
 	move->SetOrigin(Origins::MC);
 	uiObjList[0].push_back(move);*/
-	fade = new Fade();
+	/*fade = new Fade();
 	fade->SetRect({ WINDOW_WIDTH,WINDOW_HEIGHT });
 	fade->SetFadeIn();
-	uiObjList[0].push_back(fade);
+	uiObjList[0].push_back(fade);*/
 }
 
 void MenuUiMgr::Release()
