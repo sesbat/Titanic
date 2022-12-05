@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClCompile Include="Astar\Astar.cpp" />
     <ClCompile Include="GameObject\Ment.cpp" />
+    <ClCompile Include="Ui\Shop\Shop.cpp" />
     <ClCompile Include="Ui\CraftItem.cpp" />
     <ClCompile Include="Ui\CraftGreed.cpp" />
     <ClCompile Include="Ui\Craft.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="3rd\SingleTon.h" />
     <ClInclude Include="Astar\Astar.h" />
     <ClInclude Include="GameObject\Ment.h" />
+    <ClInclude Include="Ui\Shop\Shop.h" />
     <ClInclude Include="Ui\CraftItem.h" />
     <ClInclude Include="Ui\CraftGreed.h" />
     <ClInclude Include="Ui\Craft.h" />

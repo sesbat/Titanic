@@ -19,9 +19,8 @@ private:
 
     bool isShowMap;
     bool isShowCraft;
+    bool isShowShop;
 
-    Inventory* NPCInven;
-    InventoryBox* shop;
     Scene* scene;
 
     Ment* ment;
@@ -36,6 +35,7 @@ public:
 
     bool GetShowMap() { return isShowMap; }
     bool GetShowCraft() { return isShowCraft; }
+    bool GetShowShop() { return isShowShop; }
     void SetPlayer(Player* player);
     void SetNPCType(NPCType type);
 };

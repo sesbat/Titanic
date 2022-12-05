@@ -52,6 +52,7 @@ void ItemBoxObject::Update(float dt)
 		player->SetRigthInvenBox(this);
 		invenBox->SetActive(true);
 		player->SetMove(false);
+		InputMgr::Clear();
 	}
 }
 

@@ -14,6 +14,8 @@ MoveObject::~MoveObject()
 
 void MoveObject::Update(float dt)
 {
+	if (!enabled)
+		return;
 	Button::Update(dt);
 	
 	if (IsDown())

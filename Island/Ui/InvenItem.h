@@ -11,6 +11,7 @@ private:
 	int count;
 	int width;
 	int height;
+	int price;
 	Vector2i invenPos;
 	Vector2i invenGreedPos;
 	
@@ -20,11 +21,13 @@ public:
 	virtual ~InvenItem();
 	virtual void Init();
 	virtual void Update(float dt);
+	void ButtonUpdate(float dt);
 	virtual void Draw(RenderWindow& window);
 
 	int GetCount() { return count; }
 	int GetMaxCount() { return maxCount; }
-	void Set(int width, int height, Vector2i invenPos,Vector2i invenGreedPos, string path, int maxCount);
+	int GetPrice() { return price; }
+	void Set(int width, int height, Vector2i invenPos,Vector2i invenGreedPos, string path, int maxCount, int price);
 	void SetInvenPos(Vector2i invenPos, Vector2i invenGreedPos);
 	void SetInvenPos(Vector2f invenGreedPos);
 	Vector2i GetInvenPos() { return invenPos; }
@@ -33,6 +36,8 @@ public:
 	int GetHeight() { return height; }
 	string GetPath() { return path; }
 	void AddCount(int n);
+
+	void SetCount(int n);
 
 	
 };

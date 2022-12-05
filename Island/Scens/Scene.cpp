@@ -5,8 +5,10 @@
 #include "../Ui/Menu/MenuUiMgr.h"
 #include "../GameObject/HitBoxObject.h"
 #include "../GameObject/HitBox.h"
+#include "../Scens/GameScene.h"
+#include "../Scens/Ready.h"
 
-Scene::Scene(Scenes type) :type(type), uiMgr(nullptr), isMap(false)
+Scene::Scene(Scenes type) :type(type), uiMgr(nullptr), isGameScene(false)
 {
 }
 
@@ -64,20 +66,36 @@ Vector2f Scene::ScreenToUiPosition(Vector2i screenPos)
 }
 void Scene::Update(float dt)
 {
-	for (auto& layer : objList)
+	if (!isGameScene)
 	{
-		for (auto& obj_pair : layer.second)
+		for (auto& layer : objList)
 		{
-			auto objs = obj_pair.second;
-
-			for (auto& obj : objs)
+			for (auto& obj_pair : layer.second)
 			{
-				if (obj->GetActive())
+				auto objs = obj_pair.second;
+
+				for (auto& obj : objs)
 				{
-					obj->Update(dt);
+					if (obj->GetActive())
+					{
+						obj->Update(dt);
+					}
 				}
 			}
 		}
+		if (uiMgr != nullptr)
+			uiMgr->Update(dt);
+
+		return;
+	}
+	for (auto& obj : drawObjs)
+	{
+		obj->Update(dt);
+
+	}
+	for (auto& obj : objList[LayerType::Object][1])
+	{
+		obj->Update(dt);
 	}
 
 	for (auto& del : deleteContainer)
@@ -114,7 +132,7 @@ void Scene::Draw(RenderWindow& window)
 {
 	window.setView(worldView);
 
-	if (!isMap)
+	if (!isGameScene)
 	{
 		for (auto& layer : objList)
 		{
@@ -140,7 +158,8 @@ void Scene::Draw(RenderWindow& window)
 		{
 			for (auto& o : obj.second)
 			{
-				o->Draw(window);
+				if (((SpriteObject*)o)->IsInView())
+					o->Draw(window);
 			}
 		}
 		for (auto& obj : another)

@@ -32,6 +32,7 @@ void MapEditor::Reset()
 			tile->SetPos({ 60.f * j, 60.f * i });
 			objList[LayerType::Back][i].push_back(tile);
 			tile->SetUiView(false);
+			greedObjs[LayerType::Back][0][0] = nullptr;
 		}
 	}
 	uiMgr = new EditorMapUiMgr(this);
@@ -73,9 +74,71 @@ void MapEditor::Reset()
 
 void MapEditor::Update(float dt)
 {
-	Scene::Update(dt);
-
 	auto uimgr = ((EditorMapUiMgr*)uiMgr);
+
+	Vector2i cam_pos = (Vector2i)GetWorldView().getCenter();
+	Vector2i cam_size = (Vector2i)GetWorldView().getSize();
+	cam_pos = cam_pos - Vector2i{ cam_size.x / 2, cam_size.y / 2 };
+	cam_pos /= 60;
+
+	view_start_pos = cam_pos + Vector2i{-1,-1};
+	veiw_end_pos = Vector2i{ cam_pos.x + (cam_size.x / 60) +1 ,cam_pos.y + (cam_size.y / 60)+1 };
+
+	view_start_pos.x = max(view_start_pos.x, 0);
+	view_start_pos.y = max(view_start_pos.y, 0);
+	veiw_end_pos.x = min(veiw_end_pos.x, 128);
+	veiw_end_pos.y = min(veiw_end_pos.y, 72);
+
+	//auto mousePos = (Vector2i)ScreenToWorld((Vector2i)InputMgr::GetMousePos());
+
+	//Vector2i update_start_pos = mousePos - Vector2i{ 120, 120 };
+	//Vector2i update_end_pos = mousePos + Vector2i{120, 120};
+	//update_start_pos /= 60;
+	//update_end_pos /= 60;
+
+	//update_start_pos.x = max(update_start_pos.x, 0);
+	//update_start_pos.y = max(update_start_pos.y, 0);
+	//update_end_pos.x = min(update_end_pos.x, 128);
+	//update_end_pos.y = min(update_end_pos.y, 72);
+	
+	for (int i = view_start_pos.x; i < veiw_end_pos.x; i++)
+	{
+		for (int j = view_start_pos.y; j < veiw_end_pos.y; j++)
+		{
+			greeds[j][i]->Update(dt);
+			if (greedObjs[LayerType::Object][j][i] != nullptr)
+				greedObjs[LayerType::Object][j][i]->Update(dt);
+		}
+	}
+
+	//for (auto objs : greedObjs[LayerType::Object])
+	//{
+	//	for (auto obj : objs.second)
+	//	{
+	//		
+	//		obj.second->Update(dt);
+	//	}
+	//}
+
+
+	//for (auto& layer : objList)
+	//{
+	//	for (auto& obj_pair : layer.second)
+	//	{
+	//		auto objs = obj_pair.second;
+
+	//		for (auto& obj : objs)
+	//		{
+	//			if (obj->GetActive())
+	//			{
+	//				obj->Update(dt);
+	//			}
+	//		}
+	//	}
+	//}
+	if (uiMgr != nullptr)
+		uiMgr->Update(dt);
+
 
 
 	if (uimgr->IsExit() || InputMgr::GetKeyDown(Keyboard::Escape))
@@ -128,13 +191,13 @@ void MapEditor::Update(float dt)
 	{
 		if (!((EditorMapUiMgr*)uiMgr)->GetItemBox()->GetActive())
 			if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
-				SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() - (Vector2f{ 19.2,10.8 } *3.f));
+				SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() - (Vector2f{ 19.2,10.8 } *10.f));
 	}
 	if (InputMgr::GetMouseWheelDown())
 	{
 		if (!((EditorMapUiMgr*)uiMgr)->GetItemBox()->GetActive())
 			if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
-				SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *3.f));
+				SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *10.f));
 	}
 
 	if (uimgr->GetEvent())
@@ -144,9 +207,11 @@ void MapEditor::Update(float dt)
 
 	if (uimgr->GetIsBox())
 		return;
-	for (int i = 0; i < HEIGHTCNT; i++)
+
+
+	for (int i = view_start_pos.y; i < veiw_end_pos.y; i++)
 	{
-		for (int j = 0; j < WIDTHCNT; j++)
+		for (int j = view_start_pos.x; j < veiw_end_pos.x; j++)
 		{
 			if (greeds[i][j]->IsClick())
 			{
@@ -157,9 +222,7 @@ void MapEditor::Update(float dt)
 			{
 				if (nowType == LayerType::Tile)
 					continue;
-				if (greedObjs[nowType].find(i) == greedObjs[nowType].end())
-					continue;
-				if (greedObjs[nowType][i].find(j) == greedObjs[nowType][i].end())
+				if (greedObjs[nowType][i][j] == nullptr)
 					continue;
 				if ((greedObjs[nowType][i][j]->GetType() != "ENEMY") && (greedObjs[nowType][i][j]->GetType() != "BOX"))
 					continue;
@@ -168,8 +231,6 @@ void MapEditor::Update(float dt)
 				itemBox->SetActive(!itemBox->GetActive());
 				itemBox->SetItems(greedObjs[nowType][i][j]->GetItem());
 
-				cout << i << endl;
-				cout << j << endl;
 			}
 		}
 	}
@@ -177,7 +238,38 @@ void MapEditor::Update(float dt)
 
 void MapEditor::Draw(RenderWindow& window)
 {
-	Scene::Draw(window);
+	window.setView(worldView);
+
+	for (int i = view_start_pos.x; i <veiw_end_pos.x; i++)
+	{
+		for (int j = view_start_pos.y; j < veiw_end_pos.y; j++)
+		{
+			greeds[j][i]->Draw(window);
+
+			if(greedObjs[LayerType::Tile][j][i] != nullptr)
+				greedObjs[LayerType::Tile][j][i]->Draw(window);
+		}
+	}
+
+	for (int j = view_start_pos.y; j < veiw_end_pos.y; j++)
+	{
+		for (int i = view_start_pos.x; i < veiw_end_pos.x; i++)
+		{
+			if (greedObjs[LayerType::Object][j][i] != nullptr)
+				greedObjs[LayerType::Object][j][i]->Draw(window);
+		}
+	}
+
+	////for (auto objs : greedObjs[LayerType::Object])
+	////{
+	////	for (auto obj : objs.second)
+	////	{
+	////		obj.second->Draw(window);
+	////	}
+	////}
+	if (uiMgr != nullptr)
+		uiMgr->Draw(window);
+	//Scene::Draw(window);
 }
 
 
@@ -376,17 +468,14 @@ bool MapEditor::DrawBox(int i, int j)
 		if (((EditorMapUiMgr*)uiMgr)->IsErase() || ((EditorMapUiMgr*)uiMgr)->IsUnder())
 		{
 			Button* findObj = nullptr;
-			if (nowGreedObjs.find(i) != nowGreedObjs.end())
+			if (nowGreedObjs[i][j] != nullptr)
 			{
-				if (nowGreedObjs[i].find(j) != nowGreedObjs[i].end())
-				{
-					findObj = nowGreedObjs[i][j];
-					auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
-					objList[nowType][i].erase(deleteObj);
-					greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
+				findObj = nowGreedObjs[i][j];
+				auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
+				objList[nowType][i].erase(deleteObj);
+				greedObjs[nowType][i][j] = nullptr;
 
-					delete findObj;
-				}
+				delete findObj;
 			}
 			return false;
 		}
@@ -395,21 +484,18 @@ bool MapEditor::DrawBox(int i, int j)
 			return true;
 		}
 		Button* findObj = nullptr;
-		if (nowGreedObjs.find(i) != nowGreedObjs.end())
+		if (nowGreedObjs[i][j] != nullptr)
 		{
-			if (nowGreedObjs[i].find(j) != nowGreedObjs[i].end())
-			{
-				findObj = nowGreedObjs[i][j];
+			findObj = nowGreedObjs[i][j];
 
-				if (nowDraw->GetType() == "PLAYER")
-					return false;
+			if (nowDraw->GetType() == "PLAYER")
+				return false;
 
-				auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
-				objList[nowType][i].erase(deleteObj);
-				greedObjs[nowType][i].erase(nowGreedObjs[i].find(j));
+			auto deleteObj = find(objList[nowType][i].begin(), objList[nowType][i].end(), findObj);
+			objList[nowType][i].erase(deleteObj);
+			greedObjs[nowType][i][j] = nullptr;
 
-				delete findObj;
-			}
+			delete findObj;
 		}
 
 		DrawObj* draw = new DrawObj(uiMgr);
@@ -429,17 +515,14 @@ bool MapEditor::DrawBox(int i, int j)
 			{
 				int pi = playerPos.x;
 				int pj = playerPos.y;
-				if (nowGreedObjs.find(pi) != nowGreedObjs.end())
+				if (nowGreedObjs[pi][pj] != nullptr)
 				{
-					if (nowGreedObjs[pi].find(pj) != nowGreedObjs[pi].end())
-					{
-						findObj = nowGreedObjs[pi][pj];
-						auto deleteObj = find(objList[nowType][pi].begin(), objList[nowType][pi].end(), findObj);
-						objList[nowType][pi].erase(deleteObj);
-						greedObjs[nowType][pi].erase(nowGreedObjs[pi].find(pj));
+					findObj = nowGreedObjs[pi][pj];
+					auto deleteObj = find(objList[nowType][pi].begin(), objList[nowType][pi].end(), findObj);
+					objList[nowType][pi].erase(deleteObj);
+					greedObjs[nowType][pi][pj] = nullptr;
 
-						delete findObj;
-					}
+					delete findObj;
 				}
 			}
 			player = draw;
@@ -451,17 +534,14 @@ bool MapEditor::DrawBox(int i, int j)
 			{
 				int ei = exitPos.x;
 				int ej = exitPos.y;
-				if (nowGreedObjs.find(ei) != nowGreedObjs.end())
+				if (nowGreedObjs[ei][ej] != nullptr)
 				{
-					if (nowGreedObjs[ei].find(ej) != nowGreedObjs[ei].end())
-					{
-						findObj = nowGreedObjs[ei][ej];
-						auto deleteObj = find(objList[nowType][ei].begin(), objList[nowType][ei].end(), findObj);
-						objList[nowType][ei].erase(deleteObj);
-						greedObjs[nowType][ei].erase(nowGreedObjs[ei].find(ej));
+					findObj = nowGreedObjs[ei][ej];
+					auto deleteObj = find(objList[nowType][ei].begin(), objList[nowType][ei].end(), findObj);
+					objList[nowType][ei].erase(deleteObj);
+					greedObjs[nowType][ei][ej] = nullptr;
 
-						delete findObj;
-					}
+					delete findObj;
 				}
 			}
 			now_exit = draw;

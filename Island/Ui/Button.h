@@ -37,6 +37,7 @@ public:
 
 	void SetOrigin(Origins origin);
 	void ReBound();
+	virtual bool IsInView();
 
 	SpriteObject* GetSpriteObj() { return sprite; }
 	TextObject* GetTextObj() { return text; }

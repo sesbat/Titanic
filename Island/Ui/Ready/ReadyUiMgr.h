@@ -11,15 +11,18 @@ class Button;
 class Inventory;
 class Craft;
 class TextObject;
+class Shop;
 class ReadyUiMgr : public UiMgr
 {
 private:
 	Player* player;
 	NPC* startNpc;
 	NPC* craftNpc;
+	NPC* shopNpc;
 
 	Inventory* inVen;
 	Craft* craft;
+	Shop* shop;
 
 	UiMgr* uiMgr;
 

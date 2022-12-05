@@ -15,6 +15,7 @@
 #include "../Craft.h"
 #include "../Button.h"
 #include "../../GameObject/TextObject.h"
+#include "../Shop/Shop.h"
 
 ReadyUiMgr::ReadyUiMgr(Scene* scene)
 	:UiMgr(scene)
@@ -27,29 +28,10 @@ void ReadyUiMgr::Init()
 	player = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
 	startNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetStartNPC();
 	craftNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetCraftNPC();
+	shopNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetShopNPC();
 
 	inVen = player->GetInventory();
 	uiObjList[1].push_back(inVen);
-
-	mapsBK = new Button(this);
-	mapsBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/mapsbk.png"), false);
-	mapsBK->SetPos({
-		(float)FRAMEWORK->GetWindowSize().x / 2,(float)FRAMEWORK->GetWindowSize().y / 2 });
-	mapsBK->SetOrigin(Origins::MC);
-	mapsBK->SetActive(false);
-	uiObjList[0].push_back(mapsBK);
-
-	craft = new Craft(this);
-	craft->Init();
-	uiObjList[0].push_back(craft);
-
-	categoryBK = new Button(this);
-	categoryBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/craftbk.png"),false);
-	categoryBK->SetPos({
-		(float)FRAMEWORK->GetWindowSize().x / 2,(float)FRAMEWORK->GetWindowSize().y / 2 });
-	categoryBK->SetOrigin(Origins::MC);
-	categoryBK->SetActive(false);
-	uiObjList[0].push_back(categoryBK);
 
 	//hp
 	hpBar = new Button(this);
@@ -172,6 +154,29 @@ void ReadyUiMgr::Init()
 	energyTex->SetPos({ 690,50 });
 	uiObjList[0].push_back(energyTex);
 
+	mapsBK = new Button(this);
+	mapsBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/mapsbk.png"), false);
+	mapsBK->SetPos({
+		(float)FRAMEWORK->GetWindowSize().x / 2,(float)FRAMEWORK->GetWindowSize().y / 2 });
+	mapsBK->SetOrigin(Origins::MC);
+	mapsBK->SetActive(false);
+	uiObjList[0].push_back(mapsBK);
+
+	craft = new Craft(this);
+	craft->Init();
+	uiObjList[0].push_back(craft);
+
+	shop = new Shop(this);
+	shop->Init();
+	uiObjList[0].push_back(shop);
+
+	categoryBK = new Button(this);
+	categoryBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/craftbk.png"),false);
+	categoryBK->SetPos({
+		(float)FRAMEWORK->GetWindowSize().x / 2,(float)FRAMEWORK->GetWindowSize().y / 2 });
+	categoryBK->SetOrigin(Origins::MC);
+	categoryBK->SetActive(false);
+	uiObjList[0].push_back(categoryBK);
 
 
 	auto& mapData = FILE_MGR->GetAllMap();
@@ -212,44 +217,13 @@ void ReadyUiMgr::Init()
 void ReadyUiMgr::Update(float dt)
 {
 	UiMgr::Update(dt);
-	if (startNpc->GetShowMap())
-	{
-		mapsBK->SetActive(true);
-		for (auto& map : maps)
-		{
-			map->SetActive(true);
 
-			if (map->IsUp())
-			{
-				SCENE_MGR->ChangeScene(Scenes::GameScene, map->GetName());
-				break;
-			}
-		}
-	}
-	else
-	{
-		mapsBK->SetActive(false);
-		for (auto& map : maps)
-		{
-			map->SetActive(false);
-		}
-	}
-	if (craftNpc->GetShowCraft())
-	{
-		craft->SetActive(true);
-	}
-	else
-	{
-		craft->SetActive(false);
-	}
-	//hp bar
 	hpBarSize = (float)player->GetHp() / player->GetMaxHp();// *0.002f;
 	hpBar->GetSpriteObj()->SetScale({ hpBarSize,1.f });
 
 	//stamina
 	staminaBarSize = player->GetStamina() * 0.1f;
 	staminaBar->GetSpriteObj()->SetScale({ staminaBarSize,1.f });
-
 
 	if (!player->Hunger())
 	{
@@ -295,6 +269,46 @@ void ReadyUiMgr::Update(float dt)
 		{
 			energyTex->GetTextObj()->SetColor(Color::White);
 		}
+	}
+
+	if (startNpc->GetShowMap())
+	{
+		mapsBK->SetActive(true);
+		for (auto& map : maps)
+		{
+			map->SetActive(true);
+
+			if (map->IsUp())
+			{
+				SCENE_MGR->ChangeScene(Scenes::GameScene, map->GetName());
+				break;
+			}
+		}
+	}
+	else
+	{
+		mapsBK->SetActive(false);
+		for (auto& map : maps)
+		{
+			map->SetActive(false);
+		}
+	}
+	if (craftNpc->GetShowCraft())
+	{
+		craft->SetActive(true);
+	}
+	else
+	{
+		craft->SetActive(false);
+	}
+
+	if (shopNpc->GetShowShop())
+	{
+		shop->SetActive(true);
+	}
+	else
+	{
+		shop->SetActive(false);
 	}
 }
 

@@ -68,6 +68,7 @@
     <ClCompile Include="Ui\CraftItem.cpp" />
     <ClCompile Include="3rd\QuadTree_SFML_DEMO.cpp" />
     <ClCompile Include="GameObject\Ment.cpp" />
+    <ClCompile Include="Ui\Shop\Shop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\OBB.h" />
@@ -132,6 +133,7 @@
     <ClInclude Include="Ui\CraftItem.h" />
     <ClInclude Include="3rd\QuadTree_SFML_DEMO.h" />
     <ClInclude Include="GameObject\Ment.h" />
+    <ClInclude Include="Ui\Shop\Shop.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

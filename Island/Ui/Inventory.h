@@ -11,7 +11,7 @@ enum class InvenIdx
 };
 class Inventory : public Button
 {
-private:
+protected:
 	float totalWeight;
 
 	InvenItem* nowDrag;
@@ -25,6 +25,7 @@ private:
 	vector<InvenItem*> myUseItems;
 
 	int useIdx;
+	TextObject* txtMoney;
 
 	vector<vector<InvenItem*>::iterator> deleteUseItem;
 
@@ -34,7 +35,7 @@ public:
 	virtual void Init();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
-	void SetDrag(InvenItem* item);
+	virtual void SetDrag(InvenItem* item);
 	InvenItem* GetNowDrag() { return nowDrag; }
 	InvenGreed* GetGreed(int i, int j);
 	InventoryBox* GetNowInven();
@@ -54,4 +55,6 @@ public:
 	void SetUserItem(InvneUseInfo data);
 	const vector<InvenItem*>& GetUseItems() { return myUseItems; }
 	int GetUseIdx() { return useIdx; }
+
+	TextObject* GetMoneyTxt() { return txtMoney; }
 };
