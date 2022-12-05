@@ -224,6 +224,8 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			bullet3->SetDamage(Damage);
 			bullet4->SetDamage(Damage);
 
+			SOUND_MGR->Play("sounds/shotgun.wav");
+
 			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 			bullet1->Fire(startPos, randomShot1, bulletSpeed, range, isplayer);
 			bullet2->Fire(startPos, randomShot2, bulletSpeed, range, isplayer);
@@ -244,6 +246,9 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			bullet->SetOrigin(Origins::MR);
 
 			bullet->SetDamage(Damage);
+
+			SOUND_MGR->Play("sounds/rifle.wav");
+
 			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 		}
 		break;
@@ -260,6 +265,8 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			//bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniperbullet.png"));
 			bullet->SetOrigin(Origins::MR);
 			bullet->SetDamage(Damage);
+			
+			SOUND_MGR->Play("sounds/sniper.wav");
 			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 		}
 		break;

@@ -28,7 +28,8 @@ Player::Player()
 	maxHungerGuage(255), maxThirstGuage(255), maxEnergyGuage(255),
 	staminaScale(1.f), staminaTime(5.f), dash(0.01f),
 	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true), ammo(0),
-	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f), reloadDelay(0.f), isReloading(false)
+	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f), reloadDelay(0.f), isReloading(false),
+	soundDelay(0.5f)
 {
 }
 
@@ -95,6 +96,13 @@ void Player::Update(float dt)
 	lookDir = Utils::Normalize(mouseWorldPos - GetPos());
 	direction.x = InputMgr::GetAxisRaw(Axis::Horizontal);
 	direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
+	
+	soundDelay -= dt;
+	if (soundDelay <= 0 && (InputMgr::GetAxisRaw(Axis::Horizontal) || InputMgr::GetAxisRaw(Axis::Vertical)))
+	{
+		SOUND_MGR->Play("sounds/footstep.ogg");
+		soundDelay = 0.5f;
+	}
 
 	switch (currState)
 	{
@@ -148,6 +156,10 @@ void Player::Update(float dt)
 	if (isMove)
 		Move(dt);
 
+	if (GetPos() != prevPosition)
+	{
+		
+	}
 	//animation
 	animator.Update(dt);
 
@@ -528,6 +540,7 @@ void Player::Move(float dt)
 	//}
 	//wall bound
 	Collision();
+	
 }
 
 void Player::Collision()

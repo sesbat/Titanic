@@ -84,6 +84,7 @@ void Enemy::SetState(States newState)
 		break;
 	case Enemy::States::Dead:
 		((GameScene*)(SCENE_MGR->GetCurrScene()))->SetDeadEnemy(items, position, this);
+		SOUND_MGR->Play("sounds/death.wav");
 		SetActive(false);
 		break;
 	}
@@ -142,21 +143,6 @@ void Enemy::Update(float dt)
 	//gun
 	gun->Update(dt);
 
-	//dev input
-	if (InputMgr::GetKeyDown(Keyboard::F2))
-	{
-		isHit = !isHit;
-	}
-	if (InputMgr::GetKeyDown(Keyboard::F3))
-	{
-		//isMove = !isMove;
-		playerPos = player->GetPos();
-		movePos.clear();
-		FindGrid();
-		astar->AstarSearch(*isGreedObject, startPos, destPos);
-		movePos = astar->GetCoordinate();
-		SetState(States::Move);
-	}
 }
 
 void Enemy::Draw(RenderWindow& window)
@@ -176,19 +162,6 @@ void Enemy::Draw(RenderWindow& window)
 		}
 	}
 	gun->Draw(window);
-	//dev
-	/*if (isMove)
-	{
-		VertexArray lines(Quads, 4);
-		if (!movePos.empty())
-		{
-			lines[0].position = { movePos.front().x - 30,movePos.front().y - 30.f };
-			lines[1].position = { movePos.front().x + 30.f,movePos.front().y - 30.f };
-			lines[2].position = { movePos.front().x + 30.f,movePos.front().y + 30.f };
-			lines[3].position = { movePos.front().x - 30.f,movePos.front().y + 30.f };
-		}
-		window.draw(lines);
-	}*/
 
 }
 
