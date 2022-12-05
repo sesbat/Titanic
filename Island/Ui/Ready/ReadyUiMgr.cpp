@@ -222,6 +222,7 @@ void ReadyUiMgr::Update(float dt)
 	hpBar->GetSpriteObj()->SetScale({ hpBarSize,1.f });
 
 	//stamina
+	player->SetStamina(10.f);
 	staminaBarSize = player->GetStamina() * 0.1f;
 	staminaBar->GetSpriteObj()->SetScale({ staminaBarSize,1.f });
 

@@ -681,6 +681,11 @@ void Player::UseItems(int num)
 	}
 }
 
+void Player::SetStamina(float stamina)
+{
+	this->stamina = stamina;
+}
+
 void Player::SetFireAmmo()
 {
 	switch (gun->GetgunType())

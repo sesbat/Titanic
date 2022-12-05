@@ -161,6 +161,7 @@ public:
 	Gun* GetGun() { return gun; }
 	bool GetIsReloading() { return isReloading; }
 	void UseItems(int num);
+	void SetStamina(float stamina);
 	void SetFireAmmo();
 	void SetAmmoType();
 	void Reload();
