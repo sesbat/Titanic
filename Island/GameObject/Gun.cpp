@@ -48,7 +48,6 @@ void Gun::Init()
 	
 	gunhitbox = new HitBox();
 	gunhitbox->SetActive(true);
-	gunhitbox->SetFillColor(Color::Red);
 	gunhitbox->SetHitbox({ 0.f,0.f,10.f,10.f });
 
 	switch (user)
@@ -146,7 +145,6 @@ void Gun::Draw(RenderWindow& window)
 			bullet->Draw(window);
 		}
 	}
-	gunhitbox->Draw(window);
 }
 
 void Gun::Relaese()
@@ -236,7 +234,6 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		case GunType::Rifle:
 		{
 			Vector2f startPos;
-			//startPos = lookDir * 50.f;
 			startPos = transform.transformPoint(80, 0);
 			bulletSpeed = 2000;
 			range = 1000;

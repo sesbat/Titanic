@@ -10,7 +10,7 @@
 #include "../Scens/GameScene.h"
 
 Bullet::Bullet()
-	:dir(), speed(0.f), range(0.f), showLine(false)
+	:dir(), speed(0.f), range(0.f)
 {
 }
 
@@ -47,26 +47,18 @@ void Bullet::Update(float dt)
 				SetActive(false);
 			}
 		}
-		nextPos = GetPos();// -dir * ((float)sprite.getLocalBounds().width);
+		nextPos = GetPos();
 		Collision();
 	}
 
-	if (InputMgr::GetKeyDown(Keyboard::P))
-	{
-		showLine = !showLine;
-	}
 }
 
 void Bullet::Draw(RenderWindow& window)
 {
 	VertexArray lines(LineStrip, 2);
-	//lines[0].position = { startPos - dir * ((float)sprite.getLocalBounds().width) };
 	lines[0].position = { startPos };
 	lines[1].position = { nextPos };
-	if (showLine)
-	{
-		//window.draw(lines);
-	}
+	
 	window.draw(lines);
 	SpriteObject::Draw(window);
 	
@@ -168,7 +160,7 @@ void Bullet::Collision()
 			objects->GetName() == "BLOCK")
 		{
 			if (LineRect(
-				startPos,// - dir * ((float)sprite.getLocalBounds().width),
+				startPos,
 				nextPos,
 				hit->GetHitbox()))
 			{
@@ -188,7 +180,7 @@ void Bullet::Collision()
 					if (objects->GetId() == enemy->GetId())
 					{
 						if (LineRect(
-							startPos - dir * ((float)sprite.getLocalBounds().width),
+							startPos,
 							nextPos,
 							it->GetHitbox()))
 						{
@@ -207,7 +199,7 @@ void Bullet::Collision()
 			for (auto it : hb)
 			{
 				if (LineRect(
-					startPos,// - dir * ((float)sprite.getLocalBounds().width),
+					startPos,
 					nextPos,
 					it->GetHitbox()))
 				{
