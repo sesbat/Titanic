@@ -32,9 +32,10 @@ using namespace sf;
 //explicit QuadTree(sf::FloatRect bounds,   size_t maxLevel, size_t maxObjects);
 GameScene::GameScene()
     :Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f),
-    /*   fog(candle::LightingArea::FOG,
+       fog(candle::LightingArea::FOG,
           sf::Vector2f(0.f, 0.f),
-          sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)),*/ blockCount(0), treeMap(treeRect, 16, 4)
+          sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)),
+        blockCount(0), treeMap(treeRect, 16, 4)
 {
 
 }
@@ -184,8 +185,8 @@ void GameScene::Init()
     mapSize.height = 1080*4;
 
     //view sight
-    //light.setRange(700.f);
-    //fog.setAreaColor(Color(0, 0, 0, 245));
+    light.setRange(700.f);
+    fog.setAreaColor(Color(0, 0, 0, 245));
 
     uiMgr = new GameSceneUiMgr(this);
     uiMgr->Init();
@@ -259,8 +260,8 @@ void GameScene::Update(float dt)
         worldView.setCenter(realcam);
 
     //view sight pos
-    //light.setPosition(player->GetPos());
-    //fog.setPosition({ player->GetPos().x - 1920 , player->GetPos().y - 1080  });
+    light.setPosition(player->GetPos());
+    fog.setPosition({ player->GetPos().x - 1920 , player->GetPos().y - 1080  });
     //castAllLights();   
 
     //mission
@@ -341,16 +342,6 @@ void GameScene::Draw(RenderWindow& window)
         }
     }
 
-
-    //int i = 0;
-    //for (auto& obj : objList[LayerType::Tile])
-    //{
-    //    for (auto& o : obj.second)
-    //    {
-    //        if (((SpriteObject*)o)->IsInView())
-    //            o->Draw(window);
-    //    }
-    //}
     for (auto& obj : another)
     {
         obj->Draw(window);
@@ -369,10 +360,10 @@ void GameScene::Draw(RenderWindow& window)
         }
     }
 
-    //fog.clear();
-    //fog.draw(light);
-    //window.draw(fog);
-    //fog.display();
+    fog.clear();
+    fog.draw(light);
+    window.draw(fog);
+    fog.display();
 
     if (uiMgr != nullptr)
         uiMgr->Draw(window);

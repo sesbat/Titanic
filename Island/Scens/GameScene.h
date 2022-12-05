@@ -49,8 +49,8 @@ protected:
 
 	//view sight
 	//std::vector<std::shared_ptr<candle::LightSource>> lights1;
-	//candle::RadialLight light;
-	//candle::LightingArea fog;
+	candle::RadialLight light;
+	candle::LightingArea fog;
 	
 	//list<candle::EdgeVector>blockPool;
 	vector<Blocks> blockPool;
