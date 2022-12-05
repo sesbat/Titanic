@@ -212,6 +212,7 @@ void Player::Update(float dt)
 		if (InputMgr::GetKeyDown(Keyboard::R))
 		{
 			Reload();
+			
 		}
 	}
 	
@@ -750,6 +751,7 @@ void Player::Reload()
 		{
 			if (bt->GetName() == "ShotGunBullet")
 			{
+				SOUND_MGR->Play("sounds/reload.wav");
 				reloadDelay = 1.5f;
 				isReloading = true;
 				if (bt->GetCount() < magazineSG)
@@ -794,10 +796,12 @@ void Player::Reload()
 		{
 			return;
 		}
+		
 		for (auto bt : *inven->GetPlayerInven()->GetItems())
 		{
 			if (bt->GetName() == "RifleBullet")
 			{
+				SOUND_MGR->Play("sounds/reload.wav");
 				reloadDelay = 1.f;
 				isReloading = true;
 				if (bt->GetCount() < magazineRF)
@@ -841,10 +845,12 @@ void Player::Reload()
 		{
 			return;
 		}
+		
 		for (auto bt : *inven->GetPlayerInven()->GetItems())
 		{
 			if (bt->GetName() == "SniperBullet")
 			{
+				SOUND_MGR->Play("sounds/reload.wav");
 				reloadDelay = 3.f;
 				isReloading = true;
 				if (bt->GetCount() < magazineSN)

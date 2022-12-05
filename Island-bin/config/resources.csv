@@ -28,6 +28,7 @@ sounds/death.wav,2
 sounds/footstep.ogg,2
 sounds/gameBGM.ogg,2
 sounds/readyBGM.ogg,2
+sounds/reload.wav,2
 graphics/player/playerNakedIdle.png,0
 graphics/player/playerNakedMove.png,0
 animations/player/PlayerIdle.csv,3

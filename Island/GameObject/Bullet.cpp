@@ -58,12 +58,11 @@ void Bullet::Update(float dt)
 
 void Bullet::Draw(RenderWindow& window)
 {
-	VertexArray lines(LineStrip, 2);
+	/*VertexArray lines(LineStrip, 2);
 	lines[0].position = { startPos };
 	lines[1].position = { nextPos };
-	window.draw(lines);
+	window.draw(lines);*/
 	SpriteObject::Draw(window);
-	
 }
 
 void Bullet::Reset()
