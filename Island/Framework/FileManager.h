@@ -20,7 +20,7 @@ private:
 public:
 	FileManager();
 	~FileManager();
-
+		
 	void LoadAll();
 	const vector<ns::RectangleInfo>& GetHitBox(string name);
 
@@ -35,6 +35,9 @@ public:
 
 	const map<string, CraftingInfo>& GetAllCraft() { return craftItemInfo; }
 	const CraftingInfo& GetCraftItemInfo(string name) { return craftItemInfo[name]; }
+
+	//요구된 아이템 정보
+	const RequiredItem& GetRequiredItemInfo(string name,int num) { return craftItemInfo[name].useItem[num]; }
 
 	void SaveUserInfo(UserInfo datas);
 	void SaveInvenInfo(vector<InvenInfo> datas);

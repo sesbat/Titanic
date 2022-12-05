@@ -10,6 +10,7 @@ class NPC;
 class Button;
 class Inventory;
 class Craft;
+class TextObject;
 class ReadyUiMgr : public UiMgr
 {
 private:
@@ -27,6 +28,29 @@ private:
 
 	vector<Button*> categories;
 	Button* categoryBK;
+
+	Button* hpBar;
+	Button* hpBarBK;
+	Button* hpSprite;
+
+	Button* staminaBar;
+	Button* staminaBK;
+	Button* staminaSprite;
+
+	Button* hunger;
+	Button* hungerBK;
+	Button* hungerTex;
+
+	Button* thirst;
+	Button* thirstBK;
+	Button* thirstTex;
+
+	Button* energy;
+	Button* energyBK;
+	Button* energyTex;
+
+	float hpBarSize;
+	float staminaBarSize;
 public:
 	ReadyUiMgr(Scene* scene);
 	virtual void Init();

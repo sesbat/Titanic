@@ -61,6 +61,7 @@ void Craft::Init()
 	}
 
 	requiredItem = new CraftBox(uimgr, this, Vector2i{ 512,704 });
+	requiredItem->isRequired = true;
 	requiredItem->SetBoxSize(10, 4);
 	requiredItem->Init();
 	initRequiredItem = requiredItem;
@@ -118,30 +119,11 @@ void Craft::Update(float dt)
 				btn->SetActive(false);
 			}
 			categoryBox[i]->SetActive(true);
+			categoryBox[i]->craftingItmeName = "";
 		}
 		if (!categoryBox[i]->GetActive())
 			continue;
 
-		if (InputMgr::GetKeyDown(Keyboard::Q))
-		{
-			categoryBox[i]->AddItem("Recoverykit");
-		}
-		if (InputMgr::GetKeyDown(Keyboard::W))
-		{
-			categoryBox[i]->AddItem("handsaw");
-		}
-		if (InputMgr::GetKeyDown(Keyboard::T))
-		{
-			categoryBox[i]->AddItem("Armor-1");
-		}
-		if (InputMgr::GetKeyDown(Keyboard::E))
-		{
-			requiredItem->AddItem("Recoverykit");
-		}
-		if (InputMgr::GetKeyDown(Keyboard::R))
-		{
-			requiredItem->AddItem("handsaw");
-		}
 	}
 
 	
