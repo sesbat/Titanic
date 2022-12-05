@@ -113,7 +113,7 @@ void CraftBox::Update(float dt)
 			{
 				n->Update(dt);
 				//?´ë¦­ ?ì„??
-				if (n->IsClick())
+				if (!isRequired && n->IsClick())
 				{
 					//?„ì´???•ë³´ë¶ˆëŸ¬?¤ê¸°
 					//cout << n->GetName() << endl;
