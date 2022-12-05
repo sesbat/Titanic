@@ -285,8 +285,8 @@ void Craft::ClearInven()
 
 void Craft::ResetRightInven()
 {
-	cout << craftBox->GetName() << endl;
-	cout << requiredItem->GetName() << endl;
+	//cout << craftBox->GetName() << endl;
+	//cout << requiredItem->GetName() << endl;
 	requiredItem = initRequiredItem;
 	craftBox->SetPair(requiredItem);
 	requiredItem->SetPair(craftBox);

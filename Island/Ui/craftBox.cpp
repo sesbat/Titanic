@@ -112,11 +112,11 @@ void CraftBox::Update(float dt)
 			for (auto& n : items)
 			{
 				n->Update(dt);
-				//클릭 됐을때
+				//?�릭 ?�을??
 				if (n->IsClick())
 				{
-					//아이템 정보불러오기
-					cout << n->GetName() << endl;
+					//?�이???�보불러?�기
+					//cout << n->GetName() << endl;
 					inven->OnClickCraftItem(FILE_MGR->GetCraftItemInfo(n->GetName()));
 					craftingItmeName = n->GetName();
 				}
@@ -348,11 +348,11 @@ void CraftBox::MoveItem(int i, int j)
 		}
 	}
 
-	if (find(items.begin(), items.end(), nowDrag) == items.end())
-	{
-		cout << "this11" << endl;
-		//items.push_back(nowDrag);
-	}
+	//if (find(items.begin(), items.end(), nowDrag) == items.end())
+	//{
+	//	//cout << "this11" << endl;
+	//	//items.push_back(nowDrag);
+	//}
 
 	inven->MoveInvenItem(this);
 

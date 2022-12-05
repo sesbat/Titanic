@@ -105,37 +105,38 @@ void Player::Update(float dt)
 		UpdateMove(dt);
 		break;
 	}
-
-	hungerDelay -= dt;
-	ThirstDelay -= dt;
-	EnergyDelay -= dt;
-	if (hungerDelay < 0.f && hungerGuage > 0.f)
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene) 
 	{
-		hungerGuage -= 1.f;
-		hungerDelay = 30.f;
+		hungerDelay -= dt;
+		ThirstDelay -= dt;
+		EnergyDelay -= dt;
+		if (hungerDelay < 0.f && hungerGuage > 0.f)
+		{
+			hungerGuage -= 1.f;
+			hungerDelay = 30.f;
+		}
+		if (ThirstDelay < 0.f && thirstGuage > 0.f)
+		{
+			thirstGuage -= 1.f;
+			ThirstDelay = 20.f;
+		}
+		if (EnergyDelay < 0.f && energyGuage > 0.f)
+		{
+			energyGuage -= 1.f;
+			EnergyDelay = 40.f;
+		}
+		if (staminaScale < 0.99f && !isDash)
+		{
+			staminaScale += dash;
+		}
+		if (staminaScale > 0.f && isDash)
+		{
+			staminaScale -= dash / staminaTime;
+			if (staminaScale < 0.f)
+				isDash = !isDash;
+		}
 	}
-	if (ThirstDelay < 0.f && thirstGuage > 0.f)
-	{
-		thirstGuage -= 1.f;
-		ThirstDelay = 20.f;
-	}
-	if (EnergyDelay < 0.f && energyGuage > 0.f)
-	{
-		energyGuage -= 1.f;
-		EnergyDelay = 40.f;
-	}
-
-	if (staminaScale < 0.99f && !isDash)
-	{
-		staminaScale += dash;
-	}
-	if (staminaScale > 0.f && isDash)
-	{
-		staminaScale -= dash / staminaTime;
-		if (staminaScale < 0.f)
-			isDash = !isDash;
-	}
-
+	
 	//Dead
 	if (hp <= 0 || hungerGuage <= 0 ||
 		thirstGuage <= 0 || energyGuage <= 0)

@@ -170,7 +170,7 @@ void EditorMapUiMgr::Update(float dt)
 	}
 	if (boxBtn->IsUp())
 	{
-		cout << "Box Down" << endl;
+		//cout << "Box Down" << endl;
 		isBox = !isBox;
 		if (isBox)
 			boxBtn->GetTextObj()->SetColor(Color::Red);
@@ -190,8 +190,8 @@ void EditorMapUiMgr::Update(float dt)
 		rectStartPos = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)rectStartPos);
 		rect->setFillColor(Color(255, 255, 255, 20));
 		rect->setPosition(rectStartPos);
-		cout << rectStartPos.x << endl;
-		cout << rectStartPos.y << endl;
+		//cout << rectStartPos.x << endl;
+		//cout << rectStartPos.y << endl;
 
 		return;
 	}
@@ -200,14 +200,14 @@ void EditorMapUiMgr::Update(float dt)
 		auto mousePos = InputMgr::GetMousePos();
 		mousePos = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)mousePos);
 		rect->setSize(Vector2f{ mousePos.x - rectStartPos.x, mousePos.y - rectStartPos.y });
-		cout << "Box ing" << endl;
+		//cout << "Box ing" << endl;
 
 		return;
 	}
 	if (isBox && InputMgr::GetMouseButtonUp(Mouse::Left))
 	{
 		BoxingEnd();
-		cout << "Box End" << endl;
+		//cout << "Box End" << endl;
 		return;
 	}
 
@@ -420,7 +420,7 @@ void EditorMapUiMgr::BoxingEnd()
 
 	}
 
-	if (boxingErase)
+	/*if (boxingErase)
 	{
 		cout << "Erase" << endl;
 		cout << start_idx_x << endl;
@@ -435,7 +435,7 @@ void EditorMapUiMgr::BoxingEnd()
 		cout << start_idx_y << endl;
 		cout << end_idx_x << endl;
 		cout << end_idx_y << endl;
-	}
+	}*/
 
 
 	if (rect != nullptr)
