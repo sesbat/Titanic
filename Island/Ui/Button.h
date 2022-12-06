@@ -15,6 +15,10 @@ public:
 		None = -1, SPRIT, TEXT
 	};
 protected:
+	Button(const Button& ref) {}
+	Button& operator=(const Button& ref) {}
+	Button(Button& ref) {}
+	Button& operator=(Button& ref) {}
 	SpriteObject* sprite;
 	TextObject* text;
 	UiMgr* uimgr;

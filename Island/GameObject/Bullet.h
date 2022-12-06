@@ -10,6 +10,11 @@ class Player;
 class Bullet :public SpriteObject
 {
 private:
+	Bullet(const Bullet& ref) {}
+	Bullet& operator=(const Bullet& ref) {}
+	Bullet(Bullet& ref) {}
+	Bullet& operator=(Bullet& ref) {}
+
 	Scene* scene;
 	list<Enemy*>* enemies;
 	Player* player;
@@ -27,13 +32,11 @@ private:
 
 public:
 	Bullet();
-	~Bullet();
 
 	virtual void Init();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
 	virtual void Reset();
-	virtual void Release();
 
 	void Fire(const Vector2f& pos, const Vector2f& dir, float speed, float range, bool isplayer);
 

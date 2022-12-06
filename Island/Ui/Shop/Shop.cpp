@@ -20,6 +20,34 @@ Shop::Shop(UiMgr* mgr)
 
 Shop::~Shop()
 {
+	Release();
+}
+
+void Shop::Release()
+{
+	if (npcInvne != nullptr)
+		delete npcInvne;
+	npcInvne = nullptr;
+
+	if (sellInven != nullptr)
+		delete sellInven;
+	sellInven = nullptr;
+
+	if (buyInven != nullptr)
+		delete buyInven;
+	buyInven = nullptr;
+
+	if (txtMoney != nullptr)
+		delete txtMoney;
+	txtMoney = nullptr;
+
+	if (dealBtn != nullptr)
+		delete dealBtn;
+	dealBtn = nullptr;
+
+	if (txtPrice != nullptr)
+		delete txtPrice;
+	txtPrice = nullptr;
 }
 
 void Shop::Init()
@@ -50,7 +78,7 @@ void Shop::Init()
 
 	enabled = false;
 
-	npcInvne->AddItem("Recoverykit",2);
+	npcInvne->AddItem("Recoverykit", 2);
 	npcInvne->AddItem("Recoverykit", 2);
 	npcInvne->AddItem("Apple",2);
 	npcInvne->AddItem("Water",2);
@@ -89,6 +117,7 @@ void Shop::Update(float dt)
 		items->ButtonUpdate(dt);
 		if (items->IsClick())
 		{
+			cout << "player_items" << endl;
 			auto move_pos = sellInven->FindInvenPos(items->GetWidth(), items->GetHeight());
 			if (move_pos != Vector2i{ -1,-1 })
 			{
@@ -109,6 +138,7 @@ void Shop::Update(float dt)
 		items->ButtonUpdate(dt);
 		if (items->IsClick())
 		{
+			cout << "npc_items" << endl;
 			auto move_pos = buyInven->FindInvenPos(items->GetWidth(), items->GetHeight());
 			if (move_pos != Vector2i{ -1,-1 })
 			{
@@ -129,6 +159,7 @@ void Shop::Update(float dt)
 		items->ButtonUpdate(dt);
 		if (items->IsClick())
 		{
+			cout << "sell_items" << endl;
 			sellInven->DeleteItem(items, items->GetGreedPos(), Vector2i{ items->GetWidth(),items->GetHeight() });
 
 			auto prev = itemPrevPos[items];
@@ -148,6 +179,7 @@ void Shop::Update(float dt)
 		items->ButtonUpdate(dt);
 		if (items->IsClick())
 		{
+			cout << "buy_items" << endl;
 			buyInven->DeleteItem(items, items->GetGreedPos(), Vector2i{ items->GetWidth(),items->GetHeight() });
 
 			auto prev = itemPrevPos[items];
@@ -202,13 +234,13 @@ void Shop::SetActive(bool state)
 
 void Shop::ClearShop()
 {
-	for (auto items : *sell_items)
+	for (auto& items : *sell_items)
 	{
 		auto prev = itemPrevPos[items];
 		playerInven->MoveItem(items, prev);
 	}
 	sell_items->clear();
-	for (auto items : *buy_items)
+	for (auto& items : *buy_items)
 	{
 		auto prev = itemPrevPos[items];
 		npcInvne->MoveItem(items, prev);
@@ -220,6 +252,8 @@ void Shop::ClearShop()
 
 	itemPrevPos.clear();
 	price = 0.f;
+	txtPrice->SetString("DEAL " + to_string(price));
+	txtPrice->SetOrigin(Origins::MC);
 }
 
 void Shop::Deal()
@@ -229,12 +263,12 @@ void Shop::Deal()
 		return;
 	}
 
-	for (auto items : *sell_items)
+	for (auto& items : *sell_items)
 	{
 		delete items;
 	}
 	sell_items->clear();
-	for (auto items : *buy_items)
+	for (auto& items : *buy_items)
 	{
 		playerInven->AddItem(items->GetName(), items->GetCount());
 		delete items;

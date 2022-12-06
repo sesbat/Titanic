@@ -12,6 +12,10 @@ enum class InvenIdx
 class Inventory : public Button
 {
 protected:
+	Inventory(const Inventory& ref) : Button(nullptr) {}
+	Inventory& operator=(const InvenItem& ref) {}
+	Inventory(Inventory& ref) : Button(nullptr) {}
+	Inventory& operator=(InvenItem& ref) {}
 	float totalWeight;
 
 	InvenItem* nowDrag;
@@ -32,6 +36,7 @@ protected:
 public:
 	Inventory(UiMgr* mgr);
 	virtual ~Inventory();
+	virtual void Release();
 	virtual void Init();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);

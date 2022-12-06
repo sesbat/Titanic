@@ -28,6 +28,10 @@ class Gun :
     public HitBoxObject
 {
 private:
+    Gun(const Gun& ref) {}
+    Gun& operator=(const Gun& ref) {}
+    Gun(Gun& ref) {}
+    Gun& operator=( Gun& ref) {}
     Player* player;
     Enemy* enemy;
     Scene* scene;

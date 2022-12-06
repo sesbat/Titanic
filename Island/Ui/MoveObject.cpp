@@ -10,6 +10,12 @@ MoveObject::MoveObject(UiMgr* scene)
 
 MoveObject::~MoveObject()
 {
+	Release();
+}
+
+void MoveObject::Release()
+{
+	Button::Release();
 }
 
 void MoveObject::Update(float dt)

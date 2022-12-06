@@ -21,7 +21,6 @@ Ready::Ready()
 
 Ready::~Ready()
 {
-	treeMap.clear();
 	Release();
 }
 
@@ -95,7 +94,6 @@ void Ready::Init()
 	shopNpc->SetHitBox("graphics/player.png");
 	objList[LayerType::Object][0].push_back(shopNpc);
 
-
 	craftNpc = new NPC();
 	craftNpc->SetNPCType(NPCType::Craft);
 	craftNpc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shopnpc.png"));
@@ -106,16 +104,6 @@ void Ready::Init()
 	craftNpc->Init();
 	craftNpc->SetHitBox("graphics/player.png");
 	objList[LayerType::Object][0].push_back(craftNpc);
-
-	//npc = new NPC();
-	//npc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/npc.png"));
-	//npc->SetOrigin(Origins::MC);
-	//npc->SetPlayer(player);
-	//npc->SetScale({ 3.f,3.f });
-	//npc->SetPos({ 100.f,100.f });
-	//npc->SetName("NPC");
-	//npc->Init();
-	//objList[LayerType::Object][0].push_back(npc);
 
 	uiMgr = new ReadyUiMgr(this);
 	uiMgr->Init();
@@ -128,6 +116,7 @@ void Ready::Init()
 void Ready::Release()
 {
 	Scene::Release();
+	treeMap.clear();
 }
 
 void Ready::Enter()
@@ -144,24 +133,12 @@ void Ready::Enter()
 void Ready::Exit()
 {
 	SOUND_MGR->StopAll();
-	treeMap.clear();
 	player->Save();
 	Release();
 }
 
 void Ready::Update(float dt)
 {
-	//LayerSort();
-
-	//if (craftNpc->GetShowCraft() || startNpc->GetShowMap())
-	//{
-	//	player->SetMove(false);
-	//}
-	//else
-	//{
-	//	player->SetMove(true);
-	//}
-
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
 
 	Vector2f dir;
@@ -185,10 +162,15 @@ void Ready::Update(float dt)
 	if(player->GetIsMove())
 		worldView.setCenter(realcam);
 	LayerSort();
-	//treeMap.insert(drawObjs);
 	treeMap.update(drawObjs);
 
 	Scene::Update(dt);
+
+	if (InputMgr::GetKeyDown(Keyboard::Escape))
+	{
+		SCENE_MGR->ChangeScene(Scenes::Menu);
+		return;
+	}
 }
 
 vector<HitBoxObject*> Ready::ObjListObb(HitBoxObject* obj)

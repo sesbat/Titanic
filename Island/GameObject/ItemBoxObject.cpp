@@ -6,6 +6,11 @@
 #include "../GameObject/Player.h"
 #include "../Ui/InventoryBox.h"
 #include "../Ui/Inventory.h"
+#include "../Framework/ResourceManager.h"
+#include "Ment.h"
+#include "Player.h"
+#include "../Scens/Scene.h"
+#include "../Scens/SceneManager.h"
 
 ItemBoxObject::ItemBoxObject()
 	:pickState(false)
@@ -14,13 +19,26 @@ ItemBoxObject::ItemBoxObject()
 
 ItemBoxObject::~ItemBoxObject()
 {
+	Release();
+	//SCENE_MGR->GetCurrScene()->AddDeleteObject(1, ment);
 }
 
 void ItemBoxObject::Init()
 {
+	ment = new Ment();
+	ment->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 40, Color::White, "[F]");
+	ment->SetAlways(true);
+	ment->SetOrigin(Origins::BC);
+	ment->SetPos(GetPos() - Vector2f{ 0.f,50 });
+	ment->SetActive(false);
+	SCENE_MGR->GetCurrScene()->AddGameObject(ment, LayerType::Object, 1);
 	HitBoxObject::Init();
 }
 
+void ItemBoxObject::SetPlayer(Player* player)
+{
+	this->player = player;
+}
 void ItemBoxObject::Reset()
 {
 	HitBoxObject::Reset();
@@ -28,6 +46,7 @@ void ItemBoxObject::Reset()
 
 void ItemBoxObject::Release()
 {
+	ment->SetColor(Color(0, 0, 0, 0));
 	HitBoxObject::Release();
 }
 
@@ -35,10 +54,17 @@ void ItemBoxObject::Update(float dt)
 {
 	HitBoxObject::Update(dt);
 
+	if (!ment->GetActive() && Utils::Distance(GetPos(), player->GetPos()) < 50)
+	{
+		ment->SetActive(true);
+	}
+	else if (ment->GetActive() && Utils::Distance(GetPos(), player->GetPos()) >= 50)
+	{
+		ment->SetActive(false);
+	}
+
 	if (Utils::Distance(position, *playerPos) < 50 && InputMgr::GetKeyDown(Keyboard::F))
 	{
-		//((GameScene*)SCENE_MGR->GetCurrScene())->GetPlayer()->GetItem(&obj_items);;
-
 		auto scene = ((GameScene*)SCENE_MGR->GetCurrScene());
 		auto player = scene->GetPlayer();
 
@@ -70,7 +96,7 @@ void ItemBoxObject::SetItems(map<string, Item> items)
 	invenBox->Init();
 	invenBox->SetPair(player->GetInventory()->GetPlayerInven());
 	obj_items = items;
-	for (auto item : obj_items)
+	for (auto& item : obj_items)
 	{
 		auto data = FILE_MGR->GetItemInfo(item.first);
 		int i = item.second.count / data.maxCount;

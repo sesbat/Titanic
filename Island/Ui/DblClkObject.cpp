@@ -8,6 +8,7 @@ DblClkObject::DblClkObject(UiMgr* uimgr)
 
 DblClkObject::~DblClkObject()
 {
+	Button::Release();
 }
 
 void DblClkObject::Update(float dt)
@@ -76,4 +77,9 @@ void DblClkObject::Init()
 {
 	Reset();
 	Button::Init();
+}
+
+void DblClkObject::Release()
+{
+	Button::Release();
 }

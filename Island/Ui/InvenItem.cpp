@@ -12,6 +12,12 @@ InvenItem::InvenItem(UiMgr* mgr)
 
 InvenItem::~InvenItem()
 {
+	Release();
+}
+
+void InvenItem::Release()
+{
+	MoveObject::Release();
 }
 
 void InvenItem::Init()
@@ -57,11 +63,9 @@ void InvenItem::Set(int width, int height, Vector2i invenPos,Vector2i invenGreed
 	this->maxCount = maxCount;
 	this->price = price;
 	
-
 	SetPos((Vector2f)invenPos);
 	SetTexture(*RESOURCES_MGR->GetTexture(path), true);
 	GetTextObj()->SetPos(position + Vector2f(60, 60));
-
 }
 
 void InvenItem::SetInvenPos(Vector2i invenPos, Vector2i invenGreedPos)

@@ -23,15 +23,17 @@ ReadyUiMgr::ReadyUiMgr(Scene* scene)
 
 }
 
+ReadyUiMgr::~ReadyUiMgr()
+{
+	Release();
+}
+
 void ReadyUiMgr::Init()
 {
 	player = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
 	startNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetStartNPC();
 	craftNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetCraftNPC();
 	shopNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetShopNPC();
-
-	inVen = player->GetInventory();
-	uiObjList[1].push_back(inVen);
 
 	//hp
 	hpBar = new Button(this);
@@ -194,24 +196,13 @@ void ReadyUiMgr::Init()
 		map->SetName(data.first);
 		maps.push_back(map);
 	}
-	//auto map = new Button(this);
-	//map->SetClkColor(true);
-	//map->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 200, Color::White
-	//	, "map1", true);
-	//map->SetPos({ 400,300 });
-	//maps.push_back(map);
-
-	//auto map1 = new Button(this);
-	//map1->SetClkColor(true);
-	//map1->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 200, Color::White
-	//	, "map2", true);
-	//map1->SetPos({ 1000,300 });
-	//maps.push_back(map1);
 
 	for (auto& map : maps)
 	{
 		uiObjList[0].push_back(map);
 	}
+
+	uiObjList[0].push_back(player->GetInventory());
 }
 
 void ReadyUiMgr::Update(float dt)
@@ -282,7 +273,7 @@ void ReadyUiMgr::Update(float dt)
 			if (map->IsUp())
 			{
 				SCENE_MGR->ChangeScene(Scenes::GameScene, map->GetName());
-				break;
+				return;
 			}
 		}
 	}
@@ -321,12 +312,5 @@ void ReadyUiMgr::Draw(RenderWindow& window)
 
 void ReadyUiMgr::Release()
 {
-}
-
-void ReadyUiMgr::ClickEpisodeBtn()
-{
-}
-
-void ReadyUiMgr::ClickEditortBtn()
-{
+	UiMgr::Release();
 }

@@ -11,6 +11,10 @@ using namespace sf;
 class Object
 {
 protected:
+	Object(const Object& ref) {}
+	Object& operator=(const Object& ref) {}
+	Object( Object& ref) {}
+	Object& operator=( Object& ref) {}
 	int id;
 	string name; 
 	bool enabled; 
@@ -24,13 +28,12 @@ protected:
 
 public:
 	Object();
-	virtual ~Object();
+	virtual ~Object() {};
 
 	virtual bool GetActive() const;
 	virtual void SetActive(bool active);
 	
 	virtual void Init();
-	virtual void Release();
 	virtual void Reset();
 
 	virtual void SetPos(const Vector2f& pos);

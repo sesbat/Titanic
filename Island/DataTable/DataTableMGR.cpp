@@ -31,7 +31,7 @@ void DataTableMgr::Init()
 
 void DataTableMgr::Release()
 {
-    for (auto pair : tables)
+    for (auto& pair : tables)
     {
         delete pair.second;
     }

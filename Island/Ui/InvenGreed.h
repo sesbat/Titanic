@@ -8,6 +8,10 @@ class InvenItem;
 class InvenGreed : public Button
 {
 private:
+	InvenGreed(const InvenGreed& ref) : Button(nullptr) {}
+	InvenGreed& operator=(const InvenGreed& ref) {}
+	InvenGreed(InvenGreed& ref) : Button(nullptr) {}
+	InvenGreed& operator=(InvenGreed& ref) {}
 	Vector2i invenPos;
 	Inventory* inven;
 	InventoryBox* invenBox;

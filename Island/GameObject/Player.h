@@ -29,6 +29,10 @@ public:
 	};
 
 protected:
+	Player(const Player& ref) {}
+	Player& operator=(const Player& ref) {}
+	Player( Player& ref) {}
+	Player& operator=( Player& ref) {}
 	Scene* scene;
 	Gun* gun;
 	Inventory* inven;
@@ -39,7 +43,7 @@ protected:
 	States currState;
 	
 	float speed;
-	const float maxSpeed;
+	 float maxSpeed;
 	Vector2f look;
 	Vector2f lookDir;
 	Vector2f prevLook;
@@ -52,26 +56,26 @@ protected:
 	Vector2f playerNormalize;
 
 	int hp;
-	const int maxHp;
+	 int maxHp;
 
 	float dash;
 	float staminaTime;
 	float staminaScale;
 	bool isDash;
 	float stamina;
-	const float maxStamina;
+	 float maxStamina;
 
 	float hungerGuage;
 	int prevHungerGuage;
-	const float maxHungerGuage;
+	 float maxHungerGuage;
 	
 	float thirstGuage;
 	int prevThirstGuage;
-	const float maxThirstGuage;
+	 float maxThirstGuage;
 	
 	float energyGuage;
 	int prevEnergyGuage;
-	const float maxEnergyGuage;
+	 float maxEnergyGuage;
 
 	float hungerDelay; 
 	float ThirstDelay; 
@@ -101,7 +105,7 @@ protected:
 
 public:
 	Player();
-	virtual~Player();
+	virtual ~Player();
 	
 	void Init();
 
@@ -156,7 +160,7 @@ public:
 	void Move(float dt);
 	void Collision();
 	Vector2f* GetPosPtr() { return &position; }
-	void GetItem(map<string, Item>* items);
+	void GetItem(map<string, Item>*& items);
 	Inventory* GetInventory() { return inven; }
 	void SetRigthInvenBox(ItemBoxObject* inven) { rightInvenObj = inven; }
 	Gun* GetGun() { return gun; }
@@ -177,5 +181,7 @@ public:
 	int GetMoney() { return money; }
 	void AddMoney(int p);
 	void SetMoney(int p);
+
+	virtual void Release();
 };
 

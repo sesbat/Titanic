@@ -27,6 +27,7 @@ class Shop : public Inventory
 public:
 	Shop(UiMgr* mgr);
 	~Shop();
+	virtual void Release();
 	virtual void Init();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);

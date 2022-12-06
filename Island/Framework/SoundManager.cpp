@@ -22,13 +22,13 @@ void SoundManager::Init()
 
 void SoundManager::Release()
 {
-	for (auto sound : waiting)
+	for (auto& sound : waiting)
 	{
 		delete sound;
 	}
 	waiting.clear();
 
-	for (auto sound : playing)
+	for (auto& sound : playing)
 	{
 		delete sound;
 	}
@@ -55,7 +55,7 @@ void SoundManager::Play(string id, bool loop)
 
 void SoundManager::StopAll()
 {
-	for (auto sound : playing)
+	for (auto& sound : playing)
 	{
 		sound->stop();
 	}

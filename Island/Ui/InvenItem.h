@@ -6,6 +6,10 @@ class TextObject;
 class InvenItem : public MoveObject
 {
 private:
+	InvenItem(const InvenItem& ref) : MoveObject(nullptr) {}
+	InvenItem& operator=(const InvenItem& ref) {}
+	InvenItem(InvenItem& ref) : MoveObject(nullptr) {}
+	InvenItem& operator=(InvenItem& ref) {}
 	string path;
 	int maxCount;
 	int count;
@@ -19,6 +23,7 @@ private:
 public:
 	InvenItem(UiMgr* mgr);
 	virtual ~InvenItem();
+	virtual void Release();
 	virtual void Init();
 	virtual void Update(float dt);
 	void ButtonUpdate(float dt);

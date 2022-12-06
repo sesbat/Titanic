@@ -24,6 +24,8 @@ public:
 	};
 
 private:
+	Astar(const Astar& ref) {}
+	Astar& operator=(const Astar& ref) {}
 	int dxDir[4] = { 0, 0, 1, -1 };
 	int dyDir[4] = { -1, 1, 0, 0 };
 

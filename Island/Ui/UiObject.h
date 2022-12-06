@@ -8,6 +8,10 @@ class UiObject : public Object
 {
 public:
 protected:
+	UiObject(const UiObject& ref) {}
+	UiObject& operator=(const UiObject& ref) {}
+	UiObject(UiObject& ref) {}
+	UiObject& operator=(UiObject& ref) {}
 	FloatRect bound;
 	UiState btnState;
 	bool isEvent;
@@ -25,9 +29,7 @@ protected:
 
 public:
 	UiObject();
-	virtual ~UiObject();
 	virtual void Init() override;
-	virtual void Release()override;
 	virtual void Reset()override;
 	virtual void SetPos(const Vector2f& pos)override;
 	virtual void Translate(const Vector2f& delta)override;

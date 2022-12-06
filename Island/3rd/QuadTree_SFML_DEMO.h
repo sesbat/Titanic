@@ -43,7 +43,7 @@ public:
     QuadTree(const TreeRect &_bound, unsigned _capacity, unsigned _maxLevel);
 
     bool insert(HitBoxObject*obj);
-    void insert(std::vector<Object*> obj);
+    void insert(std::vector<Object*>& obj);
     bool remove(HitBoxObject*obj);
     bool update(HitBoxObject*obj);
     void update(std::vector<Object*> objs);
@@ -68,9 +68,11 @@ public:
     
     ~QuadTree();
 private:
-    QuadTree();
-    QuadTree(const QuadTree& ref) {}
-    QuadTree& operator=(const QuadTree& ref) {}
+	QuadTree();
+	QuadTree(const QuadTree& ref) {}
+	QuadTree& operator=(const QuadTree& ref) {}
+	QuadTree(QuadTree& ref) {}
+	QuadTree& operator=(QuadTree& ref) {}
     bool      isLeaf = true;
     unsigned  level  = 0;
     unsigned  capacity;

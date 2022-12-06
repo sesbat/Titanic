@@ -5,10 +5,13 @@
 class TextObject : public Object
 {
 protected:
+	TextObject(const TextObject& ref) {}
+	TextObject& operator=(const TextObject& ref) {}
+	TextObject( TextObject& ref) {}
+	TextObject& operator=( TextObject& ref) {}
 	Text text;
 public:
 	TextObject();
-	virtual ~TextObject();
 
 	virtual void Init();
 	virtual void Update(float dt);

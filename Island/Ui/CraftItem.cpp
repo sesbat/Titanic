@@ -13,6 +13,7 @@ CraftItem::CraftItem(UiMgr* mgr)
 
 CraftItem::~CraftItem()
 {
+	Release();
 }
 
 void CraftItem::Init()

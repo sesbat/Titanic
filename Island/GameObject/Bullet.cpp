@@ -15,10 +15,6 @@ Bullet::Bullet()
 {
 }
 
-Bullet::~Bullet()
-{
-}
-
 void Bullet::Init()
 {
 	SpriteObject::Init();
@@ -75,12 +71,6 @@ void Bullet::Reset()
 
 	SpriteObject::Reset();
 }
-
-void Bullet::Release()
-{
-	SpriteObject::Release();
-}
-
 
 void Bullet::Fire(const Vector2f& pos, const Vector2f& dir, float speed, float range, bool isplayer)
 {
@@ -174,9 +164,9 @@ void Bullet::Collision()
 		else if (isplayer && objects->GetName() == "ENEMY")
 		{
 			auto hb = ((HitBoxObject*)objects)->GetHitBoxs();
-			for (auto it : hb)
+			for (auto& it : hb)
 			{
-				for (Enemy* enemy : *enemies)
+				for (Enemy*& enemy : *enemies)
 				{
 					if (objects->GetId() == enemy->GetId())
 					{
@@ -197,7 +187,7 @@ void Bullet::Collision()
 		else if (!isplayer && objects->GetName() == "PLAYER")
 		{
 			auto hb = ((HitBoxObject*)objects)->GetHitBoxs();
-			for (auto it : hb)
+			for (auto &it : hb)
 			{
 				if (LineRect(
 					startPos,

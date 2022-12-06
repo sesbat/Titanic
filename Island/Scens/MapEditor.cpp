@@ -89,18 +89,6 @@ void MapEditor::Update(float dt)
 	veiw_end_pos.x = min(veiw_end_pos.x, 128);
 	veiw_end_pos.y = min(veiw_end_pos.y, 72);
 
-	//auto mousePos = (Vector2i)ScreenToWorld((Vector2i)InputMgr::GetMousePos());
-
-	//Vector2i update_start_pos = mousePos - Vector2i{ 120, 120 };
-	//Vector2i update_end_pos = mousePos + Vector2i{120, 120};
-	//update_start_pos /= 60;
-	//update_end_pos /= 60;
-
-	//update_start_pos.x = max(update_start_pos.x, 0);
-	//update_start_pos.y = max(update_start_pos.y, 0);
-	//update_end_pos.x = min(update_end_pos.x, 128);
-	//update_end_pos.y = min(update_end_pos.y, 72);
-	
 	for (int i = view_start_pos.x; i < veiw_end_pos.x; i++)
 	{
 		for (int j = view_start_pos.y; j < veiw_end_pos.y; j++)
@@ -111,35 +99,8 @@ void MapEditor::Update(float dt)
 		}
 	}
 
-	//for (auto objs : greedObjs[LayerType::Object])
-	//{
-	//	for (auto obj : objs.second)
-	//	{
-	//		
-	//		obj.second->Update(dt);
-	//	}
-	//}
-
-
-	//for (auto& layer : objList)
-	//{
-	//	for (auto& obj_pair : layer.second)
-	//	{
-	//		auto objs = obj_pair.second;
-
-	//		for (auto& obj : objs)
-	//		{
-	//			if (obj->GetActive())
-	//			{
-	//				obj->Update(dt);
-	//			}
-	//		}
-	//	}
-	//}
 	if (uiMgr != nullptr)
 		uiMgr->Update(dt);
-
-
 
 	if (uimgr->IsExit() || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
@@ -151,7 +112,6 @@ void MapEditor::Update(float dt)
 	{
 		std::cout << "save" << endl;
 		Save();
-		//uimgr->CloseSaveWinow();
 		return;
 	}
 
@@ -322,11 +282,11 @@ void MapEditor::Release()
 
 	player = nullptr;
 	now_exit = nullptr;
-
 }
 
 MapEditor::~MapEditor()
 {
+	Release();
 }
 
 void MapEditor::SetType(string t)
@@ -349,7 +309,6 @@ void MapEditor::Save()
 
 	for (auto& layer : greedObjs)
 	{
-
 		for (auto& objs : layer.second)
 		{
 			int i = objs.first;
@@ -375,8 +334,6 @@ void MapEditor::Save()
 
 	FILE_MGR->SaveMap(saveObjs, path);
 	((EditorMapUiMgr*)uiMgr)->SetLoadInit();
-
-
 }
 
 void MapEditor::Load(string path)

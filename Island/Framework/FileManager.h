@@ -16,8 +16,9 @@ private:
 	std::vector<InvenInfo> invenAllItems;
 	std::vector<InvneUseInfo> useItemInfo;
 
-	//cookieInfo[Jungle][Jump]
 public:
+	FileManager(const FileManager& ref) {}
+	FileManager& operator=(const FileManager& ref) {}
 	FileManager();
 	~FileManager();
 		

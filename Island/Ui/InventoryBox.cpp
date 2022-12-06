@@ -14,6 +14,7 @@ InventoryBox::InventoryBox(UiMgr* mgr, Inventory* inven, Vector2i startPos)
 
 InventoryBox::~InventoryBox()
 {
+	Release();
 }
 
 void InventoryBox::Init()
@@ -35,6 +36,32 @@ void InventoryBox::Init()
 		allPos.push_back(line);
 		itemGreed.push_back(greedLine);
 	}
+}
+
+void InventoryBox::Release()
+{
+	for (auto& greeds : itemGreed)
+	{
+		for (auto& greed : greeds)
+		{
+			if (greed != nullptr)
+				delete greed;
+			greed = nullptr;
+		}
+	}
+
+	itemGreed.clear();
+
+	for (auto& item : items)
+	{
+		if (item != nullptr)
+			delete item;
+		item = nullptr;
+	}
+	items.clear();
+	allPos.clear();
+
+	Button::Release();
 }
 
 void InventoryBox::Update(float dt)
@@ -376,8 +403,16 @@ void InventoryBox::DeleteItem(InvenItem* item)
 		{
 			if (itemGreed[j][i]->GetItem() == item)
 			{
-				allPos[j][i] = false;
-				itemGreed[j][i]->SetState(false, nullptr);
+				int w = item->GetWidth();
+				int h = item->GetHeight();
+				for (int x = 0; x < w; x++)
+				{
+					for (int y = 0; y < h; y++)
+					{
+						itemGreed[y + j][x + i]->SetState(false, nullptr);
+						allPos[y + j][x + i] = false;
+					}
+				}
 				items.erase(find(items.begin(), items.end(), item));
 				return;
 			}
@@ -403,7 +438,7 @@ void InventoryBox::DeleteItem(InvenItem* item,Vector2i startPos, Vector2i size)
 
 void InventoryBox::ClearInven()
 {
-	for (auto item :items)
+	for (auto& item :items)
 	{
 		delete item;
 	}
@@ -411,7 +446,7 @@ void InventoryBox::ClearInven()
 
 	for (auto& greed_line : itemGreed)
 	{
-		for (auto greed : greed_line)
+		for (auto& greed : greed_line)
 		{
 			greed->SetState(false, nullptr);
 		}

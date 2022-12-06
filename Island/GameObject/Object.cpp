@@ -9,11 +9,6 @@ Object::Object()
 	Init();
 }
 
-Object::~Object()
-{
-	Release();
-}
-
 bool Object::GetActive() const
 {
 	return enabled;
@@ -27,10 +22,6 @@ void Object::SetActive(bool active)
 void Object::Init()
 {
 	enabled = true;
-}
-
-void Object::Release()
-{
 }
 
 void Object::Reset()

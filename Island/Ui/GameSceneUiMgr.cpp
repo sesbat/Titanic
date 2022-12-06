@@ -23,6 +23,7 @@ GameSceneUiMgr::GameSceneUiMgr(Scene* scene)
 GameSceneUiMgr::~GameSceneUiMgr()
 {
 	player->Save();
+	Releas();
 }
 
 void GameSceneUiMgr::Init()
@@ -126,10 +127,6 @@ void GameSceneUiMgr::Init()
 	energyBK->SetPos({ 550,100 });
 	uiObjList[0].push_back(energyBK);
 
-	inven = player->GetInventory();
-	uiObjList[1].push_back(inven);
-
-
 	hungerTex = new Button(this);
 	hungerTex->SetClkColor(true);
 	hungerTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
@@ -161,6 +158,8 @@ void GameSceneUiMgr::Init()
 	ammoText->SetOrigin(Origins::MC);
 	ammoText->SetPos({ 150,200 });
 	uiObjList[0].push_back(ammoText);
+
+	uiObjList[0].push_back(player->GetInventory());
 }
 
 void GameSceneUiMgr::Reset()
@@ -232,5 +231,10 @@ void GameSceneUiMgr::Draw(RenderWindow& window)
 {
 	window.setView(parentScene->GetUiView());
 	UiMgr::Draw(window);
+}
+
+void GameSceneUiMgr::Releas()
+{
+	UiMgr::Release();
 }
 

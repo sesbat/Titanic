@@ -6,6 +6,10 @@ class TextObject;
 class CraftItem : public Button
 {
 private:
+	CraftItem(const CraftItem& ref) : Button(nullptr) {}
+	CraftItem& operator=(const CraftItem& ref) {}
+	CraftItem(CraftItem& ref) : Button(nullptr) {}
+	CraftItem& operator=(CraftItem& ref) {}
 	string path;
 	int maxCount;
 	int count;

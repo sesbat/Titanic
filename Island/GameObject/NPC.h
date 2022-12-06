@@ -14,6 +14,10 @@ enum class NPCType
 class NPC : public HitBoxObject
 {
 private:
+    NPC(const NPC& ref) {}
+    NPC& operator=(const NPC& ref) {}
+    NPC( NPC& ref) {}
+    NPC& operator=( NPC& ref) {}
     Player* player;
     NPCType type;
 

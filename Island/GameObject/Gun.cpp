@@ -37,6 +37,7 @@ Gun::Gun(GunType type, User user)
 
 Gun::~Gun()
 {
+	Relaese();
 }
 
 void Gun::Init()
@@ -75,7 +76,7 @@ void Gun::Init()
 void Gun::Update(float dt)
 {
 	const auto& bulletList = bulletPool.GetUseList();
-	for (auto bullet : bulletList)
+	for (auto& bullet : bulletList)
 	{
 		bullet->Update(dt);
 	}
@@ -138,7 +139,7 @@ void Gun::Draw(RenderWindow& window)
 {
 	 SpriteObject::Draw(window);
 	const auto& bulletList = bulletPool.GetUseList();
-	for (auto bullet : bulletList)
+	for (auto& bullet : bulletList)
 	{
 		if (bullet->GetActive())
 		{
@@ -149,7 +150,8 @@ void Gun::Draw(RenderWindow& window)
 
 void Gun::Relaese()
 {
-	SpriteObject::Release();
+	delete gunhitbox;
+	bulletPool.Release();
 }
 
 void Gun::SetPlayer(Player* player)

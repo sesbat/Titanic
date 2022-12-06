@@ -14,12 +14,13 @@
 #include "InventoryBox.h"
 
 CraftBox::CraftBox(UiMgr* mgr, Craft* inven, Vector2i startPos)
-	: Button(mgr), nowDrag(nullptr), inven(inven), startPos(startPos)
+	: Button(mgr),inven(inven), startPos(startPos)
 {
 }
 
 CraftBox::~CraftBox()
 {
+	Release();
 }
 
 void CraftBox::Init()
@@ -56,58 +57,6 @@ void CraftBox::Update(float dt)
 	if (!enabled)
 		return;
 
-	//if (nowDrag == nullptr)
-	//{
-	//	for (auto& item : items)
-	//	{
-	//		item->Update(dt);
-	//		if (item->IsDown())
-	//		{
-	//			inven->SetDrag(item);
-	//			inven->SetPrevInven(this);
-	//			auto invenPos = nowDrag->GetGreedPos();
-
-	//			for (int i = invenPos.x; i < invenPos.x + nowDrag->GetWidth(); i++)
-	//			{
-	//				for (int j = invenPos.y; j < invenPos.y + nowDrag->GetHeight(); j++)
-	//				{
-	//					allPos[j][i] = false;
-	//					itemGreed[j][i]->SetState(false, nullptr);
-	//				}
-	//			}
-	//			//items.erase(items.begin(), find(items.begin(), items.end(), item));
-	//			//items.push_back(item);
-	//			break;
-	//		}
-	//		else if (item->IsClickRight())
-	//		{
-	//			auto pos = pairInven->FindInvenPos(item->GetWidth(), item->GetHeight());
-	//			auto invenPos = item->GetGreedPos();
-
-
-	//			if (pos != Vector2i{ -1,-1 })
-	//			{
-	//				for (int i = invenPos.x; i < invenPos.x + item->GetWidth(); i++)
-	//				{
-	//					for (int j = invenPos.y; j < invenPos.y + item->GetHeight(); j++)
-	//					{
-	//						allPos[j][i] = false;
-	//						itemGreed[j][i]->SetState(false, nullptr);
-	//					}
-	//				}
-
-	//				pairInven->AddItem(item->GetName(), item->GetCount());
-	//				items.erase(find(items.begin(), items.end(), item));
-	//				break;
-	//			}
-	//			break;
-	//		}
-	//	}
-	//}
-	//else
-	//{
-	//	nowDrag->Update(dt);
-	//}
 	craftButton->Update(dt);
 	Button::Update(dt);
 
@@ -121,7 +70,6 @@ void CraftBox::Update(float dt)
 				n->Update(dt);
 				if (!isRequired && n->IsClick())
 				{
-					//cout << n->GetName() << endl;
 					inven->OnClickCraftItem(FILE_MGR->GetCraftItemInfo(n->GetName()));
 					craftingItmeName = n->GetName();
 				}
@@ -136,13 +84,6 @@ void CraftBox::Update(float dt)
 			player->GetInventory()->GetPlayerInven()->AddItem(craftingItmeName);
 			DeletePlayerItem(craftingItmeName);
 		}
-		else
-		{
-			//cout << "Not Making" << endl;
-			//cout << craftingItmeName << endl;
-			//cout << this << endl;
-		}
-
 	}
 }
 bool CraftBox::Crafting(string itemName)
@@ -153,12 +94,12 @@ bool CraftBox::Crafting(string itemName)
 	auto craftUseItem = data.useItem;
 	vector<bool> isItems;
 	auto playerItems = *player->GetInventory()->GetPlayerInven()->GetItems();
-	for (auto i : craftUseItem)
+	for (auto& i : craftUseItem)
 	{
 		auto name = i.id;
 		auto cnt = i.cnt;
 		bool isItem = false;
-		for (auto item : playerItems)
+		for (auto& item : playerItems)
 		{
 			if (item->GetName() == name)
 			{
@@ -190,11 +131,11 @@ void CraftBox::DeletePlayerItem(string itemName)
 	auto playerItems = player->GetInventory()->GetPlayerInven()->GetItems();
 	auto playerInven = player->GetInventory();
 	auto playerInvenBox = player->GetInventory()->GetPlayerInven();
-	for (auto i : craftUseItem)
+	for (auto& i : craftUseItem)
 	{
 		auto name = i.id;
 		auto cnt = i.cnt;
-		for (auto item : *playerItems)
+		for (auto& item : *playerItems)
 		{
 			if (item->GetName() == name)
 			{
@@ -227,13 +168,9 @@ void CraftBox::Draw(RenderWindow& window)
 	}
 	for (auto& item : items)
 	{
-		if (item == nowDrag)
-			continue;
 		item->Draw(window);
 	}
 	craftButton->Draw(window);
-	if (nowDrag != nullptr)
-		nowDrag->Draw(window);
 }
 
 void CraftBox::AddItem(string name, int count)
@@ -338,62 +275,6 @@ CraftGreed* CraftBox::GetGreed(int i, int j)
 	return itemGreed[i][j];
 }
 
-void CraftBox::MoveItem(int i, int j)
-{
-	nowDrag->SetInvenPos({ startPos.x + i * 60 + padding * i , startPos.y + j * 60 + padding * j },
-		{ i, j });
-
-	int w = nowDrag->GetWidth();
-	int h = nowDrag->GetHeight();
-	for (int x = 0; x < w; x++)
-	{
-		for (int y = 0; y < h; y++)
-		{
-			allPos[y + j][x + i] = true;
-			itemGreed[y + j][x + i]->SetState(true, nowDrag);
-		}
-	}
-
-	//if (find(items.begin(), items.end(), nowDrag) == items.end())
-	//{
-	//	//cout << "this11" << endl;
-	//	//items.push_back(nowDrag);
-	//}
-
-	inven->MoveInvenItem(this);
-
-	inven->SetDrag(nullptr);
-	inven->SetPrevInven(nullptr);
-}
-
-void CraftBox::ReturnItem()
-{
-	int i = nowDrag->GetGreedPos().x;
-	int j = nowDrag->GetGreedPos().y;
-
-	if (i == -1 || j == -1)
-	{
-		inven->ReturnUseItem();
-		return;
-	}
-
-	nowDrag->SetInvenPos({ startPos.x + i * 60 + padding * i , startPos.y + j * 60 + padding * j },
-		{ i, j });
-
-	int w = nowDrag->GetWidth();
-	int h = nowDrag->GetHeight();
-	for (int x = 0; x < w; x++)
-	{
-		for (int y = 0; y < h; y++)
-		{
-			itemGreed[y + j][x + i]->SetState(true, nowDrag);
-			allPos[y + j][x + i] = true;
-		}
-	}
-
-	inven->SetDrag(nullptr);
-	inven->SetPrevInven(nullptr);
-}
 
 void CraftBox::SetBoxSize(int width, int height)
 {
@@ -403,15 +284,16 @@ void CraftBox::SetBoxSize(int width, int height)
 
 void CraftBox::ClearInven()
 {
-	for (auto item : items)
+	for (auto& item : items)
 	{
 		delete item;
 	}
+
 	items.clear();
 
 	for (auto& greed_line : itemGreed)
 	{
-		for (auto greed : greed_line)
+		for (auto& greed : greed_line)
 		{
 			greed->SetState(false, nullptr);
 		}

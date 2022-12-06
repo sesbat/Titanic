@@ -17,22 +17,6 @@ void ReadyButton::SetScene(Scenes scenes)
 void ReadyButton::Update(float dt)
 {
 	Button::Update(dt);
-	//std::cout << (int)btnState << std::endl;
-	if(IsDown())
-	{
-		if (GetName() == "Editor")
-			mgr->ClickEditortBtn();
-		if (GetName() == "Episode")
-			mgr->ClickEpisodeBtn();
-	}
-	if (IsEnter())
-	{
-		sprite->SetColor(Color(200, 200, 200, 255));
-	}
-	if (IsExit())
-	{
-		sprite->SetColor(Color::White);
-	}
 }
 
 void ReadyButton::Draw(RenderWindow& window)

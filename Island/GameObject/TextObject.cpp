@@ -4,10 +4,6 @@ TextObject::TextObject()
 {
 }
 
-TextObject::~TextObject()
-{
-}
-
 void TextObject::Init()
 {
 }

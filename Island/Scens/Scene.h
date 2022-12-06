@@ -33,7 +33,6 @@ protected:
 	UiMgr* uiMgr;
 
 	vector <Object*> deleteContainer;
-
 	vector<Object*> moves;
 	vector<Object*> another;
 	vector<Object*> drawObjs;

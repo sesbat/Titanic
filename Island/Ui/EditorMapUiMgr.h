@@ -16,10 +16,10 @@ private:
 	Button* exitBtn;
 	Button* underUi;
 	Button* boxBtn;
+	Button* selectBtn;
 
 	bool isErase;
 
-	Button* selectBtn;
 	vector<string> selects;
 	vector<int> selectTxtSize;
 	vector<float> selectPosY;
@@ -42,6 +42,7 @@ private:
 public:
 	EditorMapUiMgr(Scene* scene);
 	virtual ~EditorMapUiMgr();
+	virtual void Release();
 	virtual void Init();
 	virtual void Reset();
 	virtual void Update(float dt);

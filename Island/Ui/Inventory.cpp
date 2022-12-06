@@ -20,6 +20,38 @@ Inventory::Inventory(UiMgr* mgr)
 
 Inventory::~Inventory()
 {
+	Release();
+}
+
+void Inventory::Release()
+{
+	for (auto& useItem : invenItemGreed)
+	{
+		if (useItem != nullptr)
+		{
+			delete useItem;
+			useItem = nullptr;
+		}
+	}
+	for (auto& useItem : myUseItems)
+	{
+		delete useItem;
+	}
+	myUseItems.clear();
+
+	if (myInven != nullptr)
+		delete myInven;
+	myInven = nullptr;
+
+	if (rightInven != nullptr)
+		delete rightInven;
+	rightInven = nullptr;
+
+	if (txtMoney != nullptr)
+		delete txtMoney;
+	txtMoney = nullptr;
+
+	Button::Release();
 }
 
 void Inventory::Init()
@@ -60,50 +92,6 @@ void Inventory::Update(float dt)
 	myInven->Update(dt);
 	rightInven->Update(dt);
 
-	if (InputMgr::GetKeyDown(Keyboard::Q))
-	{
-		myInven->AddItem("Recoverykit");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::W))
-	{
-		myInven->AddItem("handsaw");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::Y))
-	{
-		myInven->AddItem("Meat");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::T))
-	{
-		myInven->AddItem("Armor-1");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::I))
-	{
-		myInven->AddItem("Apple");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::O))
-	{
-		myInven->AddItem("Water");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::P))
-	{
-		myInven->AddItem("EnergyDrink");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::J))
-	{
-		myInven->AddItem("RifleBullet");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::K))
-	{
-		myInven->AddItem("ShotGunBullet");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::L))
-	{
-		myInven->AddItem("SniperBullet");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::E))
-	{
-		rightInven->AddItem("Recoverykit");
-	}
 
 	if (nowDrag != nullptr && IsStay() )
 	{
@@ -231,7 +219,7 @@ void Inventory::Update(float dt)
 		i++;
 	}
 
-	for (auto del : deleteUseItem)
+	for (auto& del : deleteUseItem)
 	{
 		int idx = del - myUseItems.begin();
 		delete* del;

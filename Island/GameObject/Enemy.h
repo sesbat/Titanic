@@ -24,6 +24,10 @@ public:
 	};
 
 protected:
+	Enemy(const Enemy& ref) {}
+	Enemy& operator=(const Enemy& ref) {}
+	Enemy( Enemy& ref) {}
+	Enemy& operator=( Enemy& ref) {}
 	Player* player;
 	Scene* scene;
 	Gun* gun;
@@ -78,6 +82,7 @@ protected:
 public:
 	Enemy();
 	virtual ~Enemy();
+	virtual void Release();
 
 	void Init(Player* player);
 

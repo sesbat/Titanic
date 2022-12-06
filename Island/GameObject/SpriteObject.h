@@ -5,12 +5,16 @@
 class SpriteObject : public Object
 {
 protected:
+	SpriteObject(const SpriteObject& ref) {}
+	SpriteObject& operator=(const SpriteObject& ref) {}
+	SpriteObject(SpriteObject& ref) {}
+	SpriteObject& operator=(SpriteObject& ref) {}
 	Sprite sprite;
 	bool isUi;
 	bool viewIn; //ī�޶� �ȿ� ������Ʈ �ִ���
 public:
 	SpriteObject();
-	virtual ~SpriteObject();
+	virtual ~SpriteObject() override {};
 
 	virtual void Init();
 	virtual void Update(float dt);

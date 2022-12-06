@@ -35,11 +35,11 @@ Player::Player()
 
 Player::~Player()
 {
+	Release();
 }
 
 void Player::Init()
 {
-
 	HitBoxObject::Init();
 
 	gun = new Gun(GunType::None, User::Player);
@@ -280,12 +280,13 @@ void Player::Update(float dt)
 		isDash = false;
 	}
 
-	if (InputMgr::GetKeyDown(Keyboard::Tab))
+	if (InputMgr::GetKeyDown(Keyboard::Tab) || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		if (inven->GetActive() && !isMove)	
 		{
 			SetMove(true);
 			inven->SetActive(!(inven->GetActive()));
+			InputMgr::Clear();
 			//inven->ResetRightInven();
 			//cout << inven->GetRightInven()->GetName() << endl;
 			if (inven->GetRightInven()->GetItems()->size() > 0 && isInven)
@@ -315,7 +316,7 @@ void Player::Update(float dt)
 				}
 			}
 		}
-		else if (isMove)
+		else if (isMove && !InputMgr::GetKeyDown(Keyboard::Escape))
 		{
 			SetIsInven(true);
 			inven->SetActive(true);
@@ -357,6 +358,7 @@ void Player::Draw(RenderWindow& window)
 			hit->Draw(window);
 		}
 	}
+
 	gun->Draw(window);
 }
 
@@ -523,10 +525,6 @@ void Player::Move(float dt)
 	prevPosition = GetPos();
 	Translate({ velocity.x * dt, 0.f });
 
-	//for (auto& hit : hitboxs)
-	//{
-	//	hit->SetPos(GetPos());
-	//}
 	//wall bound
 	Collision();
 
@@ -535,10 +533,6 @@ void Player::Move(float dt)
 	prevPosition = GetPos();
 	Translate({ 0.f, velocity.y * dt, });
 
-	//for (auto& hit : hitboxs)
-	//{
-	//	hit->SetPos(GetPos());
-	//}
 	//wall bound
 	Collision();
 	
@@ -546,37 +540,12 @@ void Player::Move(float dt)
 
 void Player::Collision()
 {
-	//wall bound
-	//auto obj = scene->GetObjList();
-
-	//for (auto& objects : obj[LayerType::Object][0])
-	//{
-	//	auto hit = ((HitBoxObject*)objects)->GetBottom();
-	//	if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
-	//		continue;
-	//	if (!objects->GetActive())
-	//	{
-	//		continue;
-	//	}
-	//	if (objects->GetName() == "TREE" ||
-	//		objects->GetName() == "STONE" ||
-	//		objects->GetName() == "BLOCK" ||
-	//		objects->GetName() == "ENEMY")
-	//	{
-	//		if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
-	//		{
-	//			//cout << objects->GetName() << endl;
-	//			SetPlayerPos();
-	//			break;
-	//		}
-	//	}
-	//}
 
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
 		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
 
-		for (auto obj : boundInObj)
+		for (auto& obj : boundInObj)
 		{
 			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
 			{
@@ -593,7 +562,7 @@ void Player::Collision()
 	{
 		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
 
-		for (auto obj : boundInObj)
+		for (auto& obj : boundInObj)
 		{
 			if (Utils::OBB(obj->GetBottom()->GetHitbox(), gun->GetHitbox()))
 			{
@@ -617,7 +586,7 @@ void Player::Collision()
 	{
 		auto boundInObj = ((Ready*)scene)->ObjListObb(this);
 
-		for (auto obj : boundInObj)
+		for (auto& obj : boundInObj)
 		{
 			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
 			{
@@ -631,12 +600,12 @@ void Player::Collision()
 }
 
 
-void Player::GetItem(map<string, Item>* items)
+void Player::GetItem(map<string, Item>*& items)
 {
 	inven->SetActive(true);
 	auto right_inven = inven->GetRightInven();
 
-	for (auto item : *items)
+	for (auto& item : *items)
 	{
 		right_inven->AddItem(item.second.type);
 	}
@@ -747,7 +716,7 @@ void Player::Reload()
 		{
 			return;
 		}
-		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		for (auto& bt : *inven->GetPlayerInven()->GetItems())
 		{
 			if (bt->GetName() == "ShotGunBullet")
 			{
@@ -797,7 +766,7 @@ void Player::Reload()
 			return;
 		}
 		
-		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		for (auto& bt : *inven->GetPlayerInven()->GetItems())
 		{
 			if (bt->GetName() == "RifleBullet")
 			{
@@ -846,7 +815,7 @@ void Player::Reload()
 			return;
 		}
 		
-		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		for (auto& bt : *inven->GetPlayerInven()->GetItems())
 		{
 			if (bt->GetName() == "SniperBullet")
 			{
@@ -928,7 +897,7 @@ void Player::Load()
 
 	auto invenData = FILE_MGR->GetInvenInfo();
 
-	for (auto data : invenData)
+	for (auto& data : invenData)
 	{
 		string type = data.Type;
 		Vector2i invenPos = data.invenPos;
@@ -942,7 +911,7 @@ void Player::Load()
 
 	auto useItemData = FILE_MGR->GetUseItemInfo();
 
-	for (auto data : useItemData)
+	for (auto& data : useItemData)
 	{
 		if (data.useIdx != -1)
 			inven->SetUserItem(data);
@@ -962,7 +931,7 @@ void Player::Save()
 
 	auto nowInven = inven->GetPlayerInven()->GetItems();
 	vector<InvenInfo> saveInven;
-	for (auto data : *nowInven)
+	for (auto& data : *nowInven)
 	{
 		if (data->GetCount() <= 0)
 			continue;
@@ -982,7 +951,7 @@ void Player::Save()
 	auto nowUseItems = inven->GetUseItems();
 	vector<InvneUseInfo> saveUseItem;
 	int i = 0;
-	for (auto data : nowUseItems)
+	for (auto& data : nowUseItems)
 	{
 		if (data == nullptr)
 		{
@@ -1018,4 +987,11 @@ void Player::SetMoney(int p)
 	auto txt = inven->GetMoneyTxt();
 	txt->SetString(to_string(money));
 	txt->SetOrigin(Origins::MR);
+}
+
+void Player::Release()
+{
+	if (gun != nullptr)
+		delete gun;
+	gun = nullptr;
 }

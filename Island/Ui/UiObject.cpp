@@ -10,21 +10,11 @@ UiObject::UiObject()
 {
 }
 
-UiObject::~UiObject()
-{
-	Release();
-}
-
 
 void UiObject::Init()
 {
 	Object::Init();
 	Reset();
-}
-
-void UiObject::Release()
-{
-	Object::Release();
 }
 
 void UiObject::Reset()

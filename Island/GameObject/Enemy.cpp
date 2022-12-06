@@ -23,6 +23,22 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
+	Release();
+}
+
+void Enemy::Release()
+{
+
+	if (gun != nullptr)
+		delete gun;
+	gun = nullptr;
+
+	if (astar != nullptr)
+		delete astar;
+	astar = nullptr;
+
+
+	HitBoxObject::Release();
 }
 
 void Enemy::Init(Player* player)
@@ -375,7 +391,7 @@ void Enemy::Collision()
 	{
 		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
 
-		for (auto obj : boundInObj)
+		for (auto& obj : boundInObj)
 		{
 			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
 			{
@@ -407,7 +423,7 @@ void Enemy::CheckIsInWall()
 	{
 		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
 
-		for (auto obj : boundInObj)
+		for (auto& obj : boundInObj)
 		{
 			if (Utils::OBB(obj->GetBottom()->GetHitbox(), gun->GetHitbox()))
 			{
