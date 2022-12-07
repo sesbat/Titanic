@@ -42,8 +42,7 @@ protected:
 	
 	States currState;
 	
-	float speed;
-	 float maxSpeed;
+	
 	Vector2f look;
 	Vector2f lookDir;
 	Vector2f prevLook;
@@ -55,53 +54,58 @@ protected:
 	Vector2f bottomPos;
 	Vector2f playerNormalize;
 
-	int hp;
-	 int maxHp;
+	//valancing variable
+	int maxHp;
 
-	float dash;
-	float staminaTime;
-	float staminaScale;
-	bool isDash;
+	float speed;
+	float dashSpeed;
+	float maxSpeed;
+
 	float stamina;
-	 float maxStamina;
+	float maxStamina;
 
 	float hungerGuage;
-	int prevHungerGuage;
-	 float maxHungerGuage;
-	
 	float thirstGuage;
-	int prevThirstGuage;
-	 float maxThirstGuage;
-	
 	float energyGuage;
-	int prevEnergyGuage;
-	 float maxEnergyGuage;
 
-	float hungerDelay; 
-	float ThirstDelay; 
-	float EnergyDelay; 
+	float maxHungerGuage;
+	float maxThirstGuage;
+	float maxEnergyGuage;
 
-	float shootDelay;
-	float reloadDelay;
-	float soundDelay;
+	float hungerDelay;	//delay for hunger decreasion
+	float ThirstDelay;	//delay for thirst decreasion
+	float EnergyDelay;	//delay for energy decreasion
 
-	//ammo
-	int ammo;
-	int sgAmmo;		//remaining ammo
-	int rfAmmo;
-	int snAmmo;
-	int magazineSG;		//magazine size
+	//float reloadDelay;	//delay for reload
+	float reloadDelaySG;
+	float reloadDelayRF;
+	float reloadDelaySN;
+	float soundDelay;	//delay for footstep SE
+
+	int magazineSG;		//magazine sizes
 	int magazineRF;
 	int magazineSN;
 
+	//save data variable
+	int hp;
+	int prevHungerGuage;
+	int prevThirstGuage;
+	int prevEnergyGuage;
+
+	int sgAmmo;		//remaining ammo
+	int rfAmmo;
+	int snAmmo;
+
+	int money;
+	
+	//system variable
+	float shootDelay;
+	int ammo;
+	bool isDash;
 	bool isMove;
 	bool isAlive;
 	bool isReloading;
-
 	bool isInven;
-
-
-	int money;
 
 public:
 	Player();
@@ -127,7 +131,6 @@ public:
 	Vector2f GetPrevLookDir() { return prevLook; }
 	Vector2f GetPlayerBottom() { return bottomPos; }
 	States GetCurrState() { return currState; }
-	float GetStaminaScale() { return staminaScale; }
 	bool GetIsDash() { return isDash; }
 	bool GetIsMove() { return isMove; }
 	int GetHp() { return hp; }
