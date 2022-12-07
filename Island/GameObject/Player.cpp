@@ -26,10 +26,11 @@ Player::Player()
 	hp(1000), maxHp(1000), isDash(false), stamina(10.f), maxStamina(10.f),
 	hungerGuage(255), thirstGuage(255), energyGuage(255),
 	maxHungerGuage(255), maxThirstGuage(255), maxEnergyGuage(255),
-	staminaScale(1.f), staminaTime(5.f), dash(0.01f),
 	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true), ammo(0),
-	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f), reloadDelay(0.f), isReloading(false),
-	soundDelay(0.5f)
+	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f), 
+	//reloadDelay(0.f),
+	reloadDelaySG(1.5f), reloadDelayRF(1.f), reloadDelaySN(3.f),
+	isReloading(false), soundDelay(0.5f)
 {
 }
 
@@ -133,16 +134,7 @@ void Player::Update(float dt)
 			energyGuage -= 1.f;
 			EnergyDelay = 40.f;
 		}
-		if (staminaScale < 0.99f && !isDash)
-		{
-			staminaScale += dash;
-		}
-		if (staminaScale > 0.f && isDash)
-		{
-			staminaScale -= dash / staminaTime;
-			if (staminaScale < 0.f)
-				isDash = !isDash;
-		}
+		
 	}
 	
 	//Dead
@@ -176,7 +168,26 @@ void Player::Update(float dt)
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
 		shootDelay -= dt;
-		reloadDelay -= dt;
+		reloadDelaySG -= dt;
+		reloadDelayRF -= dt;
+		reloadDelaySN -= dt;
+
+		float reloadDelay;
+		switch (gun->GetgunType())
+		{
+		case GunType::None:
+			reloadDelay = 1;
+			break;
+		case GunType::Shotgun:
+			reloadDelay = reloadDelaySG;
+			break;
+		case GunType::Rifle:
+			reloadDelay = reloadDelayRF;
+			break;
+		case GunType::Sniper:
+			reloadDelay = reloadDelaySN;
+			break;
+		}
 		//fire
 		if (reloadDelay <= 0)
 		{
@@ -721,7 +732,7 @@ void Player::Reload()
 			if (bt->GetName() == "ShotGunBullet")
 			{
 				SOUND_MGR->Play("sounds/reload.wav");
-				reloadDelay = 1.5f;
+				reloadDelaySG = 1.5f;
 				isReloading = true;
 				if (bt->GetCount() < magazineSG)
 				{
@@ -771,7 +782,7 @@ void Player::Reload()
 			if (bt->GetName() == "RifleBullet")
 			{
 				SOUND_MGR->Play("sounds/reload.wav");
-				reloadDelay = 1.f;
+				reloadDelayRF = 1.f;
 				isReloading = true;
 				if (bt->GetCount() < magazineRF)
 				{
@@ -820,7 +831,7 @@ void Player::Reload()
 			if (bt->GetName() == "SniperBullet")
 			{
 				SOUND_MGR->Play("sounds/reload.wav");
-				reloadDelay = 3.f;
+				reloadDelaySN = 3.f;
 				isReloading = true;
 				if (bt->GetCount() < magazineSN)
 				{
