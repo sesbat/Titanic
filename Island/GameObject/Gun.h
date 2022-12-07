@@ -46,7 +46,6 @@ private:
     float bulletSpeed;
     float range;
     float shootDelay;
-    float pShootDelay;
     int Damage;
     bool isGunFlip;
     bool isInWall;
@@ -72,7 +71,7 @@ public:
     void SetGunType(GunType type);
     GunType GetgunType() { return gunType; }
     GunType ItemNameToType(string name);
-    float GetpShootDelay() { return pShootDelay; }
+    float GetpShootDelay() { return shootDelay; }
     const RectangleShape& GetHitbox() const;
     void SetIsInWall(bool wall) { isInWall = wall; }
     bool GetIsInWall() { return isInWall; }

@@ -21,6 +21,12 @@ InvenGreed::~InvenGreed()
 void InvenGreed::Init()
 {
 	SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/invenGreed.png"), true);
+	//auto bound = GetGlobalBound();
+	//bound.left -= 2;
+	//bound.top -= 2;
+	//bound.width += 4;
+	//bound.height += 4;
+	//SetBound(bound);
 }
 
 void InvenGreed::Update(float dt)
@@ -38,7 +44,7 @@ void InvenGreed::Update(float dt)
 				auto greed = inven->GetGreed(invenPos.y + j, invenPos.x + i);
 				if (greed == nullptr)
 					continue;
-
+				greed->SetState(true);
 			}
 		}
 	}
@@ -128,12 +134,6 @@ void InvenGreed::Update(float dt)
 				}
 			if (isReturn)
 			{
-				if (inven->GetUseIdx() != -1)
-				{
-					inven->GetPrevInven()->ReturnItem();
-					return;
-				}
-
 				for (int i = 0; i < w; i++)
 				{
 					for (int j = 0; j < h; j++)
