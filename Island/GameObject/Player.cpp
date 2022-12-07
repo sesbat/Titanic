@@ -284,9 +284,9 @@ void Player::Update(float dt)
 	{
 		if (inven->GetActive() && !isMove)	
 		{
+			InputMgr::Clear();
 			SetMove(true);
 			inven->SetActive(!(inven->GetActive()));
-			InputMgr::Clear();
 			//inven->ResetRightInven();
 			//cout << inven->GetRightInven()->GetName() << endl;
 			if (inven->GetRightInven()->GetItems()->size() > 0 && isInven)
@@ -716,7 +716,7 @@ void Player::Reload()
 		{
 			return;
 		}
-		for (auto& bt : *inven->GetPlayerInven()->GetItems())
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
 		{
 			if (bt->GetName() == "ShotGunBullet")
 			{
@@ -766,7 +766,7 @@ void Player::Reload()
 			return;
 		}
 		
-		for (auto& bt : *inven->GetPlayerInven()->GetItems())
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
 		{
 			if (bt->GetName() == "RifleBullet")
 			{
@@ -815,7 +815,7 @@ void Player::Reload()
 			return;
 		}
 		
-		for (auto& bt : *inven->GetPlayerInven()->GetItems())
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
 		{
 			if (bt->GetName() == "SniperBullet")
 			{

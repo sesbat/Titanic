@@ -195,10 +195,10 @@ void GameScene::Init()
 
 void GameScene::Release()
 {
+    treeMap.clear();
     Scene::Release();
     enemies.clear();
     blockPool.clear();
-    treeMap.clear();
 }
 
 void GameScene::Enter()
@@ -218,7 +218,6 @@ void GameScene::Enter()
 void GameScene::Exit()
 {
     SOUND_MGR->StopAll();
-    treeMap.clear();
     Release();
 }
 
@@ -292,12 +291,12 @@ void GameScene::Update(float dt)
     LayerSort();
     treeMap.update(drawObjs);
 
+    Scene::Update(dt);
     if (InputMgr::GetKeyDown(Keyboard::Escape))
     {
         SCENE_MGR->ChangeScene(Scenes::Ready);
         return;
     }
-    Scene::Update(dt);
 
 }
 

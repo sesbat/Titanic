@@ -115,6 +115,7 @@ void InventoryBox::Update(float dt)
 				}
 				break;
 			}
+			
 		}
 	}
 	else

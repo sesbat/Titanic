@@ -115,8 +115,8 @@ void Ready::Init()
 
 void Ready::Release()
 {
-	Scene::Release();
 	treeMap.clear();
+	Scene::Release();
 }
 
 void Ready::Enter()

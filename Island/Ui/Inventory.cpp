@@ -186,6 +186,7 @@ void Inventory::Update(float dt)
 					SetDrag(nullptr);
 					useIdx = -1;
 				}
+
 			}
 		}
 		i++;

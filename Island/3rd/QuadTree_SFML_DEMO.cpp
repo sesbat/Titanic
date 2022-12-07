@@ -4,6 +4,7 @@
 #include "../GameObject/HitBoxObject.h"
 #include "../GameObject/HitBox.h"
 #include "../Framework/Utils.h"
+#include <list>
 
 //** Rect **//
 TreeRect::TreeRect(const TreeRect& other) : TreeRect(other.x, other.y, other.width, other.height) { }
@@ -12,6 +13,7 @@ TreeRect::TreeRect(double _x, double _y, double _width, double _height) :
     y(_y),
     width(_width),
     height(_height) {
+
 }
 bool TreeRect::contains(const TreeRect& other) const noexcept {
     if (x > other.x) return false;
@@ -324,6 +326,7 @@ void QuadTree::clear() noexcept {
         }
         objects.clear();
     }
+
     if (!isLeaf) {
         for (QuadTree* child : children)
             child->clear();
