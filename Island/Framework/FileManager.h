@@ -16,12 +16,14 @@ private:
 	std::vector<InvenInfo> invenAllItems;
 	std::vector<InvneUseInfo> useItemInfo;
 
+	UserStat userStat;
+
 public:
 	FileManager(const FileManager& ref) {}
 	FileManager& operator=(const FileManager& ref) {}
 	FileManager();
 	~FileManager();
-		
+
 	void LoadAll();
 	const vector<ns::RectangleInfo>& GetHitBox(string name);
 
@@ -38,7 +40,7 @@ public:
 	const CraftingInfo& GetCraftItemInfo(string name) { return craftItemInfo[name]; }
 
 	//요구된 아이템 정보
-	const RequiredItem& GetRequiredItemInfo(string name,int num) { return craftItemInfo[name].useItem[num]; }
+	const RequiredItem& GetRequiredItemInfo(string name, int num) { return craftItemInfo[name].useItem[num]; }
 
 	void SaveUserInfo(UserInfo datas);
 	void SaveInvenInfo(vector<InvenInfo> datas);
@@ -47,6 +49,7 @@ public:
 	const UserInfo& GetUserInfo() const { return userInfo; }
 	const vector<InvenInfo>& GetInvenInfo() const { return invenAllItems; }
 	const vector<InvneUseInfo>& GetUseItemInfo() const { return useItemInfo; }
+	const UserStat& GetUserStat() const { return userStat; }
 };
 
 #define FILE_MGR (FileManager::GetInstance())

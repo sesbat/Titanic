@@ -20,18 +20,33 @@
 
 
 Player::Player()
-	: currState(States::None), speed(200.f), maxSpeed(200.f),
+	: currState(States::None),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	hp(1000), maxHp(1000), isDash(false), stamina(10.f), maxStamina(10.f),
-	hungerGuage(255), thirstGuage(255), energyGuage(255),
-	maxHungerGuage(255), maxThirstGuage(255), maxEnergyGuage(255),
-	hungerDelay(30.f), thirstDelay(20.f), energyDelay(40.f), isAlive(true), isMove(true), ammo(0),
+	 isDash(false) , isAlive(true), isMove(true), ammo(0),
 	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f), 
-	//reloadDelay(0.f),
 	reloadDelaySG(1.5f), reloadDelayRF(1.f), reloadDelaySN(3.f),
 	isReloading(false), soundDelay(0.5f)
 {
+	auto stat = FILE_MGR->GetUserStat();
+
+
+	dashSpeed = stat.dashSpeed;
+	init_energyDelay = energyDelay = stat.energyDelay;
+	init_hungerDelay = hungerDelay = stat.hungerDelay;
+	maxEnergyGuage = stat.maxEnergyGuage;
+	maxHp = stat.maxHp;
+	maxHungerGuage = stat.maxHungerGuage;
+	maxRadiation = stat.maxRadiation;
+	maxSpeed = stat.maxSpeed;
+	maxStamina = stat.maxStamina;
+	maxThirstGuage = stat.maxThirstGuage;
+	radDebuff = stat.radDebuff;
+	init_radiationDelay = radiationDelay = stat.radiationDelay;
+	speed = stat.speed;
+	staminaDownSpeed = stat.staminaDownSpeed;
+	staminaUpSpeed = stat.staminaUpSpeed;
+	init_thirstDelay = thirstDelay = stat.thirstDelay;
 }
 
 Player::~Player()
@@ -121,18 +136,18 @@ void Player::Update(float dt)
 		energyDelay -= dt;
 		if (hungerDelay < 0.f && hungerGuage > 0.f)
 		{
-			hungerGuage -= 1.f;
-			hungerDelay = 30.f;
+			hungerGuage -= 2.5;
+			hungerDelay = init_hungerDelay;
 		}
 		if (thirstDelay < 0.f && thirstGuage > 0.f)
 		{
-			thirstGuage -= 1.f;
-			thirstDelay = 20.f;
+			thirstGuage -= 2.5;
+			thirstDelay = init_thirstDelay;
 		}
 		if (energyDelay < 0.f && energyGuage > 0.f)
 		{
-			energyGuage -= 1.f;
-			energyDelay = 40.f;
+			energyGuage -= 2.5;
+			energyDelay = init_energyDelay;
 		}
 		
 	}
@@ -282,7 +297,7 @@ void Player::Update(float dt)
 	//dash
 	if (stamina > 0.5f && InputMgr::GetKeyDown(Keyboard::LShift))
 	{
-		speed = 400.f;
+		speed = dashSpeed;
 		isDash = true;
 	}
 	if (InputMgr::GetKeyUp(Keyboard::LShift))
@@ -341,7 +356,7 @@ void Player::Update(float dt)
 	//player stamina
 	if (isDash)
 	{
-		stamina -= 0.1f;
+		stamina -= staminaDownSpeed;
 		if (stamina < 0.f)
 		{
 			stamina = 0.f;
@@ -350,7 +365,7 @@ void Player::Update(float dt)
 	}
 	else
 	{
-		stamina += 0.05f;
+		stamina += staminaUpSpeed;
 		if (stamina >= maxStamina)
 		{
 			stamina = maxStamina;

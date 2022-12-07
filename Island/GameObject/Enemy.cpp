@@ -49,7 +49,7 @@ void Enemy::Init(Player* player)
 	hp = maxHp;
 	switch (type)
 	{
-	case 1:
+	case 1:	
 		gun = new Gun(GunType::Shotgun, User::Enemy);
 		break;
 	case 2:

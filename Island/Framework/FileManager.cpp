@@ -70,6 +70,12 @@ void FileManager::LoadAll()
 	useItemInfo = info_inven_use_d;
 	info_inven_use.close();
 
+	ifstream info_user_stat("config/data/gameData/userStat.json");
+	json info_user_stat_d = json::parse(info_user_stat);
+	userStat = info_user_stat_d;
+	info_user_stat.close();
+
+
 }
 
 const vector<ObjectData>& FileManager::GetMap(string name)

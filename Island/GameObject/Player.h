@@ -68,6 +68,11 @@ protected:
 	float maxEnergyGuage;
 	float maxRadiation;
 
+	float init_hungerDelay;
+	float init_thirstDelay;
+	float init_energyDelay;
+	float init_radiationDelay;
+
 	float hungerDelay;	//delay for hunger decreasion
 	float thirstDelay;	//delay for thirst decreasion
 	float energyDelay;	//delay for energy decreasion
@@ -111,6 +116,8 @@ protected:
 	bool isReloading;
 	bool isInven;
 
+	float staminaDownSpeed ;
+	float staminaUpSpeed ;
 public:
 	Player();
 	virtual ~Player();
