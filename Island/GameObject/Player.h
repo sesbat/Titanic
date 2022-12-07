@@ -61,20 +61,19 @@ protected:
 	float dashSpeed;
 	float maxSpeed;
 
-	float stamina;
 	float maxStamina;
-
-	float hungerGuage;
-	float thirstGuage;
-	float energyGuage;
 
 	float maxHungerGuage;
 	float maxThirstGuage;
 	float maxEnergyGuage;
+	float maxRadiation;
 
 	float hungerDelay;	//delay for hunger decreasion
-	float ThirstDelay;	//delay for thirst decreasion
-	float EnergyDelay;	//delay for energy decreasion
+	float thirstDelay;	//delay for thirst decreasion
+	float energyDelay;	//delay for energy decreasion
+	float radiationDelay;
+
+	float radDebuff;
 
 	//float reloadDelay;	//delay for reload
 	float reloadDelaySG;
@@ -85,9 +84,14 @@ protected:
 	int magazineSG;		//magazine sizes
 	int magazineRF;
 	int magazineSN;
-
 	//save data variable
 	int hp;
+
+	float stamina;
+	float hungerGuage;
+	float thirstGuage;
+	float energyGuage;
+
 	int prevHungerGuage;
 	int prevThirstGuage;
 	int prevEnergyGuage;

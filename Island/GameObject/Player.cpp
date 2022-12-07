@@ -26,7 +26,7 @@ Player::Player()
 	hp(1000), maxHp(1000), isDash(false), stamina(10.f), maxStamina(10.f),
 	hungerGuage(255), thirstGuage(255), energyGuage(255),
 	maxHungerGuage(255), maxThirstGuage(255), maxEnergyGuage(255),
-	hungerDelay(30.f), ThirstDelay(20.f), EnergyDelay(40.f), isAlive(true), isMove(true), ammo(0),
+	hungerDelay(30.f), thirstDelay(20.f), energyDelay(40.f), isAlive(true), isMove(true), ammo(0),
 	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f), 
 	//reloadDelay(0.f),
 	reloadDelaySG(1.5f), reloadDelayRF(1.f), reloadDelaySN(3.f),
@@ -117,22 +117,22 @@ void Player::Update(float dt)
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene) 
 	{
 		hungerDelay -= dt;
-		ThirstDelay -= dt;
-		EnergyDelay -= dt;
+		thirstDelay -= dt;
+		energyDelay -= dt;
 		if (hungerDelay < 0.f && hungerGuage > 0.f)
 		{
 			hungerGuage -= 1.f;
 			hungerDelay = 30.f;
 		}
-		if (ThirstDelay < 0.f && thirstGuage > 0.f)
+		if (thirstDelay < 0.f && thirstGuage > 0.f)
 		{
 			thirstGuage -= 1.f;
-			ThirstDelay = 20.f;
+			thirstDelay = 20.f;
 		}
-		if (EnergyDelay < 0.f && energyGuage > 0.f)
+		if (energyDelay < 0.f && energyGuage > 0.f)
 		{
 			energyGuage -= 1.f;
-			EnergyDelay = 40.f;
+			energyDelay = 40.f;
 		}
 		
 	}

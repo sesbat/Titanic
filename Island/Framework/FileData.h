@@ -87,7 +87,6 @@ namespace ns {
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, money)
 	};
 
-
 	struct InvenInfo
 	{
 		string Type;
@@ -108,4 +107,52 @@ namespace ns {
 		string path;
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(InvneUseInfo, Type, useIdx, invenPos, cnt, path)
+	};
+
+	struct PlayerStat
+	{
+		string name;	//valancing variable
+
+		int maxHp;
+		float speed;
+		float dashSpeed;
+		float maxSpeed;
+
+		float staminaUpSpeed;
+		float staminaDownSpeed;
+		float maxStamina;
+
+		float maxHungerGuage;
+		float maxThirstGuage;
+		float maxEnergyGuage;
+		float maxRadiation;
+
+		float hungerDelay;
+		float thirstDelay;
+		float energyDelay;
+		float radiationDelay;
+
+		float radDebuff;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(PlayerStat, name, maxHp, speed, dashSpeed, maxSpeed,
+			staminaUpSpeed, staminaDownSpeed, maxStamina, maxHungerGuage, maxThirstGuage, maxEnergyGuage, maxRadiation,
+			hungerDelay, thirstDelay, energyDelay, radiationDelay, radDebuff)
+	};
+
+	struct GunStat
+	{
+		string name;	//valancing variable
+
+		float damage;
+		float speed;
+		float range;
+		float reloadDelay;
+		int magazine;
+		sf::Vector2f randDir;
+		float zoomRange;
+
+		float dir;
+		int cnt;
+		
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GunStat, damage, speed, range, reloadDelay, magazine, dir, cnt)
 	};
