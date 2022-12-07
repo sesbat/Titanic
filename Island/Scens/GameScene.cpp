@@ -31,6 +31,43 @@ using namespace std;
 using namespace sf;
 
 
+bool Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, float y3, float x4, float y4)
+{
+    // calculate the direction of the lines
+    float uA = ((x4 - x3) * (bulletpos.y - y3) - (y4 - y3) * (bulletpos.x - x3)) /
+        ((y4 - y3) * (bulletPrevPos.x - bulletpos.x) - (x4 - x3) * (bulletPrevPos.y - bulletpos.y));
+    float uB = ((bulletPrevPos.x - bulletpos.x) * (bulletpos.y - y3) - (bulletPrevPos.y - bulletpos.y) * (bulletpos.x - x3)) /
+        ((y4 - y3) * (bulletPrevPos.x - bulletpos.x) - (x4 - x3) * (bulletPrevPos.y - bulletpos.y));
+
+    // if uA and uB are between 0-1, lines are colliding
+    if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool LineRect(Vector2f bulletpos, Vector2f bulletPrevPos, RectangleShape hitObject)
+{
+    // check if the line has hit any of the rectangle's sides
+    // uses the Line/Line function below
+    auto bounds = hitObject.getGlobalBounds();
+    float rx = bounds.left;
+    float ry = bounds.top;
+    float rw = bounds.width;
+    float rh = bounds.height;
+    bool left = Lineline(bulletpos, bulletPrevPos, rx, ry, rx, ry + rh);
+    bool right = Lineline(bulletpos, bulletPrevPos, rx + rw, ry, rx + rw, ry + rh);
+    bool top = Lineline(bulletpos, bulletPrevPos, rx, ry, rx + rw, ry);
+    bool bottom = Lineline(bulletpos, bulletPrevPos, rx, ry + rh, rx + rw, ry + rh);
+
+    // if ANY of the above are true, the line
+    // has hit the rectangle
+    if (left || right || top || bottom) {
+        return true;
+    }
+    return false;
+}
 //explicit QuadTree(sf::FloatRect bounds,   size_t maxLevel, size_t maxObjects);
 GameScene::GameScene()
     :Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f),
@@ -191,6 +228,19 @@ void GameScene::Init()
     treeMap.insert(objList[LayerType::Object][0]);
 
     SOUND_MGR->Play("sounds/gameBGM.ogg", true);
+
+    cursor = new SpriteObject();
+    cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/cursor.png"));
+    cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shot_cursor.png"));
+    cursor->SetOrigin(Origins::MC);
+
+    shot_cursor = new SpriteObject();
+    shot_cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/cursor.png"));
+    shot_cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shot_cursor.png"));
+    shot_cursor->SetOrigin(Origins::MC);
+
+    objList[LayerType::Cursor][0].push_back(cursor);
+    objList[LayerType::Cursor][1].push_back(shot_cursor);
 }
 
 void GameScene::Release()
@@ -298,6 +348,11 @@ void GameScene::Update(float dt)
         return;
     }
 
+    auto cursorPos = InputMgr::GetMousePos();
+    cursorPos = ScreenToWorld((Vector2i)cursorPos);
+    cursor->SetPos(cursorPos);
+    shot_cursor->SetPos(cursorPos);
+
 }
 
 vector<HitBoxObject*> GameScene::ObjListObb(HitBoxObject* obj)
@@ -360,6 +415,9 @@ void GameScene::Draw(RenderWindow& window)
 
     if (uiMgr != nullptr)
         uiMgr->Draw(window);
+
+    cursor->Draw(window);
+    shot_cursor->Draw(window);
 }
 
 void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy)
