@@ -38,7 +38,7 @@ void InvenGreed::Update(float dt)
 				auto greed = inven->GetGreed(invenPos.y + j, invenPos.x + i);
 				if (greed == nullptr)
 					continue;
-				greed->SetState(true, nowItem);
+
 			}
 		}
 	}
@@ -111,6 +111,7 @@ void InvenGreed::Update(float dt)
 
 						}
 
+						inven->GetPrevInven()->DeleteItem(dragItem);
 						delete dragItem;
 						inven->SetDrag(nullptr);
 					}
@@ -127,6 +128,12 @@ void InvenGreed::Update(float dt)
 				}
 			if (isReturn)
 			{
+				if (inven->GetUseIdx() != -1)
+				{
+					inven->GetPrevInven()->ReturnItem();
+					return;
+				}
+
 				for (int i = 0; i < w; i++)
 				{
 					for (int j = 0; j < h; j++)
@@ -149,6 +156,13 @@ void InvenGreed::Update(float dt)
 void InvenGreed::Draw(RenderWindow& window)
 {
 	Button::Draw(window);
+}
+
+void InvenGreed::SetState(bool s)
+{
+	state = s;
+
+	GetSpriteObj()->SetColor(!s ? Color::White : Color(0, 0, 0, 0));
 }
 
 void InvenGreed::SetState(bool s, InvenItem* item)

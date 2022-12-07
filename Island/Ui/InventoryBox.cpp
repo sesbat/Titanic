@@ -85,7 +85,7 @@ void InventoryBox::Update(float dt)
 					for (int j = invenPos.y; j < invenPos.y + nowDrag->GetHeight(); j++)
 					{
 						allPos[j][i] = false;
-						itemGreed[j][i]->SetState(false, nullptr);
+						itemGreed[j][i]->SetState(false);
 					}
 				}
 				//items.erase(items.begin(), find(items.begin(), items.end(), item));
