@@ -8,6 +8,6 @@ int main()
     FRAMEWORK->Init();
     FRAMEWORK->Do();
     FRAMEWORK->~Framework();
-    //test
+    //tests
     return 0;
 }
