@@ -305,7 +305,6 @@ void Player::Update(float dt)
 		speed = maxSpeed;
 		isDash = false;
 	}
-
 	if (InputMgr::GetKeyDown(Keyboard::Tab) || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		if (inven->GetActive() && !isMove)	
@@ -313,8 +312,8 @@ void Player::Update(float dt)
 			InputMgr::Clear();
 			SetMove(true);
 			inven->SetActive(!(inven->GetActive()));
+
 			//inven->ResetRightInven();
-			//cout << inven->GetRightInven()->GetName() << endl;
 			if (inven->GetRightInven()->GetItems()->size() > 0 && isInven)
 			{
 				auto rightInven = inven->GetRightInven()->GetItems();
@@ -344,7 +343,7 @@ void Player::Update(float dt)
 		}
 		else if (isMove && !InputMgr::GetKeyDown(Keyboard::Escape))
 		{
-			SetIsInven(true);
+			this->PlayerSetIsInven(true);
 			inven->SetActive(true);
 			inven->ResetRightInven();
 			inven->ClearInven();
@@ -997,6 +996,11 @@ void Player::Save()
 	}
 
 	FILE_MGR->SaveUseItemInfo(saveUseItem);
+}
+
+void Player::PlayerSetIsInven(bool state)
+{
+	isInven = state;
 }
 
 void Player::AddMoney(int p)

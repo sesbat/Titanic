@@ -414,7 +414,8 @@ void InventoryBox::DeleteItem(InvenItem* item)
 						allPos[y + j][x + i] = false;
 					}
 				}
-				items.erase(find(items.begin(), items.end(), item));
+				if(find(items.begin(), items.end(), item) != items.end())
+					items.erase(find(items.begin(), items.end(), item));
 				return;
 			}
 		}

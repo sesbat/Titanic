@@ -55,6 +55,7 @@ protected:
 	SpriteObject* shot_cursor;
 
 	bool targeting = false;
+	VertexArray lines;
 
 public:
 	GameScene();

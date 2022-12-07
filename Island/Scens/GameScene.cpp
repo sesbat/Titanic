@@ -74,7 +74,7 @@ GameScene::GameScene()
        fog(candle::LightingArea::FOG,
           sf::Vector2f(0.f, 0.f),
           sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)),
-        blockCount(0), treeMap(treeRect, 16, 4)
+        blockCount(0), treeMap(treeRect, 16, 4), lines(LineStrip, 2)
 {
 
 }
@@ -231,11 +231,9 @@ void GameScene::Init()
 
     cursor = new SpriteObject();
     cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/cursor.png"));
-    cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shot_cursor.png"));
     cursor->SetOrigin(Origins::MC);
 
     shot_cursor = new SpriteObject();
-    shot_cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/cursor.png"));
     shot_cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shot_cursor.png"));
     shot_cursor->SetOrigin(Origins::MC);
 
@@ -284,6 +282,10 @@ void GameScene::Update(float dt)
     }
 
     Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
+
+
+    lines[0].position = player->GetPos();
+    lines[1].position = mouseworldPos;
 
     Vector2f dir;
     dir.x = mouseworldPos.x - player->GetPos().x;
@@ -348,10 +350,56 @@ void GameScene::Update(float dt)
         return;
     }
 
-    auto cursorPos = InputMgr::GetMousePos();
-    cursorPos = ScreenToWorld((Vector2i)cursorPos);
-    cursor->SetPos(cursorPos);
-    shot_cursor->SetPos(cursorPos);
+    vector<HitBoxObject*> boundInObj;
+   
+    boundInObj = ObjListObb(lines.getBounds());
+
+    shot_cursor->SetColor(Color::White);
+    bool nowTargeting = false;
+    for (auto& obj : boundInObj)
+    {
+        if (obj->GetName() == "TREE" ||
+            obj->GetName() == "STONE" ||
+            obj->GetName() == "BLOCK")
+        {
+            auto hit = obj->GetBottom();
+            if (LineRect(
+                lines[0].position,
+                lines[1].position,
+                hit->GetHitbox()))
+            {
+                    shot_cursor->SetColor(Color::Red);
+                    targeting = true;
+                    nowTargeting = true;
+                break;
+            }
+        }
+        else if (obj->GetName() == "ENEMY" && obj->GetActive())
+        {
+            auto hb = obj->GetHitBoxs();
+            bool enemyHit = false;
+            for (auto& it : hb)
+            {
+                if (LineRect(
+                    lines[0].position,
+                    lines[1].position,
+                    it->GetHitbox()))
+                {
+                        shot_cursor->SetColor(Color::Red);
+                        enemyHit = true;
+                        targeting = true;
+                        nowTargeting = true;
+                    break;
+                }
+            }
+            if (enemyHit)
+                break;
+        }
+    }
+    cout << targeting << endl;
+
+    cursor->SetPos(lines[1].position);
+    shot_cursor->SetPos(lines[1].position);
 
 }
 
@@ -416,8 +464,13 @@ void GameScene::Draw(RenderWindow& window)
     if (uiMgr != nullptr)
         uiMgr->Draw(window);
 
-    cursor->Draw(window);
-    shot_cursor->Draw(window);
+	window.setView(worldView);
+
+	//window.draw(lines);
+	if (!player->GetIsMove())
+		cursor->Draw(window);
+	if (player->GetIsMove())
+		shot_cursor->Draw(window);
 }
 
 void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy)

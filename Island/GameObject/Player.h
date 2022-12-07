@@ -189,7 +189,7 @@ public:
 	void Load();
 	void Save();
 
-	void SetIsInven(bool state) { isInven = state; }
+	void PlayerSetIsInven(bool state);
 	bool IsInven() { return isInven; }
 
 	int GetMoney() { return money; }

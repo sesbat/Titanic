@@ -90,6 +90,7 @@ void Scene::Update(float dt)
 
 		return;
 	}
+
 	for (auto& obj : drawObjs)
 	{
 		obj->Update(dt);

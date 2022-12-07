@@ -109,8 +109,6 @@ void InvenGreed::Update(float dt)
 
 						if (inven->GetUseIdx() == -1)
 						{
-							auto items = inven->GetPrevInven()->GetItems();
-							items->erase(find(items->begin(), items->end(), dragItem));
 						}
 						else
 						{
