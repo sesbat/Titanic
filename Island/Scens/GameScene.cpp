@@ -31,13 +31,50 @@ using namespace std;
 using namespace sf;
 
 
+bool Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, float y3, float x4, float y4)
+{
+    // calculate the direction of the lines
+    float uA = ((x4 - x3) * (bulletpos.y - y3) - (y4 - y3) * (bulletpos.x - x3)) /
+        ((y4 - y3) * (bulletPrevPos.x - bulletpos.x) - (x4 - x3) * (bulletPrevPos.y - bulletpos.y));
+    float uB = ((bulletPrevPos.x - bulletpos.x) * (bulletpos.y - y3) - (bulletPrevPos.y - bulletpos.y) * (bulletpos.x - x3)) /
+        ((y4 - y3) * (bulletPrevPos.x - bulletpos.x) - (x4 - x3) * (bulletPrevPos.y - bulletpos.y));
+
+    // if uA and uB are between 0-1, lines are colliding
+    if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool LineRect(Vector2f bulletpos, Vector2f bulletPrevPos, RectangleShape hitObject)
+{
+    // check if the line has hit any of the rectangle's sides
+    // uses the Line/Line function below
+    auto bounds = hitObject.getGlobalBounds();
+    float rx = bounds.left;
+    float ry = bounds.top;
+    float rw = bounds.width;
+    float rh = bounds.height;
+    bool left = Lineline(bulletpos, bulletPrevPos, rx, ry, rx, ry + rh);
+    bool right = Lineline(bulletpos, bulletPrevPos, rx + rw, ry, rx + rw, ry + rh);
+    bool top = Lineline(bulletpos, bulletPrevPos, rx, ry, rx + rw, ry);
+    bool bottom = Lineline(bulletpos, bulletPrevPos, rx, ry + rh, rx + rw, ry + rh);
+
+    // if ANY of the above are true, the line
+    // has hit the rectangle
+    if (left || right || top || bottom) {
+        return true;
+    }
+    return false;
+}
 //explicit QuadTree(sf::FloatRect bounds,   size_t maxLevel, size_t maxObjects);
 GameScene::GameScene()
     :Scene(Scenes::GameScene), timer(0.f), escapeTimer(3.f),
        fog(candle::LightingArea::FOG,
           sf::Vector2f(0.f, 0.f),
           sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)),
-        blockCount(0), treeMap(treeRect, 16, 4)
+        blockCount(0), treeMap(treeRect, 16, 4), lines(LineStrip, 2)
 {
 
 }
@@ -66,7 +103,7 @@ void GameScene::Init()
 
     for (auto& obj : data)
     {
-        if (obj.type == "STONE" || obj.type == "BLOCK")
+        if (obj.type == "STONE" || obj.type == "BLOCK" || obj.type == "RADIATION")
         {
             isGreedObject[obj.greedIdx.x][obj.greedIdx.y] = true;
             Blocks block = { obj.position, pushBlock(obj.position) };
@@ -88,7 +125,7 @@ void GameScene::Init()
             objList[LayerType::Object][0].push_back(box);
         }
         else if (obj.type == "TREE" || obj.type == "BUSH" ||
-            obj.type == "STONE" || obj.type == "BLOCK")
+            obj.type == "STONE" || obj.type == "BLOCK" || obj.type == "RADIATION")
         {
             HitBoxObject* draw = new HitBoxObject();
             draw->SetName(obj.type);
@@ -97,8 +134,6 @@ void GameScene::Init()
             draw->SetPos(obj.position);
             draw->SetHitBox(obj.path);
             objList[LayerType::Object][0].push_back(draw);
-
-
         }
         else if (obj.type == "PLAYER")
         {
@@ -191,6 +226,19 @@ void GameScene::Init()
     treeMap.insert(objList[LayerType::Object][0]);
 
     SOUND_MGR->Play("sounds/gameBGM.ogg", true);
+
+    cursor = new SpriteObject();
+    cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/cursor.png"));
+    cursor->SetOrigin(Origins::MC);
+    cursor->SetUI(true);
+
+    shot_cursor = new SpriteObject();
+    shot_cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shot_cursor.png"));
+    shot_cursor->SetOrigin(Origins::MC);
+    shot_cursor->SetUI(true);
+
+    objList[LayerType::Cursor][0].push_back(cursor);
+    objList[LayerType::Cursor][1].push_back(shot_cursor);
 }
 
 void GameScene::Release()
@@ -234,6 +282,10 @@ void GameScene::Update(float dt)
     }
 
     Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
+
+
+    lines[0].position = player->GetPos();
+    lines[1].position = mouseworldPos;
 
     Vector2f dir;
     dir.x = mouseworldPos.x - player->GetPos().x;
@@ -298,6 +350,36 @@ void GameScene::Update(float dt)
         return;
     }
 
+    vector<HitBoxObject*> boundInObj;
+   
+    boundInObj = ObjListObb(lines.getBounds());
+
+    shot_cursor->SetColor(Color::White);
+    bool nowTargeting = false;
+    for (auto& obj : boundInObj)
+    {
+        if (obj->GetName() == "TREE" ||
+            obj->GetName() == "STONE" ||
+            obj->GetName() == "BLOCK" ||
+            obj->GetName() == "RADIATION")
+        {
+            auto hit = obj->GetBottom();
+            if (LineRect(
+                lines[0].position,
+                lines[1].position,
+                hit->GetHitbox()))
+            {
+                    shot_cursor->SetColor(Color::Red);
+                    targeting = true;
+                    nowTargeting = true;
+                break;
+            }
+        }
+    }
+
+    cursor->SetPos(lines[1].position);
+    shot_cursor->SetPos(lines[1].position);
+
 }
 
 vector<HitBoxObject*> GameScene::ObjListObb(HitBoxObject* obj)
@@ -360,6 +442,14 @@ void GameScene::Draw(RenderWindow& window)
 
     if (uiMgr != nullptr)
         uiMgr->Draw(window);
+
+	window.setView(worldView);
+
+	window.draw(lines);
+	if (!player->GetIsMove())
+		cursor->Draw(window);
+	if (player->GetIsMove())
+		shot_cursor->Draw(window);
 }
 
 void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy)

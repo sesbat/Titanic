@@ -71,7 +71,7 @@ void ItemBoxObject::Update(float dt)
 		if (!player->GetIsMove())
 			return;
 
-		player->SetIsInven(false);
+		player->PlayerSetIsInven(false);
 		player->GetInventory()->SetRightInven(invenBox);
 		player->GetInventory()->SetActive(true);
 		player->GetInventory()->GetPlayerInven()->SetPair(invenBox);

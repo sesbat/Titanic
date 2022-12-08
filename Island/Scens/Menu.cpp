@@ -38,6 +38,9 @@ void Menu::Init()
 	//objList[LayerType::Back][0].push_back(start);
 
 
+	cursor = new SpriteObject();
+	cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/cursor.png"));
+	cursor->SetOrigin(Origins::MC);
 
 	uiMgr = new MenuUiMgr(this);
 	((MenuUiMgr*)uiMgr)->Init();
@@ -77,11 +80,13 @@ void Menu::Update(float dt)
 		FRAMEWORK->GetWindow().close();
 		return;
 	}
+	cursor->SetPos(InputMgr::GetMousePos());
 }
 
 void Menu::Draw(RenderWindow& window)
 {
 	Scene::Draw(window);
+	cursor->Draw(window);
 }
 
 void Menu::Reset()

@@ -90,6 +90,7 @@ void Scene::Update(float dt)
 
 		return;
 	}
+
 	for (auto& obj : drawObjs)
 	{
 		obj->Update(dt);
@@ -219,6 +220,7 @@ void Scene::LayerSort()
 	moves.clear();
 	drawObjs.clear();
 	another.clear();
+	radPos.clear();
 	HitBoxObject* player = nullptr;
 
 	for (auto& obj : alphaObj)
@@ -235,10 +237,12 @@ void Scene::LayerSort()
 			continue;
 		}
 		if (obj->GetName() == "TREE" || obj->GetName() == "BUSH" || obj->GetName() == "STONE" ||
-			obj->GetName() == "BLOCK" || obj->GetName() == "BOX" || obj->GetName() == "BOX-ENEMY")
+			obj->GetName() == "BLOCK" || obj->GetName() == "BOX" || obj->GetName() == "BOX-ENEMY" || obj->GetName() == "RADIATION")
 		{
 			if (obj->GetName() == "TREE" || obj->GetName() == "BUSH")
 				alphaObj.push_back((HitBoxObject*)obj);
+			if (obj->GetName() == "RADIATION")
+				radPos.push_back(obj->GetPos());
 
 			if(obj->GetActive())
 				drawObjs.push_back(obj);

@@ -441,7 +441,8 @@ void Enemy::Collision()
 			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
 			{
 				if (obj->GetName() == "STONE" ||
-					obj->GetName() == "BLOCK" )
+					obj->GetName() == "BLOCK" ||
+					obj->GetName() == "RADIATION")
 					SetEnemyPos();
 			}
 		}
@@ -485,7 +486,8 @@ void Enemy::CheckIsInWall()
 			{
 
 				if (obj->GetName() == "STONE" ||
-					obj->GetName() == "BLOCK")
+					obj->GetName() == "BLOCK" ||
+					obj->GetName() == "RADIATION")
 				{
 					//cout << "wall" << endl;
 					gun->SetIsInWall(false);

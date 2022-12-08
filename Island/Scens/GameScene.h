@@ -51,6 +51,12 @@ protected:
 	vector<Blocks> blockPool;
 	int blockCount;
 
+	SpriteObject* cursor;
+	SpriteObject* shot_cursor;
+
+	bool targeting = false;
+	VertexArray lines;
+
 public:
 	GameScene();
 	virtual ~GameScene();

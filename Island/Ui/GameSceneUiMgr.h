@@ -30,6 +30,10 @@ protected:
 	Button* energyBK;
 	Button* energyTex;
 
+	Button* radiationBK;
+	Button* radiation;
+	Button* radiationTex;
+
 	Button* ammoText;
 
 	float hpBarSize;

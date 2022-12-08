@@ -18,7 +18,7 @@ enum class Scenes
 // �ٴ�, Ǯ, ������Ʈ + ��(Ư��), ���ʹ�
 enum class LayerType
 {
-	None, Back, Tile, Object, COUNT
+	None, Back, Tile, Object, Cursor, COUNT
 };
 
 class Scene
@@ -36,6 +36,7 @@ protected:
 	vector<Object*> moves;
 	vector<Object*> another;
 	vector<Object*> drawObjs;
+	vector<Vector2f> radPos;
 	vector<HitBoxObject*> alphaObj;
 	bool isGameScene;
 
@@ -66,6 +67,7 @@ public:
 	virtual void LayerSort();
 	void SetSceneName(string name) { sceneName = name; }
 	string GetSceneName() { return sceneName; }
+	const vector<Vector2f>& GetRadPos() { return radPos; }
 	void AddDeleteObject(int idx,Object* obj);
 };
 bool sorting(Object* p1, Object* p2);

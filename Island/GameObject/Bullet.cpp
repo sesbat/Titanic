@@ -148,7 +148,8 @@ void Bullet::Collision()
 
 		if (objects->GetName() == "TREE" ||
 			objects->GetName() == "STONE" ||
-			objects->GetName() == "BLOCK")
+			objects->GetName() == "BLOCK" ||
+			objects->GetName() == "RADIATION")
 		{
 			if (LineRect(
 				startPos,

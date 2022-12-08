@@ -82,9 +82,10 @@ namespace ns {
 		float hungerGuage;
 		float thirstGuage;
 		float energyGuage;
+		float radGuage;
 		int money;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, money)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money)
 	};
 
 	struct InvenInfo
@@ -132,11 +133,13 @@ namespace ns {
 		float energyDelay;
 		float radiationDelay;
 
-		float radDebuff;
+		float radDebuffLevel;
+		float radDebuffScale;
+		float radDebuffHPDelay;
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserStat, name, maxHp, speed, dashSpeed, maxSpeed,
 			staminaUpSpeed, staminaDownSpeed, maxStamina, maxHungerGuage, maxThirstGuage, maxEnergyGuage, maxRadiation,
-			hungerDelay, thirstDelay, energyDelay, radiationDelay, radDebuff)
+			hungerDelay, thirstDelay, energyDelay, radiationDelay, radDebuffLevel, radDebuffScale, radDebuffHPDelay)
 	};
 
 	struct GunStat

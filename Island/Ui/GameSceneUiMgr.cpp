@@ -151,6 +151,33 @@ void GameSceneUiMgr::Init()
 	energyTex->SetPos({ 580,40 });
 	uiObjList[0].push_back(energyTex);
 
+	
+	radiation = new Button(this);
+	radiation->SetClkColor(false);
+	radiation->SetTexture(*RESOURCES_MGR->GetTexture("graphics/rad.png"), false);
+	radiation->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)player->GetRadiGuage()));
+	radiation->SetOrigin(Origins::MC);
+	radiation->GetSpriteObj()->SetScale({ 1.5f,1.5f });
+	radiation->SetPos({ 650,100 });
+	uiObjList[0].push_back(radiation);
+
+
+	radiationBK = new Button(this);
+	radiationBK->SetClkColor(false);
+	radiationBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/radbk.png"), false);
+	radiationBK->SetOrigin(Origins::MC);
+	radiationBK->GetSpriteObj()->SetScale({ 1.5f,1.5f });
+	radiationBK->SetPos({ 650,100 });
+	uiObjList[0].push_back(radiationBK);
+
+	radiationTex = new Button(this);
+	radiationTex->SetClkColor(false);
+	radiationTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		20, Color::White, to_string(((player->GetRadiGuage() / 255) * 100)), true);
+	radiationTex->SetOrigin(Origins::MC);
+	radiationTex->SetPos({ 680,40 });
+	uiObjList[0].push_back(radiationTex);
+
 	ammoText = new Button(this);
 	ammoText->SetClkColor(true);
 	ammoText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
@@ -220,6 +247,21 @@ void GameSceneUiMgr::Update(float dt)
 		else
 		{
 			energyTex->GetTextObj()->SetColor(Color::White);
+		}
+	}
+	if (!player->Radiation())
+	{
+		player->SetPrevRadGuage(player->GetRadiGuage());
+		int result = ((player->GetRadiGuage() / 255) * 100);
+		radiationTex->GetTextObj()->SetString(to_string((result)));
+		radiation->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)player->GetRadiGuage()));
+		if (result > 125.f)
+		{
+			radiationTex->GetTextObj()->SetColor(Color::Red);
+		}
+		else
+		{
+			radiationTex->GetTextObj()->SetColor(Color::White);
 		}
 	}
 	ammoText->GetTextObj()->SetString(player->GetAmmos());

@@ -334,7 +334,8 @@ void InventoryBox::MoveItem(int i, int j)
 
 	//if (find(items.begin(), items.end(), nowDrag) == items.end())
 	//{
-	//	//cout << "this11" << endl;
+	//	//
+	//  << "this11" << endl;
 	//	//items.push_back(nowDrag);
 	//}
 
@@ -414,7 +415,8 @@ void InventoryBox::DeleteItem(InvenItem* item)
 						allPos[y + j][x + i] = false;
 					}
 				}
-				items.erase(find(items.begin(), items.end(), item));
+				if(find(items.begin(), items.end(), item) != items.end())
+					items.erase(find(items.begin(), items.end(), item));
 				return;
 			}
 		}
