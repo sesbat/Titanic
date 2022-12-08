@@ -11,7 +11,7 @@
   "maxThirstGuage": 255.0,
   "name": "PLAYER",
   "radDebuffLevel": 50,
-  "radDebuffScale": 1.5,
+  "radDebuffScale": 0.5,
   "radDebuff_HP": 20,
   "radDebuffHPDelay": 3,
   "radiationDelay": 1,
