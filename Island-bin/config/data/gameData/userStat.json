@@ -1,0 +1,19 @@
+{
+  "dashSpeed": 400.0,
+  "energyDelay": 40.0,
+  "hungerDelay": 30.0,
+  "maxEnergyGuage": 255.0,
+  "maxHp": 1500,
+  "maxHungerGuage": 255.0,
+  "maxRadiation": 255.0,
+  "maxSpeed": 200.0,
+  "maxStamina": 10.0,
+  "maxThirstGuage": 255.0,
+  "name": "PLAYER",
+  "radDebuff": 0.5,
+  "radiationDelay": 0.05,
+  "speed": 200.0,
+  "staminaDownSpeed": 0.1,
+  "staminaUpSpeed": 0.5,
+  "thirstDelay": 20.0
+}

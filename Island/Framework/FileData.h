@@ -109,7 +109,7 @@ namespace ns {
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(InvneUseInfo, Type, useIdx, invenPos, cnt, path)
 	};
 
-	struct PlayerStat
+	struct UserStat
 	{
 		string name;	//valancing variable
 
@@ -134,7 +134,7 @@ namespace ns {
 
 		float radDebuff;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(PlayerStat, name, maxHp, speed, dashSpeed, maxSpeed,
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserStat, name, maxHp, speed, dashSpeed, maxSpeed,
 			staminaUpSpeed, staminaDownSpeed, maxStamina, maxHungerGuage, maxThirstGuage, maxEnergyGuage, maxRadiation,
 			hungerDelay, thirstDelay, energyDelay, radiationDelay, radDebuff)
 	};
