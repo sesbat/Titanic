@@ -151,8 +151,8 @@ namespace ns {
 		sf::Vector2f randDir;
 		float zoomRange;
 
-		float dir;
 		int cnt;
 		
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GunStat, damage, speed, range, reloadDelay, magazine, dir, cnt)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GunStat,
+			name, damage, speed, range, reloadDelay, magazine, randDir, zoomRange, cnt)
 	};

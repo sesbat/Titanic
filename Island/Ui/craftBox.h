@@ -20,7 +20,7 @@ private:
 	vector<vector<bool>> allPos;
 	vector<vector<CraftGreed*>> itemGreed;
 	vector<CraftItem*> items;
-	Craft* inven;
+	Craft* craft;
 	Player* player;
 
 	Button* craftButton;
@@ -28,7 +28,7 @@ private:
 public:
 	bool isRequired = false;
 	string craftingItmeName = "";
-	CraftBox(UiMgr* mgr, Craft* inven, Vector2i startPos);
+	CraftBox(UiMgr* mgr, Craft* craft, Vector2i startPos);
 	virtual ~CraftBox();
 	virtual void Init();
 	virtual void Update(float dt);

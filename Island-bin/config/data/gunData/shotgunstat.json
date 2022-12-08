@@ -1,0 +1,14 @@
+{
+    "cnt": 1,
+    "damage": 300.0,
+    "magazine": 10,
+    "name": "GUN1",
+    "randDir": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "range": 800.0,
+    "reloadDelay": 3.0,
+    "speed": 2000.0,
+    "zoomRange": 1000.0
+}

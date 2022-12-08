@@ -46,7 +46,7 @@ private:
     float bulletSpeed;
     float range;
     float shootDelay;
-    int Damage;
+    int damage;
     bool isGunFlip;
     bool isInWall;
 

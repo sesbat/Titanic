@@ -220,11 +220,11 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			bullet3->SetOrigin(Origins::MC);
 			bullet4->SetOrigin(Origins::MC);
 
-			bullet->SetDamage(Damage);
-			bullet1->SetDamage(Damage);
-			bullet2->SetDamage(Damage);
-			bullet3->SetDamage(Damage);
-			bullet4->SetDamage(Damage);
+			bullet->SetDamage(damage);
+			bullet1->SetDamage(damage);
+			bullet2->SetDamage(damage);
+			bullet3->SetDamage(damage);
+			bullet4->SetDamage(damage);
 
 			SOUND_MGR->Play("sounds/shotgun.wav");
 
@@ -247,7 +247,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			//bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
 			bullet->SetOrigin(Origins::MR);
 
-			bullet->SetDamage(Damage);
+			bullet->SetDamage(damage);
 
 			SOUND_MGR->Play("sounds/rifle.wav");
 
@@ -266,7 +266,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			Bullet* bullet = bulletPool.Get();
 			//bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniperbullet.png"));
 			bullet->SetOrigin(Origins::MR);
-			bullet->SetDamage(Damage);
+			bullet->SetDamage(damage);
 			
 			SOUND_MGR->Play("sounds/sniper.wav");
 			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
@@ -289,19 +289,19 @@ void Gun::SetGunType(GunType type)
 	case GunType::Shotgun:
 		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun.png"));
-		Damage = 300;
+		damage = 300;
 		SetOrigin(Origins::MC);
 		break;
 	case GunType::Rifle:
 		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/rifel.png"));
-		Damage = 200;
+		damage = 200;
 		SetOrigin(Origins::MC);
 		break;
 	case GunType::Sniper:
 		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniper.png"));
-		Damage = 500;
+		damage = 500;
 		SetOrigin(Origins::MC);
 		break;
 	case GunType::TypeCount:

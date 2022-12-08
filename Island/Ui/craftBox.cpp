@@ -13,8 +13,8 @@
 #include "Inventory.h"
 #include "InventoryBox.h"
 
-CraftBox::CraftBox(UiMgr* mgr, Craft* inven, Vector2i startPos)
-	: Button(mgr),inven(inven), startPos(startPos)
+CraftBox::CraftBox(UiMgr* mgr, Craft* craft, Vector2i startPos)
+	: Button(mgr), craft(craft), startPos(startPos)
 {
 }
 
@@ -33,7 +33,7 @@ void CraftBox::Init()
 		{
 			line.push_back(false);
 
-			CraftGreed* greed = new CraftGreed(uimgr, inven, this);
+			CraftGreed* greed = new CraftGreed(uimgr, craft, this);
 			greed->Init();
 			greed->SetPos({ startPos.x + j * 60.f + padding * j , startPos.y + i * 60.f + padding * i });
 			greed->SetInvenPos(j, i);
@@ -70,7 +70,7 @@ void CraftBox::Update(float dt)
 				n->Update(dt);
 				if (!isRequired && n->IsClick())
 				{
-					inven->OnClickCraftItem(FILE_MGR->GetCraftItemInfo(n->GetName()));
+					craft->OnClickCraftItem(FILE_MGR->GetCraftItemInfo(n->GetName()));
 					craftingItmeName = n->GetName();
 				}
 			}
@@ -223,7 +223,7 @@ void CraftBox::AddItem(string name, int count)
 	item->Init();
 
 	items.push_back(item);
-	inven->SetDrag(nullptr);
+	craft->SetDrag(nullptr);
 }
 
 Vector2i CraftBox::FindInvenPos(int i_width, int i_height)

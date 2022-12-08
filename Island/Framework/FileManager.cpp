@@ -50,7 +50,7 @@ void FileManager::LoadAll()
 	userInfo.hungerGuage = 255.f;
 	userInfo.thirstGuage = 255.f;
 
-	ifstream info_craft("config/data/CraftTable.json");
+	ifstream info_craft("config/data/craft/CraftTable1.json");
 	json info_craft_d = json::parse(info_craft);
 	craftItemInfo = info_craft_d;
 	info.close();
@@ -69,6 +69,21 @@ void FileManager::LoadAll()
 	json info_inven_use_d = json::parse(info_inven_use);
 	useItemInfo = info_inven_use_d;
 	info_inven_use.close();
+
+	ifstream info_shotGun("config/data/gunData/shotgunstat.json");
+	json info_shotGun_d = json::parse(info_shotGun);
+	shotgunInfo = info_shotGun_d;
+	info_shotGun.close();
+
+	ifstream info_rifle("config/data/gunData/riflestat.json");
+	json info_rifle_d = json::parse(info_rifle);
+	rifleInfo = info_rifle_d;
+	info_rifle.close();
+
+	ifstream info_sniper("config/data/gunData/sniperstat.json");
+	json info_sniper_d = json::parse(info_sniper);
+	sniperInfo = info_sniper_d;
+	info_sniper.close();
 
 }
 
