@@ -353,10 +353,10 @@ void GameScene::Draw(RenderWindow& window)
         }
     }
 
-    fog.clear();
-    fog.draw(light);
-    window.draw(fog);
-    fog.display();
+    //fog.clear();
+    //fog.draw(light);
+   // window.draw(fog);
+    //fog.display();
 
     if (uiMgr != nullptr)
         uiMgr->Draw(window);

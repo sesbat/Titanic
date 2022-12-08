@@ -16,8 +16,8 @@
 #include "Ment.h"
 
 Enemy::Enemy()
-	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(500),
-	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1)
+	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), patrolTime(5.f), hp(500),
+	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1), isInSight(true)
 {
 }
 
@@ -81,6 +81,7 @@ void Enemy::Init(Player* player)
 	scene = SCENE_MGR->GetCurrScene();
 
 	astar = new Astar();
+	MakePath();
 }
 
 void Enemy::SetState(States newState)
@@ -89,7 +90,8 @@ void Enemy::SetState(States newState)
 		return;
 
 	currState = newState;
-	
+	//lastDirection = direction;
+
 	switch ( currState )
 	{
 	case Enemy::States::Idle:
@@ -117,11 +119,12 @@ void Enemy::Update(float dt)
 		return;
 
 	HitBoxObject::Update(dt);
-	if (Utils::Distance(player->GetPos(), GetPos()) < 500.f)
+	if (isInSight && Utils::Distance(player->GetPos(), GetPos()) < 500.f)
 	{
 		//look = player->GetPos();
 		lookDir = Utils::Normalize(player->GetPos() - GetPos());
 		direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+		lastDirection = direction;
 	}
 	else
 	{
@@ -134,10 +137,20 @@ void Enemy::Update(float dt)
 		SetState(States::Dead);
 
 	}
-
+	/*if (movePos.empty())
+	{
+		patrolTime -= dt;
+		SetState(States::Idle);
+	}
+	*/
 	//enemy attack
 	if (currState != States::Dead)
 	{
+		/*if (patrolTime <= 0.f)
+		{
+			PatrolPattern(dt);
+			patrolTime = 5.f;
+		}*/
 		AttackPattern(dt);
 	}
 	
@@ -178,7 +191,17 @@ void Enemy::Draw(RenderWindow& window)
 		}
 	}
 	gun->Draw(window);
-
+	
+	//dev
+	VertexArray lines(LineStrip, 2);
+	if (isInSight)
+	{
+		lines[0].position = { GetPos() };
+		lines[1].position = { player->GetPos() };
+		window.draw(lines);
+	}
+	
+	
 }
 
 void Enemy::OnCompleteDead()
@@ -263,21 +286,30 @@ void Enemy::SetEnemyPos()
 
 void Enemy::AttackPattern(float dt)
 {
+	CheckIsInSight();
 	CheckIsInWall();
 	//attack motion
-	if (hitTime >= 0.8f && (Utils::Distance(player->GetPos(), GetPos()) < 500.f) && gun->GetIsInWall())
+	if (hitTime >= 0.8f &&  gun->GetIsInWall() )
 	{
-		gun->Fire(GetPos(), false);
-		hitTime = 0.f;
-		moveTime = 0.f;
-		playerPos = player->GetPos();
-		movePos.clear();
-		FindGrid();
-		astar->AstarSearch(*isGreedObject, startPos, destPos);
-		movePos = astar->GetCoordinate();
+		if ((Utils::Distance(player->GetPos(), GetPos()) < 500.f) && isInSight)
+		{
+			lookDir = Utils::Normalize(player->GetPos() - GetPos());
+			direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+			animator.Play((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
+			gun->SetLookDir(lookDir);
+			gun->Fire(GetPos(), false);
+			hitTime = 0.f;
+			moveTime = 0.f;
+			playerPos = player->GetPos();
+			movePos.clear();
+			FindGrid();
+			astar->AstarSearch(*isGreedObject, startPos, destPos);
+			movePos = astar->GetCoordinate();
+		}
 	}
+	//cout << movePos.empty() << endl;
 
-	if (!movePos.empty() && moveTime < 10.f && ((Utils::Distance(player->GetPos(), GetPos()) > 500.f) || isHit))
+	if ((!movePos.empty() && moveTime < 10.f && (Utils::Distance(player->GetPos(), GetPos()) > 500.f) || !isInSight) || isHit)
 	{
 		SetState(States::Move);
 	}
@@ -292,6 +324,17 @@ void Enemy::AttackPattern(float dt)
 	moveTime += dt;
 }
 
+void Enemy::PatrolPattern(float dt)
+{
+	int num = Utils::RandomRange(0, 5);
+	Vector2f point = patrolPos[num];
+	movePos.clear();
+	FindGrid(point);
+	astar->AstarSearch(*isGreedObject, startPos, destPos);
+	movePos = astar->GetCoordinate();
+	SetState(States::Move);
+}
+
 void Enemy::Move(float dt)
 {
 	if (movePos.empty())
@@ -299,6 +342,8 @@ void Enemy::Move(float dt)
 		//cout << "empty list1" << endl;
 		SetState(States::Idle);
 		Translate({ 0.f, 0.f });
+		isHit = false;
+		
 		return;
 	}
 
@@ -408,12 +453,23 @@ void Enemy::FindGrid()
 	//Enemy start pos
 	startPos.first = (int)bottomPos.x / 60;
 	startPos.second = (int)bottomPos.y / 60;
-	//cout << "start pos" << startPos.first << " " << startPos.second << endl;
 	
 	//Enemy dest pos
 	destPos.first = (int)player->GetPlayerBottom().x / 60;
 	destPos.second = (int)player->GetPlayerBottom().y / 60;
-	//cout << "dest pos" << destPos.first << " " << destPos.second << endl;
+	
+}
+
+void Enemy::FindGrid(Vector2f pos)
+{
+	//Enemy start pos
+	startPos.first = (int)bottomPos.x / 60;
+	startPos.second = (int)bottomPos.y / 60;
+	
+	//Enemy dest pos
+	destPos.first = (int)pos.x / 60;
+	destPos.second = (int)pos.y / 60;
+	
 }
 
 void Enemy::CheckIsInWall()
@@ -443,4 +499,61 @@ void Enemy::CheckIsInWall()
 			}
 		}
 	}
+}
+
+void Enemy::CheckIsInSight()
+{
+	VertexArray lines(LineStrip, 2);
+	lines[0].position = { GetPos() };
+	lines[1].position = { player->GetPos() };
+	
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(lines.getBounds());
+
+		for (auto& obj : boundInObj)
+		{
+			if (Utils::LineRect(
+				GetPos(),
+				player->GetPos(),
+				obj->GetBottom()->GetHitbox()))
+			{
+				if (obj->GetName() == "TREE" ||
+					obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK")
+				{
+					isInSight = false;
+					break;
+				}
+			}
+			else
+			{
+				isInSight = true;
+			}
+			
+		}
+	}
+}
+
+void Enemy::MakePath()
+{
+	float x, y;
+
+	for (int i = 0; i < 5; i++)
+	{
+		if (Utils::RandomRange(0, 2) == 0)
+		{
+			x = GetPos().x + Utils::RandomRange(100.f, 300.f);
+			y = GetPos().y + Utils::RandomRange(100.f, 300.f);
+		}
+		else
+		{
+			x = GetPos().x + Utils::RandomRange(-100.f, -300.f);
+			y = GetPos().y + Utils::RandomRange(-100.f, -300.f);
+		}
+		patrolPos.push_back({ x,y });
+		//cout << "path x: " << x << " y: " << y << endl;
+		
+	}
+	
 }

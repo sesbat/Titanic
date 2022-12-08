@@ -75,5 +75,6 @@ public:
     const RectangleShape& GetHitbox() const;
     void SetIsInWall(bool wall) { isInWall = wall; }
     bool GetIsInWall() { return isInWall; }
+    void SetLookDir(Vector2f dir) { lookDir = dir; }
 };
 

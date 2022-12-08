@@ -166,7 +166,7 @@ list<Vector2f> Astar::GetCoordinate()
 {
 	if (movePos.empty())
 	{
-		movePos.push_back({ ((float)startPos.x * 60.f) + 30.f ,((float)startPos.y * 60.f) + 20.f });
+		movePos.push_back({ ((float)startPos.x * 60.f) + 40.f ,((float)startPos.y * 60.f) + 20.f });
 	}
 	return movePos;
 }
