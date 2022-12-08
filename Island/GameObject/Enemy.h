@@ -66,7 +66,7 @@ protected:
 	float patrolTime;
 
 	//attack
-	//bool attack;
+	bool attack;
 	bool isHit;
 	
 	//hp
@@ -121,4 +121,5 @@ public:
 	void CheckIsInWall();
 	void CheckIsInSight();
 	void MakePath();
+	bool CheckWall(int x, int y);
 };

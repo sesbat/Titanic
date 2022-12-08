@@ -17,7 +17,7 @@
 
 Enemy::Enemy()
 	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), patrolTime(5.f), hp(500),
-	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1), isInSight(true)
+	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1), isInSight(true), attack(false)
 {
 }
 
@@ -81,6 +81,8 @@ void Enemy::Init(Player* player)
 	scene = SCENE_MGR->GetCurrScene();
 
 	astar = new Astar();
+
+	bottomPos = bottom->GetHitBottomPos();
 	MakePath();
 }
 
@@ -137,20 +139,20 @@ void Enemy::Update(float dt)
 		SetState(States::Dead);
 
 	}
-	/*if (movePos.empty())
+	if (movePos.empty())
 	{
 		patrolTime -= dt;
 		SetState(States::Idle);
 	}
-	*/
+	
 	//enemy attack
 	if (currState != States::Dead)
 	{
-		/*if (patrolTime <= 0.f)
+		if (patrolTime <= 0.f && !attack)
 		{
 			PatrolPattern(dt);
 			patrolTime = 5.f;
-		}*/
+		}
 		AttackPattern(dt);
 	}
 	
@@ -305,6 +307,7 @@ void Enemy::AttackPattern(float dt)
 			FindGrid();
 			astar->AstarSearch(*isGreedObject, startPos, destPos);
 			movePos = astar->GetCoordinate();
+			attack = true;
 		}
 	}
 	//cout << movePos.empty() << endl;
@@ -317,6 +320,7 @@ void Enemy::AttackPattern(float dt)
 	{
 		SetState(States::Idle);
 		isHit = false;
+		attack = false;
 	}
 	
 	//timer
@@ -539,23 +543,36 @@ void Enemy::CheckIsInSight()
 
 void Enemy::MakePath()
 {
-	float x, y;
-
-	for (int i = 0; i < 5; i++)
+	cout << "pos x: " << ((int)bottomPos.x / 60) << " y: " << ((int)bottomPos.y / 60) << endl;
+	int x, y;
+	int num = 0;
+	while (num <= 5)
 	{
 		if (Utils::RandomRange(0, 2) == 0)
 		{
-			x = GetPos().x + Utils::RandomRange(100.f, 300.f);
-			y = GetPos().y + Utils::RandomRange(100.f, 300.f);
+			x = ((int)bottomPos.x / 60) + Utils::RandomRange(0, 10);
+			y = ((int)bottomPos.y / 60) + Utils::RandomRange(0, 10);
 		}
 		else
 		{
-			x = GetPos().x + Utils::RandomRange(-100.f, -300.f);
-			y = GetPos().y + Utils::RandomRange(-100.f, -300.f);
+			x = ((int)bottomPos.x / 60) + Utils::RandomRange(-10, 0);
+			y = ((int)bottomPos.y / 60) + Utils::RandomRange(-10, 0);
 		}
-		patrolPos.push_back({ x,y });
-		//cout << "path x: " << x << " y: " << y << endl;
+		if (x > 0 && y > 0)
+		{
+			if (!CheckWall(x, y))
+			{
+				patrolPos.push_back({ x * 60.f,y * 60.f });
+				num++;
+				cout << "path x: " << x << " y: " << y << endl;
+			}
+		}
 		
 	}
 	
+}
+
+bool Enemy::CheckWall(int x, int y)
+{
+	return (*isGreedObject)[y][x];
 }
