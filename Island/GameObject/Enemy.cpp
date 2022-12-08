@@ -16,7 +16,7 @@
 #include "Ment.h"
 
 Enemy::Enemy()
-	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(500),
+	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), patrolTime(5.f), hp(500),
 	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1), isInSight(true)
 {
 }
@@ -90,7 +90,8 @@ void Enemy::SetState(States newState)
 		return;
 
 	currState = newState;
-	
+	//lastDirection = direction;
+
 	switch ( currState )
 	{
 	case Enemy::States::Idle:
@@ -123,6 +124,7 @@ void Enemy::Update(float dt)
 		//look = player->GetPos();
 		lookDir = Utils::Normalize(player->GetPos() - GetPos());
 		direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+		lastDirection = direction;
 	}
 	else
 	{
@@ -135,11 +137,20 @@ void Enemy::Update(float dt)
 		SetState(States::Dead);
 
 	}
-	
-	
+	/*if (movePos.empty())
+	{
+		patrolTime -= dt;
+		SetState(States::Idle);
+	}
+	*/
 	//enemy attack
 	if (currState != States::Dead)
 	{
+		/*if (patrolTime <= 0.f)
+		{
+			PatrolPattern(dt);
+			patrolTime = 5.f;
+		}*/
 		AttackPattern(dt);
 	}
 	
@@ -283,6 +294,8 @@ void Enemy::AttackPattern(float dt)
 		if ((Utils::Distance(player->GetPos(), GetPos()) < 500.f) && isInSight)
 		{
 			lookDir = Utils::Normalize(player->GetPos() - GetPos());
+			direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+			animator.Play((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
 			gun->SetLookDir(lookDir);
 			gun->Fire(GetPos(), false);
 			hitTime = 0.f;
@@ -311,6 +324,17 @@ void Enemy::AttackPattern(float dt)
 	moveTime += dt;
 }
 
+void Enemy::PatrolPattern(float dt)
+{
+	int num = Utils::RandomRange(0, 5);
+	Vector2f point = patrolPos[num];
+	movePos.clear();
+	FindGrid(point);
+	astar->AstarSearch(*isGreedObject, startPos, destPos);
+	movePos = astar->GetCoordinate();
+	SetState(States::Move);
+}
+
 void Enemy::Move(float dt)
 {
 	if (movePos.empty())
@@ -319,6 +343,7 @@ void Enemy::Move(float dt)
 		SetState(States::Idle);
 		Translate({ 0.f, 0.f });
 		isHit = false;
+		
 		return;
 	}
 
@@ -428,12 +453,23 @@ void Enemy::FindGrid()
 	//Enemy start pos
 	startPos.first = (int)bottomPos.x / 60;
 	startPos.second = (int)bottomPos.y / 60;
-	//cout << "start pos" << startPos.first << " " << startPos.second << endl;
 	
 	//Enemy dest pos
 	destPos.first = (int)player->GetPlayerBottom().x / 60;
 	destPos.second = (int)player->GetPlayerBottom().y / 60;
-	//cout << "dest pos" << destPos.first << " " << destPos.second << endl;
+	
+}
+
+void Enemy::FindGrid(Vector2f pos)
+{
+	//Enemy start pos
+	startPos.first = (int)bottomPos.x / 60;
+	startPos.second = (int)bottomPos.y / 60;
+	
+	//Enemy dest pos
+	destPos.first = (int)pos.x / 60;
+	destPos.second = (int)pos.y / 60;
+	
 }
 
 void Enemy::CheckIsInWall()

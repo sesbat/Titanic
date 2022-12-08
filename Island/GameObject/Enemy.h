@@ -50,7 +50,7 @@ protected:
 	Vector2f moveDir;
 	Vector2f prevPosition;
 	bool isFlip;
-	list<Vector2f> patrolPos;
+	vector<Vector2f> patrolPos;
 
 	//a star dir
 	Vector2f playerPos;
@@ -63,9 +63,10 @@ protected:
 	float moveTime;
 	float hitTime;
 	float getAttackTime;
+	float patrolTime;
 
 	//attack
-	bool attack;
+	//bool attack;
 	bool isHit;
 	
 	//hp
@@ -109,13 +110,14 @@ public:
 	Vector2f GetPrevLookDir() { return prevLook; }
 
 	void AttackPattern(float dt);
-	//void AttackPattern2(float dt);
+	void PatrolPattern(float dt);
 	void Move(float dt);
 	void MoveToPos(float dt);
 	void Collision();
 	
 	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
 	void FindGrid();
+	void FindGrid(Vector2f pos);
 	void CheckIsInWall();
 	void CheckIsInSight();
 	void MakePath();
