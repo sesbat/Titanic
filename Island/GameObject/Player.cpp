@@ -43,7 +43,7 @@ Player::Player()
 	maxStamina = stat.maxStamina;
 	maxThirstGuage = stat.maxThirstGuage;
 	radDebuffLevel = stat.radDebuffLevel;
-	initRadBufferScale = initRadBufferScale;
+	initRadBufferScale = stat.radDebuffScale;
 	radDebuffScale = 1;
 	radDebuffHPDelay = stat.radDebuffHPDelay;
 
@@ -146,26 +146,26 @@ void Player::Update(float dt)
 		{
 			radiationDelay -= dt;
 		}
-		if (hungerDelay < 0.f && hungerGuage > 0.f)
+		if (hungerDelay  < 0.f && hungerGuage > 0.f)
 		{
-			hungerGuage -= 2.5 * radDebuffScale;
-			hungerDelay = init_hungerDelay;
+			hungerGuage -= 2.5;
+			hungerDelay = init_hungerDelay * radDebuffScale;
 		}
-		if (thirstDelay < 0.f && thirstGuage > 0.f)
+		if (thirstDelay  < 0.f && thirstGuage > 0.f)
 		{
-			thirstGuage -= 2.5 * radDebuffScale;
-			thirstDelay = init_thirstDelay;
+			thirstGuage -= 2.5;
+			thirstDelay = init_thirstDelay * radDebuffScale;
 		}
-		if (energyDelay < 0.f && energyGuage > 0.f)
+		if (energyDelay  < 0.f && energyGuage > 0.f)
 		{
-			energyGuage -= 2.5 * radDebuffScale;
-			energyDelay = init_energyDelay;
+			energyGuage -= 2.5;
+			energyDelay = init_energyDelay * radDebuffScale;
 		}
 		if (radiationDelay < 0.f && radGuage <=255.f)
 		{
 			radGuage += 2.5;
 			radiationDelay = init_radiationDelay;
-			if (radGuage <= 255*radDebuffLevel)
+			if ((radGuage / 255) * 100 >= radDebuffLevel)
 			{
 				radDebuffScale = initRadBufferScale;
 			}
