@@ -14,6 +14,7 @@ protected:
 	TextObject* start;
 	TextObject* settings;
 	TextObject* exit;
+	SpriteObject* cursor;
 public:
 	Menu();
 	~Menu();                                                                                                                                                              

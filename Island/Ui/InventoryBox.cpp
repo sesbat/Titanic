@@ -334,7 +334,8 @@ void InventoryBox::MoveItem(int i, int j)
 
 	//if (find(items.begin(), items.end(), nowDrag) == items.end())
 	//{
-	//	//cout << "this11" << endl;
+	//	//
+	//  << "this11" << endl;
 	//	//items.push_back(nowDrag);
 	//}
 

@@ -103,7 +103,7 @@ void GameScene::Init()
 
     for (auto& obj : data)
     {
-        if (obj.type == "STONE" || obj.type == "BLOCK")
+        if (obj.type == "STONE" || obj.type == "BLOCK" || obj.type == "RADIATION")
         {
             isGreedObject[obj.greedIdx.x][obj.greedIdx.y] = true;
             Blocks block = { obj.position, pushBlock(obj.position) };
@@ -125,7 +125,7 @@ void GameScene::Init()
             objList[LayerType::Object][0].push_back(box);
         }
         else if (obj.type == "TREE" || obj.type == "BUSH" ||
-            obj.type == "STONE" || obj.type == "BLOCK")
+            obj.type == "STONE" || obj.type == "BLOCK" || obj.type == "RADIATION")
         {
             HitBoxObject* draw = new HitBoxObject();
             draw->SetName(obj.type);
@@ -134,8 +134,6 @@ void GameScene::Init()
             draw->SetPos(obj.position);
             draw->SetHitBox(obj.path);
             objList[LayerType::Object][0].push_back(draw);
-
-
         }
         else if (obj.type == "PLAYER")
         {
@@ -232,10 +230,12 @@ void GameScene::Init()
     cursor = new SpriteObject();
     cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/cursor.png"));
     cursor->SetOrigin(Origins::MC);
+    cursor->SetUI(true);
 
     shot_cursor = new SpriteObject();
     shot_cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shot_cursor.png"));
     shot_cursor->SetOrigin(Origins::MC);
+    shot_cursor->SetUI(true);
 
     objList[LayerType::Cursor][0].push_back(cursor);
     objList[LayerType::Cursor][1].push_back(shot_cursor);
@@ -360,7 +360,8 @@ void GameScene::Update(float dt)
     {
         if (obj->GetName() == "TREE" ||
             obj->GetName() == "STONE" ||
-            obj->GetName() == "BLOCK")
+            obj->GetName() == "BLOCK" ||
+            obj->GetName() == "RADIATION")
         {
             auto hit = obj->GetBottom();
             if (LineRect(
@@ -374,29 +375,7 @@ void GameScene::Update(float dt)
                 break;
             }
         }
-        else if (obj->GetName() == "ENEMY" && obj->GetActive())
-        {
-            auto hb = obj->GetHitBoxs();
-            bool enemyHit = false;
-            for (auto& it : hb)
-            {
-                if (LineRect(
-                    lines[0].position,
-                    lines[1].position,
-                    it->GetHitbox()))
-                {
-                        shot_cursor->SetColor(Color::Red);
-                        enemyHit = true;
-                        targeting = true;
-                        nowTargeting = true;
-                    break;
-                }
-            }
-            if (enemyHit)
-                break;
-        }
     }
-    cout << targeting << endl;
 
     cursor->SetPos(lines[1].position);
     shot_cursor->SetPos(lines[1].position);
@@ -466,7 +445,7 @@ void GameScene::Draw(RenderWindow& window)
 
 	window.setView(worldView);
 
-	//window.draw(lines);
+	window.draw(lines);
 	if (!player->GetIsMove())
 		cursor->Draw(window);
 	if (player->GetIsMove())

@@ -86,9 +86,9 @@ void EditorMapUiMgr::Init()
 	uiObjList[0].push_back(boxBtn);
 
 
-	selects = { "TILE","TREE","BUSH","STONE","BLOCK","PLAYER","ENEMY","BOX","ANOTHER"};
-	selectTxtSize = { 75,75,75,65,65,55,60,75,40 };
-	selectPosY = { 54,54,54,54,54,62,54,54,70 };
+	selects = { "TILE","TREE","BUSH","STONE","BLOCK","RADIATION","PLAYER","ENEMY","BOX","ANOTHER"};
+	selectTxtSize = { 75,75,75,65,65,40,55,60,75,40 };
+	selectPosY = { 54,54,54,54,54,70,62,54,54,70 };
 
 	selIdx = 0;
 	selectBtn = new Button(this);

@@ -192,5 +192,11 @@
       "texPath": "graphics/exit.png",
       "uiPaht": "graphics/editor/drawExit.png"
     }
+  ],
+  "RADIATION": [
+    {
+      "texPath": "graphics/rad1.png",
+      "uiPaht": "graphics/editor/drawRad1.png"
+    }
   ]
 }

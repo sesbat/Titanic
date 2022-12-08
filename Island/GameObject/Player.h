@@ -78,7 +78,11 @@ protected:
 	float energyDelay;	//delay for energy decreasion
 	float radiationDelay;
 
-	float radDebuff;
+	float radDebuffLevel;
+	float radDebuffScale;
+	float radDebuffHPDelay;
+
+	float initRadBufferScale;
 
 	//float reloadDelay;	//delay for reload
 	float reloadDelaySG;
@@ -96,10 +100,12 @@ protected:
 	float hungerGuage;
 	float thirstGuage;
 	float energyGuage;
+	float radGuage;
 
 	int prevHungerGuage;
 	int prevThirstGuage;
 	int prevEnergyGuage;
+	int prevRadGuage;
 
 	int sgAmmo;		//remaining ammo
 	int rfAmmo;
@@ -118,6 +124,9 @@ protected:
 
 	float staminaDownSpeed ;
 	float staminaUpSpeed ;
+	
+	bool isRad;
+	float rad;
 public:
 	Player();
 	virtual ~Player();
@@ -150,17 +159,20 @@ public:
 	float GetHungerGuage() { return hungerGuage; }
 	float GetThirstGuage() { return thirstGuage; }
 	float GetEnergyGuage() { return energyGuage; }
+	float GetRadiGuage() { return radGuage; }
 	bool GetIsAlive() { return isAlive; }
 
 	bool Hunger() { return prevHungerGuage == (int)hungerGuage; }
 	bool Thirst() { return prevThirstGuage == (int)thirstGuage; }
 	bool Energy() { return prevEnergyGuage == (int)energyGuage; }
+	bool Radiation() { return prevRadGuage == (int)radGuage; }
 
 	void SetHp(int num);
 	void HealHp(int num);
 	void HealHunger(float num);
 	void HealThirst(float num);
 	void HealEnergy(float num);
+	void HealRad(float num);
 
 	void SetPlayerPos();
 	Vector2f SetLookDir();
@@ -170,8 +182,10 @@ public:
 	void SetPrevHungerGuage(int hunger);
 	void SetPrevThirstGuage(int thirst);
 	void SetPrevEnergyGuage(int energy);
+	void SetPrevRadGuage(int rad);
 
 	void Move(float dt);
+	void RadDistance();
 	void Collision();
 	Vector2f* GetPosPtr() { return &position; }
 	void GetItem(map<string, Item>*& items);

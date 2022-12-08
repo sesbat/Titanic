@@ -110,6 +110,10 @@ void Ready::Init()
 	treeMap.setFont(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"));
 	treeMap.insert(objList[LayerType::Object][0]);
 
+	cursor = new SpriteObject();
+	cursor->SetTexture(*RESOURCES_MGR->GetTexture("graphics/cursor.png"));
+	cursor->SetOrigin(Origins::MC);
+	cursor->SetUI(true);
 	SOUND_MGR->Play("sounds/readyBGM.ogg", true);
 }
 
@@ -140,7 +144,7 @@ void Ready::Exit()
 void Ready::Update(float dt)
 {
 	Vector2f mouseworldPos = FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), worldView);
-
+		
 	Vector2f dir;
 	dir.x = mouseworldPos.x - player->GetPos().x;
 	dir.y = mouseworldPos.y - player->GetPos().y;
@@ -165,12 +169,14 @@ void Ready::Update(float dt)
 	treeMap.update(drawObjs);
 
 	Scene::Update(dt);
+	cursor->SetPos(FRAMEWORK->GetWindow().mapPixelToCoords((Vector2i)InputMgr::GetMousePos(), uiView));
 
 	if (InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		SCENE_MGR->ChangeScene(Scenes::Menu);
 		return;
 	}
+	
 }
 
 vector<HitBoxObject*> Ready::ObjListObb(HitBoxObject* obj)
@@ -185,6 +191,7 @@ vector<HitBoxObject*> Ready::ObjListObb(FloatRect obj)
 void Ready::Draw(RenderWindow& window)
 {
 	Scene::Draw(window);
+	cursor->Draw(window);
 }
 
 void Ready::Reset()

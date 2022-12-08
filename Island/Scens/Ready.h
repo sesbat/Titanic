@@ -25,6 +25,7 @@ protected:
 	TreeRect treeRect = { 0,0,1920 * 4,1080 * 4 };
 	QuadTree treeMap;
 
+	SpriteObject* cursor;
 public:
 	Ready();
 	~Ready();

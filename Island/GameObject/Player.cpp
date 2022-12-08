@@ -32,16 +32,22 @@ Player::Player()
 
 
 	dashSpeed = stat.dashSpeed;
+	maxHp = stat.maxHp;
 	init_energyDelay = energyDelay = stat.energyDelay;
 	init_hungerDelay = hungerDelay = stat.hungerDelay;
+	init_radiationDelay = radiationDelay = stat.radiationDelay;
 	maxEnergyGuage = stat.maxEnergyGuage;
-	maxHp = stat.maxHp;
 	maxHungerGuage = stat.maxHungerGuage;
 	maxRadiation = stat.maxRadiation;
 	maxSpeed = stat.maxSpeed;
 	maxStamina = stat.maxStamina;
 	maxThirstGuage = stat.maxThirstGuage;
-	radDebuff = stat.radDebuff;
+	radDebuffLevel = stat.radDebuffLevel;
+	initRadBufferScale = initRadBufferScale;
+	radDebuffScale = 1;
+	radDebuffHPDelay = stat.radDebuffHPDelay;
+
+	
 	init_radiationDelay = radiationDelay = stat.radiationDelay;
 	speed = stat.speed;
 	staminaDownSpeed = stat.staminaDownSpeed;
@@ -134,27 +140,46 @@ void Player::Update(float dt)
 		hungerDelay -= dt;
 		thirstDelay -= dt;
 		energyDelay -= dt;
+
+		RadDistance();
+		if (isRad)
+		{
+			radiationDelay -= dt;
+		}
 		if (hungerDelay < 0.f && hungerGuage > 0.f)
 		{
-			hungerGuage -= 2.5;
+			hungerGuage -= 2.5 * radDebuffScale;
 			hungerDelay = init_hungerDelay;
 		}
 		if (thirstDelay < 0.f && thirstGuage > 0.f)
 		{
-			thirstGuage -= 2.5;
+			thirstGuage -= 2.5 * radDebuffScale;
 			thirstDelay = init_thirstDelay;
 		}
 		if (energyDelay < 0.f && energyGuage > 0.f)
 		{
-			energyGuage -= 2.5;
+			energyGuage -= 2.5 * radDebuffScale;
 			energyDelay = init_energyDelay;
+		}
+		if (radiationDelay < 0.f && radGuage <=255.f)
+		{
+			radGuage += 2.5;
+			radiationDelay = init_radiationDelay;
+			if (radGuage <= 255*radDebuffLevel)
+			{
+				radDebuffScale = initRadBufferScale;
+			}
+			else
+			{
+				radDebuffScale = 1;
+			}
 		}
 		
 	}
 	
 	//Dead
 	if (hp <= 0 || hungerGuage <= 0 ||
-		thirstGuage <= 0 || energyGuage <= 0)
+		thirstGuage <= 0 || energyGuage <= 0 || radGuage >= 255)
 	{
 		isAlive = false;
 	}
@@ -476,6 +501,15 @@ void Player::HealEnergy(float num)
 	}
 }
 
+void Player::HealRad(float num)
+{
+	radGuage += num;
+	if (radGuage > maxRadiation)
+	{
+		radGuage = maxRadiation;
+	}
+}
+
 void Player::SetPlayerPos()
 {
 	SetPos(prevPosition);
@@ -527,6 +561,11 @@ void Player::SetPrevEnergyGuage(int energy)
 	prevEnergyGuage = energy;
 }
 
+void Player::SetPrevRadGuage(int rad)
+{
+	prevRadGuage = rad;
+}
+
 void Player::Move(float dt)
 {
 	//Move
@@ -560,14 +599,40 @@ void Player::Move(float dt)
 
 	//wall bound
 	Collision();
-	
+}
+
+void Player::RadDistance()
+{
+	isRad = false;
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->GetRadPos();
+
+		for (auto& pos : boundInObj)
+		{
+			float maxRadScale = 0.f;
+			auto obj_pos = pos;
+			Vector2f obj_center = { pos.x, pos.y - 30.f };
+
+			float dis = Utils::Distance(GetPos(), obj_center);
+
+			if (dis < 150)
+			{
+				isRad = true;
+				maxRadScale = maxRadScale < 2 ? 2 : maxRadScale;
+			}
+		}
+	}
+	if (!isRad)
+		radiationDelay = 0.f;
 }
 
 void Player::Collision()
 {
-
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
+		FloatRect playerRect = GetGlobalBound();
+		playerRect.left -= 60;
 		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
 
 		for (auto& obj : boundInObj)
@@ -575,7 +640,8 @@ void Player::Collision()
 			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
 			{
 				if (obj->GetName() == "STONE" ||
-					obj->GetName() == "BLOCK" //||
+					obj->GetName() == "BLOCK" ||
+					obj->GetName() == "RADIATION"//||
 					//obj->GetName() == "ENEMY"
 					)
 					SetPlayerPos();
@@ -593,7 +659,8 @@ void Player::Collision()
 			{
 
 				if (obj->GetName() == "STONE" ||
-					obj->GetName() == "BLOCK")
+					obj->GetName() == "BLOCK"||
+					obj->GetName() == "RADIATION")
 				{
 					//cout << "wall" << endl;
 					gun->SetIsInWall(false);
@@ -617,7 +684,8 @@ void Player::Collision()
 			{
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "ENEMY")
+					obj->GetName() == "ENEMY" ||
+					obj->GetName() == "RADIATION")
 					SetPlayerPos();
 			}
 		}
@@ -912,13 +980,17 @@ string Player::GetAmmos()
 
 void Player::Load()
 {
+	
 	auto playerData = FILE_MGR->GetUserInfo();
 	hp = playerData.hp;
 	stamina = maxStamina;
 	hungerGuage = playerData.hungerGuage;
 	thirstGuage = playerData.thirstGuage;
 	energyGuage = playerData.energyGuage;
+	radGuage = playerData.radGuage;
+	
 	money = playerData.money;
+	
 
 	auto invenData = FILE_MGR->GetInvenInfo();
 
@@ -951,6 +1023,7 @@ void Player::Save()
 	nowInfo.thirstGuage = thirstGuage;
 	nowInfo.energyGuage = energyGuage;
 	nowInfo.money = money;
+	nowInfo.radGuage = radGuage;
 
 	FILE_MGR->SaveUserInfo(nowInfo);
 
