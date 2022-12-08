@@ -17,7 +17,7 @@
 
 Enemy::Enemy()
 	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(500),
-	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1)
+	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1), isInSight(true)
 {
 }
 
@@ -81,6 +81,7 @@ void Enemy::Init(Player* player)
 	scene = SCENE_MGR->GetCurrScene();
 
 	astar = new Astar();
+	MakePath();
 }
 
 void Enemy::SetState(States newState)
@@ -117,7 +118,7 @@ void Enemy::Update(float dt)
 		return;
 
 	HitBoxObject::Update(dt);
-	if (Utils::Distance(player->GetPos(), GetPos()) < 500.f)
+	if (isInSight && Utils::Distance(player->GetPos(), GetPos()) < 500.f)
 	{
 		//look = player->GetPos();
 		lookDir = Utils::Normalize(player->GetPos() - GetPos());
@@ -134,7 +135,8 @@ void Enemy::Update(float dt)
 		SetState(States::Dead);
 
 	}
-
+	
+	
 	//enemy attack
 	if (currState != States::Dead)
 	{
@@ -178,7 +180,17 @@ void Enemy::Draw(RenderWindow& window)
 		}
 	}
 	gun->Draw(window);
-
+	
+	//dev
+	VertexArray lines(LineStrip, 2);
+	if (isInSight)
+	{
+		lines[0].position = { GetPos() };
+		lines[1].position = { player->GetPos() };
+		window.draw(lines);
+	}
+	
+	
 }
 
 void Enemy::OnCompleteDead()
@@ -263,21 +275,28 @@ void Enemy::SetEnemyPos()
 
 void Enemy::AttackPattern(float dt)
 {
+	CheckIsInSight();
 	CheckIsInWall();
 	//attack motion
-	if (hitTime >= 0.8f && (Utils::Distance(player->GetPos(), GetPos()) < 500.f) && gun->GetIsInWall())
+	if (hitTime >= 0.8f &&  gun->GetIsInWall() )
 	{
-		gun->Fire(GetPos(), false);
-		hitTime = 0.f;
-		moveTime = 0.f;
-		playerPos = player->GetPos();
-		movePos.clear();
-		FindGrid();
-		astar->AstarSearch(*isGreedObject, startPos, destPos);
-		movePos = astar->GetCoordinate();
+		if ((Utils::Distance(player->GetPos(), GetPos()) < 500.f) && isInSight)
+		{
+			lookDir = Utils::Normalize(player->GetPos() - GetPos());
+			gun->SetLookDir(lookDir);
+			gun->Fire(GetPos(), false);
+			hitTime = 0.f;
+			moveTime = 0.f;
+			playerPos = player->GetPos();
+			movePos.clear();
+			FindGrid();
+			astar->AstarSearch(*isGreedObject, startPos, destPos);
+			movePos = astar->GetCoordinate();
+		}
 	}
+	//cout << movePos.empty() << endl;
 
-	if (!movePos.empty() && moveTime < 10.f && ((Utils::Distance(player->GetPos(), GetPos()) > 500.f) || isHit))
+	if ((!movePos.empty() && moveTime < 10.f && (Utils::Distance(player->GetPos(), GetPos()) > 500.f) || !isInSight) || isHit)
 	{
 		SetState(States::Move);
 	}
@@ -299,6 +318,7 @@ void Enemy::Move(float dt)
 		//cout << "empty list1" << endl;
 		SetState(States::Idle);
 		Translate({ 0.f, 0.f });
+		isHit = false;
 		return;
 	}
 
@@ -443,4 +463,61 @@ void Enemy::CheckIsInWall()
 			}
 		}
 	}
+}
+
+void Enemy::CheckIsInSight()
+{
+	VertexArray lines(LineStrip, 2);
+	lines[0].position = { GetPos() };
+	lines[1].position = { player->GetPos() };
+	
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(lines.getBounds());
+
+		for (auto& obj : boundInObj)
+		{
+			if (Utils::LineRect(
+				GetPos(),
+				player->GetPos(),
+				obj->GetBottom()->GetHitbox()))
+			{
+				if (obj->GetName() == "TREE" ||
+					obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK")
+				{
+					isInSight = false;
+					break;
+				}
+			}
+			else
+			{
+				isInSight = true;
+			}
+			
+		}
+	}
+}
+
+void Enemy::MakePath()
+{
+	float x, y;
+
+	for (int i = 0; i < 5; i++)
+	{
+		if (Utils::RandomRange(0, 2) == 0)
+		{
+			x = GetPos().x + Utils::RandomRange(100.f, 300.f);
+			y = GetPos().y + Utils::RandomRange(100.f, 300.f);
+		}
+		else
+		{
+			x = GetPos().x + Utils::RandomRange(-100.f, -300.f);
+			y = GetPos().y + Utils::RandomRange(-100.f, -300.f);
+		}
+		patrolPos.push_back({ x,y });
+		cout << "path x: " << x << " y: " << y << endl;
+		
+	}
+	
 }
