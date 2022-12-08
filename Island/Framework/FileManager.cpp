@@ -8,7 +8,6 @@
 
 FileManager::FileManager()
 {
-
 }
 FileManager::~FileManager()
 {
@@ -93,6 +92,11 @@ void FileManager::LoadAll()
 	json info_user_stat_d = json::parse(info_user_stat);
 	userStat = info_user_stat_d;
 	info_user_stat.close();
+
+	ifstream effect_item("config/data/itemEffect.json");
+	json effect_item_d = json::parse(effect_item);
+	itemEffect = effect_item_d;
+	effect_item.close();
 
 }
 

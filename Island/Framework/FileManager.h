@@ -9,6 +9,7 @@ private:
 	map<string, vector<ObjectData>> mapInfo;
 	map<string, vector<EditorObjs>> editorObjs;
 	map<string, ItemInfo> itemInfos;
+	map<string, ItemEffect> itemEffect;
 	map<string, CraftingInfo> craftItemInfo;
 	vector<map<string, CraftingInfo>> craftItemInfos;
 
@@ -16,6 +17,7 @@ private:
 	GunStat shotgunInfo;
 	GunStat rifleInfo;
 	GunStat sniperInfo;
+
 	std::vector<InvenInfo> invenAllItems;
 	std::vector<InvneUseInfo> useItemInfo;
 
@@ -42,6 +44,8 @@ public:
 	const vector<map<string, CraftingInfo>>& GetAllCraftTable() { return craftItemInfos; }
 	const map<string, CraftingInfo>& GetAllCraft() { return craftItemInfo; }
 	const CraftingInfo& GetCraftItemInfo(string name) { return craftItemInfo[name]; }
+
+	const map<string, ItemEffect>& GetItemEffect() { return itemEffect; }
 
 	//요구된 아이템 정보
 	const RequiredItem& GetRequiredItemInfo(string name, int num) { return craftItemInfo[name].useItem[num]; }

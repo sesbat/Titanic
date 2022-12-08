@@ -156,3 +156,16 @@ namespace ns {
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GunStat,
 			name, damage, speed, range, reloadDelay, magazine, randDir, zoomRange, cnt)
 	};
+
+	struct ItemEffect
+	{
+		string name;
+		float hp;
+		float hungerEffect;
+		float thirstEffect;
+		float energyEffect;
+		float radiationEffect;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemEffect,
+			name, hp, hungerEffect, thirstEffect, energyEffect, radiationEffect)
+	};

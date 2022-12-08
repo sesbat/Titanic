@@ -34,5 +34,17 @@
         "id": "GUN2"
       }
     ]
+  },
+  "GUN4": {
+    "useItem": [
+      {
+        "cnt": 1,
+        "id": "GUN1"
+      },
+      {
+        "cnt": 1,
+        "id": "Scope"
+      }
+    ]
   }
 }

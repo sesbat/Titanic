@@ -100,11 +100,19 @@ bool CraftBox::Crafting(string itemName)
 {
 	if (itemName == "")
 		return false;
-	auto data = FILE_MGR->GetCraftItemInfo(itemName);
-	auto craftUseItem = data.useItem;
+	auto craftTables = FILE_MGR->GetAllCraftTable();
 	vector<bool> isItems;
+	vector<RequiredItem> useItem;
 	auto playerItems = *player->GetInventory()->GetPlayerInven()->GetItems();
-	for (auto& i : craftUseItem)
+	for(int i =0; i<craftTables.size(); i++)
+	{
+		if (craftTables[i].find(itemName) != craftTables[i].end())
+		{
+			useItem = craftTables[i][itemName].useItem;
+			break;
+		}
+	}
+	for (auto& i : useItem)
 	{
 		auto name = i.id;
 		auto cnt = i.cnt;
@@ -136,12 +144,21 @@ bool CraftBox::Crafting(string itemName)
 }
 void CraftBox::DeletePlayerItem(string itemName)
 {
-	auto data = FILE_MGR->GetCraftItemInfo(itemName);
-	auto craftUseItem = data.useItem;
 	auto playerItems = player->GetInventory()->GetPlayerInven()->GetItems();
 	auto playerInven = player->GetInventory();
 	auto playerInvenBox = player->GetInventory()->GetPlayerInven();
-	for (auto& i : craftUseItem)
+
+	auto craftTables = FILE_MGR->GetAllCraftTable();
+	vector<RequiredItem> useItem;
+	for (int i = 0; i < craftTables.size(); i++)
+	{
+		if (craftTables[i].find(itemName) != craftTables[i].end())
+		{
+			useItem = craftTables[i][itemName].useItem;
+			break;
+		}
+	}
+	for (auto& i : useItem)
 	{
 		auto name = i.id;
 		auto cnt = i.cnt;
