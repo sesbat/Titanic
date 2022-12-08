@@ -60,11 +60,18 @@ void Craft::Init()
 	requiredItem->Init();
 	initRequiredItem = requiredItem;
 
-	auto& map = FILE_MGR->GetAllCraft();
-	for (auto& n : map)
+	auto& map = FILE_MGR->GetAllCraftTable();
+
+	int i = 0;
+	for (auto& craftPage : map)
 	{
-		categoryBox[0]->AddItem(n.first);
+		for(auto& craftItem : craftPage)
+		{
+			categoryBox[i]->AddItem(craftItem.first);
+		}
+		i++;
 	}
+
 	categoryBox[0]->SetActive(true);
 }
 

@@ -70,8 +70,18 @@ void CraftBox::Update(float dt)
 				n->Update(dt);
 				if (!isRequired && n->IsClick())
 				{
-					craft->OnClickCraftItem(FILE_MGR->GetCraftItemInfo(n->GetName()));
-					craftingItmeName = n->GetName();
+					for(auto& k : FILE_MGR->GetAllCraftTable())
+					{
+						for (auto& s : k)
+						{
+							if (n->GetName() == s.first)
+							{
+								craft->OnClickCraftItem(s.second);
+								craftingItmeName = s.first;
+								return;
+							}
+						}
+					}
 				}
 			}
 		}

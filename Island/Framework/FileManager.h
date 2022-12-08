@@ -10,6 +10,7 @@ private:
 	map<string, vector<EditorObjs>> editorObjs;
 	map<string, ItemInfo> itemInfos;
 	map<string, CraftingInfo> craftItemInfo;
+	vector<map<string, CraftingInfo>> craftItemInfos;
 
 	UserInfo userInfo;
 	GunStat shotgunInfo;
@@ -38,6 +39,7 @@ public:
 	const map<string, ItemInfo>& GetAllItems() { return itemInfos; }
 	const ItemInfo& GetItemInfo(string name) { return itemInfos[name]; }
 
+	const vector<map<string, CraftingInfo>>& GetAllCraftTable() { return craftItemInfos; }
 	const map<string, CraftingInfo>& GetAllCraft() { return craftItemInfo; }
 	const CraftingInfo& GetCraftItemInfo(string name) { return craftItemInfo[name]; }
 

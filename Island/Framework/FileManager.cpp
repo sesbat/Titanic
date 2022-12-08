@@ -50,10 +50,14 @@ void FileManager::LoadAll()
 	userInfo.hungerGuage = 255.f;
 	userInfo.thirstGuage = 255.f;
 
-	ifstream info_craft("config/data/craft/CraftTable1.json");
-	json info_craft_d = json::parse(info_craft);
-	craftItemInfo = info_craft_d;
-	info.close();
+	for(int i =1; i<4; i++)
+	{
+		ifstream info_craft("config/data/craft/CraftTable"+to_string(i)+".json");
+		json info_craft_d = json::parse(info_craft);
+		craftItemInfo = info_craft_d;
+		craftItemInfos.push_back(craftItemInfo);
+		info.close();
+	}
 
 	ifstream info_user("config/data/gameData/userInfo.json");
 	json info_user_d = json::parse(info_user);
