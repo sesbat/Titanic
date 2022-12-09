@@ -125,7 +125,7 @@ void Enemy::Update(float dt)
 	HitBoxObject::Update(dt);
 	HideUpdate(dt);
 
-	if (isInSight && Utils::Distance(player->GetPos(), GetPos()) < 500.f)
+	if (!player->GetHide() && isInSight && (Utils::Distance(player->GetPos(), GetPos()) < 500.f) )
 	{
 		//look = player->GetPos();
 		lookDir = Utils::Normalize(player->GetPos() - GetPos());
@@ -336,7 +336,7 @@ void Enemy::AttackPattern(float dt)
 	//attack motion
 	if (hitTime >= 0.8f &&  gun->GetIsInWall() )
 	{
-		if ((Utils::Distance(player->GetPos(), GetPos()) < 500.f) && isInSight)
+		if (!player->GetHide() && (Utils::Distance(player->GetPos(), GetPos()) < 500.f) && isInSight)
 		{
 			lookDir = Utils::Normalize(player->GetPos() - GetPos());
 			direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
