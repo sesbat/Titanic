@@ -13,7 +13,6 @@ private:
 	//Button* cancle;
 	string path;
 	TextObject* txt;
-	TextObject* txt2;
 
 	bool isClickYes;
 	bool isClickNo;
@@ -29,6 +28,9 @@ public:
 
 	bool GetYes() { return isClickYes; }
 	bool GetNo() { return isClickNo; }
+
+	void SetYes(bool yes);
+	void SetNo(bool no);
 
 	//virtual bool IsCancle();
 	virtual string GetPath() { return path; }

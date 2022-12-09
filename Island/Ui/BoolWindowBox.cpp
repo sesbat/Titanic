@@ -50,18 +50,10 @@ void BoolWindowBox::Init()
 
 	txt = new TextObject();
 	txt->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		38, Color::White, "cost500 OK?");
-	txt->SetPos({ (float)FRAMEWORK->GetWindowSize().x/2,(float)FRAMEWORK->GetWindowSize().y/2 });
+		60, Color::White, "heal OK?");
+	txt->SetPos({ (float)FRAMEWORK->GetWindowSize().x/2,(float)FRAMEWORK->GetWindowSize().y/2 -50});
 	txt->SetOrigin(Origins::MC);
 	SetActive(true);
-
-
-	txt2 = new TextObject();
-	txt2->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		38, Color::White, "");
-	txt2->SetPos(position + Vector2f{ 250, 100 });
-	txt2->SetOrigin(Origins::MC);
-	SetActive(false);
 }
 
 void BoolWindowBox::Draw(RenderWindow& window)
@@ -73,7 +65,6 @@ void BoolWindowBox::Draw(RenderWindow& window)
 	no->Draw(window);
 	//cancle->Draw(window);
 	txt->Draw(window);
-	txt2->Draw(window);
 }
 
 void BoolWindowBox::Update(float dt)
@@ -115,11 +106,6 @@ void BoolWindowBox::Release()
 		delete no;
 		no = nullptr;
 	}
-	if (txt2 != nullptr)
-	{
-		delete txt2;
-		txt2 = nullptr;
-	}
 	path = "";
 }
 void BoolWindowBox::SetPath(string path)
@@ -127,6 +113,16 @@ void BoolWindowBox::SetPath(string path)
 	this->path = path;
 	txt->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		38, Color::White, path + "");
+}
+
+void BoolWindowBox::SetYes(bool yes)
+{
+	isClickYes = yes;
+}
+
+void BoolWindowBox::SetNo(bool no)
+{
+	isClickNo = no;
 }
 
 //bool SaveWindowBox::IsCancle()
