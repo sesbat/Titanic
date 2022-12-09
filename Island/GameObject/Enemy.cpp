@@ -16,8 +16,8 @@
 #include "Ment.h"
 
 Enemy::Enemy()
-	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), patrolTime(5.f), hp(500),
-	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1), isInSight(true)
+	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), patrolTime(0.f), hp(500),
+	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1), isInSight(true), attack(false), isSearch(false), patrolBlock(10)
 {
 }
 
@@ -45,7 +45,7 @@ void Enemy::Init(Player* player)
 {
 	HitBoxObject::Init();
 	this->player = player;
-
+	
 	hp = maxHp;
 	switch (type)
 	{
@@ -81,7 +81,10 @@ void Enemy::Init(Player* player)
 	scene = SCENE_MGR->GetCurrScene();
 
 	astar = new Astar();
+
+	bottomPos = bottom->GetHitBottomPos();
 	MakePath();
+	movePos.clear();
 }
 
 void Enemy::SetState(States newState)
@@ -137,20 +140,36 @@ void Enemy::Update(float dt)
 		SetState(States::Dead);
 
 	}
-	/*if (movePos.empty())
+	/*switch (currState)
 	{
-		patrolTime -= dt;
-		SetState(States::Idle);
-	}
-	*/
+	case Enemy::States::None:
+		cout << "None " << endl;
+		break;
+	case Enemy::States::Idle:
+		cout << "Idle " << endl;
+		break;
+	case Enemy::States::Move:
+		cout << "Move " << endl;
+		break;
+	case Enemy::States::Dead:
+		cout << "Dead "  << endl;
+		break;
+	default:
+		break;
+	}*/
+	//cout << "patrolTime " << patrolTime << endl;
 	//enemy attack
 	if (currState != States::Dead)
 	{
-		/*if (patrolTime <= 0.f)
+		if (patrolTime <= 0.f && !attack)
 		{
 			PatrolPattern(dt);
 			patrolTime = 5.f;
-		}*/
+		}
+		if (currState == States::Idle)
+		{
+			patrolTime -= dt;
+		}
 		AttackPattern(dt);
 	}
 	
@@ -158,6 +177,7 @@ void Enemy::Update(float dt)
 	if (currState == States::Move)
 	{
 		Move(dt);
+		
 	}
 	
 	//hp bar
@@ -224,7 +244,7 @@ void Enemy::SetHp(int num)
 	FindGrid();
 	astar->AstarSearch(*isGreedObject, startPos, destPos);
 	movePos = astar->GetCoordinate();
-
+	
 	hp -= num;
 	if ( hp <= 0 )
 	{
@@ -295,6 +315,7 @@ void Enemy::AttackPattern(float dt)
 		{
 			lookDir = Utils::Normalize(player->GetPos() - GetPos());
 			direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+			SetState(States::Idle);
 			animator.Play((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
 			gun->SetLookDir(lookDir);
 			gun->Fire(GetPos(), false);
@@ -305,18 +326,27 @@ void Enemy::AttackPattern(float dt)
 			FindGrid();
 			astar->AstarSearch(*isGreedObject, startPos, destPos);
 			movePos = astar->GetCoordinate();
+			attack = true;
 		}
 	}
 	//cout << movePos.empty() << endl;
 
-	if ((!movePos.empty() && moveTime < 10.f && (Utils::Distance(player->GetPos(), GetPos()) > 500.f) || !isInSight) || isHit)
+	if ((!movePos.empty() && moveTime < 10.f && (Utils::Distance(player->GetPos(), GetPos()) > 500.f) || !isInSight) || (isHit || isSearch))
 	{
 		SetState(States::Move);
+		if (isHit)
+		{
+			CallFriends();
+		}
+		//direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 	}
 	else
 	{
-		SetState(States::Idle);
+		//SetState(States::Idle);
 		isHit = false;
+		isSearch = false;
+		attack = false;
+		
 	}
 	
 	//timer
@@ -326,10 +356,11 @@ void Enemy::AttackPattern(float dt)
 
 void Enemy::PatrolPattern(float dt)
 {
+	MakePath();
 	int num = Utils::RandomRange(0, 5);
-	Vector2f point = patrolPos[num];
+	//Vector2f point = patrolPos[num];
 	movePos.clear();
-	FindGrid(point);
+	FindGrid(patrolPos);
 	astar->AstarSearch(*isGreedObject, startPos, destPos);
 	movePos = astar->GetCoordinate();
 	SetState(States::Move);
@@ -343,17 +374,20 @@ void Enemy::Move(float dt)
 		SetState(States::Idle);
 		Translate({ 0.f, 0.f });
 		isHit = false;
-		
+		isSearch = false;
+		//patrolTime = 5.f;
 		return;
 	}
 
 	Vector2f aPos = movePos.front();
+	direction.x = (aPos.x > GetPos().x) ? 1.f : -1.f;
 	if ((Utils::Distance(aPos, GetPos()) <= 10.f))
 	{
 		if (movePos.empty())
 		{
 			//cout << "empty list2" << endl;
 			SetState(States::Idle);
+			
 			return;
 		}
 		//cout << "in position" << endl;
@@ -539,23 +573,72 @@ void Enemy::CheckIsInSight()
 
 void Enemy::MakePath()
 {
-	float x, y;
-
-	for (int i = 0; i < 5; i++)
+	//cout << "pos x: " << ((int)bottomPos.x / 60) << " y: " << ((int)bottomPos.y / 60) << endl;
+	int x, y;
+	//int num = 0;
+	while (1)
 	{
 		if (Utils::RandomRange(0, 2) == 0)
 		{
-			x = GetPos().x + Utils::RandomRange(100.f, 300.f);
-			y = GetPos().y + Utils::RandomRange(100.f, 300.f);
+			x = ((int)bottomPos.x / 60) + Utils::RandomRange(0, patrolBlock);
+			y = ((int)bottomPos.y / 60) + Utils::RandomRange(0, patrolBlock);
 		}
 		else
 		{
-			x = GetPos().x + Utils::RandomRange(-100.f, -300.f);
-			y = GetPos().y + Utils::RandomRange(-100.f, -300.f);
+			x = ((int)bottomPos.x / 60) + Utils::RandomRange(-patrolBlock, 0);
+			y = ((int)bottomPos.y / 60) + Utils::RandomRange(-patrolBlock, 0);
 		}
-		patrolPos.push_back({ x,y });
-		//cout << "path x: " << x << " y: " << y << endl;
+		if (x > 0 && y > 0 && y < 72 && x < 128)
+		{
+			if (!CheckWall(x, y))
+			{
+				patrolPos = { x * 60.f,y * 60.f };
+				return;
+				//cout << "path x: " << x << " y: " << y << endl;
+			}
+		}
 		
 	}
 	
+}
+
+bool Enemy::CheckWall(int x, int y)
+{
+	return (*isGreedObject)[y][x];
+}
+
+void Enemy::SetIsSearch(bool hit)
+{
+	moveTime = 0.f;
+	playerPos = player->GetPos();
+	movePos.clear();
+	FindGrid();
+	astar->AstarSearch(*isGreedObject, startPos, destPos);
+	movePos = astar->GetCoordinate();
+	isSearch = hit;
+	patrolTime = 3.f;
+	//SetState(States::Move);
+}
+
+void Enemy::CallFriends()
+{
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+		auto *enemyfriend = ((GameScene*)scene)->GetEnemyList();
+		if (enemyfriend->size() <= 1)
+		{
+			return;
+		}
+		
+		for (auto obj = enemyfriend->begin(); obj != enemyfriend->end(); obj++)
+		{
+			if ((Utils::Distance((*obj)->GetPos(), GetPos()) < 500.f))
+			{
+				(*obj)->SetIsSearch(true);
+			}
+		}
+		
+	}
+	isHit = false;
 }

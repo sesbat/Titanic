@@ -50,7 +50,8 @@ protected:
 	Vector2f moveDir;
 	Vector2f prevPosition;
 	bool isFlip;
-	vector<Vector2f> patrolPos;
+	Vector2f patrolPos;
+	int patrolBlock;
 
 	//a star dir
 	Vector2f playerPos;
@@ -66,9 +67,9 @@ protected:
 	float patrolTime;
 
 	//attack
-	//bool attack;
+	bool attack;
 	bool isHit;
-	
+	bool isSearch;
 	//hp
 	int maxHp;
 	int hp;
@@ -77,6 +78,7 @@ protected:
 	map<string, Item> items;
 	vector<vector<bool>> *isGreedObject;
 
+	//init
 	int type;
 	//dev
 	bool isInSight;
@@ -121,4 +123,7 @@ public:
 	void CheckIsInWall();
 	void CheckIsInSight();
 	void MakePath();
+	bool CheckWall(int x, int y);
+	void SetIsSearch(bool hit);
+	void CallFriends();
 };

@@ -42,6 +42,6 @@ public:
 	void TracePath(vector<vector<bool>> map, Cell cellDetails[g_maxY][g_maxX], Pair dest);
 	void AstarSearch(vector<vector<bool>> map, Pair start, Pair dest);
 	list<Vector2f> GetCoordinate();
+
 	//void DiagonalMove(vector<vector<bool>> map, int x, int y);
 };
-
