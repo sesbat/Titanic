@@ -127,6 +127,11 @@ protected:
 	
 	bool isRad;
 	float rad;
+
+	bool isHide;
+	float hideDelay;
+	float hideDelayTimer;
+	bool isHitBullet;
 public:
 	Player();
 	virtual ~Player();
@@ -211,5 +216,10 @@ public:
 	void SetMoney(int p);
 
 	virtual void Release();
+
+	bool GetHide();
+	void SetHide(bool state);
+	void HideUpdate(float dt);
+	void HideStop();
 };
 

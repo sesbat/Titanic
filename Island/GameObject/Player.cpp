@@ -53,6 +53,8 @@ Player::Player()
 	staminaDownSpeed = stat.staminaDownSpeed;
 	staminaUpSpeed = stat.staminaUpSpeed;
 	init_thirstDelay = thirstDelay = stat.thirstDelay;
+
+	hideDelay = 1.f;
 }
 
 Player::~Player()
@@ -243,6 +245,7 @@ void Player::Update(float dt)
 					{
 						SetFireAmmo();
 						gun->Fire(GetPos(), true);
+						HideStop();
 						shootDelay = gun->GetpShootDelay();
 					}
 					break;
@@ -251,6 +254,7 @@ void Player::Update(float dt)
 					{
 						SetFireAmmo();
 						gun->Fire(GetPos(), true);
+						HideStop();
 						shootDelay = gun->GetpShootDelay();
 
 					}
@@ -396,6 +400,7 @@ void Player::Update(float dt)
 		}
 	}
 
+	HideUpdate(dt);
 }
 
 void Player::Draw(RenderWindow& window)
@@ -690,6 +695,7 @@ void Player::Collision()
 			}
 		}
 	}
+
 }
 
 
@@ -1097,4 +1103,34 @@ void Player::Release()
 	if (gun != nullptr)
 		delete gun;
 	gun = nullptr;
+}
+
+bool Player::GetHide()
+{
+	return isHide;
+}
+
+void Player::SetHide(bool state)
+{
+	if (isHitBullet)
+		return;
+	isHide = state;
+}
+
+void Player::HideUpdate(float dt)
+{
+	if (isHitBullet)
+	{
+		hideDelayTimer += dt;
+		if (hideDelayTimer > hideDelay)
+		{
+			hideDelayTimer = 0.f;
+			isHitBullet = false;
+		}
+	}
+}
+
+void Player::HideStop()
+{ 
+	isHitBullet = true; hideDelayTimer = 0.f; isHide = false; 
 }

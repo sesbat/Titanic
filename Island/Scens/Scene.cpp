@@ -7,6 +7,7 @@
 #include "../GameObject/HitBox.h"
 #include "../Scens/GameScene.h"
 #include "../Scens/Ready.h"
+#include "../GameObject/Player.h"
 
 Scene::Scene(Scenes type) :type(type), uiMgr(nullptr), isGameScene(false)
 {
@@ -262,15 +263,19 @@ void Scene::LayerSort()
 		}
 	}
 
+	bool playerIsHide = false;
 	if (player != nullptr)
 	{
 		for (auto& obj : alphaObj)
 		{
 			if (Utils::OBB(obj->GetHitBoxs(), player->GetBottom()))
 			{
-				obj->SetHitPlayer(true);
+				obj->SetHitPlayer(Utils::OBB(obj->GetHitBoxs(), player->GetBottom()));
+				if(obj->GetName() == "BUSH")
+					playerIsHide = true;
 			}
 		}
+		((Player*)player)->SetHide(playerIsHide);
 	}
 	sort(moves.begin(), moves.end(), sorting);
 	auto dit = drawObjs.begin();

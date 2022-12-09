@@ -83,6 +83,10 @@ protected:
 	//dev
 	bool isInSight;
 
+	bool isHide;
+	float hideDelay;
+	float hideDelayTimer;
+	bool isHitBullet;
 public:
 	Enemy();
 	virtual ~Enemy();
@@ -126,4 +130,8 @@ public:
 	bool CheckWall(int x, int y);
 	void SetIsSearch(bool hit);
 	void CallFriends();
+	bool GetHide();
+	void SetHide(bool state);
+	void HideUpdate(float dt);
+	void HideStop();
 };
