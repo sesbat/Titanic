@@ -70,6 +70,7 @@ void Gun::Init()
 	gunNameType["GUN1"] = GunType::Sniper;
 	gunNameType["GUN2"] = GunType::Shotgun;
 	gunNameType["GUN3"] = GunType::Rifle;
+	gunNameType["GUN4"] = GunType::Sniper;
 	
 }
 

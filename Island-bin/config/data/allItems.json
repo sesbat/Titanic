@@ -47,6 +47,22 @@
     "height": 1,
     "price": 4000
   },
+  "GUN4": {
+    "path": "graphics/items/GUN4.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 5,
+    "height": 1,
+    "price": 10000
+  },
+  "Scope": {
+    "path": "graphics/items/scope.png",
+    "maxCount": 3,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 4000
+  },
   "Apple": {
     "path": "graphics/items/apple.png",
     "maxCount": 2,

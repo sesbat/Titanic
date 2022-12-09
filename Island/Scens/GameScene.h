@@ -57,6 +57,11 @@ protected:
 	bool targeting = false;
 	VertexArray lines;
 
+	bool isZoom;
+	float r = 0.1f;
+	float MaxR = 0.4f;
+	float MinR = 0.1f;
+	float zoomInOutSpeed = 0.01f;
 public:
 	GameScene();
 	virtual ~GameScene();

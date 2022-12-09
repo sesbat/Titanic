@@ -719,48 +719,66 @@ void Player::UseItems(int num)
 	if (inven->GetUsedItem(num)->GetCount() == 0)
 		return;
 	string name = inven->GetUsedItem(num)->GetName();
-	if (name == "Recoverykit")
-	{
-		HealHp(maxHp / 4);
-		inven->GetUsedItem(num)->AddCount(-1);
-		if (inven->GetUsedItem(num)->GetCount() <= 0)
-			inven->AddDeleteObj(inven->GetUsedItem(num));
 
-		return;
-	}
-	///////add other items/////////
-	else if (name == "Apple")
+	//if (name == "Recoverykit")
+	//{
+	//	HealHp(maxHp / 4);
+
+	//	inven->GetUsedItem(num)->AddCount(-1);
+	//	if (inven->GetUsedItem(num)->GetCount() <= 0)
+	//		inven->AddDeleteObj(inven->GetUsedItem(num));
+
+	//	return;
+	//}
+	/////////add other items/////////
+	//else if (name == "Apple")
+	//{
+	//	HealHunger(maxHungerGuage / 4);
+	//	inven->GetUsedItem(num)->AddCount(-1);
+	//	if (inven->GetUsedItem(num)->GetCount() <= 0)
+	//		inven->AddDeleteObj(inven->GetUsedItem(num));
+	//	return;
+	//}
+	//else if (name == "Meat")
+	//{
+	//	HealHunger(maxHungerGuage / 2);
+	//	inven->GetUsedItem(num)->AddCount(-1);
+	//	if (inven->GetUsedItem(num)->GetCount() <= 0)
+	//		inven->AddDeleteObj(inven->GetUsedItem(num));
+	//	return;
+	//}
+	//else if (name == "Water")
+	//{
+	//	HealThirst(maxThirstGuage / 3);
+	//	inven->GetUsedItem(num)->AddCount(-1);
+	//	if (inven->GetUsedItem(num)->GetCount() <= 0)
+	//		inven->AddDeleteObj(inven->GetUsedItem(num));
+	//	return;
+	//}
+	//else if (name == "EnergyDrink")
+	//{
+	//	HealEnergy(maxEnergyGuage / 2);
+	//	inven->GetUsedItem(num)->AddCount(-1);
+	//	if (inven->GetUsedItem(num)->GetCount() <= 0)
+	//		inven->AddDeleteObj(inven->GetUsedItem(num));
+	//	return;
+	//}
+	auto itemEffect = FILE_MGR->GetItemEffect();
+
+	for (auto& k : itemEffect)
 	{
-		HealHunger(maxHungerGuage / 4);
-		inven->GetUsedItem(num)->AddCount(-1);
-		if (inven->GetUsedItem(num)->GetCount() <= 0)
-			inven->AddDeleteObj(inven->GetUsedItem(num));
-		return;
+		if (name == k.first)
+		{
+			HealHp(k.second.hp);
+			HealHunger(k.second.hungerEffect);
+			HealThirst(k.second.thirstEffect);
+			HealEnergy(k.second.energyEffect);
+			inven->GetUsedItem(num)->AddCount(-1);
+			if (inven->GetUsedItem(num)->GetCount() <= 0)
+				inven->AddDeleteObj(inven->GetUsedItem(num));
+		}
 	}
-	else if (name == "Meat")
-	{
-		HealHunger(maxHungerGuage / 2);
-		inven->GetUsedItem(num)->AddCount(-1);
-		if (inven->GetUsedItem(num)->GetCount() <= 0)
-			inven->AddDeleteObj(inven->GetUsedItem(num));
-		return;
-	}
-	else if (name == "Water")
-	{
-		HealThirst(maxThirstGuage / 3);
-		inven->GetUsedItem(num)->AddCount(-1);
-		if (inven->GetUsedItem(num)->GetCount() <= 0)
-			inven->AddDeleteObj(inven->GetUsedItem(num));
-		return;
-	}
-	else if (name == "EnergyDrink")
-	{
-		HealEnergy(maxEnergyGuage / 2);
-		inven->GetUsedItem(num)->AddCount(-1);
-		if (inven->GetUsedItem(num)->GetCount() <= 0)
-			inven->AddDeleteObj(inven->GetUsedItem(num));
-		return;
-	}
+
 }
 
 void Player::SetStamina(float stamina)

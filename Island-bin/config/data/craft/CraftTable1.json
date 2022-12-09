@@ -1,5 +1,5 @@
- {
-  "Recoverykit": { 
+{
+  "Recoverykit": {
     "useItem": [
       {
         "cnt": 1,
@@ -11,6 +11,7 @@
       }
     ]
   },
+
   "Apple": {
     "useItem": [
       {
@@ -44,42 +45,6 @@
       {
         "cnt": 1,
         "id": "Apple"
-      }
-    ]
-  },
-  "GUN1": {
-    "useItem": [
-      {
-        "cnt": 1,
-        "id": "GUN2"
-      },
-      {
-        "cnt": 1,
-        "id": "GUN3"
-      }
-    ]
-  },
-  "GUN2": {
-    "useItem": [
-      {
-        "cnt": 1,
-        "id": "GUN1"
-      },
-      {
-        "cnt": 1,
-        "id": "GUN3"
-      }
-    ]
-  },
-  "GUN3": {
-    "useItem": [
-      {
-        "cnt": 1,
-        "id": "GUN1"
-      },
-      {
-        "cnt": 1,
-        "id": "GUN2"
       }
     ]
   }

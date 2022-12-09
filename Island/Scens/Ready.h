@@ -16,6 +16,7 @@ protected:
 	NPC* startNpc;
 	NPC* shopNpc;
 	NPC* craftNpc;
+	NPC* healNpc;
 
 	float timer;
 	Clock clock;
@@ -43,6 +44,7 @@ public:
 	NPC* GetStartNPC() { return startNpc; }
 	NPC* GetShopNPC() { return shopNpc; }
 	NPC* GetCraftNPC() { return craftNpc; }
+	NPC* GetHealNPC() { return healNpc; }
 
 };
 

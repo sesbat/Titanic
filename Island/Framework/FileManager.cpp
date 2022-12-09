@@ -8,7 +8,6 @@
 
 FileManager::FileManager()
 {
-
 }
 FileManager::~FileManager()
 {
@@ -50,10 +49,14 @@ void FileManager::LoadAll()
 	userInfo.hungerGuage = 255.f;
 	userInfo.thirstGuage = 255.f;
 
-	ifstream info_craft("config/data/craft/CraftTable1.json");
-	json info_craft_d = json::parse(info_craft);
-	craftItemInfo = info_craft_d;
-	info.close();
+	for(int i =1; i<4; i++)
+	{
+		ifstream info_craft("config/data/craft/CraftTable"+to_string(i)+".json");
+		json info_craft_d = json::parse(info_craft);
+		craftItemInfo = info_craft_d;
+		craftItemInfos.push_back(craftItemInfo);
+		info.close();
+	}
 
 	ifstream info_user("config/data/gameData/userInfo.json");
 	json info_user_d = json::parse(info_user);
@@ -89,6 +92,11 @@ void FileManager::LoadAll()
 	json info_user_stat_d = json::parse(info_user_stat);
 	userStat = info_user_stat_d;
 	info_user_stat.close();
+
+	ifstream effect_item("config/data/itemEffect.json");
+	json effect_item_d = json::parse(effect_item);
+	itemEffect = effect_item_d;
+	effect_item.close();
 
 }
 
