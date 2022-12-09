@@ -23,6 +23,8 @@ private:
 	NPC* healNpc;
 
 	BoolWindowBox* yesORno;
+	Button* healed; //you have been healed
+	float messageTime;
 
 	Craft* craft;
 	Shop* shop;
