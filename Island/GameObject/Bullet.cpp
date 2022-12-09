@@ -177,6 +177,7 @@ void Bullet::Collision()
 							it->GetHitbox()))
 						{
 							enemy->SetHp(damage);
+							enemy->HideStop();
 							SetActive(false);
 							break;
 						}
@@ -196,6 +197,7 @@ void Bullet::Collision()
 					it->GetHitbox()))
 				{
 					player->SetHp(damage);
+					player->HideStop();
 					SetActive(false);
 					break;
 				}

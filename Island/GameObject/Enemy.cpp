@@ -19,6 +19,7 @@ Enemy::Enemy()
 	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), patrolTime(5.f), hp(500),
 	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1), isInSight(true)
 {
+	hideDelay = 1.f;
 }
 
 Enemy::~Enemy()
@@ -119,6 +120,8 @@ void Enemy::Update(float dt)
 		return;
 
 	HitBoxObject::Update(dt);
+	HideUpdate(dt);
+
 	if (isInSight && Utils::Distance(player->GetPos(), GetPos()) < 500.f)
 	{
 		//look = player->GetPos();
@@ -172,6 +175,23 @@ void Enemy::Update(float dt)
 	//gun
 	gun->Update(dt);
 
+
+
+	auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+
+	bool isNowHide = false;
+	for (auto& obj : boundInObj)
+	{
+		if (obj->GetName() == "BUSH" && Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
+		{
+			isNowHide = true;
+			SetHide(true);
+			break;
+		}
+	}
+
+	if (!isNowHide)
+		SetHide(false);
 }
 
 void Enemy::Draw(RenderWindow& window)
@@ -249,25 +269,30 @@ void Enemy::SetHpBar()
 {
 	healthBar.setPosition({ GetPos().x, GetPos().y - 35.f });
 	healthBar.setSize({ (barScaleX / maxHp) * hp, 15.f });
-	if ( hp > (maxHp / 2) )
+	if (hp > (maxHp / 2))
 	{
-		healthBar.setFillColor(Color::Green);
+		if (!isHide)
+			healthBar.setFillColor(Color::Green);
 	}
-	else if ( hp <= (maxHp / 2) && hp > (maxHp / 5) )
+	else if (hp <= (maxHp / 2) && hp > (maxHp / 5))
 	{
-		healthBar.setFillColor(Color::Yellow);
-	}
-	else
-	{
-		healthBar.setFillColor(Color::Red);
-	}
-	if ( hp <= 0 )
-	{
-		healthBar.setOutlineThickness(0.f);
+		if (!isHide)
+			healthBar.setFillColor(Color::Yellow);
 	}
 	else
 	{
-		healthBar.setOutlineThickness(2.f);
+		if (!isHide)
+			healthBar.setFillColor(Color::Red);
+	}
+	if (hp <= 0)
+	{
+		if (!isHide)
+			healthBar.setOutlineThickness(0.f);
+	}
+	else
+	{
+		if (!isHide)
+			healthBar.setOutlineThickness(2.f);
 	}
 }
 
@@ -558,4 +583,61 @@ void Enemy::MakePath()
 		
 	}
 	
+}
+
+bool Enemy::GetHide()
+{
+	return isHide;
+}
+
+void Enemy::SetHide(bool state)
+{
+	if (isHide && !state)
+	{
+		SetColor(Color::White);
+		gun->SetColor(Color::White);
+		healthBar.setFillColor(Color::White);
+		SetHpBar();
+		hideDelayTimer = 0.f;
+		isHitBullet = false;
+	}
+	if (isHitBullet)
+	{
+		return;
+	}
+	if (!isHide && state)
+	{
+		SetColor(Color(0, 0, 0, 0));
+		gun->SetColor(Color(0, 0, 0, 0));
+		healthBar.setFillColor(Color(0, 0, 0, 0));
+		healthBar.setOutlineThickness(0.f);
+
+	}
+	isHide = state;
+}
+
+void Enemy::HideUpdate(float dt)
+{
+	if (isHitBullet)
+	{
+		hideDelayTimer += dt;
+		if (hideDelayTimer > hideDelay)
+		{
+			hideDelayTimer = 0.f;
+			isHitBullet = false;
+			gun->SetColor(Color::White);
+			SetColor(Color::White);
+			healthBar.setFillColor(Color::White);
+		}
+	}
+}
+
+void Enemy::HideStop()
+{
+	isHitBullet = true; hideDelayTimer = 0.f; isHide = false;
+
+	SetColor(Color::White);
+	gun->SetColor(Color::White);
+	healthBar.setFillColor(Color::White);
+
 }
