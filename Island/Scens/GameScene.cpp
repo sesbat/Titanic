@@ -37,7 +37,7 @@ GameScene::GameScene()
        fog(candle::LightingArea::FOG,
           sf::Vector2f(0.f, 0.f),
           sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)),
-        blockCount(0), treeMap(treeRect, 16, 4)
+        blockCount(0), treeMap(treeRect, 16, 4),isZoom(false)
 {
 
 }
@@ -240,13 +240,35 @@ void GameScene::Update(float dt)
     dir.y = mouseworldPos.y - player->GetPos().y;
 
     //camera
-    float r = 0.1;
+    
+    if (InputMgr::GetMouseButtonDown(Mouse::Right))
+    {
+        isZoom = true;
+    }
+    if (InputMgr::GetMouseButtonUp(Mouse::Right))
+    {
+        isZoom = false;
+    }
+    
+    if (isZoom)
+    {
+        if (r <= MaxR)
+            r += (MaxR - r)* zoomInOutSpeed;
+    }
+    else
+    {
+        if (r >= MinR)
+            r -= (MinR + r) * zoomInOutSpeed;
+    }
+
     Vector2f camPoslen;
     camPoslen.x = dir.x * r;
     camPoslen.y = dir.y * r;
     Vector2f realcam;
     realcam.x = camPoslen.x + player->GetPos().x;
     realcam.y = camPoslen.y + player->GetPos().y;
+
+    
 
     realcam.x = max((int)realcam.x, WINDOW_WIDTH / 2);
     realcam.x = min((int)realcam.x, mapSize.width - WINDOW_WIDTH / 2);

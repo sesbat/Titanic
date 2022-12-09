@@ -20,6 +20,11 @@ NPC::~NPC()
 	Release();
 }
 
+void NPC::SetIsHeal(bool yesORno)
+{
+	isHeal = yesORno;
+}
+
 void NPC::SetPlayer(Player* player)
 {
 	this->player = player;
@@ -58,7 +63,7 @@ void NPC::Update(float dt)
 	{
 		ment->SetActive(true);
 	}
-	else if(ment->GetActive() && Utils::Distance(GetPos(), player->GetPos()) >= 100)
+	else if (ment->GetActive() && Utils::Distance(GetPos(), player->GetPos()) >= 100)
 	{
 		ment->SetActive(false);
 	}
@@ -108,6 +113,22 @@ void NPC::Update(float dt)
 					InputMgr::Clear();
 				}
 				break;
+			case NPCType::Heal:
+			{
+				if (player->GetIsMove() && !InputMgr::GetKeyDown(Keyboard::Escape))
+				{
+					isHeal = true;
+					player->SetMove(false);
+				}
+				else if (isHeal)
+				{
+					isHeal = false;
+					player->SetMove(true);
+					InputMgr::Clear();
+				}
+			}
+			break;
+
 			case NPCType::Count:
 				break;
 			default:

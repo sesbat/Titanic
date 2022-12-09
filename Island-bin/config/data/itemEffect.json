@@ -33,7 +33,7 @@
     },
     "Recoverykit": {
         "energyEffect": 0.0,
-        "hp": 25.0,
+        "hp": 250.0,
         "hungerEffect": 0.0,
         "name": "",
         "radiationEffect": -10.0,

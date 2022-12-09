@@ -105,6 +105,17 @@ void Ready::Init()
 	craftNpc->SetHitBox("graphics/player.png");
 	objList[LayerType::Object][0].push_back(craftNpc);
 
+	healNpc = new NPC();
+	healNpc->SetNPCType(NPCType::Heal);
+	healNpc->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shopnpc.png"));
+	healNpc->SetOrigin(Origins::BC);
+	healNpc->SetPlayer(player);
+	healNpc->SetPos({ player->GetPos().x - 50,player->GetPos().y - 50 });
+	healNpc->SetName("NPC");
+	healNpc->Init();
+	healNpc->SetHitBox("graphics/player.png");
+	objList[LayerType::Object][0].push_back(healNpc);
+
 	uiMgr = new ReadyUiMgr(this);
 	uiMgr->Init();
 	treeMap.setFont(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"));

@@ -12,6 +12,7 @@ class Inventory;
 class Craft;
 class TextObject;
 class Shop;
+class BoolWindowBox;
 class ReadyUiMgr : public UiMgr
 {
 private:
@@ -19,6 +20,9 @@ private:
 	NPC* startNpc;
 	NPC* craftNpc;
 	NPC* shopNpc;
+	NPC* healNpc;
+
+	BoolWindowBox* yesORno;
 
 	Craft* craft;
 	Shop* shop;

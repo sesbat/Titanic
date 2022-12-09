@@ -16,6 +16,7 @@
 #include "../Button.h"
 #include "../../GameObject/TextObject.h"
 #include "../Shop/Shop.h"
+#include "../BoolWindowBox.h"
 
 ReadyUiMgr::ReadyUiMgr(Scene* scene)
 	:UiMgr(scene)
@@ -34,6 +35,14 @@ void ReadyUiMgr::Init()
 	startNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetStartNPC();
 	craftNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetCraftNPC();
 	shopNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetShopNPC();
+	healNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetHealNPC();
+
+	yesORno = new BoolWindowBox(this);
+	yesORno->SetPos({(float) FRAMEWORK->GetWindowSize().x/2,(float)FRAMEWORK->GetWindowSize().y/2});
+	yesORno->SetOrigin(Origins::MC);
+	yesORno->Init();
+	yesORno->SetActive(false);
+	uiObjList[1].push_back(yesORno);
 
 	//hp
 	hpBar = new Button(this);
@@ -301,6 +310,14 @@ void ReadyUiMgr::Update(float dt)
 	else
 	{
 		shop->SetActive(false);
+	}
+	if (healNpc->GetIsHeal())
+	{
+		yesORno->SetActive(true);
+	}
+	else
+	{
+		yesORno->SetActive(false);
 	}
 }
 
