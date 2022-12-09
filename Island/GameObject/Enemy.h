@@ -50,7 +50,7 @@ protected:
 	Vector2f moveDir;
 	Vector2f prevPosition;
 	bool isFlip;
-	vector<Vector2f> patrolPos;
+	Vector2f patrolPos;
 	int patrolBlock;
 
 	//a star dir
@@ -69,7 +69,7 @@ protected:
 	//attack
 	bool attack;
 	bool isHit;
-	
+	bool isSearch;
 	//hp
 	int maxHp;
 	int hp;
@@ -124,4 +124,6 @@ public:
 	void CheckIsInSight();
 	void MakePath();
 	bool CheckWall(int x, int y);
+	void SetIsSearch(bool hit);
+	void CallFriends();
 };

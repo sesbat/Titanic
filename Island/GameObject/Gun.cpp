@@ -238,7 +238,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		case GunType::Rifle:
 		{
 			Vector2f startPos;
-			startPos = transform.transformPoint(30, 0);
+			startPos = transform.transformPoint(80, 0);
 			bulletSpeed = 2000;
 			range = 1000;
 			shootDelay = 0.1f;
