@@ -344,6 +344,7 @@ void Enemy::AttackPattern(float dt)
 			animator.Play((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
 			gun->SetLookDir(lookDir);
 			gun->Fire(GetPos(), false);
+			HideStop();
 			hitTime = 0.f;
 			moveTime = 0.f;
 			playerPos = player->GetPos();
