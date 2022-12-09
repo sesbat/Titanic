@@ -143,24 +143,7 @@ void Enemy::Update(float dt)
 		SetState(States::Dead);
 
 	}
-	/*switch (currState)
-	{
-	case Enemy::States::None:
-		cout << "None " << endl;
-		break;
-	case Enemy::States::Idle:
-		cout << "Idle " << endl;
-		break;
-	case Enemy::States::Move:
-		cout << "Move " << endl;
-		break;
-	case Enemy::States::Dead:
-		cout << "Dead "  << endl;
-		break;
-	default:
-		break;
-	}*/
-	//cout << "patrolTime " << patrolTime << endl;
+	
 	//enemy attack
 	if (currState != States::Dead)
 	{
@@ -382,7 +365,7 @@ void Enemy::AttackPattern(float dt)
 void Enemy::PatrolPattern(float dt)
 {
 	MakePath();
-	int num = Utils::RandomRange(0, 5);
+	//int num = Utils::RandomRange(0, 5);
 	//Vector2f point = patrolPos[num];
 	movePos.clear();
 	FindGrid(patrolPos);
@@ -618,13 +601,14 @@ void Enemy::MakePath()
 			if (!CheckWall(x, y))
 			{
 				patrolPos = { x * 60.f,y * 60.f };
-				return;
+				break;
+				
 				//cout << "path x: " << x << " y: " << y << endl;
 			}
 		}
 		
 	}
-	
+	return;
 }
 
 bool Enemy::CheckWall(int x, int y)

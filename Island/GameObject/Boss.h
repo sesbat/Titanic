@@ -12,7 +12,7 @@ class Scene;
 class Gun;
 class Astar;
 
-class Enemy : public HitBoxObject
+class Boss : public HitBoxObject
 {
 public:
 	enum class States
@@ -22,12 +22,19 @@ public:
 		Move,
 		Dead,
 	};
+	enum class Type
+	{
+		None = -1,
+		Big,
+		Kiba,
+	};
 
 protected:
-	Enemy(const Enemy& ref) {}
-	Enemy& operator=(const Enemy& ref) {}
-	Enemy( Enemy& ref) {}
-	Enemy& operator=( Enemy& ref) {}
+	Boss(const Boss& ref) {}
+	Boss& operator=(const Boss& ref) {}
+	Boss(Boss& ref) {}
+	Boss& operator=(Boss& ref) {}
+
 	Player* player;
 	Scene* scene;
 	Gun* gun;
@@ -38,9 +45,22 @@ protected:
 	RectangleShape healthBar;
 
 	States currState;
+	Type type;
 
-	//move
+	//valance variable
 	float speed;
+	float dashRange;
+	float dashSpeed;
+	float stunTime;
+	float playerStunTime;
+	float range;
+	float damage;
+	float radDamage;
+	float fireRange;
+
+	bool isStun;
+	bool isStart;
+
 	Vector2f look;
 	Vector2f lookDir;
 	Vector2f prevLook;
@@ -50,8 +70,6 @@ protected:
 	Vector2f moveDir;
 	Vector2f prevPosition;
 	bool isFlip;
-	Vector2f patrolPos;
-	int patrolBlock;
 
 	//a star dir
 	Vector2f playerPos;
@@ -59,12 +77,12 @@ protected:
 	Pair startPos;
 	Pair destPos;
 	Vector2f bottomPos;
-	Vector2f firstPos;
+
 	//timer
 	float moveTime;
 	float hitTime;
 	float getAttackTime;
-	float patrolTime;
+
 
 	//attack
 	bool attack;
@@ -76,10 +94,10 @@ protected:
 	float barScaleX;
 
 	map<string, Item> items;
-	vector<vector<bool>> *isGreedObject;
+	vector<vector<bool>>* isGreedObject;
 
 	//init
-	int type;
+	
 	//dev
 	bool isInSight;
 
@@ -88,8 +106,8 @@ protected:
 	float hideDelayTimer;
 	bool isHitBullet;
 public:
-	Enemy();
-	virtual ~Enemy();
+	Boss();
+	virtual ~Boss();
 	virtual void Release();
 
 	void Init(Player* player);
@@ -108,9 +126,9 @@ public:
 	void SetHpBar();
 
 	void SetItem(map<string, Item> items) { this->items = items; }
-	void SetEnemyPos();
+	void SetBossPos();
 
-	void SetType(int num) { type = num; }
+	//void SetType(int num) { type = num; }
 
 	Vector2f GetLookDir() { return lookDir; }
 	Vector2f GetPrevLookDir() { return prevLook; }
@@ -120,7 +138,7 @@ public:
 	void Move(float dt);
 	void MoveToPos(float dt);
 	void Collision();
-	
+
 	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
 	void FindGrid();
 	void FindGrid(Vector2f pos);
@@ -128,10 +146,11 @@ public:
 	void CheckIsInSight();
 	void MakePath();
 	bool CheckWall(int x, int y);
-	void SetIsSearch(bool hit);
-	void CallFriends();
-	bool GetHide();
+	//void SetIsSearch(bool hit);
+	//void CallFriends();
+	/*bool GetHide();
 	void SetHide(bool state);
 	void HideUpdate(float dt);
-	void HideStop();
+	void HideStop();*/
 };
+
