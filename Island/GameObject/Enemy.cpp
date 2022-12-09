@@ -16,8 +16,8 @@
 #include "Ment.h"
 
 Enemy::Enemy()
-	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), patrolTime(5.f), hp(500),
-	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1), isInSight(true), attack(false)
+	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), patrolTime(0.f), hp(500),
+	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1), isInSight(true), attack(false), patrolBlock(10)
 {
 }
 
@@ -45,7 +45,7 @@ void Enemy::Init(Player* player)
 {
 	HitBoxObject::Init();
 	this->player = player;
-
+	
 	hp = maxHp;
 	switch (type)
 	{
@@ -84,6 +84,7 @@ void Enemy::Init(Player* player)
 
 	bottomPos = bottom->GetHitBottomPos();
 	MakePath();
+	movePos.clear();
 }
 
 void Enemy::SetState(States newState)
@@ -139,12 +140,24 @@ void Enemy::Update(float dt)
 		SetState(States::Dead);
 
 	}
-	if (movePos.empty())
+	switch (currState)
 	{
-		patrolTime -= dt;
-		SetState(States::Idle);
+	case Enemy::States::None:
+		cout << "None " << endl;
+		break;
+	case Enemy::States::Idle:
+		cout << "Idle " << endl;
+		break;
+	case Enemy::States::Move:
+		cout << "Move " << endl;
+		break;
+	case Enemy::States::Dead:
+		cout << "Dead "  << endl;
+		break;
+	default:
+		break;
 	}
-	
+	cout << "patrolTime " << patrolTime << endl;
 	//enemy attack
 	if (currState != States::Dead)
 	{
@@ -153,6 +166,10 @@ void Enemy::Update(float dt)
 			PatrolPattern(dt);
 			patrolTime = 5.f;
 		}
+		if (currState == States::Idle)
+		{
+			patrolTime -= dt;
+		}
 		AttackPattern(dt);
 	}
 	
@@ -160,6 +177,7 @@ void Enemy::Update(float dt)
 	if (currState == States::Move)
 	{
 		Move(dt);
+		
 	}
 	
 	//hp bar
@@ -297,6 +315,7 @@ void Enemy::AttackPattern(float dt)
 		{
 			lookDir = Utils::Normalize(player->GetPos() - GetPos());
 			direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+			SetState(States::Idle);
 			animator.Play((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
 			gun->SetLookDir(lookDir);
 			gun->Fire(GetPos(), false);
@@ -315,12 +334,14 @@ void Enemy::AttackPattern(float dt)
 	if ((!movePos.empty() && moveTime < 10.f && (Utils::Distance(player->GetPos(), GetPos()) > 500.f) || !isInSight) || isHit)
 	{
 		SetState(States::Move);
+		
 	}
 	else
 	{
-		SetState(States::Idle);
+		//SetState(States::Idle);
 		isHit = false;
 		attack = false;
+		
 	}
 	
 	//timer
@@ -347,7 +368,7 @@ void Enemy::Move(float dt)
 		SetState(States::Idle);
 		Translate({ 0.f, 0.f });
 		isHit = false;
-		
+		//patrolTime = 5.f;
 		return;
 	}
 
@@ -358,6 +379,7 @@ void Enemy::Move(float dt)
 		{
 			//cout << "empty list2" << endl;
 			SetState(States::Idle);
+			
 			return;
 		}
 		//cout << "in position" << endl;
@@ -546,17 +568,17 @@ void Enemy::MakePath()
 	cout << "pos x: " << ((int)bottomPos.x / 60) << " y: " << ((int)bottomPos.y / 60) << endl;
 	int x, y;
 	int num = 0;
-	while (num <= 5)
+	while (num < 5)
 	{
 		if (Utils::RandomRange(0, 2) == 0)
 		{
-			x = ((int)bottomPos.x / 60) + Utils::RandomRange(0, 10);
-			y = ((int)bottomPos.y / 60) + Utils::RandomRange(0, 10);
+			x = ((int)bottomPos.x / 60) + Utils::RandomRange(0, patrolBlock);
+			y = ((int)bottomPos.y / 60) + Utils::RandomRange(0, patrolBlock);
 		}
 		else
 		{
-			x = ((int)bottomPos.x / 60) + Utils::RandomRange(-10, 0);
-			y = ((int)bottomPos.y / 60) + Utils::RandomRange(-10, 0);
+			x = ((int)bottomPos.x / 60) + Utils::RandomRange(-patrolBlock, 0);
+			y = ((int)bottomPos.y / 60) + Utils::RandomRange(-patrolBlock, 0);
 		}
 		if (x > 0 && y > 0)
 		{

@@ -51,6 +51,7 @@ protected:
 	Vector2f prevPosition;
 	bool isFlip;
 	vector<Vector2f> patrolPos;
+	int patrolBlock;
 
 	//a star dir
 	Vector2f playerPos;
@@ -77,6 +78,7 @@ protected:
 	map<string, Item> items;
 	vector<vector<bool>> *isGreedObject;
 
+	//init
 	int type;
 	//dev
 	bool isInSight;
