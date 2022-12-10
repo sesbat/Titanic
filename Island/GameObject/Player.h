@@ -132,6 +132,8 @@ protected:
 	float hideDelay;
 	float hideDelayTimer;
 	bool isHitBullet;
+
+	vector<string> clearMaps;
 public:
 	Player();
 	virtual ~Player();
@@ -221,5 +223,8 @@ public:
 	void SetHide(bool state);
 	void HideUpdate(float dt);
 	void HideStop();
+
+	const vector<string>& GetClearMpas() const { return clearMaps; } 
+	void ClearMap(string name);
 };
 

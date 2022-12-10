@@ -1012,6 +1012,7 @@ void Player::Load()
 	thirstGuage = playerData.thirstGuage;
 	energyGuage = playerData.energyGuage;
 	radGuage = playerData.radGuage;
+	clearMaps = playerData.clearMaps;
 	
 	money = playerData.money;
 	
@@ -1048,6 +1049,7 @@ void Player::Save()
 	nowInfo.energyGuage = energyGuage;
 	nowInfo.money = money;
 	nowInfo.radGuage = radGuage;
+	nowInfo.clearMaps = clearMaps;
 
 	FILE_MGR->SaveUserInfo(nowInfo);
 
@@ -1152,4 +1154,12 @@ void Player::HideUpdate(float dt)
 void Player::HideStop()
 { 
 	isHitBullet = true; hideDelayTimer = 0.f; isHide = false; 
+}
+
+void Player::ClearMap(string name)
+{
+	if (find(clearMaps.begin(), clearMaps.end(), name) == clearMaps.end())
+	{
+		clearMaps.push_back(name);
+	}
 }

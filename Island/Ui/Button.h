@@ -35,6 +35,7 @@ public:
 	virtual void Draw(RenderWindow& window);
 	virtual void SetPos(Vector2f pos);
 	virtual void SetClkColor(bool set) { isClickColor = set; }
+	virtual bool GetIsClickColor() { return isClickColor; }
 	virtual void Release();
 	void SetTexture(Texture& t, bool isBound);
 	void SetText(Font& font, int size, Color color, string str, bool isBound);

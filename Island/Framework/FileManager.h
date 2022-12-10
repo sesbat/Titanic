@@ -12,6 +12,7 @@ private:
 	map<string, ItemEffect> itemEffect;
 	map<string, CraftingInfo> craftItemInfo;
 	vector<map<string, CraftingInfo>> craftItemInfos;
+	map<string, vector<string>> connecntMaps;
 
 	UserInfo userInfo;
 	GunStat shotgunInfo;
@@ -53,6 +54,10 @@ public:
 	void SaveUserInfo(UserInfo datas);
 	void SaveInvenInfo(vector<InvenInfo> datas);
 	void SaveUseItemInfo(vector<InvneUseInfo> datas);
+
+	void SaveConnecnt(string name, vector<string> need);
+
+	const map<string, vector<string>>& const GetConnecntInfoAll();
 
 	const UserInfo& GetUserInfo() const { return userInfo; }
 	const GunStat& GetShotGunInfo() const { return shotgunInfo; }

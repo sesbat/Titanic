@@ -84,8 +84,9 @@ namespace ns {
 		float energyGuage;
 		float radGuage;
 		int money;
+		vector<string> clearMaps;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money, clearMaps)
 	};
 
 	struct InvenInfo

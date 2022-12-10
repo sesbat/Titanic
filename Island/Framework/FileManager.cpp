@@ -98,6 +98,10 @@ void FileManager::LoadAll()
 	itemEffect = effect_item_d;
 	effect_item.close();
 
+	ifstream connect("config/data/mapConnecnt.json");
+	json connect_d = json::parse(connect);
+	connecntMaps = connect_d;
+	connect.close();
 }
 
 const vector<ObjectData>& FileManager::GetMap(string name)
@@ -149,5 +153,20 @@ void FileManager::SaveUseItemInfo(vector<InvneUseInfo> datas)
 	ofstream ofs("config/data/gameData/invenUseInfo.json");
 	ofs << data;
 	ofs.close();
+}
+
+void FileManager::SaveConnecnt(string name, vector<string> need)
+{
+	connecntMaps[name] = need;
+
+	json data = connecntMaps;
+	ofstream ofs("config/data/mapConnecnt.json");
+	ofs << data;
+	ofs.close();
+}
+
+const map<string, vector<string>>& FileManager::GetConnecntInfoAll()
+{
+	return connecntMaps; 
 }
 

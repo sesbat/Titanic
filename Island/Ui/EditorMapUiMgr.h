@@ -7,6 +7,7 @@ class DrawSelect;
 class DrawObj;
 class SaveWindowBox;
 class LoadWindowBox;
+class ConnectWindowBox;
 class EditorMapUiMgr : public UiMgr
 {
 private:
@@ -16,6 +17,7 @@ private:
 	Button* exitBtn;
 	Button* underUi;
 	Button* boxBtn;
+	Button* connecntBtn;
 	Button* selectBtn;
 
 	bool isErase;
@@ -32,6 +34,7 @@ private:
 
 	SaveWindowBox* saveWindow;
 	LoadWindowBox* loadWindow;
+	ConnectWindowBox* connectWindow;
 	AddItemBox* itemBox;
 
 	bool isBox;
@@ -60,6 +63,7 @@ public:
 	//bool IsCancle();
 	bool IsLoad();
 	bool LoadActive();
+	bool ConnectActive();
 	string loadFile();
 	bool IsErase() { return isErase; }
 	bool IsExit();
@@ -73,6 +77,7 @@ public:
 
 	void BoxingEnd();
 	bool GetIsBox() { return isBox; }
+	ConnectWindowBox* GetConnecntWindow() { return connectWindow; }
 
 };
 

@@ -352,6 +352,7 @@ void GameScene::Update(float dt)
 
     if (escapeTimer <= 0.f)
     {
+        player->ClearMap(sceneName);
         player->Save();
         SCENE_MGR->ChangeScene(Scenes::Ready);
         return;
