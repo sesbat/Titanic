@@ -23,7 +23,7 @@ class Bullet;
 class Enemy;
 class HitBox;
 class Scene;
-struct GunStat;
+struct GunsType;
 
 class Gun :
     public HitBoxObject

@@ -23,6 +23,7 @@
 #include "../Ui/Inventory.h"
 #include "../Ui/InventoryBox.h"
 #include "Candle/geometry/Polygon.hpp"
+#include "../GameObject/Gun.h"
 
 #include "../3rd/QuadTree_SFML_DEMO.h"
 #include "../GameObject/HitBox.h"
@@ -101,6 +102,8 @@ void GameScene::Init()
     player->SetName("PLAYER");
     player->Init();
 
+    auto enemyInfo = FILE_MGR->GetEnemyInfo();
+
     for (auto& obj : data)
     {
         if (obj.type == "STONE" || obj.type == "BLOCK" || obj.type == "RADIATION")
@@ -149,18 +152,8 @@ void GameScene::Init()
             enemy->SetId(id++);
             enemy->SetPos(obj.position);
             enemy->SetHitBox(obj.path);
-            if (obj.path == "graphics/enemy1.png")
-            {
-                enemy->SetType(1);
-            }
-            else if (obj.path == "graphics/enemy2.png")
-            {
-                enemy->SetType(2);
-            }
-            else if (obj.path == "graphics/enemy3.png")
-            {
-                enemy->SetType(3);
-            }
+            enemy->SetType((GunType)enemyInfo[obj.path].gun);
+            enemy->SetEnemyType(enemyInfo[obj.path].type);
             enemy->SetItem(obj.item);
             enemy->SetGreedObject(&isGreedObject);
             enemies.push_back(enemy);

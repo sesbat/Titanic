@@ -8,6 +8,7 @@
 
 FileManager::FileManager()
 {
+
 }
 FileManager::~FileManager()
 {
@@ -40,7 +41,7 @@ void FileManager::LoadAll()
 
 	ifstream item_info("config/data/allItems.json");
 	json item_info_d = json::parse(item_info);
-	itemInfos = item_info_d;
+	itemsInfo = item_info_d;
 	item_info.close();
 
 
@@ -75,9 +76,9 @@ void FileManager::LoadAll()
 
 	string guninfo_paths[] =
 	{
+		"config/data/gunData/shotgunstat.json",
 		"config/data/gunData/riflestat.json",
-		"config/data/gunData/riflestat.json",
-		"config/data/gunData/riflestat.json"
+		"config/data/gunData/sniperstat.json"
 	};
 
 	for (auto path : guninfo_paths)
@@ -87,21 +88,6 @@ void FileManager::LoadAll()
 		ios_gun.close();
 		gunsInfo[gun_info["name"]] = gun_info;
 	}
-
-	//ifstream info_shotGun("config/data/gunData/shotgunstat.json");
-	//json info_shotGun_d = json::parse(info_shotGun);
-	//shotgunInfo = info_shotGun_d;
-	//info_shotGun.close();
-
-	//ifstream info_rifle("config/data/gunData/riflestat.json");
-	//json info_rifle_d = json::parse(info_rifle);
-	//rifleInfo = info_rifle_d;
-	//info_rifle.close();
-
-	//ifstream info_sniper("config/data/gunData/sniperstat.json");
-	//json info_sniper_d = json::parse(info_sniper);
-	//sniperInfo = info_sniper_d;
-	//info_sniper.close();
 
 	ifstream info_user_stat("config/data/gameData/userStat.json");
 	json info_user_stat_d = json::parse(info_user_stat);
@@ -117,6 +103,11 @@ void FileManager::LoadAll()
 	json connect_d = json::parse(connect);
 	connecntMaps = connect_d;
 	connect.close();
+
+	ifstream enemy_info("config/data/Enemy/EnemyInfo.json");
+	json enemy_d = json::parse(enemy_info);
+	enemysInfo = enemy_d;
+	enemy_info.close();
 }
 
 const vector<ObjectData>& FileManager::GetMap(string name)

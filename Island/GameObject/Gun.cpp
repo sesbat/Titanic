@@ -201,14 +201,22 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			float dir = data.shotgunDir;
 			int harfCnt = cnt / 2;
 
-			for (int i = 1; i <= cnt; i++)
+			for (int i = 0; i < cnt/2; i++)
+			{
+				for (int j = 0; j < 2; j++)
+				{
+					Bullet* bullet = bulletPool.Get();
+					float temp = atan2(lookDir.y, lookDir.x);
+					float F1 = j == 0 ? temp + ((M_PI / data.shotgunDir) * (i + 1)) : temp - ((M_PI / data.shotgunDir) * (i + 1));
+					Vector2f randomShot = { cos(F1),sin(F1) };
+					bullet->SetOrigin(Origins::MC);
+					bullet->SetDamage(damage);
+					bullet->Fire(startPos, randomShot, bulletSpeed, range, isplayer);
+				}
+			}
+			if (cnt % 2 == 1)
 			{
 				Bullet* bullet = bulletPool.Get();
-				float temp = atan2(lookDir.y, lookDir.x);
-				Vector2f randomShot;
-				float F1 = temp + M_PI / 12 * i * (i <= harfCnt ? -1 : 1);
-				randomShot = { cos(F1),sin(F1) };
-
 				bullet->SetOrigin(Origins::MC);
 				bullet->SetDamage(damage);
 				bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);

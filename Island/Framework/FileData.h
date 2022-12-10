@@ -181,3 +181,22 @@ namespace ns {
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemEffect,
 			name, hp, hungerEffect, thirstEffect, energyEffect, radiationEffect)
 	};
+
+	struct EnemyInfo
+	{
+		int gun;
+		
+		float speed;
+		int maxHp;
+		string type;
+
+		float moveTime;
+		float hitTime;
+		float patrolTime;
+		float hideDelay;
+
+		int patrolBlock;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(EnemyInfo,
+			gun, speed, maxHp, type, moveTime, hitTime, patrolTime, hideDelay, patrolBlock)
+	};

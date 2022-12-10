@@ -8,11 +8,12 @@ private:
 	map<string, vector<ns::RectangleInfo>> hitBoxData; //find by path
 	map<string, vector<ObjectData>> mapInfo;
 	map<string, vector<EditorObjs>> editorObjs;
-	map<string, ItemInfo> itemInfos;
+	map<string, ItemInfo> itemsInfo;
 	map<string, ItemEffect> itemEffect;
 	map<string, CraftingInfo> craftItemInfo;
 	vector<map<string, CraftingInfo>> craftItemInfos;
 	map<string, vector<string>> connecntMaps;
+	map<string, EnemyInfo> enemysInfo;
 
 	UserInfo userInfo;
 
@@ -41,8 +42,8 @@ public:
 	void SaveMap(vector<ObjectData> newData, string name);
 	const map<string, vector<EditorObjs>>& GetEditorObjs() { return editorObjs; }
 
-	const map<string, ItemInfo>& GetAllItems() { return itemInfos; }
-	const ItemInfo& GetItemInfo(string name) { return itemInfos[name]; }
+	const map<string, ItemInfo>& GetAllItems() { return itemsInfo; }
+	const ItemInfo& GetItemInfo(string name) { return itemsInfo[name]; }
 
 	const vector<map<string, CraftingInfo>>& GetAllCraftTable() { return craftItemInfos; }
 	const map<string, CraftingInfo>& GetAllCraft() { return craftItemInfo; }
@@ -70,6 +71,8 @@ public:
 	const vector<InvenInfo>& GetInvenInfo() const { return invenAllItems; }
 	const vector<InvneUseInfo>& GetUseItemInfo() const { return useItemInfo; }
 	const UserStat& GetUserStat() const { return userStat; }
+
+	const map<string, EnemyInfo>& GetEnemyInfo() { return enemysInfo; }
 };
 
 #define FILE_MGR (FileManager::GetInstance())
