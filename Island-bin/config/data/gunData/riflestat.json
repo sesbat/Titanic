@@ -1,14 +1,17 @@
 {
-    "cnt": 1,
-    "damage": 200.0,
-    "magazine": 45,
-    "name": "GUN2",
-    "randDir": {
-        "x": 0.0,
-        "y": 0.0
-    },
-    "range": 1000.0,
-    "reloadDelay": 3.0,
-    "speed": 2000.0,
-    "zoomRange": 1500.0
+  "cnt": 1,
+  "damage": 200.0,
+  "magazine": 45,
+  "name": "GUN2",
+  "randDir": {
+    "x": 0.0,
+    "y": 0.0
+  },
+  "shotgunDir": 0,
+  "range": 1000.0,
+  "reloadDelay": 3.0,
+  "speed": 2000.0,
+  "zoomRange": 1500.0,
+  "shootDelay": 0.1,
+  "soundPath": "sounds/rifle.wav"
 }

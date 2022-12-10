@@ -84,9 +84,14 @@ namespace ns {
 		float energyGuage;
 		float radGuage;
 		int money;
+		int ammo;
+		int sgAmmo;		//remaining ammo
+		int rfAmmo;
+		int snAmmo;
+		int lastWephon;
 		vector<string> clearMaps;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money, clearMaps)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money, ammo, sgAmmo, rfAmmo, snAmmo, lastWephon, clearMaps)
 	};
 
 	struct InvenInfo
@@ -154,11 +159,14 @@ namespace ns {
 		int magazine;
 		sf::Vector2f randDir;
 		float zoomRange;
+		float shootDelay;
+		float shotgunDir;
+		string soundPath;
 
 		int cnt;
 		
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GunStat,
-			name, damage, speed, range, reloadDelay, magazine, randDir, zoomRange, cnt)
+			name, damage, speed, range, reloadDelay, magazine, randDir, zoomRange, shootDelay, shotgunDir, soundPath, cnt)
 	};
 
 	struct ItemEffect

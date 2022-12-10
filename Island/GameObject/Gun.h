@@ -23,6 +23,7 @@ class Bullet;
 class Enemy;
 class HitBox;
 class Scene;
+struct GunStat;
 
 class Gun :
     public HitBoxObject
@@ -54,6 +55,8 @@ private:
     Vector2f pos;
 
     map<string, GunType> gunNameType;
+
+    map<string, GunStat> gunsInfo;
 public:
     Gun();
     Gun(GunType type, User user);

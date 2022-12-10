@@ -15,9 +15,11 @@ private:
 	map<string, vector<string>> connecntMaps;
 
 	UserInfo userInfo;
-	GunStat shotgunInfo;
-	GunStat rifleInfo;
-	GunStat sniperInfo;
+
+	map<string, GunStat> gunsInfo;
+	//GunStat shotgunInfo;
+	//GunStat rifleInfo;
+	//GunStat sniperInfo;
 
 	std::vector<InvenInfo> invenAllItems;
 	std::vector<InvneUseInfo> useItemInfo;
@@ -59,10 +61,12 @@ public:
 
 	const map<string, vector<string>>& const GetConnecntInfoAll();
 
+	const GunStat& GetGunInfo(string name)  { return gunsInfo[name]; }
 	const UserInfo& GetUserInfo() const { return userInfo; }
-	const GunStat& GetShotGunInfo() const { return shotgunInfo; }
-	const GunStat& GetRifleInfo() const { return rifleInfo; }
-	const GunStat& GetSniperInfo() const { return sniperInfo; }
+	const map<string, GunStat>& GetGunInfoAll() { return gunsInfo; }
+	//const GunStat& GetShotGunInfo() const { return shotgunInfo; }
+	//const GunStat& GetRifleInfo() const { return rifleInfo; }
+	//const GunStat& GetSniperInfo() const { return sniperInfo; }
 	const vector<InvenInfo>& GetInvenInfo() const { return invenAllItems; }
 	const vector<InvneUseInfo>& GetUseItemInfo() const { return useItemInfo; }
 	const UserStat& GetUserStat() const { return userStat; }

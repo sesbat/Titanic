@@ -121,6 +121,7 @@ protected:
 	bool isAlive;
 	bool isReloading;
 	bool isInven;
+	int lastWephon;
 
 	float staminaDownSpeed ;
 	float staminaUpSpeed ;
