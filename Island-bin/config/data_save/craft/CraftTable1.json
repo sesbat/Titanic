@@ -1,49 +1,50 @@
 {
-  "Shotgun": {
+  "Recoverykit": {
     "useItem": [
       {
         "cnt": 1,
-        "id": "Rifle"
+        "id": "Apple"
       },
       {
         "cnt": 1,
-        "id": "Sniper"
+        "id": "Water"
       }
     ]
   },
-  "Rifle": {
+
+  "Apple": {
     "useItem": [
       {
         "cnt": 1,
-        "id": "Shotgun"
+        "id": "Water"
       },
       {
         "cnt": 1,
-        "id": "Sniper"
+        "id": "EnergyDrink"
       }
     ]
   },
-  "Sniper": {
+  "Water": {
     "useItem": [
       {
         "cnt": 1,
-        "id": "Shotgun"
+        "id": "Apple"
       },
       {
         "cnt": 1,
-        "id": "Rifle"
+        "id": "EnergyDrink"
       }
     ]
   },
-  "Scop_sniper": {
+  "EnergyDrink": {
     "useItem": [
       {
         "cnt": 1,
-        "id": "Shotgun"
+        "id": "Water"
       },
       {
         "cnt": 1,
-        "id": "Scope"
+        "id": "Apple"
       }
     ]
   }

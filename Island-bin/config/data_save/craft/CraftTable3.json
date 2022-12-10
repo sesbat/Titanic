@@ -1,49 +1,49 @@
-{
-  "Shotgun": {
+ {
+  "Recoverykit": {
     "useItem": [
       {
         "cnt": 1,
-        "id": "Rifle"
+        "id": "Apple"
       },
       {
         "cnt": 1,
-        "id": "Sniper"
+        "id": "Water"
       }
     ]
   },
-  "Rifle": {
+  "ShotGunBullet": {
     "useItem": [
       {
         "cnt": 1,
-        "id": "Shotgun"
+        "id": "RifleBullet"
       },
       {
         "cnt": 1,
-        "id": "Sniper"
+        "id": "SniperBullet"
       }
     ]
   },
-  "Sniper": {
+  "RifleBullet": {
     "useItem": [
       {
         "cnt": 1,
-        "id": "Shotgun"
+        "id": "ShotGunBullet"
       },
       {
         "cnt": 1,
-        "id": "Rifle"
+        "id": "SniperBullet"
       }
     ]
   },
-  "Scop_sniper": {
+  "SniperBullet": {
     "useItem": [
       {
         "cnt": 1,
-        "id": "Shotgun"
+        "id": "RifleBullet"
       },
       {
         "cnt": 1,
-        "id": "Scope"
+        "id": "ShotGunBullet"
       }
     ]
   }

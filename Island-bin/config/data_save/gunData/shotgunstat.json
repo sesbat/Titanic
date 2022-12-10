@@ -2,7 +2,7 @@
   "cnt": 5,
   "damage": 300.0,
   "magazine": 10,
-  "name": "Shotgun",
+  "name": "GUN1",
   "randDir": {
     "x": 0.0,
     "y": 0.0

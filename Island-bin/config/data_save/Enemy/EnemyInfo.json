@@ -1,0 +1,35 @@
+{
+  "graphics/enemy1.png": {
+    "gun": 1,
+    "hideDelay": 1.0,
+    "hitTime": 0.8,
+    "maxHp": 500,
+    "moveTime": 10.0,
+    "patrolBlock": 10,
+    "patrolTime": 3.0,
+    "speed": 100.0,
+    "type": "graphics/enemy1.png"
+  },
+  "graphics/enemy2.png": {
+    "gun": 2,
+    "hideDelay": 1.0,
+    "hitTime": 0.8,
+    "maxHp": 500,
+    "moveTime": 10.0,
+    "patrolBlock": 10,
+    "patrolTime": 3.0,
+    "speed": 100.0,
+    "type": "graphics/enemy2.png"
+  },
+  "graphics/enemy3.png": {
+    "gun": 3,
+    "hideDelay": 1.0,
+    "hitTime": 0.8,
+    "maxHp": 500,
+    "moveTime": 10.0,
+    "patrolBlock": 10,
+    "patrolTime": 3.0,
+    "speed": 100.0,
+    "type": "graphics/enemy3.png"
+  }
+}

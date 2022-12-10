@@ -23,7 +23,7 @@
     "height": 2,
     "price": 2000
   },
-  "Shotgun": {
+  "GUN1": {
     "path": "graphics/items/GUN1.png",
     "maxCount": 1,
     "weight": 2.0,
@@ -31,7 +31,7 @@
     "height": 1,
     "price": 5000
   },
-  "Rifle": {
+  "GUN2": {
     "path": "graphics/items/GUN2.png",
     "maxCount": 1,
     "weight": 2.0,
@@ -39,7 +39,7 @@
     "height": 1,
     "price": 4000
   },
-  "Sniper": {
+  "GUN3": {
     "path": "graphics/items/GUN3.png",
     "maxCount": 1,
     "weight": 2.0,
@@ -47,7 +47,7 @@
     "height": 1,
     "price": 4000
   },
-  "Scop_sniper": {
+  "GUN4": {
     "path": "graphics/items/GUN4.png",
     "maxCount": 1,
     "weight": 2.0,

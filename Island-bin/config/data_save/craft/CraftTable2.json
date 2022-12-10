@@ -1,45 +1,45 @@
 {
-  "Shotgun": {
+  "GUN1": {
     "useItem": [
       {
         "cnt": 1,
-        "id": "Rifle"
+        "id": "GUN2"
       },
       {
         "cnt": 1,
-        "id": "Sniper"
+        "id": "GUN3"
       }
     ]
   },
-  "Rifle": {
+  "GUN2": {
     "useItem": [
       {
         "cnt": 1,
-        "id": "Shotgun"
+        "id": "GUN1"
       },
       {
         "cnt": 1,
-        "id": "Sniper"
+        "id": "GUN3"
       }
     ]
   },
-  "Sniper": {
+  "GUN3": {
     "useItem": [
       {
         "cnt": 1,
-        "id": "Shotgun"
+        "id": "GUN1"
       },
       {
         "cnt": 1,
-        "id": "Rifle"
+        "id": "GUN2"
       }
     ]
   },
-  "Scop_sniper": {
+  "GUN4": {
     "useItem": [
       {
         "cnt": 1,
-        "id": "Shotgun"
+        "id": "GUN1"
       },
       {
         "cnt": 1,

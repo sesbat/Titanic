@@ -69,10 +69,10 @@ void Gun::Init()
 
 	scene = SCENE_MGR->GetCurrScene();
 
-	gunNameType["GUN1"] = GunType::Sniper;
-	gunNameType["GUN2"] = GunType::Shotgun;
-	gunNameType["GUN3"] = GunType::Rifle;
-	gunNameType["GUN4"] = GunType::Sniper;
+	gunNameType["Shotgun"] = GunType::Sniper;
+	gunNameType["Rifle"] = GunType::Shotgun;
+	gunNameType["Sniper"] = GunType::Rifle;
+	gunNameType["Scop_sniper"] = GunType::Sniper;
 	
 }
 
@@ -190,7 +190,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 
 		case GunType::Shotgun:
 		{
-			auto data = gunsInfo["GUN1"];
+			auto data = gunsInfo["Shotgun"];
 			Vector2f startPos;
 			startPos = transform.transformPoint(80, 0);
 			bulletSpeed = data.speed;
@@ -227,7 +227,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		break;
 		case GunType::Rifle:
 		{
-			auto data = gunsInfo["GUN2"];
+			auto data = gunsInfo["Rifle"];
 			Vector2f startPos;
 			startPos = transform.transformPoint(80, 0);
 			bulletSpeed = data.speed;
@@ -247,7 +247,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		break;
 		case GunType::Sniper:
 		{
-			auto data = gunsInfo["GUN3"];
+			auto data = gunsInfo["Sniper"];
 			Vector2f startPos;
 			startPos = transform.transformPoint(80, 0);
 			bulletSpeed = data.speed;
@@ -280,19 +280,19 @@ void Gun::SetGunType(GunType type)
 	case GunType::Shotgun:
 		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun.png"));
-		damage = gunsInfo["GUN1"].damage;
+		damage = gunsInfo["Shotgun"].damage;
 		SetOrigin(Origins::MC);
 		break;
 	case GunType::Rifle:
 		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/rifel.png"));
-		damage = gunsInfo["GUN2"].damage;
+		damage = gunsInfo["Rifle"].damage;
 		SetOrigin(Origins::MC);
 		break;
 	case GunType::Sniper:
 		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniper.png"));
-		damage = gunsInfo["GUN3"].damage;
+		damage = gunsInfo["Sniper"].damage;
 		SetOrigin(Origins::MC);
 		break;
 	case GunType::TypeCount:
