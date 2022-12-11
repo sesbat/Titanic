@@ -378,6 +378,7 @@ void InventoryBox::MoveSaveBox(int i, int j)
 	else
 	{
 		int n = nowDrag->GetCount() / 99;
+		auto itemName = nowDrag->GetName();
 		auto allCount = nowDrag->GetCount() - 99;
 		auto prevDragPos = nowDrag->GetGreedPos();
 		nowDrag->SetCount(99);
@@ -399,17 +400,17 @@ void InventoryBox::MoveSaveBox(int i, int j)
 
 		for (int _i = 0; _i < n; _i++)
 		{
-			auto findPos = FindInvenPos(nowDrag->GetWidth(), nowDrag->GetHeight());
+			auto findPos = FindInvenPos(w, h);
 			if (findPos == Vector2i{ -1,-1 })
 			{
-				inven->GetPrevInven()->AddItem(nowDrag->GetName(), allCount, Vector2i{ prevDragPos.y, prevDragPos.x });
+				inven->GetPrevInven()->AddItem(itemName, allCount, Vector2i{ prevDragPos.y, prevDragPos.x });
 				break;
 			}
 
 			int nowCount = allCount > 99 ? 99 : allCount;
 			if (nowCount == 0)
 				break;
-			AddItem(nowDrag->GetName(), nowCount, findPos);
+			AddItem(itemName, nowCount, findPos);
 			allCount -= 99;
 		}
 		inven->SetDrag(nullptr);

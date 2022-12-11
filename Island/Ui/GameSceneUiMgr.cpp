@@ -173,7 +173,7 @@ void GameSceneUiMgr::Init()
 	radiationTex = new Button(this);
 	radiationTex->SetClkColor(false);
 	radiationTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		20, Color::White, to_string(((player->GetRadiGuage() / 255) * 100)), true);
+		20, Color::White, to_string((int)((player->GetRadiGuage() / 255) * 100)), true);
 	radiationTex->SetOrigin(Origins::MC);
 	radiationTex->SetPos({ 680,40 });
 	uiObjList[0].push_back(radiationTex);
@@ -253,7 +253,7 @@ void GameSceneUiMgr::Update(float dt)
 	{
 		player->SetPrevRadGuage(player->GetRadiGuage());
 		int result = ((player->GetRadiGuage() / 255) * 100);
-		radiationTex->GetTextObj()->SetString(to_string((result)));
+		radiationTex->GetTextObj()->SetString(to_string((int)(result)));
 		radiation->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)player->GetRadiGuage()));
 		if (result > 125.f)
 		{

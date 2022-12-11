@@ -69,6 +69,9 @@ void Inventory::Init()
 	saveBox->SetInvenSize(3, 2);
 	saveBox->SetName("SaveBox");
 	saveBox->Init();
+	saveBox->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		30, Color::White, "SAVE BOX", false);
+	saveBox->GetTextObj()->SetPos(Vector2f{ 880.f, 800.f });
 
 
 	Vector2f invenPos[] = { {800.f,140.f},{800.f,310.f},{800.f,471.f},{991.f,471.f},{800.f,721.f},{888.f,721.f},{972.f,721.f},{1055.f,721.f} };
