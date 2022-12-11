@@ -18,10 +18,12 @@
 
 Boss::Boss()
 	: currState(States::None), type(Type::None),
-	speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	moveTime(15.f), hitTime(0.f), getAttackTime(1.f),
+	speed(100.f), maxSpeed(100),
+	direction(1.f, 0.f), lastDirection(1.f, 0.f),
+	timer(0.f), moveTime(2.f), hitTime(0.f), getAttackTime(1.f), stopTime(1.f),
 	hp(500), maxHp(500), barScaleX(60.f), look(1.f, 0.f),
-	isHit(false), isInSight(true), attack(false), isSearch(false), isStart(false)
+	dashRange(500.f), dashSpeed(800.f), range(500.f),
+	isHit(false), isInSight(true), attack(false), isSearch(false), isStart(false), isDash(false)
 {
 }
 
@@ -99,7 +101,7 @@ void Boss::Init(Player* player)
 
 	astar = new Astar();
 
-	//bottomPos = bottom->GetHitBottomPos();
+	bottomPos = bottom->GetHitBottomPos();
 	movePos.clear();
 	SetState(States::Idle);
 }
@@ -151,17 +153,18 @@ void Boss::Update(float dt)
 	//start fight
 	if (!isStart)
 	{
-		if (Utils::Distance(player->GetPos(), GetPos()) < 1000.f)
-		{
-			//look = player->GetPos();
-			lookDir = Utils::Normalize(player->GetPos() - GetPos());
-			direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
-			lastDirection = direction;
-		}
-		else
-		{
-			lookDir = direction;
-		}
+		lookDir = Utils::Normalize(player->GetPos() - GetPos());
+		direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+		lastDirection = direction;
+		//if (Utils::Distance(player->GetPos(), GetPos()) < 1000.f)
+		//{
+		//	//look = player->GetPos();
+		//	
+		//}
+		//else
+		//{
+		//	lookDir = direction;
+		//}
 
 		//enemy dead
 		if (hp <= 0)
@@ -171,19 +174,35 @@ void Boss::Update(float dt)
 		}
 
 		//enemy attack
-		if (currState != States::Dead)
+		
+		
+		if (currState == States::Idle)
 		{
+			timer -= dt;
+			if (timer <= 0.f)
+			{
+				AttackPattern(dt);
+			}
 			
-			//AttackPattern(dt);
 		}
-
+		if (isDash)
+		{
+			Dash(dt);
+		}
 		//move
 		if (currState == States::Move)
 		{
-			//Move(dt);
-
+			Move(dt);
+			timer -= dt;
+			if (timer <= 0.f)
+			{
+				SetState(States::Idle);
+				movePos.clear();
+				timer = stopTime;
+			}
 		}
 
+		
 		//hp bar
 		SetHpBar();
 
@@ -191,7 +210,7 @@ void Boss::Update(float dt)
 		animator.Update(dt);
 
 		//position
-		//bottomPos = bottom->GetHitBottomPos();
+		bottomPos = bottom->GetHitBottomPos();
 
 		//gun
 		//gun->Update(dt);
@@ -199,7 +218,7 @@ void Boss::Update(float dt)
 		//dev
 		if (InputMgr::GetKeyDown(Keyboard::Z))
 		{
-			SetState(States::Move);
+			SetDashPos();
 		}
 		if (InputMgr::GetKeyDown(Keyboard::X))
 		{
@@ -244,13 +263,13 @@ bool Boss::EqualFloat(float a, float b)
 void Boss::SetHp(int num)
 {
 	//move trigger
-	isHit = true;
+	/*isHit = true;
 	moveTime = 0.f;
 	playerPos = player->GetPos();
 	movePos.clear();
 	FindGrid();
 	astar->AstarSearch(*isGreedObject, startPos, destPos);
-	movePos = astar->GetCoordinate();
+	movePos = astar->GetCoordinate();*/
 
 	hp -= num;
 	if (hp <= 0)
@@ -318,49 +337,47 @@ void Boss::SetBossPos()
 
 void Boss::AttackPattern(float dt)
 {
-	CheckIsInSight();
-	CheckIsInWall();
 	//attack motion
-	if (hitTime >= 0.8f && gun->GetIsInWall())
-	{
-		if ((Utils::Distance(player->GetPos(), GetPos()) < 500.f) && isInSight)
-		{
-			lookDir = Utils::Normalize(player->GetPos() - GetPos());
-			direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
-			SetState(States::Idle);
-			animator.Play((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
-			gun->SetLookDir(lookDir);
-			gun->Fire(GetPos(), false);
-			hitTime = 0.f;
-			moveTime = 0.f;
-			playerPos = player->GetPos();
-			movePos.clear();
-			FindGrid();
-			astar->AstarSearch(*isGreedObject, startPos, destPos);
-			movePos = astar->GetCoordinate();
-			attack = true;
-		}
-	}
+	lookDir = Utils::Normalize(player->GetPos() - GetPos());
+	//gun->SetLookDir(lookDir);
+	//gun->Fire(GetPos(), false);
+	//hitTime = 0.f;
+	timer = moveTime;
+	playerPos = player->GetPos();
+	movePos.clear();
+	FindGrid();
+	astar->AstarSearch(*isGreedObject, startPos, destPos);
+	movePos = astar->GetCoordinate();
+	SetState(States::Move);
+	//if (hitTime >= 0.8f )//&& gun->GetIsInWall())
+	//{
+	//	if (moveTime <= 0)
+	//	{
+	//		lookDir = Utils::Normalize(player->GetPos() - GetPos());
+	//		//gun->SetLookDir(lookDir);
+	//		//gun->Fire(GetPos(), false);
+	//		hitTime = 0.f;
+	//		moveTime = stopTime;
+	//		playerPos = player->GetPos();
+	//		movePos.clear();
+	//		FindGrid();
+	//		astar->AstarSearch(*isGreedObject, startPos, destPos);
+	//		movePos = astar->GetCoordinate();
+	//		SetState(States::Move);
+	//	}
+	//}
 	//cout << movePos.empty() << endl;
 
-	if ((!movePos.empty() && moveTime < 10.f && (Utils::Distance(player->GetPos(), GetPos()) > 500.f) || !isInSight) || isHit)
+	/*if ((!movePos.empty()) && moveTime >= 0)
 	{
 		SetState(States::Move);
-		
-		//direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 	}
 	else
 	{
-		//SetState(States::Idle);
-		isHit = false;
-		isSearch = false;
-		attack = false;
+		movePos.clear();
+	}*/
 
-	}
 
-	//timer
-	hitTime += dt;
-	moveTime += dt;
 }
 
 void Boss::Move(float dt)
@@ -370,9 +387,7 @@ void Boss::Move(float dt)
 		//cout << "empty list1" << endl;
 		SetState(States::Idle);
 		Translate({ 0.f, 0.f });
-		isHit = false;
-		isSearch = false;
-		//patrolTime = 5.f;
+		
 		return;
 	}
 
@@ -404,6 +419,25 @@ void Boss::Move(float dt)
 	Collision();
 }
 
+void Boss::Dash(float dt)
+{
+	range -= Utils::Magnitude(lookDir * dt * speed);
+
+	if (range <= 0.f)
+	{
+		speed = maxSpeed;
+		movePos.clear();
+		isDash = false;
+		SetState(States::Idle);
+		range = dashRange;
+		//cout << "dash fin" << endl;
+	}
+	else
+	{
+		speed = dashSpeed;
+	}
+}
+
 void Boss::Collision()
 {
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
@@ -421,6 +455,23 @@ void Boss::Collision()
 			}
 		}
 	}
+}
+
+void Boss::SetDashPos()
+{
+	playerPos = player->GetPos();
+	movePos.clear();
+	
+	//1
+	//FindGrid();
+	//astar->AstarSearch(*isGreedObject, startPos, destPos);
+	//movePos = astar->GetCoordinate();
+	
+	//2
+	
+	movePos.push_back(playerPos);
+	isDash = true;
+	SetState(States::Move);
 }
 
 void Boss::FindGrid()
