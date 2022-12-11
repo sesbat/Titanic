@@ -69,6 +69,11 @@ void FileManager::LoadAll()
 	invenAllItems = info_inven_d;
 	info_inven.close();
 
+	ifstream save_box_inven("config/data/gameData/saveBox.json");
+	json info_inven_save_d = json::parse(save_box_inven);
+	saveAllItems = info_inven_save_d;
+	save_box_inven.close();
+
 	ifstream info_inven_use("config/data/gameData/invenUseInfo.json");
 	json info_inven_use_d = json::parse(info_inven_use);
 	useItemInfo = info_inven_use_d;
@@ -147,6 +152,16 @@ void FileManager::SaveInvenInfo(vector<InvenInfo> datas)
 
 	json data = invenAllItems;
 	ofstream ofs("config/data/gameData/invenInfo.json");
+	ofs << data;
+	ofs.close();
+}
+
+void FileManager::SaveSaveBoxInfo(vector<InvenInfo> datas)
+{
+	saveAllItems = datas;
+
+	json data = saveAllItems;
+	ofstream ofs("config/data/gameData/saveBox.json");
 	ofs << data;
 	ofs.close();
 }

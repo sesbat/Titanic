@@ -1034,6 +1034,18 @@ void Player::Load()
 		inven->GetPlayerInven()->AddItem(type, cnt, invenPos, invenGreedPos, path);
 	}
 
+	auto saveBoxData = FILE_MGR->GetSaveBoxInfo();
+
+	for (auto& data : saveBoxData)
+	{
+		string type = data.Type;
+		Vector2i invenPos = data.invenPos;
+		Vector2i invenGreedPos = data.invenGreedPos;
+		int cnt = data.cnt;
+		string path = data.path;
+
+		inven->GetSaveBox()->AddItem(type, cnt, invenPos, invenGreedPos, path);
+	}
 
 	auto useItemData = FILE_MGR->GetUseItemInfo();
 
@@ -1094,6 +1106,26 @@ void Player::Save()
 	}
 
 	FILE_MGR->SaveInvenInfo(saveInven);
+
+	auto nowSaveBox = inven->GetSaveBox()->GetItems();
+	vector<InvenInfo> saveBoxInven;
+	for (auto& data : *nowSaveBox)
+	{
+		if (data->GetCount() <= 0)
+			continue;
+		InvenInfo d;
+		d.Type = data->GetName();
+		d.invenPos = data->GetInvenPos();
+		d.invenGreedPos = data->GetGreedPos();
+		d.cnt = data->GetCount();
+
+		d.path = data->GetPath();
+
+		saveBoxInven.push_back(d);
+	}
+
+	FILE_MGR->SaveSaveBoxInfo(saveBoxInven);
+
 
 	auto nowUseItems = inven->GetUseItems();
 	vector<InvneUseInfo> saveUseItem;

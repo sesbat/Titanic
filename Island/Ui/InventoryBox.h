@@ -20,6 +20,14 @@ private:
 	InvenItem* nowDrag;
 	Inventory* inven;
 	InventoryBox* pairInven;
+
+	vector<string> saveBox_overlap_info
+	{
+		"Armor-1",
+		"Shotgun",
+		"Rifle",
+		"Sniper"
+	};
 public:
 	InventoryBox(UiMgr* mgr, Inventory* inven, Vector2i startPos);
 	virtual ~InventoryBox();
@@ -34,6 +42,8 @@ public:
 	InvenItem* GetNowDrag() { return nowDrag; }
 	InvenGreed* GetGreed(int i, int j);
 	void MoveItem(int i, int j);
+	bool CheckSaveBoxOverlap();
+	void MoveSaveBox(int i, int j);
 	void MoveItem(InvenItem* item, Vector2i move_pos);
 	void ReturnItem();
 	void DeleteItem(InvenItem* item);

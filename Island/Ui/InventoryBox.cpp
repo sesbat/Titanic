@@ -92,8 +92,9 @@ void InventoryBox::Update(float dt)
 				//items.push_back(item);
 				break;
 			}
-			else if (item->IsClickRight())
+			else if (name != "SaveBox" && item->IsClickRight())
 			{
+				
 				auto pos = pairInven->FindInvenPos(item->GetWidth(), item->GetHeight());
 				auto invenPos = item->GetGreedPos();
 
@@ -340,7 +341,84 @@ void InventoryBox::MoveItem(int i, int j)
 	//}
 
 	inven->MoveInvenItem(this);
+	inven->SetDrag(nullptr);
+	inven->SetPrevInven(nullptr);
+}
 
+bool InventoryBox::CheckSaveBoxOverlap()
+{
+	string now_item_name = nowDrag->GetName();
+	if (find(saveBox_overlap_info.begin(), saveBox_overlap_info.end(), now_item_name) == saveBox_overlap_info.end())
+		return false;
+	for (auto& i : items)
+	{
+		if (i->GetName() == nowDrag->GetName())
+			return true;
+	}
+	return false;
+}
+void InventoryBox::MoveSaveBox(int i, int j)
+{
+	if (nowDrag->GetCount() <= 99)
+	{
+		nowDrag->SetInvenPos({ startPos.x + i * 60 + padding * i , startPos.y + j * 60 + padding * j },
+			{ i, j });
+
+		int w = nowDrag->GetWidth();
+		int h = nowDrag->GetHeight();
+		for (int x = 0; x < w; x++)
+		{
+			for (int y = 0; y < h; y++)
+			{
+				allPos[y + j][x + i] = true;
+				itemGreed[y + j][x + i]->SetState(true, nowDrag);
+			}
+		}
+	}
+	else
+	{
+		int n = nowDrag->GetCount() / 99;
+		auto allCount = nowDrag->GetCount() - 99;
+		auto prevDragPos = nowDrag->GetGreedPos();
+		nowDrag->SetCount(99);
+
+		int w = nowDrag->GetWidth();
+		int h = nowDrag->GetHeight();
+		for (int x = 0; x < w; x++)
+		{
+			for (int y = 0; y < h; y++)
+			{
+				allPos[y + j][x + i] = true;
+				itemGreed[y + j][x + i]->SetState(true, nowDrag);
+			}
+		}
+
+		nowDrag->SetInvenPos({ startPos.x + i * 60 + padding * i , startPos.y + j * 60 + padding * j },
+			{ i, j });
+		inven->MoveInvenItem(this);
+
+		for (int _i = 0; _i < n; _i++)
+		{
+			auto findPos = FindInvenPos(nowDrag->GetWidth(), nowDrag->GetHeight());
+			if (findPos == Vector2i{ -1,-1 })
+			{
+				inven->GetPrevInven()->AddItem(nowDrag->GetName(), allCount, Vector2i{ prevDragPos.y, prevDragPos.x });
+				break;
+			}
+
+			int nowCount = allCount > 99 ? 99 : allCount;
+			if (nowCount == 0)
+				break;
+			AddItem(nowDrag->GetName(), nowCount, findPos);
+			allCount -= 99;
+		}
+		inven->SetDrag(nullptr);
+		inven->SetPrevInven(nullptr);
+		return;
+	}
+
+
+	inven->MoveInvenItem(this);
 	inven->SetDrag(nullptr);
 	inven->SetPrevInven(nullptr);
 }

@@ -24,6 +24,7 @@ protected:
 	InventoryBox* initRightInven;
 	InventoryBox* rightInven;
 	InventoryBox* prevInven;
+	InventoryBox* saveBox;
 
 	Button* invenItemGreed[(int)InvenIdx::Count];
 	vector<InvenItem*> myUseItems;
@@ -55,6 +56,7 @@ public:
 	void ResetRightInven();
 	InvenItem* GetUsedItem(int i);
 	InventoryBox* GetPlayerInven() { return myInven; }
+	InventoryBox* GetSaveBox() { return saveBox; }
 	void AddDeleteObj(InvenItem* obj);
 	void AddDeleteItem(InvenItem* item);
 	void SetUserItem(InvneUseInfo data);
@@ -62,4 +64,5 @@ public:
 	int GetUseIdx() { return useIdx; }
 
 	TextObject* GetMoneyTxt() { return txtMoney; }
+
 };

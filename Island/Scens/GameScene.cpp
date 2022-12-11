@@ -352,6 +352,8 @@ void GameScene::Update(float dt)
     }
     if (!player->GetIsAlive())
     {
+        FILE_MGR->SaveInvenInfo(vector<InvenInfo>());
+        FILE_MGR->SaveUseItemInfo(vector<InvneUseInfo>());
         SCENE_MGR->ChangeScene(Scenes::Ready);
         return;
     }
