@@ -50,18 +50,21 @@ void Boss::Init(Player* player)
 	this->player = player;
 
 	hp = maxHp;
+	type = Type::Big;
+
 	switch (type)
 	{
 	case Boss::Type::Big:
-		//animation
-		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyIdle"));
-		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyIdleLeft"));
-		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMove"));
-		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("EnemyMoveLeft"));
 		animator.SetTarget(&sprite);
-		gun = new Gun(GunType::Shotgun, User::Enemy);
+		//animation
+		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigIdle"));
+		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigIdleLeft"));
+		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigMove"));
+		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigMoveLeft"));
+		
+		//gun = new Gun(GunType::Shotgun, User::Enemy);
 		//gun->SetEnemy(this);
-		gun->Init();
+		//gun->Init();
 		break;
 	case Boss::Type::Kiba:
 		break;
@@ -84,7 +87,6 @@ void Boss::Init(Player* player)
 	gun->Init();*/
 
 	
-
 	//health bar
 	healthBar.setFillColor(Color::Green);
 	healthBar.setOutlineColor(Color::Black);
@@ -97,8 +99,9 @@ void Boss::Init(Player* player)
 
 	astar = new Astar();
 
-	bottomPos = bottom->GetHitBottomPos();
+	//bottomPos = bottom->GetHitBottomPos();
 	movePos.clear();
+	SetState(States::Idle);
 }
 
 void Boss::SetState(States newState)
@@ -112,10 +115,10 @@ void Boss::SetState(States newState)
 	switch (currState)
 	{
 	case Boss::States::Idle:
-		animator.Play((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
+		animator.Play((direction.x > 0.f) ? "BossBigIdle" : "BossBigIdleLeft");
 		break;
 	case Boss::States::Move:
-		animator.Play((direction.x > 0.f) ? "EnemyMove" : "EnemyMoveLeft");
+		animator.Play((direction.x > 0.f) ? "BossBigMove" : "BossBigMoveLeft");
 		break;
 	case Boss::States::Dead:
 		//((GameScene*)(SCENE_MGR->GetCurrScene()))->SetDeadEnemy(items, position, this);
@@ -132,21 +135,21 @@ Boss::States Boss::GetState()
 
 void Boss::Update(float dt)
 {
-	if (!enabled || !IsInView())
-		return;
+	/*if (!enabled || !IsInView())
+		return;*/
 
 	HitBoxObject::Update(dt);
 
 	//ready
 	//if got shot from range will be problem
 	//need change
-	if (isStart == false && (Utils::Distance(player->GetPos(), GetPos()) < 1000.f))
+	/*if (isStart == false && (Utils::Distance(player->GetPos(), GetPos()) < 1000.f))
 	{
 		isStart = true;
-	}
+	}*/
 
 	//start fight
-	if (isStart)
+	if (!isStart)
 	{
 		if (Utils::Distance(player->GetPos(), GetPos()) < 1000.f)
 		{
@@ -170,22 +173,14 @@ void Boss::Update(float dt)
 		//enemy attack
 		if (currState != States::Dead)
 		{
-			/*if (patrolTime <= 0.f && !attack)
-			{
-				PatrolPattern(dt);
-				patrolTime = 5.f;
-			}
-			if (currState == States::Idle)
-			{
-				patrolTime -= dt;
-			}*/
-			AttackPattern(dt);
+			
+			//AttackPattern(dt);
 		}
 
 		//move
 		if (currState == States::Move)
 		{
-			Move(dt);
+			//Move(dt);
 
 		}
 
@@ -196,10 +191,20 @@ void Boss::Update(float dt)
 		animator.Update(dt);
 
 		//position
-		bottomPos = bottom->GetHitBottomPos();
+		//bottomPos = bottom->GetHitBottomPos();
 
 		//gun
-		gun->Update(dt);
+		//gun->Update(dt);
+
+		//dev
+		if (InputMgr::GetKeyDown(Keyboard::Z))
+		{
+			SetState(States::Move);
+		}
+		if (InputMgr::GetKeyDown(Keyboard::X))
+		{
+			SetState(States::Idle);
+		}
 	}
 
 	
@@ -208,30 +213,22 @@ void Boss::Update(float dt)
 
 void Boss::Draw(RenderWindow& window)
 {
-	if (!enabled || !IsInView())
-		return;
+	/*if (!enabled || !IsInView())
+		return;*/
 	if (GetActive())
 	{
 		HitBoxObject::Draw(window);
 		window.draw(healthBar);
 	}
-	if (isHitBox)
+	/*if (isHitBox)
 	{
 		for (auto& hit : hitboxs)
 		{
 			hit->Draw(window);
 		}
-	}
+	}*/
 	//gun->Draw(window);
 
-	//dev
-	VertexArray lines(LineStrip, 2);
-	if (isInSight)
-	{
-		lines[0].position = { GetPos() };
-		lines[1].position = { player->GetPos() };
-		window.draw(lines);
-	}
 }
 
 void Boss::OnCompleteDead()
