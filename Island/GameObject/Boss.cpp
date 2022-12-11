@@ -120,6 +120,7 @@ void Boss::SetState(States newState)
 		animator.Play((direction.x > 0.f) ? "BossBigIdle" : "BossBigIdleLeft");
 		break;
 	case Boss::States::Move:
+	case Boss::States::Dash:
 		animator.Play((direction.x > 0.f) ? "BossBigMove" : "BossBigMoveLeft");
 		break;
 	case Boss::States::Dead:
@@ -185,7 +186,7 @@ void Boss::Update(float dt)
 			}
 			
 		}
-		if (isDash)
+		if (isDash&& currState == States::Dash)
 		{
 			Dash(dt);
 		}
@@ -422,7 +423,6 @@ void Boss::Move(float dt)
 void Boss::Dash(float dt)
 {
 	range -= Utils::Magnitude(lookDir * dt * speed);
-
 	if (range <= 0.f)
 	{
 		speed = maxSpeed;
@@ -436,6 +436,8 @@ void Boss::Dash(float dt)
 	{
 		speed = dashSpeed;
 	}
+	
+	Translate(lookDir * dt * speed);
 }
 
 void Boss::Collision()
@@ -471,7 +473,7 @@ void Boss::SetDashPos()
 	
 	movePos.push_back(playerPos);
 	isDash = true;
-	SetState(States::Move);
+	SetState(States::Dash);
 }
 
 void Boss::FindGrid()

@@ -20,6 +20,7 @@ public:
 		None = -1,
 		Idle,
 		Move,
+		Dash,
 		Dead,
 	};
 	enum class Type
