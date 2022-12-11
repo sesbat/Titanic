@@ -23,13 +23,12 @@ Player::Player()
 	: currState(States::None),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	 isDash(false) , isAlive(true), isMove(true), ammo(0),
+	 isDash(false) , isAlive(true), isMove(true), 
 	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f), 
 	reloadDelaySG(1.5f), reloadDelayRF(1.f), reloadDelaySN(3.f),
 	isReloading(false), soundDelay(0.5f)
 {
 	auto stat = FILE_MGR->GetUserStat();
-
 
 	dashSpeed = stat.dashSpeed;
 	maxHp = stat.maxHp;
@@ -39,7 +38,6 @@ Player::Player()
 	maxEnergyGuage = stat.maxEnergyGuage;
 	maxHungerGuage = stat.maxHungerGuage;
 	maxRadiation = stat.maxRadiation;
-	maxSpeed = stat.maxSpeed;
 	maxStamina = stat.maxStamina;
 	maxThirstGuage = stat.maxThirstGuage;
 	radDebuffLevel = stat.radDebuffLevel;
@@ -47,12 +45,11 @@ Player::Player()
 	radDebuffScale = 1;
 	radDebuffHPDelay = stat.radDebuffHPDelay;
 
-	
 	init_radiationDelay = radiationDelay = stat.radiationDelay;
-	speed = stat.speed;
+	initSpeed = speed = stat.speed;
 	staminaDownSpeed = stat.staminaDownSpeed;
 	staminaUpSpeed = stat.staminaUpSpeed;
-	init_thirstDelay = thirstDelay = stat.thirstDelay;
+	init_thirstDelay = thirstDelay = stat.thirstDelay; 
 
 	hideDelay = 1.f;
 }
@@ -287,6 +284,7 @@ void Player::Update(float dt)
 				gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
 				SetAmmoType();
 			}
+			lastWephon = 0;
 		}
 		if (InputMgr::GetKeyDown(Keyboard::Num2))
 		{
@@ -302,6 +300,7 @@ void Player::Update(float dt)
 				gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
 				SetAmmoType();
 			}
+			lastWephon = 1;
 		}
 	}
 	
@@ -331,7 +330,7 @@ void Player::Update(float dt)
 	}
 	if (InputMgr::GetKeyUp(Keyboard::LShift))
 	{
-		speed = maxSpeed;
+		speed = initSpeed;
 		isDash = false;
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Tab) || InputMgr::GetKeyDown(Keyboard::Escape))
@@ -388,7 +387,7 @@ void Player::Update(float dt)
 		if (stamina < 0.f)
 		{
 			stamina = 0.f;
-			speed = maxSpeed;
+			speed = initSpeed;
 		}
 	}
 	else
@@ -1012,6 +1011,12 @@ void Player::Load()
 	thirstGuage = playerData.thirstGuage;
 	energyGuage = playerData.energyGuage;
 	radGuage = playerData.radGuage;
+	clearMaps = playerData.clearMaps;
+	ammo = playerData.ammo;
+	sgAmmo = playerData.sgAmmo;
+	snAmmo = playerData.snAmmo;
+	rfAmmo = playerData.rfAmmo;
+	lastWephon = playerData.lastWephon;
 	
 	money = playerData.money;
 	
@@ -1037,6 +1042,20 @@ void Player::Load()
 		if (data.useIdx != -1)
 			inven->SetUserItem(data);
 	}
+
+
+	auto myGun = inven->GetUsedItem(lastWephon);
+
+	if (myGun == nullptr)
+	{
+		gun->SetGunType(GunType::None);
+		ammo = 0;
+	}
+	else
+	{
+		gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+		SetAmmoType();
+	}
 }
 
 void Player::Save()
@@ -1048,6 +1067,12 @@ void Player::Save()
 	nowInfo.energyGuage = energyGuage;
 	nowInfo.money = money;
 	nowInfo.radGuage = radGuage;
+	nowInfo.clearMaps = clearMaps;
+	nowInfo.ammo = ammo;
+	nowInfo.sgAmmo = sgAmmo;
+	nowInfo.snAmmo = snAmmo;
+	nowInfo.rfAmmo = rfAmmo;
+	nowInfo.lastWephon = lastWephon;
 
 	FILE_MGR->SaveUserInfo(nowInfo);
 
@@ -1152,4 +1177,12 @@ void Player::HideUpdate(float dt)
 void Player::HideStop()
 { 
 	isHitBullet = true; hideDelayTimer = 0.f; isHide = false; 
+}
+
+void Player::ClearMap(string name)
+{
+	if (find(clearMaps.begin(), clearMaps.end(), name) == clearMaps.end())
+	{
+		clearMaps.push_back(name);
+	}
 }

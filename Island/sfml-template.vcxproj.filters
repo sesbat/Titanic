@@ -70,6 +70,7 @@
     <ClCompile Include="GameObject\Ment.cpp" />
     <ClCompile Include="Ui\Shop\Shop.cpp" />
     <ClCompile Include="Ui\BoolWindowBox.cpp" />
+    <ClCompile Include="Ui\ConnectWindowBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\OBB.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="GameObject\Ment.h" />
     <ClInclude Include="Ui\Shop\Shop.h" />
     <ClInclude Include="Ui\BoolWindowBox.h" />
+    <ClInclude Include="Ui\ConnectWindowBox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

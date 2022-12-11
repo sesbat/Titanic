@@ -8,6 +8,7 @@
 #include "../../Framework/InputMgr.h"
 #include "../GameObject/SpriteObject.h"
 #include "../Ui/AddItemBox.h"
+#include "../Ui/ConnectWindowBox.h"
 #include <algorithm>
 
 MapEditor::MapEditor()
@@ -150,13 +151,13 @@ void MapEditor::Update(float dt)
 	if (InputMgr::GetMouseWheelUp())
 	{
 		if (!((EditorMapUiMgr*)uiMgr)->GetItemBox()->GetActive())
-			if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
+			if (!((EditorMapUiMgr*)uiMgr)->LoadActive() && !((EditorMapUiMgr*)uiMgr)->ConnectActive())
 				SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() - (Vector2f{ 19.2,10.8 } *10.f));
 	}
 	if (InputMgr::GetMouseWheelDown())
 	{
 		if (!((EditorMapUiMgr*)uiMgr)->GetItemBox()->GetActive())
-			if (!((EditorMapUiMgr*)uiMgr)->LoadActive())
+			if (!((EditorMapUiMgr*)uiMgr)->LoadActive() && !((EditorMapUiMgr*)uiMgr)->ConnectActive())
 				SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *10.f));
 	}
 
@@ -333,6 +334,7 @@ void MapEditor::Save()
 		return;
 
 	FILE_MGR->SaveMap(saveObjs, path);
+	FILE_MGR->SaveConnecnt(path,((EditorMapUiMgr*)uiMgr)->GetConnecntWindow()->GetConnectMaps());
 	((EditorMapUiMgr*)uiMgr)->SetLoadInit();
 }
 
@@ -410,6 +412,9 @@ void MapEditor::Load(string path)
 	}
 
 	((EditorMapUiMgr*)uiMgr)->SetLoadPath(path);
+	((EditorMapUiMgr*)uiMgr)->GetConnecntWindow()->Reset(path);
+
+
 }
 
 bool MapEditor::DrawBox(int i, int j)

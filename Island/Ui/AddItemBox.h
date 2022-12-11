@@ -11,6 +11,8 @@ struct AddItem
 	TextObject* text;
 	Button* addCnt;
 	Button* minCnt;
+	Button* add10Cnt;
+	Button* min10Cnt;
 
 	AddItem(UiMgr* mgr);
 	~AddItem();

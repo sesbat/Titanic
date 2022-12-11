@@ -42,6 +42,8 @@ Gun::~Gun()
 
 void Gun::Init()
 {
+	gunsInfo = FILE_MGR->GetGunInfoAll();
+
 	bulletPool.OnCreate = OnCreateBullet;
 	bulletPool.Init();
 
@@ -67,10 +69,10 @@ void Gun::Init()
 
 	scene = SCENE_MGR->GetCurrScene();
 
-	gunNameType["GUN1"] = GunType::Sniper;
-	gunNameType["GUN2"] = GunType::Shotgun;
-	gunNameType["GUN3"] = GunType::Rifle;
-	gunNameType["GUN4"] = GunType::Sniper;
+	gunNameType["Shotgun"] = GunType::Sniper;
+	gunNameType["Rifle"] = GunType::Shotgun;
+	gunNameType["Sniper"] = GunType::Rifle;
+	gunNameType["Scop_sniper"] = GunType::Sniper;
 	
 }
 
@@ -188,61 +190,49 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 
 		case GunType::Shotgun:
 		{
+			auto data = gunsInfo["Shotgun"];
 			Vector2f startPos;
 			startPos = transform.transformPoint(80, 0);
-			bulletSpeed = 2000;
-			range = 800;
-			shootDelay = 0.3f;
+			bulletSpeed = data.speed;
+			range = data.range;
+			shootDelay = data.shootDelay;
 
-			Bullet* bullet = bulletPool.Get();
-			Bullet* bullet1 = bulletPool.Get();
-			Bullet* bullet2 = bulletPool.Get();
-			Bullet* bullet3 = bulletPool.Get();
-			Bullet* bullet4 = bulletPool.Get();
-			//bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
-			//bullet1->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
-			//bullet2->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
-			//bullet3->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
-			//bullet4->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
+			int cnt = data.cnt;
+			float dir = data.shotgunDir;
+			int harfCnt = cnt / 2;
 
-			float temp = atan2(lookDir.y, lookDir.x);
-			float F1 = temp + M_PI / 12;
-			Vector2f randomShot1 = { cos(F1),sin(F1) };
-			float F2 = temp - M_PI / 12;
-			Vector2f randomShot2 = { cos(F2),sin(F2) };
-			float F3 = temp + (M_PI / 12) * 2;
-			Vector2f randomShot3 = { cos(F3),sin(F3) };
-			float F4 = temp - (M_PI / 12) * 2;
-			Vector2f randomShot4 = { cos(F4),sin(F4) };
+			for (int i = 0; i < cnt/2; i++)
+			{
+				for (int j = 0; j < 2; j++)
+				{
+					Bullet* bullet = bulletPool.Get();
+					float temp = atan2(lookDir.y, lookDir.x);
+					float F1 = j == 0 ? temp + ((M_PI / data.shotgunDir) * (i + 1)) : temp - ((M_PI / data.shotgunDir) * (i + 1));
+					Vector2f randomShot = { cos(F1),sin(F1) };
+					bullet->SetOrigin(Origins::MC);
+					bullet->SetDamage(damage);
+					bullet->Fire(startPos, randomShot, bulletSpeed, range, isplayer);
+				}
+			}
+			if (cnt % 2 == 1)
+			{
+				Bullet* bullet = bulletPool.Get();
+				bullet->SetOrigin(Origins::MC);
+				bullet->SetDamage(damage);
+				bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
+			}
+			SOUND_MGR->Play(data.soundPath);
 
-			bullet->SetOrigin(Origins::MC);
-			bullet1->SetOrigin(Origins::MC);
-			bullet2->SetOrigin(Origins::MC);
-			bullet3->SetOrigin(Origins::MC);
-			bullet4->SetOrigin(Origins::MC);
-
-			bullet->SetDamage(damage);
-			bullet1->SetDamage(damage);
-			bullet2->SetDamage(damage);
-			bullet3->SetDamage(damage);
-			bullet4->SetDamage(damage);
-
-			SOUND_MGR->Play("sounds/shotgun.wav");
-
-			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
-			bullet1->Fire(startPos, randomShot1, bulletSpeed, range, isplayer);
-			bullet2->Fire(startPos, randomShot2, bulletSpeed, range, isplayer);
-			bullet3->Fire(startPos, randomShot3, bulletSpeed, range, isplayer);
-			bullet4->Fire(startPos, randomShot4, bulletSpeed, range, isplayer);
 		}
 		break;
 		case GunType::Rifle:
 		{
+			auto data = gunsInfo["Rifle"];
 			Vector2f startPos;
 			startPos = transform.transformPoint(80, 0);
-			bulletSpeed = 2000;
-			range = 1000;
-			shootDelay = 0.1f;
+			bulletSpeed = data.speed;
+			range = data.range;
+			shootDelay = data.shootDelay;
 
 			Bullet* bullet = bulletPool.Get();
 			//bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
@@ -250,26 +240,26 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 
 			bullet->SetDamage(damage);
 
-			SOUND_MGR->Play("sounds/rifle.wav");
+			SOUND_MGR->Play(data.soundPath);
 
 			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 		}
 		break;
 		case GunType::Sniper:
 		{
-
+			auto data = gunsInfo["Sniper"];
 			Vector2f startPos;
 			startPos = transform.transformPoint(80, 0);
-			bulletSpeed = 3000;
-			range = 2000;
-			shootDelay = 1.f;
+			bulletSpeed = data.speed;
+			range = data.range;
+			shootDelay = data.shootDelay;
 
 			Bullet* bullet = bulletPool.Get();
 			//bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniperbullet.png"));
 			bullet->SetOrigin(Origins::MR);
 			bullet->SetDamage(damage);
 			
-			SOUND_MGR->Play("sounds/sniper.wav");
+			SOUND_MGR->Play(data.soundPath);
 			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 		}
 		break;
@@ -290,19 +280,19 @@ void Gun::SetGunType(GunType type)
 	case GunType::Shotgun:
 		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgun.png"));
-		damage = 300;
+		damage = gunsInfo["Shotgun"].damage;
 		SetOrigin(Origins::MC);
 		break;
 	case GunType::Rifle:
 		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/rifel.png"));
-		damage = 200;
+		damage = gunsInfo["Rifle"].damage;
 		SetOrigin(Origins::MC);
 		break;
 	case GunType::Sniper:
 		SetActive(true);
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/sniper.png"));
-		damage = 500;
+		damage = gunsInfo["Sniper"].damage;
 		SetOrigin(Origins::MC);
 		break;
 	case GunType::TypeCount:

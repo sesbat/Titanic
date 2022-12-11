@@ -203,18 +203,37 @@ void ReadyUiMgr::Init()
 
 	auto& mapData = FILE_MGR->GetAllMap();
 	float tmpY = 300.f;
+
+	auto playerClearMaps = player->GetClearMpas();
+	auto connecntMaps = FILE_MGR->GetConnecntInfoAll();
+
 	for (auto& data : mapData)
 	{
 		if (data.first == "READYSCENE")
 			continue;
 		auto map = new Button(this);
-		map->SetClkColor(true);
 		map->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 50, Color::White
 			,data.first, true);
 		map->SetPos({ 400,tmpY });
 		tmpY += 50.f;
 		map->SetName(data.first);
 		maps.push_back(map);
+
+		auto& needMaps = connecntMaps[data.first];
+		bool isLock = false;
+
+		for (auto& find_map : needMaps)
+		{
+			if (find(playerClearMaps.begin(), playerClearMaps.end(), find_map) == playerClearMaps.end())
+			{
+				isLock = true;
+				break;
+			}
+		}
+
+		map->SetClkColor(!isLock);
+		map->GetTextObj()->SetColor(isLock ? Color::Red : Color::White);
+		
 	}
 
 	for (auto& map : maps)
@@ -290,7 +309,7 @@ void ReadyUiMgr::Update(float dt)
 		{
 			map->SetActive(true);
 
-			if (map->IsUp())
+			if (map->GetIsClickColor() && map->IsUp())
 			{
 				SCENE_MGR->ChangeScene(Scenes::GameScene, map->GetName());
 				return;

@@ -12,6 +12,7 @@
 #include "../Ui/AddItemBox.h"
 #include "SaveWindowBox.h"
 #include "LoadWindowBox.h"
+#include "ConnectWindowBox.h"
 #include "../GameObject/TextObject.h"
 
 EditorMapUiMgr::EditorMapUiMgr(Scene* scene)
@@ -69,21 +70,30 @@ void EditorMapUiMgr::Init()
 	eraseBtn->SetPos({ 50,190 });
 	uiObjList[0].push_back(eraseBtn);
 
-	exitBtn = new Button(this);
-	exitBtn->SetClkColor(true);
-	exitBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		75, Color::White, "EXIT", true);
-	exitBtn->SetOrigin(Origins::TL);
-	exitBtn->SetPos({ 50,260 });
-	uiObjList[0].push_back(exitBtn);
-
 	boxBtn = new Button(this);
 	boxBtn->SetClkColor(false);
 	boxBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		75, Color::White, "Box", true);
 	boxBtn->SetOrigin(Origins::TL);
-	boxBtn->SetPos({ 50,330 });
+	boxBtn->SetPos({ 50,260 });
 	uiObjList[0].push_back(boxBtn);
+
+	connecntBtn = new Button(this);
+	connecntBtn->SetClkColor(true);
+	connecntBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		75, Color::White, "Connect", true);
+	connecntBtn->SetOrigin(Origins::TL);
+	connecntBtn->SetPos({ 50,330 });
+	uiObjList[0].push_back(connecntBtn);
+
+	exitBtn = new Button(this);
+	exitBtn->SetClkColor(true);
+	exitBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		75, Color::White, "EXIT", true);
+	exitBtn->SetOrigin(Origins::TL);
+	exitBtn->SetPos({ 50,800 });
+	uiObjList[0].push_back(exitBtn);
+
 
 
 	selects = { "TILE","TREE","BUSH","STONE","BLOCK","RADIATION","PLAYER","ENEMY","BOX","ANOTHER"};
@@ -130,6 +140,11 @@ void EditorMapUiMgr::Init()
 	loadWindow->Init();
 	uiObjList[1].push_back(loadWindow);
 
+	connectWindow = new ConnectWindowBox(this);
+	connectWindow->SetPos({ 350,50 });
+	connectWindow->Init();
+	uiObjList[1].push_back(connectWindow);
+
 	itemBox = new AddItemBox(this);
 	itemBox->Init();
 	uiObjList[1].push_back(itemBox);
@@ -153,6 +168,7 @@ void EditorMapUiMgr::Update(float dt)
 		saveWindow->Update(dt);
 		return;
 	}
+
 	if (loadWindow->GetActive())
 	{
 		loadBtn->Update(dt);
@@ -162,6 +178,18 @@ void EditorMapUiMgr::Update(float dt)
 			((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeletDraw();
 		}
 		loadWindow->Update(dt);
+		return;
+	}
+
+	if (connectWindow->GetActive())
+	{
+		connecntBtn->Update(dt);
+		if (connecntBtn->IsUp())
+		{
+			connectWindow->SetActive(!connectWindow->GetActive());
+			((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeletDraw();
+		}
+		connectWindow->Update(dt);
 		return;
 	}
 
@@ -237,6 +265,11 @@ void EditorMapUiMgr::Update(float dt)
 	if (loadBtn->IsUp())
 	{
 		loadWindow->SetActive(!loadWindow->GetActive());
+		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeletDraw();
+	}
+	if (connecntBtn->IsUp())
+	{
+		connectWindow->SetActive(!connectWindow->GetActive());
 		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeletDraw();
 	}
 
@@ -371,6 +404,10 @@ bool EditorMapUiMgr::IsLoad()
 bool EditorMapUiMgr::LoadActive()
 {
 	return loadWindow->GetActive();
+}
+bool EditorMapUiMgr::ConnectActive()
+{
+	return connectWindow->GetActive();
 }
 
 string EditorMapUiMgr::loadFile()

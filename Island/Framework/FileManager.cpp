@@ -8,6 +8,7 @@
 
 FileManager::FileManager()
 {
+
 }
 FileManager::~FileManager()
 {
@@ -40,7 +41,7 @@ void FileManager::LoadAll()
 
 	ifstream item_info("config/data/allItems.json");
 	json item_info_d = json::parse(item_info);
-	itemInfos = item_info_d;
+	itemsInfo = item_info_d;
 	item_info.close();
 
 
@@ -73,20 +74,20 @@ void FileManager::LoadAll()
 	useItemInfo = info_inven_use_d;
 	info_inven_use.close();
 
-	ifstream info_shotGun("config/data/gunData/shotgunstat.json");
-	json info_shotGun_d = json::parse(info_shotGun);
-	shotgunInfo = info_shotGun_d;
-	info_shotGun.close();
+	string guninfo_paths[] =
+	{
+		"config/data/gunData/shotgunstat.json",
+		"config/data/gunData/riflestat.json",
+		"config/data/gunData/sniperstat.json"
+	};
 
-	ifstream info_rifle("config/data/gunData/riflestat.json");
-	json info_rifle_d = json::parse(info_rifle);
-	rifleInfo = info_rifle_d;
-	info_rifle.close();
-
-	ifstream info_sniper("config/data/gunData/sniperstat.json");
-	json info_sniper_d = json::parse(info_sniper);
-	sniperInfo = info_sniper_d;
-	info_sniper.close();
+	for (auto path : guninfo_paths)
+	{
+		ifstream ios_gun(path);
+		json gun_info = json::parse(ios_gun);
+		ios_gun.close();
+		gunsInfo[gun_info["name"]] = gun_info;
+	}
 
 	ifstream info_user_stat("config/data/gameData/userStat.json");
 	json info_user_stat_d = json::parse(info_user_stat);
@@ -98,6 +99,15 @@ void FileManager::LoadAll()
 	itemEffect = effect_item_d;
 	effect_item.close();
 
+	ifstream connect("config/data/mapConnecnt.json");
+	json connect_d = json::parse(connect);
+	connecntMaps = connect_d;
+	connect.close();
+
+	ifstream enemy_info("config/data/Enemy/EnemyInfo.json");
+	json enemy_d = json::parse(enemy_info);
+	enemysInfo = enemy_d;
+	enemy_info.close();
 }
 
 const vector<ObjectData>& FileManager::GetMap(string name)
@@ -149,5 +159,20 @@ void FileManager::SaveUseItemInfo(vector<InvneUseInfo> datas)
 	ofstream ofs("config/data/gameData/invenUseInfo.json");
 	ofs << data;
 	ofs.close();
+}
+
+void FileManager::SaveConnecnt(string name, vector<string> need)
+{
+	connecntMaps[name] = need;
+
+	json data = connecntMaps;
+	ofstream ofs("config/data/mapConnecnt.json");
+	ofs << data;
+	ofs.close();
+}
+
+const map<string, vector<string>>& FileManager::GetConnecntInfoAll()
+{
+	return connecntMaps; 
 }
 

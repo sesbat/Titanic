@@ -84,8 +84,14 @@ namespace ns {
 		float energyGuage;
 		float radGuage;
 		int money;
+		int ammo;
+		int sgAmmo;		//remaining ammo
+		int rfAmmo;
+		int snAmmo;
+		int lastWephon;
+		vector<string> clearMaps;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money, ammo, sgAmmo, rfAmmo, snAmmo, lastWephon, clearMaps)
 	};
 
 	struct InvenInfo
@@ -117,7 +123,6 @@ namespace ns {
 		int maxHp;
 		float speed;
 		float dashSpeed;
-		float maxSpeed;
 
 		float staminaUpSpeed;
 		float staminaDownSpeed;
@@ -137,7 +142,7 @@ namespace ns {
 		float radDebuffScale;
 		float radDebuffHPDelay;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserStat, name, maxHp, speed, dashSpeed, maxSpeed,
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserStat, name, maxHp, speed, dashSpeed,
 			staminaUpSpeed, staminaDownSpeed, maxStamina, maxHungerGuage, maxThirstGuage, maxEnergyGuage, maxRadiation,
 			hungerDelay, thirstDelay, energyDelay, radiationDelay, radDebuffLevel, radDebuffScale, radDebuffHPDelay)
 	};
@@ -153,11 +158,14 @@ namespace ns {
 		int magazine;
 		sf::Vector2f randDir;
 		float zoomRange;
+		float shootDelay;
+		float shotgunDir;
+		string soundPath;
 
 		int cnt;
 		
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GunStat,
-			name, damage, speed, range, reloadDelay, magazine, randDir, zoomRange, cnt)
+			name, damage, speed, range, reloadDelay, magazine, randDir, zoomRange, shootDelay, shotgunDir, soundPath, cnt)
 	};
 
 	struct ItemEffect
@@ -171,4 +179,23 @@ namespace ns {
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemEffect,
 			name, hp, hungerEffect, thirstEffect, energyEffect, radiationEffect)
+	};
+
+	struct EnemyInfo
+	{
+		int gun;
+		
+		float speed;
+		int maxHp;
+		string type;
+
+		float moveTime;
+		float hitTime;
+		float patrolTime;
+		float hideDelay;
+
+		int patrolBlock;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(EnemyInfo,
+			gun, speed, maxHp, type, moveTime, hitTime, patrolTime, hideDelay, patrolBlock)
 	};

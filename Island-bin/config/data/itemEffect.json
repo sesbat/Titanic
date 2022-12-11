@@ -1,42 +1,42 @@
 {
-    "Apple": {
-        "energyEffect": 0.0,
-        "hp": 0.0,
-        "hungerEffect": 10.0,
-        "name": "",
-        "radiationEffect": 0.0,
-        "thirstEffect": 20.0
-    },
-    "EnergyDrink": {
-        "energyEffect": 20.0,
-        "hp": 0.0,
-        "hungerEffect": 0.0,
-        "name": "",
-        "radiationEffect": 0.0,
-        "thirstEffect": 10.0
-    },
-    "Water": {
-        "energyEffect": 5.0,
-        "hp": 0.0,
-        "hungerEffect": 0.0,
-        "name": "",
-        "radiationEffect": 0.0,
-        "thirstEffect": 20.0
-    },
-    "Meat": {
-        "energyEffect": 10.0,
-        "hp": 0.0,
-        "hungerEffect": 30.0,
-        "name": "",
-        "radiationEffect": 0.0,
-        "thirstEffect": 0.0
-    },
-    "Recoverykit": {
-        "energyEffect": 0.0,
-        "hp": 250.0,
-        "hungerEffect": 0.0,
-        "name": "",
-        "radiationEffect": -10.0,
-        "thirstEffect": 0.0
-    }
+  "Apple": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 10.0,
+    "name": "Apple",
+    "radiationEffect": 0.0,
+    "thirstEffect": 20.0
+  },
+  "EnergyDrink": {
+    "energyEffect": 20.0,
+    "hp": 0.0,
+    "hungerEffect": 0.0,
+    "name": "EnergyDrink",
+    "radiationEffect": 0.0,
+    "thirstEffect": 10.0
+  },
+  "Water": {
+    "energyEffect": 5.0,
+    "hp": 0.0,
+    "hungerEffect": 0.0,
+    "name": "Water",
+    "radiationEffect": 0.0,
+    "thirstEffect": 20.0
+  },
+  "Meat": {
+    "energyEffect": 10.0,
+    "hp": 0.0,
+    "hungerEffect": 30.0,
+    "name": "Meat",
+    "radiationEffect": 0.0,
+    "thirstEffect": 0.0
+  },
+  "Recoverykit": {
+    "energyEffect": 0.0,
+    "hp": 250.0,
+    "hungerEffect": 0.0,
+    "name": "Recoverykit",
+    "radiationEffect": -10.0,
+    "thirstEffect": 0.0
+  }
 }

@@ -11,6 +11,7 @@ class Player;
 class Scene;
 class Gun;
 class Astar;
+enum class GunType;
 
 class Enemy : public HitBoxObject
 {
@@ -62,9 +63,15 @@ protected:
 
 	//timer
 	float moveTime;
+	float initMoveTime;
+
 	float hitTime;
-	float getAttackTime;
+	float initHitTime;
+	
 	float patrolTime;
+	float initPatrolTime;
+	
+	float getAttackTime;
 
 	//attack
 	bool attack;
@@ -79,7 +86,8 @@ protected:
 	vector<vector<bool>> *isGreedObject;
 
 	//init
-	int type;
+	GunType type;
+	string enemyType;
 	//dev
 	bool isInSight;
 
@@ -110,7 +118,8 @@ public:
 	void SetItem(map<string, Item> items) { this->items = items; }
 	void SetEnemyPos();
 
-	void SetType(int num) { type = num; }
+	void SetType(GunType t) { type = t; }
+	void SetEnemyType(string t) { enemyType = t; }
 
 	Vector2f GetLookDir() { return lookDir; }
 	Vector2f GetPrevLookDir() { return prevLook; }

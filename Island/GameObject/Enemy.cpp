@@ -17,9 +17,9 @@
 
 Enemy::Enemy()
 	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), patrolTime(0.f), hp(500),
-	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1), isInSight(true), attack(false), isSearch(false), patrolBlock(10)
+	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false),  isInSight(true), attack(false), isSearch(false), patrolBlock(10)
 {
-	hideDelay = 1.f;
+
 }
 
 Enemy::~Enemy()
@@ -47,19 +47,19 @@ void Enemy::Init(Player* player)
 	HitBoxObject::Init();
 	this->player = player;
 	
-	hp = maxHp;
-	switch (type)
-	{
-	case 1:	
-		gun = new Gun(GunType::Shotgun, User::Enemy);
-		break;
-	case 2:
-		gun = new Gun(GunType::Rifle, User::Enemy);
-		break;
-	case 3:
-		gun = new Gun(GunType::Sniper, User::Enemy);
-		break;
-	}
+	auto enemys = FILE_MGR->GetEnemyInfo();
+	auto data = enemys[enemyType];
+	hp = maxHp = data.maxHp;
+
+	hideDelay = data.hideDelay;
+	initHitTime = data.hitTime;
+	moveTime = data.moveTime;
+	patrolBlock = data.patrolBlock;
+	initPatrolTime = data.patrolTime;
+	speed = data.speed;
+
+
+	gun = new Gun(type, User::Enemy);
 	gun->SetEnemy(this);
 	gun->Init();
 

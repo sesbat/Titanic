@@ -8,15 +8,19 @@ private:
 	map<string, vector<ns::RectangleInfo>> hitBoxData; //find by path
 	map<string, vector<ObjectData>> mapInfo;
 	map<string, vector<EditorObjs>> editorObjs;
-	map<string, ItemInfo> itemInfos;
+	map<string, ItemInfo> itemsInfo;
 	map<string, ItemEffect> itemEffect;
 	map<string, CraftingInfo> craftItemInfo;
 	vector<map<string, CraftingInfo>> craftItemInfos;
+	map<string, vector<string>> connecntMaps;
+	map<string, EnemyInfo> enemysInfo;
 
 	UserInfo userInfo;
-	GunStat shotgunInfo;
-	GunStat rifleInfo;
-	GunStat sniperInfo;
+
+	map<string, GunStat> gunsInfo;
+	//GunStat shotgunInfo;
+	//GunStat rifleInfo;
+	//GunStat sniperInfo;
 
 	std::vector<InvenInfo> invenAllItems;
 	std::vector<InvneUseInfo> useItemInfo;
@@ -38,8 +42,8 @@ public:
 	void SaveMap(vector<ObjectData> newData, string name);
 	const map<string, vector<EditorObjs>>& GetEditorObjs() { return editorObjs; }
 
-	const map<string, ItemInfo>& GetAllItems() { return itemInfos; }
-	const ItemInfo& GetItemInfo(string name) { return itemInfos[name]; }
+	const map<string, ItemInfo>& GetAllItems() { return itemsInfo; }
+	const ItemInfo& GetItemInfo(string name) { return itemsInfo[name]; }
 
 	const vector<map<string, CraftingInfo>>& GetAllCraftTable() { return craftItemInfos; }
 	const map<string, CraftingInfo>& GetAllCraft() { return craftItemInfo; }
@@ -54,13 +58,21 @@ public:
 	void SaveInvenInfo(vector<InvenInfo> datas);
 	void SaveUseItemInfo(vector<InvneUseInfo> datas);
 
+	void SaveConnecnt(string name, vector<string> need);
+
+	const map<string, vector<string>>& const GetConnecntInfoAll();
+
+	const GunStat& GetGunInfo(string name)  { return gunsInfo[name]; }
 	const UserInfo& GetUserInfo() const { return userInfo; }
-	const GunStat& GetShotGunInfo() const { return shotgunInfo; }
-	const GunStat& GetRifleInfo() const { return rifleInfo; }
-	const GunStat& GetSniperInfo() const { return sniperInfo; }
+	const map<string, GunStat>& GetGunInfoAll() { return gunsInfo; }
+	//const GunStat& GetShotGunInfo() const { return shotgunInfo; }
+	//const GunStat& GetRifleInfo() const { return rifleInfo; }
+	//const GunStat& GetSniperInfo() const { return sniperInfo; }
 	const vector<InvenInfo>& GetInvenInfo() const { return invenAllItems; }
 	const vector<InvneUseInfo>& GetUseItemInfo() const { return useItemInfo; }
 	const UserStat& GetUserStat() const { return userStat; }
+
+	const map<string, EnemyInfo>& GetEnemyInfo() { return enemysInfo; }
 };
 
 #define FILE_MGR (FileManager::GetInstance())
