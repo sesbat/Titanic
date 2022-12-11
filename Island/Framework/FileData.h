@@ -156,7 +156,7 @@ namespace ns {
 		float range;
 		float reloadDelay;
 		int magazine;
-		sf::Vector2f randDir;
+		float randDir;
 		float zoomRange;
 		float shootDelay;
 		float shotgunDir;
