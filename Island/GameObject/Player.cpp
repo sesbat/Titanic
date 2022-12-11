@@ -38,7 +38,6 @@ Player::Player()
 	maxEnergyGuage = stat.maxEnergyGuage;
 	maxHungerGuage = stat.maxHungerGuage;
 	maxRadiation = stat.maxRadiation;
-	maxSpeed = stat.maxSpeed;
 	maxStamina = stat.maxStamina;
 	maxThirstGuage = stat.maxThirstGuage;
 	radDebuffLevel = stat.radDebuffLevel;
@@ -47,7 +46,7 @@ Player::Player()
 	radDebuffHPDelay = stat.radDebuffHPDelay;
 
 	init_radiationDelay = radiationDelay = stat.radiationDelay;
-	speed = stat.speed;
+	initSpeed = speed = stat.speed;
 	staminaDownSpeed = stat.staminaDownSpeed;
 	staminaUpSpeed = stat.staminaUpSpeed;
 	init_thirstDelay = thirstDelay = stat.thirstDelay; 
@@ -331,7 +330,7 @@ void Player::Update(float dt)
 	}
 	if (InputMgr::GetKeyUp(Keyboard::LShift))
 	{
-		speed = maxSpeed;
+		speed = initSpeed;
 		isDash = false;
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Tab) || InputMgr::GetKeyDown(Keyboard::Escape))
@@ -388,7 +387,7 @@ void Player::Update(float dt)
 		if (stamina < 0.f)
 		{
 			stamina = 0.f;
-			speed = maxSpeed;
+			speed = initSpeed;
 		}
 	}
 	else

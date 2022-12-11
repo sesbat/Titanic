@@ -6,7 +6,6 @@
   "maxHp": 1500,
   "maxHungerGuage": 255.0,
   "maxRadiation": 255.0,
-  "maxSpeed": 200.0,
   "maxStamina": 10.0,
   "maxThirstGuage": 255.0,
   "name": "PLAYER",

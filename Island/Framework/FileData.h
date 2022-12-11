@@ -123,7 +123,6 @@ namespace ns {
 		int maxHp;
 		float speed;
 		float dashSpeed;
-		float maxSpeed;
 
 		float staminaUpSpeed;
 		float staminaDownSpeed;
@@ -143,7 +142,7 @@ namespace ns {
 		float radDebuffScale;
 		float radDebuffHPDelay;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserStat, name, maxHp, speed, dashSpeed, maxSpeed,
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserStat, name, maxHp, speed, dashSpeed,
 			staminaUpSpeed, staminaDownSpeed, maxStamina, maxHungerGuage, maxThirstGuage, maxEnergyGuage, maxRadiation,
 			hungerDelay, thirstDelay, energyDelay, radiationDelay, radDebuffLevel, radDebuffScale, radDebuffHPDelay)
 	};

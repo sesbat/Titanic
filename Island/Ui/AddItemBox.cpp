@@ -32,8 +32,12 @@ void AddItemBox::Init()
 		aitem->item = { data.first,data.second.path,0 };
 		aitem->addCnt->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 			30, Color::White, ">", true);
+		aitem->add10Cnt->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+			30, Color::White, ">>", true);
 		aitem->minCnt->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 			30, Color::White, "<", true);
+		aitem->min10Cnt->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+			30, Color::White, "<<", true);
 		aitem->sprite->SetTexture(*RESOURCES_MGR->GetTexture(data.second.path));
 		aitem->text->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 			30, Color::White, to_string(aitem->item.count));
@@ -131,6 +135,44 @@ void AddItemBox::Update(float dt)
 				}
 				now->text->SetString(to_string(now->item.count));
 			}
+			if (now->add10Cnt->IsUp())
+			{
+				now->item.count+=10;
+				auto find_item = nowObjectItems->find(now->item.type);
+
+				if (find_item == nowObjectItems->end())
+				{
+					(*nowObjectItems)[now->item.type].path = now->item.path;
+					(*nowObjectItems)[now->item.type].type = now->item.type;
+					(*nowObjectItems)[now->item.type].count = 10;
+				}
+				else
+				{
+					(*find_item).second.count+=10;
+					(*nowObjectItems)[now->item.type].count = (*find_item).second.count;
+				}
+				now->text->SetString(to_string(now->item.count));
+			}
+			if (now->min10Cnt->IsUp())
+			{
+				now->item.count-=10;
+				now->item.count = max(0, now->item.count);
+
+				auto find_item = nowObjectItems->find(now->item.type);
+				if (find_item == nowObjectItems->end())
+					return;
+				else
+				{
+					if (now->item.count == 0)
+						nowObjectItems->erase(find_item);
+					else
+					{
+						(*find_item).second.count-=10;
+						(*nowObjectItems)[now->item.type].count = (*find_item).second.count;
+					}
+				}
+				now->text->SetString(to_string(now->item.count));
+			}
 		}
 		i++;
 
@@ -186,12 +228,23 @@ AddItem::AddItem(UiMgr* mgr)
 	sprite = new SpriteObject();
 	sprite->SetUI(true);
 	sprite->SetOrigin(Origins::TC);
+
 	addCnt = new Button(mgr);
 	addCnt->SetOrigin(Origins::MC);
 	addCnt->SetClkColor(true);
+
 	minCnt = new Button(mgr);
 	minCnt->SetOrigin(Origins::MC);
 	minCnt->SetClkColor(true);
+
+	add10Cnt = new Button(mgr);
+	add10Cnt->SetOrigin(Origins::MC);
+	add10Cnt->SetClkColor(true);
+
+	min10Cnt = new Button(mgr);
+	min10Cnt->SetOrigin(Origins::MC);
+	min10Cnt->SetClkColor(true);
+
 	text = new TextObject();
 	text->SetOrigin(Origins::MC);
 	item.count = 0;
@@ -214,26 +267,41 @@ AddItem::~AddItem()
 	if (minCnt != nullptr)
 		delete minCnt;
 	minCnt = nullptr;
+
+	if (add10Cnt != nullptr)
+		delete addCnt;
+	addCnt = nullptr;
+
+	if (min10Cnt != nullptr)
+		delete minCnt;
+	minCnt = nullptr;
+
 }
 
 void AddItem::SetPosition(Vector2f pos)
 {
 	sprite->SetPos(pos);
+	min10Cnt->SetPos(pos + Vector2f{ 150.f,0 });
 	minCnt->SetPos(pos + Vector2f{ 200.f,0 });
 	text->SetPos(pos + Vector2f{ 250.f,0 });
-	addCnt->SetPos(pos + Vector2f{ 300.f,0 });
+	addCnt->SetPos(pos + Vector2f{ 300,0 });
+	add10Cnt->SetPos(pos + Vector2f{ 350.f,0 });
 }
 
 void AddItem::Update(float dt)
 {
+	min10Cnt->Update(dt);
 	minCnt->Update(dt);
+	add10Cnt->Update(dt);
 	addCnt->Update(dt);
 }
 
 void AddItem::Draw(RenderWindow& window)
 {
 	sprite->Draw(window);
+	min10Cnt->Draw(window);
 	minCnt->Draw(window);
 	text->Draw(window);
 	addCnt->Draw(window);
+	add10Cnt->Draw(window);
 }

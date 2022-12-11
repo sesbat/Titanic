@@ -59,7 +59,7 @@ protected:
 
 	float speed;
 	float dashSpeed;
-	float maxSpeed;
+	float initSpeed;
 
 	float maxStamina;
 

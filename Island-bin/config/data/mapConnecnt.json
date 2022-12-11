@@ -1,1 +1,4 @@
-{ "FOREST": [  "TEST" ] }
+{
+  "FOREST": [ "TEST" ],
+  "TEST": []
+}
