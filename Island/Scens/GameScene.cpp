@@ -24,9 +24,11 @@
 #include "../Ui/InventoryBox.h"
 #include "Candle/geometry/Polygon.hpp"
 #include "../GameObject/Gun.h"
+#include "../GameObject/SupplyBox.h"
 
 #include "../3rd/QuadTree_SFML_DEMO.h"
 #include "../GameObject/HitBox.h"
+#include "../GameObject/Ment.h"
 
 using namespace std;
 using namespace sf;
@@ -75,7 +77,8 @@ GameScene::GameScene()
        fog(candle::LightingArea::FOG,
           sf::Vector2f(0.f, 0.f),
           sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)),
-        blockCount(0), treeMap(treeRect, 16, 4), lines(LineStrip, 2),isZoom(false)
+        blockCount(0), treeMap(treeRect, 16, 4), lines(LineStrip, 2),isZoom(false),
+    supplyTimer(0), initSupplyTimer(3), isSupply(false)
 {
 
 }
@@ -116,15 +119,15 @@ void GameScene::Init()
         if (obj.type == "BOX" || obj.type == "BOX-ENEMY")
         {
             ItemBoxObject* box = new ItemBoxObject();
+            box->SetPos(obj.position);
+            box->Init();
             box->SetPlayerPos(player->GetPosPtr());
             box->SetItems(obj.item);
             box->SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/box.png"));
             box->SetName(obj.type);
             box->SetOrigin(Origins::BC);
-            box->SetPos(obj.position);
             box->SetHitBox(obj.path);
             box->SetPlayer(player);
-            box->Init();
             objList[LayerType::Object][0].push_back(box);
         }
         else if (obj.type == "TREE" || obj.type == "BUSH" ||
@@ -322,6 +325,7 @@ void GameScene::Update(float dt)
 
     if (player->GetIsMove())
         worldView.setCenter(realcam);
+    SupplyUpdate(dt);
 
     //view sight pos
     light.setPosition(player->GetPos());
@@ -398,6 +402,47 @@ void GameScene::Update(float dt)
     cursor->SetPos(lines[1].position);
     shot_cursor->SetPos(lines[1].position);
 
+}
+
+void GameScene::SupplyUpdate(float dt)
+{
+    if (!isSupply)
+    {
+        supplyTimer += dt;
+        if (supplyTimer > initSupplyTimer)
+        {
+            SupplyBox* supBox = new SupplyBox();
+            supBox->SetTexture(*RESOURCES_MGR->GetTexture("graphics/enemy1-die.png"));
+            supBox->SetOrigin(Origins::MC);
+            supBox->SetHitBox("graphics/enemy1-die.png");
+            supBox->SetName("SupplyBox");
+            supBox->SetPlayerPos(player->GetPosPtr());
+            supBox->SetPlayer(player);
+            supBox->SetPos(player->GetPos());
+            supBox->Init();
+            supBox->SetRandPos();
+
+            auto supplyBoxData = FILE_MGR->GetSupplyBoxInfo(sceneName);
+            supBox->SetSupplyItems(supplyBoxData);
+
+            objList[LayerType::Object][0].push_back(supBox);
+            sort(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), sorting);
+
+            Ment* ment = new Ment();
+            ment->SetUiViewCenter(true);
+            ment->SetUiView(&uiView);
+            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "보급품이 생성되었습니다");
+            ment->SetOrigin(Origins::MC);
+            ment->SetTimer(2);
+            ment->SetAlways(false);
+            ment->SetActive(true);
+            ment->GetText().setString(L"보급품이 생성되었습니다");
+            objList[LayerType::Object][1].push_back(ment);
+
+
+            isSupply = true;
+        }
+    }
 }
 
 vector<HitBoxObject*> GameScene::ObjListObb(HitBoxObject* obj)
@@ -517,7 +562,7 @@ void GameScene::EmpytyInven(ItemBoxObject* inven)
     if (inven == nullptr)
         return;
 
-    if (inven->GetName() == "BOX")
+    if (inven->GetName() == "BOX" || inven->GetName() == "SupplyBox")
     {
         deleteContainer.push_back(inven);
         treeMap.remove(inven);

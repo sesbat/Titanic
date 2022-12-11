@@ -27,6 +27,12 @@ void FileManager::LoadAll()
 		json allMap_d = json::parse(allMap);
 		mapInfo[name] = allMap_d;
 		allMap.close();
+
+		string supplyPath = "config/data/supplyBox/" + name + ".json";
+		ifstream ios_supply(supplyPath);
+		json supply_d = json::parse(ios_supply);
+		suppleyBoxInfo[name] = supply_d;
+		ios_supply.close();
 	}
 
 	ifstream ao("config/data/allObjs.json");

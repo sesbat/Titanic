@@ -8,7 +8,7 @@ class Ment;
 class Player;
 class ItemBoxObject : public HitBoxObject
 {
-private:
+protected:
 	ItemBoxObject(const ItemBoxObject& ref) {}
 	ItemBoxObject& operator=(const ItemBoxObject& ref) {}
 	ItemBoxObject( ItemBoxObject& ref) {}

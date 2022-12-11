@@ -1,0 +1,67 @@
+[
+  {
+    "Type": "Recoverykit",
+    "cnt": 2,
+    "invenGreedPos": {
+      "x": 2,
+      "y": 0
+    },
+    "invenPos": {
+      "x": 0,
+      "y": 0
+    },
+    "path": "graphics/items/recoverykit.png"
+  },
+  {
+    "Type": "Recoverykit",
+    "cnt": 2,
+    "invenGreedPos": {
+      "x": 1,
+      "y": 0
+    },
+    "invenPos": {
+      "x": 0,
+      "y": 0
+    },
+    "path": "graphics/items/recoverykit.png"
+  },
+  {
+    "Type": "EnergyDrink",
+    "cnt": 2,
+    "invenGreedPos": {
+      "x": 0,
+      "y": 0
+    },
+    "invenPos": {
+      "x": 0,
+      "y": 0
+    },
+    "path": "graphics/items/drink.png"
+  },
+  {
+    "Type": "Water",
+    "cnt": 2,
+    "invenGreedPos": {
+      "x": 0,
+      "y": 1
+    },
+    "invenPos": {
+      "x": 0,
+      "y": 0
+    },
+    "path": "graphics/items/water.png"
+  },
+  {
+    "Type": "Apple",
+    "cnt": 2,
+    "invenGreedPos": {
+      "x": 1,
+      "y": 1
+    },
+    "invenPos": {
+      "x": 0,
+      "y": 0
+    },
+    "path": "graphics/items/apple.png"
+  }
+]
