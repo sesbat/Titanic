@@ -26,7 +26,7 @@ Player::Player()
 	isDash(false), isAlive(true), isMove(true),
 	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f),
 	reloadDelaySG(1.5f), reloadDelayRF(1.f), reloadDelaySN(3.f),
-	isReloading(false), soundDelay(0.5f), isStun(false), stun(0.f), stunTime(2.f)
+	isReloading(false), soundDelay(0.5f), isStun(false), stun(0.f)
 {
 	auto stat = FILE_MGR->GetUserStat();
 
@@ -1225,10 +1225,10 @@ void Player::HideStop()
 	isHitBullet = true; hideDelayTimer = 0.f; isHide = false; 
 }
 
-void Player::SetStun(bool stun)
+void Player::SetStun(bool stun, float time)
 {
 	isStun = stun;
-	this->stun = stunTime;
+	this->stun = time;
 }
 
 void Player::ClearMap(string name)

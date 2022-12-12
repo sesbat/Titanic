@@ -51,7 +51,6 @@ protected:
 
 	//valance variable
 	int maxHp;
-	float speed;
 	float maxSpeed;
 	float dashRange;
 	float dashSpeed;
@@ -61,14 +60,17 @@ protected:
 	float dashCoolTime;
 	float dashDamage;
 	float damage;
+	
 	float radDamage;
 	float fireRange;
+	
 	float stopTime;
 	float moveTime;
 	float hitTime;
 
 	//in class variable
 	int hp;
+	float speed;
 	bool isStun;
 	bool isStart;
 	bool isDash;

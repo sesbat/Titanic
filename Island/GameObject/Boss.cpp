@@ -20,7 +20,8 @@ Boss::Boss()
 	: currState(States::None), type(Type::None),
 	speed(100.f), maxSpeed(100),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	timer(0.f), moveTime(2.f), stopTime(1.f), stunTime(3.f), dashCoolTime(5.f), hitTime(1.f), hitTimer(0.f),
+	timer(0.f), moveTime(2.f), stopTime(1.f), stunTime(3.f), dashCoolTime(5.f), 
+	hitTime(1.f), hitTimer(0.f), playerStunTime(2.f),
 	hp(500), maxHp(500), barScaleX(60.f), look(1.f, 0.f),
 	dashRange(1500.f), dashSpeed(800.f), range(500.f), activeDashRange(600.f), dashDamage(100), damage(10),
 	isHit(false), isInSight(true), isStart(false), isDash(false), isStun(false),
@@ -53,6 +54,7 @@ void Boss::Init(Player* player)
 	this->player = player;
 
 	hp = maxHp;
+	speed = maxSpeed;
 	type = Type::Big;
 
 	switch (type)
@@ -245,7 +247,7 @@ void Boss::Draw(RenderWindow& window)
 {
 	/*if (!enabled || !IsInView())
 		return;*/
-	dashHitbox->Draw(window);
+	//dashHitbox->Draw(window);
 	if (GetActive() && isInSight)
 	{
 		HitBoxObject::Draw(window);
@@ -447,7 +449,7 @@ void Boss::DashCollision()
 			if (dashAttack <= 0)
 			{
 				player->SetHp(dashDamage);
-				player->SetStun(true);
+				player->SetStun(true, playerStunTime);
 				dashAttack++;
 			}
 			//dashHitbox->SetActive(false);
