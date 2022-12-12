@@ -89,6 +89,7 @@ GameScene::~GameScene()
     Release();
 }
 
+
 void GameScene::Init()
 {
     bool testboss = false;
@@ -152,33 +153,34 @@ void GameScene::Init()
         }
         else if (obj.type == "BOSS")
         {
-                boss = new Boss();
-                boss->SetName(obj.type);
-                boss->SetId(id++);
-                boss->SetPos(obj.position);
-                boss->SetHitBox(obj.path);
-                //boss->SetType((GunType)enemyInfo[obj.path].gun);
-                //boss->SetEnemyType(enemyInfo[obj.path].type);
-                boss->SetItem(obj.item);
-                boss->SetGreedObject(&isGreedObject);
-                objList[LayerType::Object][0].push_back(boss);
-                testboss = true;
+            Boss* boss = new Boss();
+            boss->SetName(obj.type);
+            boss->SetId(id++);
+            boss->SetPos(obj.position);
+            boss->SetHitBox(obj.path);
+            //boss->SetType((GunType)enemyInfo[obj.path].gun);
+            //boss->SetEnemyType(enemyInfo[obj.path].type);
+            boss->SetItem(obj.item);
+            boss->SetGreedObject(&isGreedObject);
+            objList[LayerType::Object][0].push_back(boss);
+            bosses.push_back(boss);
+            //testboss = true;
         }
         else if (obj.type == "ENEMY")
         {
-                Enemy* enemy = new Enemy();
-                enemy->SetName(obj.type);
-                enemy->SetId(id++);
-                enemy->SetPos(obj.position);
-                enemy->SetHitBox(obj.path);
-                enemy->SetType((GunType)enemyInfo[obj.path].gun);
-                enemy->SetEnemyType(enemyInfo[obj.path].type);
-                enemy->SetItem(obj.item);
-                enemy->SetGreedObject(&isGreedObject);
-                enemies.push_back(enemy);
+            Enemy* enemy = new Enemy();
+            enemy->SetName(obj.type);
+            enemy->SetId(id++);
+            enemy->SetPos(obj.position);
+            enemy->SetHitBox(obj.path);
+            enemy->SetType((GunType)enemyInfo[obj.path].gun);
+            enemy->SetEnemyType(enemyInfo[obj.path].type);
+            enemy->SetItem(obj.item);
+            enemy->SetGreedObject(&isGreedObject);
+            enemies.push_back(enemy);
 
-                objList[LayerType::Object][0].push_back(enemy);
-            
+            objList[LayerType::Object][0].push_back(enemy);
+
         }
         else if (obj.type == "TILE")
         {
@@ -218,19 +220,23 @@ void GameScene::Init()
     {
         enemy->Init(player);
     }
-    //boss
-    if (testboss)
+    for (auto& boss : bosses)
     {
         boss->Init(player);
     }
-  
+    //boss
+    /*if (testboss)
+    {
+        boss->Init(player);
+    }*/
+
     //
 
     auto& tiles = objList[LayerType::Tile][0];
     mapSize.left = 0;
     mapSize.top = 0;
-    mapSize.width = 1920*4;
-    mapSize.height = 1080*4;
+    mapSize.width = 1920 * 4;
+    mapSize.height = 1080 * 4;
 
     //view sight
     light.setRange(700.f);
@@ -265,6 +271,7 @@ void GameScene::Release()
     treeMap.clear();
     Scene::Release();
     enemies.clear();
+    bosses.clear();
     blockPool.clear();
 }
 
@@ -295,6 +302,16 @@ void GameScene::Update(float dt)
         if (!(*it)->GetActive())
         {
             it = enemies.erase(it);
+        }
+        else
+            it++;
+    }
+
+    for (auto it = bosses.begin(); it != bosses.end(); )
+    {
+        if (!(*it)->GetActive())
+        {
+            it = bosses.erase(it);
         }
         else
             it++;

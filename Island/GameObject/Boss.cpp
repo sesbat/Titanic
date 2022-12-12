@@ -235,12 +235,7 @@ void Boss::Update(float dt)
 		{
 			SetState(States::Idle);
 		}
-		
-		
 	}
-	
-	
-
 }
 
 void Boss::Draw(RenderWindow& window)
