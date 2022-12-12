@@ -10,6 +10,9 @@ private:
 	float timer;
 	float nowTime;
 	bool always;
+
+	bool isUiCenter = false;
+	View* uiView;
 	
 public:
 	Ment();
@@ -19,6 +22,8 @@ public:
 
 	void SetTimer(float timer) { this->timer = timer; }
 	void SetAlways(bool state) { always = state; }
+	void SetUiView(View* v) { uiView = v; }
+	void SetUiViewCenter(bool state) { isUiCenter = state; }
 
 	
 };

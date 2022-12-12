@@ -27,6 +27,12 @@ void FileManager::LoadAll()
 		json allMap_d = json::parse(allMap);
 		mapInfo[name] = allMap_d;
 		allMap.close();
+
+		string supplyPath = "config/data/supplyBox/" + name + ".json";
+		ifstream ios_supply(supplyPath);
+		json supply_d = json::parse(ios_supply);
+		suppleyBoxInfo[name] = supply_d;
+		ios_supply.close();
 	}
 
 	ifstream ao("config/data/allObjs.json");
@@ -68,6 +74,11 @@ void FileManager::LoadAll()
 	json info_inven_d = json::parse(info_inven);
 	invenAllItems = info_inven_d;
 	info_inven.close();
+
+	ifstream save_box_inven("config/data/gameData/saveBox.json");
+	json info_inven_save_d = json::parse(save_box_inven);
+	saveAllItems = info_inven_save_d;
+	save_box_inven.close();
 
 	ifstream info_inven_use("config/data/gameData/invenUseInfo.json");
 	json info_inven_use_d = json::parse(info_inven_use);
@@ -147,6 +158,16 @@ void FileManager::SaveInvenInfo(vector<InvenInfo> datas)
 
 	json data = invenAllItems;
 	ofstream ofs("config/data/gameData/invenInfo.json");
+	ofs << data;
+	ofs.close();
+}
+
+void FileManager::SaveSaveBoxInfo(vector<InvenInfo> datas)
+{
+	saveAllItems = datas;
+
+	json data = saveAllItems;
+	ofstream ofs("config/data/gameData/saveBox.json");
 	ofs << data;
 	ofs.close();
 }

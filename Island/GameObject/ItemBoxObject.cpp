@@ -33,6 +33,8 @@ void ItemBoxObject::Init()
 	ment->SetActive(false);
 	SCENE_MGR->GetCurrScene()->AddGameObject(ment, LayerType::Object, 1);
 	HitBoxObject::Init();
+
+
 }
 
 void ItemBoxObject::SetPlayer(Player* player)

@@ -64,6 +64,10 @@ protected:
 	float MaxR = 0.4f;
 	float MinR = 0.1f;
 	float zoomInOutSpeed = 0.01f;
+
+	float supplyTimer;
+	float initSupplyTimer;
+	bool isSupply;
 public:
 	GameScene();
 	virtual ~GameScene();
@@ -75,6 +79,7 @@ public:
 	virtual void Exit() override;
 
 	virtual void Update(float dt) override;
+	void SupplyUpdate(float dt);
 	vector<HitBoxObject*> ObjListObb(HitBoxObject* obj);
 	vector<HitBoxObject*> ObjListObb(FloatRect obj);
 	virtual void Draw(RenderWindow& window) override;

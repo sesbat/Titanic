@@ -14,6 +14,7 @@ private:
 	vector<map<string, CraftingInfo>> craftItemInfos;
 	map<string, vector<string>> connecntMaps;
 	map<string, EnemyInfo> enemysInfo;
+	map<string ,vector<InvenInfo>> suppleyBoxInfo;
 
 	UserInfo userInfo;
 
@@ -23,6 +24,7 @@ private:
 	//GunStat sniperInfo;
 
 	std::vector<InvenInfo> invenAllItems;
+	std::vector<InvenInfo> saveAllItems;
 	std::vector<InvneUseInfo> useItemInfo;
 
 	UserStat userStat;
@@ -56,6 +58,7 @@ public:
 
 	void SaveUserInfo(UserInfo datas);
 	void SaveInvenInfo(vector<InvenInfo> datas);
+	void SaveSaveBoxInfo(vector<InvenInfo> datas);
 	void SaveUseItemInfo(vector<InvneUseInfo> datas);
 
 	void SaveConnecnt(string name, vector<string> need);
@@ -69,6 +72,8 @@ public:
 	//const GunStat& GetRifleInfo() const { return rifleInfo; }
 	//const GunStat& GetSniperInfo() const { return sniperInfo; }
 	const vector<InvenInfo>& GetInvenInfo() const { return invenAllItems; }
+	const vector<InvenInfo>& GetSaveBoxInfo() const { return saveAllItems; }
+	const vector<InvenInfo>& GetSupplyBoxInfo(string name) { return suppleyBoxInfo[name]; }
 	const vector<InvneUseInfo>& GetUseItemInfo() const { return useItemInfo; }
 	const UserStat& GetUserStat() const { return userStat; }
 

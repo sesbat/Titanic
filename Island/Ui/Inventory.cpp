@@ -58,12 +58,20 @@ void Inventory::Init()
 {
 	SetTexture(*RESOURCES_MGR->GetTexture("graphics/inventory.png"), true);
 	myInven = new InventoryBox(uimgr, this, Vector2i{ 163,252 });
-	myInven->Init();
 	myInven->SetName("MyInventory");
+	myInven->Init();
 	rightInven = new InventoryBox(uimgr, this, Vector2i{ 1248,252 });
-	rightInven->Init();
 	rightInven->SetName("RightInventory");
+	rightInven->Init();
 	initRightInven = rightInven;
+
+	saveBox = new InventoryBox(uimgr, this, Vector2i{ 870, 845 });
+	saveBox->SetInvenSize(3, 2);
+	saveBox->SetName("SaveBox");
+	saveBox->Init();
+	saveBox->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		30, Color::White, "SAVE BOX", false);
+	saveBox->GetTextObj()->SetPos(Vector2f{ 880.f, 800.f });
 
 
 	Vector2f invenPos[] = { {800.f,140.f},{800.f,310.f},{800.f,471.f},{991.f,471.f},{800.f,721.f},{888.f,721.f},{972.f,721.f},{1055.f,721.f} };
@@ -91,6 +99,7 @@ void Inventory::Update(float dt)
 	Button::Update(dt);
 	myInven->Update(dt);
 	rightInven->Update(dt);
+	saveBox->Update(dt);
 
 
 	if (nowDrag != nullptr && IsStay() )
@@ -250,6 +259,8 @@ void Inventory::Draw(RenderWindow& window)
 	myInven->Draw(window);
 	rightInven->Draw(window);
 	txtMoney->Draw(window);
+	saveBox->Draw(window);
+	
 
 }
 
@@ -258,6 +269,7 @@ void Inventory::SetDrag(InvenItem* item)
 	nowDrag = item;
 	myInven->SetDrag(item);
 	rightInven->SetDrag(item);
+	saveBox->SetDrag(item);
 }
 InventoryBox* Inventory::GetNowInven()
 {

@@ -14,6 +14,11 @@ void Ment::Update(float dt)
 		return;
 	if (!always)
 	{
+		if (isUiCenter)
+		{
+			auto pos = SCENE_MGR->GetCurrScene()->ScreenToWorld((Vector2i)uiView->getCenter());
+			SetPos(pos);
+		}
 		nowTime += dt;
 
 		if (nowTime >= timer)

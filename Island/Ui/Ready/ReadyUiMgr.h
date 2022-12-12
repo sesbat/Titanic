@@ -57,6 +57,10 @@ private:
 	Button* energyBK;
 	Button* energyTex;
 
+	Button* radiationBK;
+	Button* radiation;
+	Button* radiationTex;
+
 	float hpBarSize;
 	float staminaBarSize;
 public:
