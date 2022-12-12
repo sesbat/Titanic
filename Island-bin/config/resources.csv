@@ -180,3 +180,6 @@ animations/boss/BossBigMoveLeft.csv,3
 graphics/editor/drawEnemy6.png,0
 graphics/boss_01.png,0
 fonts/NotoSansKR-Medium.otf,1
+graphics/enemy/boss/Big/Big_Dead.png,0
+animations/boss/BossBigStun.csv,3
+animations/boss/BossBigStunLeft.csv,3

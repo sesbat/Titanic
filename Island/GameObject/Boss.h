@@ -40,6 +40,7 @@ protected:
 	Scene* scene;
 	Gun* gun;
 	Astar* astar;
+	HitBox* dashHitbox;
 
 	Animator animator;
 
@@ -49,34 +50,44 @@ protected:
 	Type type;
 
 	//valance variable
+	int maxHp;
 	float speed;
 	float maxSpeed;
 	float dashRange;
 	float dashSpeed;
 	float stunTime;
 	float playerStunTime;
-	float range;
+	float activeDashRange;
+	float dashCoolTime;
+	float dashDamage;
 	float damage;
 	float radDamage;
 	float fireRange;
 	float stopTime;
 	float moveTime;
+	float hitTime;
 
+	//in class variable
+	int hp;
 	bool isStun;
 	bool isStart;
 	bool isDash;
+	bool isHit;
+	bool isInSight;
 	float timer;
-
+	float range;
+	float dashTimer;
+	float hitTimer;
+	int dashAttack;
+	float barScaleX;
 
 	Vector2f look;
 	Vector2f lookDir;
-	Vector2f prevLook;
-	Vector2f velocity;
+	Vector2f dashDir;
 	Vector2f direction;
 	Vector2f lastDirection;
 	Vector2f moveDir;
 	Vector2f prevPosition;
-	bool isFlip;
 
 	//a star dir
 	Vector2f playerPos;
@@ -84,35 +95,10 @@ protected:
 	Pair startPos;
 	Pair destPos;
 	Vector2f bottomPos;
-	//dash
-	
-	//timer
-	
-	float hitTime;
-	float getAttackTime;
-
-
-	//attack
-	bool attack;
-	bool isHit;
-	bool isSearch;
-	//hp
-	int maxHp;
-	int hp;
-	float barScaleX;
-
-	map<string, Item> items;
 	vector<vector<bool>>* isGreedObject;
 
-	//init
+	map<string, Item> items;
 	
-	//dev
-	bool isInSight;
-
-	bool isHide;
-	float hideDelay;
-	float hideDelayTimer;
-	bool isHitBullet;
 
 public:
 	Boss();
@@ -140,25 +126,21 @@ public:
 	//void SetType(int num) { type = num; }
 
 	Vector2f GetLookDir() { return lookDir; }
-	Vector2f GetPrevLookDir() { return prevLook; }
+	
 
 	void AttackPattern(float dt);
 	void Move(float dt);
 	void Dash(float dt);
 	void Collision();
+	void DashCollision();
+	void ContactDamage();
 	void SetDashPos();
+	void Stun();
 	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
 	void FindGrid();
 	void FindGrid(Vector2f pos);
 	void CheckIsInWall();
 	void CheckIsInSight();
-	void MakePath();
-	bool CheckWall(int x, int y);
-	//void SetIsSearch(bool hit);
-	//void CallFriends();
-	/*bool GetHide();
-	void SetHide(bool state);
-	void HideUpdate(float dt);
-	void HideStop();*/
+	
 };
 

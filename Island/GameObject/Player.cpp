@@ -23,10 +23,10 @@ Player::Player()
 	: currState(States::None),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	 isDash(false) , isAlive(true), isMove(true), 
-	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f), 
+	isDash(false), isAlive(true), isMove(true),
+	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f),
 	reloadDelaySG(1.5f), reloadDelayRF(1.f), reloadDelaySN(3.f),
-	isReloading(false), soundDelay(0.5f)
+	isReloading(false), soundDelay(0.5f), isStun(false), stun(0.f), stunTime(2.f)
 {
 	auto stat = FILE_MGR->GetUserStat();
 
@@ -109,14 +109,19 @@ void Player::SetState(States newState)
 
 void Player::Update(float dt)
 {
+	
 	HitBoxObject::Update(dt);
 	Vector2i mousePos = (Vector2i)InputMgr::GetMousePos();
 	Vector2f mouseWorldPos = scene->ScreenToWorld(mousePos);
 
 	look = mouseWorldPos;
 	lookDir = Utils::Normalize(mouseWorldPos - GetPos());
-	direction.x = InputMgr::GetAxisRaw(Axis::Horizontal);
-	direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
+	if (!isStun)
+	{
+		direction.x = InputMgr::GetAxisRaw(Axis::Horizontal);
+		direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
+	}
+	
 	
 	soundDelay -= dt;
 	if (soundDelay <= 0 && (InputMgr::GetAxisRaw(Axis::Horizontal) || InputMgr::GetAxisRaw(Axis::Vertical)))
@@ -184,13 +189,9 @@ void Player::Update(float dt)
 	}
 
 	//Move
-	if (isMove)
+	if (isMove && !isStun)
 		Move(dt);
 
-	if (GetPos() != prevPosition)
-	{
-		
-	}
 	//animation
 	animator.Update(dt);
 
@@ -228,111 +229,117 @@ void Player::Update(float dt)
 			break;
 		}
 		//fire
-		if (reloadDelay <= 0)
+		if (!isStun)
 		{
-			isReloading = false;
-			if (ammo > 0 &&shootDelay <= 0 && gun->GetIsInWall())
+			if (reloadDelay <= 0)
 			{
-				//isReloading = false;
-				switch (gun->GetgunType())
+				isReloading = false;
+				if (ammo > 0 && shootDelay <= 0 && gun->GetIsInWall())
 				{
-				case GunType::Shotgun:
-				case GunType::Sniper:
-					if (InputMgr::GetMouseButtonDown(Mouse::Left) && !inven->GetActive())
+					//isReloading = false;
+					switch (gun->GetgunType())
 					{
-						SetFireAmmo();
-						gun->Fire(GetPos(), true);
-						HideStop();
-						shootDelay = gun->GetpShootDelay();
-					}
-					break;
-				case GunType::Rifle:
-					if (InputMgr::GetMouseButton(Mouse::Left) && !inven->GetActive())
-					{
-						SetFireAmmo();
-						gun->Fire(GetPos(), true);
-						HideStop();
-						shootDelay = gun->GetpShootDelay();
+					case GunType::Shotgun:
+					case GunType::Sniper:
+						if (InputMgr::GetMouseButtonDown(Mouse::Left) && !inven->GetActive())
+						{
+							SetFireAmmo();
+							gun->Fire(GetPos(), true);
+							HideStop();
+							shootDelay = gun->GetpShootDelay();
+						}
+						break;
+					case GunType::Rifle:
+						if (InputMgr::GetMouseButton(Mouse::Left) && !inven->GetActive())
+						{
+							SetFireAmmo();
+							gun->Fire(GetPos(), true);
+							HideStop();
+							shootDelay = gun->GetpShootDelay();
 
+						}
+						break;
 					}
-					break;
 				}
 			}
+
+			//reload
+			if (InputMgr::GetKeyDown(Keyboard::R))
+			{
+				Reload();
+
+			}
 		}
-		
-		//reload
-		if (InputMgr::GetKeyDown(Keyboard::R))
+	}
+	if (!isStun)
+	{
+		if (!isReloading)
 		{
-			Reload();
-			
+			if (InputMgr::GetKeyDown(Keyboard::Num1))
+			{
+				auto myGun = inven->GetUsedItem(0);
+
+				if (myGun == nullptr)
+				{
+					gun->SetGunType(GunType::None);
+					ammo = 0;
+				}
+				else
+				{
+					gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+					SetAmmoType();
+				}
+				lastWephon = 0;
+			}
+			if (InputMgr::GetKeyDown(Keyboard::Num2))
+			{
+				auto myGun = inven->GetUsedItem(1);
+
+				if (myGun == nullptr)
+				{
+					gun->SetGunType(GunType::None);
+					ammo = 0;
+				}
+				else
+				{
+					gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
+					SetAmmoType();
+				}
+				lastWephon = 1;
+			}
+		}
+
+		//use item
+		if (InputMgr::GetKeyDown(Keyboard::Num3))
+		{
+			UseItems(4);
+		}
+		if (InputMgr::GetKeyDown(Keyboard::Num4))
+		{
+			UseItems(5);
+		}
+		if (InputMgr::GetKeyDown(Keyboard::Num5))
+		{
+			UseItems(6);
+		}
+		if (InputMgr::GetKeyDown(Keyboard::Num6))
+		{
+			UseItems(7);
+		}
+
+		//dash
+		if (stamina > 0.5f && InputMgr::GetKeyDown(Keyboard::LShift))
+		{
+			speed = dashSpeed;
+			isDash = true;
+		}
+		if (InputMgr::GetKeyUp(Keyboard::LShift))
+		{
+			speed = initSpeed;
+			isDash = false;
 		}
 	}
 	
-	if (!isReloading)
-	{
-		if (InputMgr::GetKeyDown(Keyboard::Num1))
-		{
-			auto myGun = inven->GetUsedItem(0);
-
-			if (myGun == nullptr)
-			{
-				gun->SetGunType(GunType::None);
-				ammo = 0;
-			}
-			else
-			{
-				gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
-				SetAmmoType();
-			}
-			lastWephon = 0;
-		}
-		if (InputMgr::GetKeyDown(Keyboard::Num2))
-		{
-			auto myGun = inven->GetUsedItem(1);
-
-			if (myGun == nullptr)
-			{
-				gun->SetGunType(GunType::None);
-				ammo = 0;
-			}
-			else
-			{
-				gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
-				SetAmmoType();
-			}
-			lastWephon = 1;
-		}
-	}
-	
-	//use item
-	if (InputMgr::GetKeyDown(Keyboard::Num3))
-	{
-		UseItems(4);
-	}
-	if (InputMgr::GetKeyDown(Keyboard::Num4))
-	{
-		UseItems(5);
-	}
-	if (InputMgr::GetKeyDown(Keyboard::Num5))
-	{
-		UseItems(6);
-	}
-	if (InputMgr::GetKeyDown(Keyboard::Num6))
-	{
-		UseItems(7);
-	}
-
-	//dash
-	if (stamina > 0.5f && InputMgr::GetKeyDown(Keyboard::LShift))
-	{
-		speed = dashSpeed;
-		isDash = true;
-	}
-	if (InputMgr::GetKeyUp(Keyboard::LShift))
-	{
-		speed = initSpeed;
-		isDash = false;
-	}
 	if (InputMgr::GetKeyDown(Keyboard::Tab) || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		if (inven->GetActive() && !isMove)	
@@ -398,7 +405,14 @@ void Player::Update(float dt)
 			stamina = maxStamina;
 		}
 	}
-
+	if (isStun)
+	{
+		stun -= dt;
+		if (stun <= 0)
+		{
+			isStun = false;
+		}
+	}
 	HideUpdate(dt);
 }
 
@@ -1209,6 +1223,12 @@ void Player::HideUpdate(float dt)
 void Player::HideStop()
 { 
 	isHitBullet = true; hideDelayTimer = 0.f; isHide = false; 
+}
+
+void Player::SetStun(bool stun)
+{
+	isStun = stun;
+	this->stun = stunTime;
 }
 
 void Player::ClearMap(string name)

@@ -20,10 +20,11 @@ Boss::Boss()
 	: currState(States::None), type(Type::None),
 	speed(100.f), maxSpeed(100),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	timer(0.f), moveTime(2.f), hitTime(0.f), getAttackTime(1.f), stopTime(1.f),
+	timer(0.f), moveTime(2.f), stopTime(1.f), stunTime(3.f), dashCoolTime(5.f), hitTime(1.f), hitTimer(0.f),
 	hp(500), maxHp(500), barScaleX(60.f), look(1.f, 0.f),
-	dashRange(500.f), dashSpeed(800.f), range(500.f),
-	isHit(false), isInSight(true), attack(false), isSearch(false), isStart(false), isDash(false)
+	dashRange(1500.f), dashSpeed(800.f), range(500.f), activeDashRange(600.f), dashDamage(100), damage(10),
+	isHit(false), isInSight(true), isStart(false), isDash(false), isStun(false),
+	dashAttack(0)
 {
 }
 
@@ -63,32 +64,21 @@ void Boss::Init(Player* player)
 		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigIdleLeft"));
 		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigMove"));
 		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigMoveLeft"));
-		
-		//gun = new Gun(GunType::Shotgun, User::Enemy);
-		//gun->SetEnemy(this);
-		//gun->Init();
+		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigStun"));
+		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigStunLeft"));
+		dashHitbox = new HitBox();
+		//dashHitbox->SetActive(false);
+		dashHitbox->SetFillColor(Color::Red);
+		dashHitbox->SetPos({ GetPos().x - 100.f,GetPos().y - 60.f });
+		//dashHitbox.set
+		dashHitbox->SetHitbox({ 0.f,0.f,200.f,100.f });
 		break;
 	case Boss::Type::Kiba:
 		break;
 	default:
 		break;
 	}
-	/*switch (type)
-	{
-	case 1:
-		gun = new Gun(GunType::Shotgun, User::Enemy);
-		break;
-	case 2:
-		gun = new Gun(GunType::Rifle, User::Enemy);
-		break;
-	case 3:
-		gun = new Gun(GunType::Sniper, User::Enemy);
-		break;
-	}
-	gun->SetEnemy(this);
-	gun->Init();*/
 
-	
 	//health bar
 	healthBar.setFillColor(Color::Green);
 	healthBar.setOutlineColor(Color::Black);
@@ -102,6 +92,7 @@ void Boss::Init(Player* player)
 	astar = new Astar();
 
 	bottomPos = bottom->GetHitBottomPos();
+	range = dashRange;
 	movePos.clear();
 	SetState(States::Idle);
 }
@@ -142,68 +133,85 @@ void Boss::Update(float dt)
 		return;*/
 
 	HitBoxObject::Update(dt);
-
+	CheckIsInSight();
 	//ready
 	//if got shot from range will be problem
 	//need change
-	/*if (isStart == false && (Utils::Distance(player->GetPos(), GetPos()) < 1000.f))
+	if (isStart == false && (Utils::Distance(player->GetPos(), GetPos()) < 1000.f))
 	{
 		isStart = true;
-	}*/
+	}
 
 	//start fight
-	if (!isStart)
+	if (isStart)
 	{
 		lookDir = Utils::Normalize(player->GetPos() - GetPos());
 		direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 		lastDirection = direction;
-		//if (Utils::Distance(player->GetPos(), GetPos()) < 1000.f)
-		//{
-		//	//look = player->GetPos();
-		//	
-		//}
-		//else
-		//{
-		//	lookDir = direction;
-		//}
-
+		
 		//enemy dead
 		if (hp <= 0)
 		{
 			SetState(States::Dead);
-
 		}
 
 		//enemy attack
-		
-		
-		if (currState == States::Idle)
+		if (!isStun)
 		{
-			timer -= dt;
-			if (timer <= 0.f)
+			if (currState == States::Idle)
 			{
-				AttackPattern(dt);
+				timer -= dt;
+				if (timer <= 0.f)
+				{
+					if (dashTimer <= 0.f && (Utils::Distance(player->GetPos(), GetPos()) >= activeDashRange))
+					{
+						SetDashPos();
+					}
+					else
+					{
+						AttackPattern(dt);
+						
+					}
+
+				}
+
 			}
-			
+			if (isDash && currState == States::Dash)
+			{
+				Dash(dt);	
+			}
+			else
+			{
+				dashTimer -= dt;	
+			}
+			//move
+			if (currState == States::Move)
+			{
+				Move(dt);
+				timer -= dt;
+				if (timer <= 0.f)
+				{
+					SetState(States::Idle);
+					movePos.clear();
+					timer = stopTime;
+				}
+			}
+			ContactDamage();
 		}
-		if (isDash&& currState == States::Dash)
+		else
 		{
-			Dash(dt);
-		}
-		//move
-		if (currState == States::Move)
-		{
-			Move(dt);
 			timer -= dt;
 			if (timer <= 0.f)
 			{
 				SetState(States::Idle);
-				movePos.clear();
-				timer = stopTime;
+				isStun = false;
 			}
 		}
-
 		
+		
+		//contact hit timer
+		hitTimer -= dt;
+
 		//hp bar
 		SetHpBar();
 
@@ -212,7 +220,7 @@ void Boss::Update(float dt)
 
 		//position
 		bottomPos = bottom->GetHitBottomPos();
-
+		dashHitbox->SetPos({ GetPos().x - 100.f,GetPos().y - 60.f });
 		//gun
 		//gun->Update(dt);
 
@@ -225,8 +233,10 @@ void Boss::Update(float dt)
 		{
 			SetState(States::Idle);
 		}
+		
+		
 	}
-
+	
 	
 
 }
@@ -235,19 +245,20 @@ void Boss::Draw(RenderWindow& window)
 {
 	/*if (!enabled || !IsInView())
 		return;*/
-	if (GetActive())
+	dashHitbox->Draw(window);
+	if (GetActive() && isInSight)
 	{
 		HitBoxObject::Draw(window);
 		window.draw(healthBar);
+		SetColor(Color::White);
 	}
-	/*if (isHitBox)
+	VertexArray lines(LineStrip, 2);
+	if (isInSight)
 	{
-		for (auto& hit : hitboxs)
-		{
-			hit->Draw(window);
-		}
-	}*/
-	//gun->Draw(window);
+		lines[0].position = { GetPos().x,GetPos().y + 20.f };
+		lines[1].position = { player->GetPos().x,player->GetPos().y + 20.f };
+		window.draw(lines);
+	}
 
 }
 
@@ -263,15 +274,6 @@ bool Boss::EqualFloat(float a, float b)
 
 void Boss::SetHp(int num)
 {
-	//move trigger
-	/*isHit = true;
-	moveTime = 0.f;
-	playerPos = player->GetPos();
-	movePos.clear();
-	FindGrid();
-	astar->AstarSearch(*isGreedObject, startPos, destPos);
-	movePos = astar->GetCoordinate();*/
-
 	hp -= num;
 	if (hp <= 0)
 	{
@@ -279,7 +281,7 @@ void Boss::SetHp(int num)
 	}
 
 
-	string ments[3] = { "Ouch..!", "Oh No!" , "Fuxx" };
+	/*string ments[3] = { "Ouch..!", "Oh No!" , "Fuxx" };
 	Vector2f randPos = { Utils::RandomRange(-20,20) + GetPos().x,
 		Utils::RandomRange(-50,-40) + GetPos().y + 30.f };
 	Ment* ment = new Ment();
@@ -289,7 +291,7 @@ void Boss::SetHp(int num)
 	ment->SetOrigin(Origins::BC);
 	ment->SetPos(randPos);
 	ment->SetActive(true);
-	SCENE_MGR->GetCurrScene()->AddGameObject(ment, LayerType::Object, 1);
+	SCENE_MGR->GetCurrScene()->AddGameObject(ment, LayerType::Object, 1);*/
 }
 
 void Boss::SetHpBar()
@@ -298,28 +300,23 @@ void Boss::SetHpBar()
 	healthBar.setSize({ (barScaleX / maxHp) * hp, 15.f });
 	if (hp > (maxHp / 2))
 	{
-		if (!isHide)
-			healthBar.setFillColor(Color::Green);
+		healthBar.setFillColor(Color::Green);
 	}
 	else if (hp <= (maxHp / 2) && hp > (maxHp / 5))
 	{
-		if (!isHide)
-			healthBar.setFillColor(Color::Yellow);
+		healthBar.setFillColor(Color::Yellow);
 	}
 	else
 	{
-		if (!isHide)
-			healthBar.setFillColor(Color::Red);
+		healthBar.setFillColor(Color::Red);
 	}
 	if (hp <= 0)
 	{
-		if (!isHide)
-			healthBar.setOutlineThickness(0.f);
+		healthBar.setOutlineThickness(0.f);
 	}
 	else
 	{
-		if (!isHide)
-			healthBar.setOutlineThickness(2.f);
+		healthBar.setOutlineThickness(2.f);
 	}
 }
 
@@ -342,7 +339,6 @@ void Boss::AttackPattern(float dt)
 	lookDir = Utils::Normalize(player->GetPos() - GetPos());
 	//gun->SetLookDir(lookDir);
 	//gun->Fire(GetPos(), false);
-	//hitTime = 0.f;
 	timer = moveTime;
 	playerPos = player->GetPos();
 	movePos.clear();
@@ -350,35 +346,6 @@ void Boss::AttackPattern(float dt)
 	astar->AstarSearch(*isGreedObject, startPos, destPos);
 	movePos = astar->GetCoordinate();
 	SetState(States::Move);
-	//if (hitTime >= 0.8f )//&& gun->GetIsInWall())
-	//{
-	//	if (moveTime <= 0)
-	//	{
-	//		lookDir = Utils::Normalize(player->GetPos() - GetPos());
-	//		//gun->SetLookDir(lookDir);
-	//		//gun->Fire(GetPos(), false);
-	//		hitTime = 0.f;
-	//		moveTime = stopTime;
-	//		playerPos = player->GetPos();
-	//		movePos.clear();
-	//		FindGrid();
-	//		astar->AstarSearch(*isGreedObject, startPos, destPos);
-	//		movePos = astar->GetCoordinate();
-	//		SetState(States::Move);
-	//	}
-	//}
-	//cout << movePos.empty() << endl;
-
-	/*if ((!movePos.empty()) && moveTime >= 0)
-	{
-		SetState(States::Move);
-	}
-	else
-	{
-		movePos.clear();
-	}*/
-
-
 }
 
 void Boss::Move(float dt)
@@ -422,7 +389,7 @@ void Boss::Move(float dt)
 
 void Boss::Dash(float dt)
 {
-	range -= Utils::Magnitude(lookDir * dt * speed);
+	prevPosition = GetPos();
 	if (range <= 0.f)
 	{
 		speed = maxSpeed;
@@ -430,14 +397,20 @@ void Boss::Dash(float dt)
 		isDash = false;
 		SetState(States::Idle);
 		range = dashRange;
+		dashTimer = dashCoolTime;
+		//dashHitbox->SetActive(false);
+		return;
 		//cout << "dash fin" << endl;
 	}
 	else
 	{
 		speed = dashSpeed;
 	}
+	Translate(dashDir * dt * speed);
+	range -= Utils::Magnitude(dashDir * dt * speed);
+	Collision();
+	DashCollision();
 	
-	Translate(lookDir * dt * speed);
 }
 
 void Boss::Collision()
@@ -453,27 +426,74 @@ void Boss::Collision()
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK" ||
 					obj->GetName() == "RADIATION")
+				{
 					SetBossPos();
+					if (currState == States::Dash)
+					{
+						Stun();
+					}
+				}
 			}
+		}
+	}
+}
+
+void Boss::DashCollision()
+{
+	for (auto& pHit : player->GetHitBoxs())
+	{
+		if (dashHitbox->GetActive() && Utils::OBB(dashHitbox->GetHitbox(), pHit->GetHitbox()))
+		{
+			if (dashAttack <= 0)
+			{
+				player->SetHp(dashDamage);
+				player->SetStun(true);
+				dashAttack++;
+			}
+			//dashHitbox->SetActive(false);
+			break;
+		}
+	}
+}
+
+void Boss::ContactDamage()
+{
+	for (auto& pHit : player->GetHitBoxs())
+	{
+		if (dashHitbox->GetActive() && Utils::OBB(dashHitbox->GetHitbox(), pHit->GetHitbox()))
+		{
+			if (hitTimer <= 0)
+			{
+				player->SetHp(damage);
+				hitTimer = hitTime;
+				cout << "damage" << endl;
+			}
+			break;
 		}
 	}
 }
 
 void Boss::SetDashPos()
 {
-	playerPos = player->GetPos();
 	movePos.clear();
-	
-	//1
-	//FindGrid();
-	//astar->AstarSearch(*isGreedObject, startPos, destPos);
-	//movePos = astar->GetCoordinate();
-	
-	//2
-	
-	movePos.push_back(playerPos);
+	dashDir = Utils::Normalize(player->GetPos() - GetPos());
 	isDash = true;
+	dashAttack = 0;
 	SetState(States::Dash);
+}
+
+void Boss::Stun()
+{
+	isStun = true;
+	timer = stunTime;
+	speed = maxSpeed;
+	movePos.clear();
+	isDash = false;
+	range = dashRange;
+	dashTimer = dashCoolTime;
+	SetState(States::Idle);
+	//dashHitbox->SetActive(false);
+	animator.Play((direction.x > 0.f) ? "BossBigStun" : "BossBigStunLeft");
 }
 
 void Boss::FindGrid()
@@ -531,8 +551,8 @@ void Boss::CheckIsInWall()
 void Boss::CheckIsInSight()
 {
 	VertexArray lines(LineStrip, 2);
-	lines[0].position = { GetPos() };
-	lines[1].position = { player->GetPos() };
+	lines[0].position = { GetPos().x,GetPos().y + 20.f };
+	lines[1].position = { player->GetPos().x,player->GetPos().y + 20.f };
 
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
@@ -541,8 +561,8 @@ void Boss::CheckIsInSight()
 		for (auto& obj : boundInObj)
 		{
 			if (Utils::LineRect(
-				GetPos(),
-				player->GetPos(),
+				{ GetPos().x,GetPos().y + 20.f },
+				{ player->GetPos().x,player->GetPos().y + 20.f }, 
 				obj->GetBottom()->GetHitbox()))
 			{
 				if (obj->GetName() == "TREE" ||
@@ -560,38 +580,4 @@ void Boss::CheckIsInSight()
 
 		}
 	}
-}
-
-void Boss::MakePath()
-{
-	//int x, y;
-	////int num = 0;
-	//while (1)
-	//{
-	//	if (Utils::RandomRange(0, 2) == 0)
-	//	{
-	//		x = ((int)bottomPos.x / 60) + Utils::RandomRange(0, patrolBlock);
-	//		y = ((int)bottomPos.y / 60) + Utils::RandomRange(0, patrolBlock);
-	//	}
-	//	else
-	//	{
-	//		x = ((int)bottomPos.x / 60) + Utils::RandomRange(-patrolBlock, 0);
-	//		y = ((int)bottomPos.y / 60) + Utils::RandomRange(-patrolBlock, 0);
-	//	}
-	//	if (x > 0 && y > 0 && y < 72 && x < 128)
-	//	{
-	//		if (!CheckWall(x, y))
-	//		{
-	//			patrolPos = { x * 60.f,y * 60.f };
-	//			return;
-	//			//cout << "path x: " << x << " y: " << y << endl;
-	//		}
-	//	}
-
-	//}
-}
-
-bool Boss::CheckWall(int x, int y)
-{
-	return (*isGreedObject)[y][x];
 }
