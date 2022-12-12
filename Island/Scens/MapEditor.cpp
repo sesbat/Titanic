@@ -185,7 +185,7 @@ void MapEditor::Update(float dt)
 					continue;
 				if (greedObjs[nowType][i][j] == nullptr)
 					continue;
-				if ((greedObjs[nowType][i][j]->GetType() != "ENEMY") && (greedObjs[nowType][i][j]->GetType() != "BOX"))
+				if ((greedObjs[nowType][i][j]->GetType() != "ENEMY") && (greedObjs[nowType][i][j]->GetType() != "BOSS") && (greedObjs[nowType][i][j]->GetType() != "BOX"))
 					continue;
 
 				auto itemBox = ((EditorMapUiMgr*)uimgr)->GetItemBox();
@@ -292,7 +292,7 @@ MapEditor::~MapEditor()
 
 void MapEditor::SetType(string t)
 {
-	if (t == "TREE" || t == "BUSH" || t == "STONE" || t == "ENEMY" || t == "PLAYER" ||
+	if (t == "TREE" || t == "BUSH" || t == "STONE" || t == "ENEMY" || t == "BOSS" || t == "PLAYER" ||
 		t == "BLOCK" || t == "ANOTHER" || t == "BOX" || t == "RADIATION")
 	{
 		nowType = LayerType::Object;
@@ -387,7 +387,7 @@ void MapEditor::Load(string path)
 
 		int i = ((int)obj.position.x - 30) / 60;
 		int j = (int)obj.position.y / 60 - 1;
-		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "ENEMY" ||
+		if (obj.type == "TREE" || obj.type == "BUSH" || obj.type == "STONE" || obj.type == "ENEMY" || obj.type == "BOSS"||
 			obj.type == "PLAYER" || obj.type == "BLOCK" || obj.type == "ANOTHER" || obj.type == "BOX" || obj.type == "RADIATION")
 		{
 			objList[LayerType::Object][j].push_back(draw);

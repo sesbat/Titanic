@@ -79,6 +79,12 @@
       "uiPaht": "graphics/editor/drawP10.png"
     }
   ],
+  "BOSS": [
+    {
+      "texPath": "graphics/boss_01.png",
+      "uiPaht": "graphics/editor/drawEnemy6.png"
+    }
+  ],
   "STONE": [
     {
       "texPath": "graphics/stone1.png",
@@ -123,10 +129,6 @@
     {
       "texPath": "graphics/enemy3.png",
       "uiPaht": "graphics/editor/drawEnemy3.png"
-    },
-    {
-      "texPath": "graphics/boss_01.png",
-      "uiPaht": "graphics/editor/drawEnemy6.png"
     }
   ],
   "BOX": [

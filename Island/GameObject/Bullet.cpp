@@ -162,7 +162,7 @@ void Bullet::Collision()
 				
 			}
 		}
-		else if (isplayer && objects->GetName() == "ENEMY")
+		else if (isplayer && objects->GetName() == "ENEMY" || isplayer && objects->GetName() == "BOSS")
 		{
 			auto hb = ((HitBoxObject*)objects)->GetHitBoxs();
 			for (auto& it : hb)
