@@ -14,6 +14,7 @@
 #include "../Framework/Framework.h"
 #include "../GameObject/NPC.h"
 #include "InventoryBox.h"
+#include "../GameObject/ToolTip.h"
 
 GameSceneUiMgr::GameSceneUiMgr(Scene* scene)
 	:UiMgr(scene), hpBarSize(1.f),staminaBarSize(1.f)
@@ -28,6 +29,8 @@ GameSceneUiMgr::~GameSceneUiMgr()
 
 void GameSceneUiMgr::Init()
 {
+	tip = new ToolTip(this);
+	uiObjList[1].push_back(tip);
 	player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
 
 	//hp

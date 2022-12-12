@@ -3,6 +3,12 @@
 #include "../Framework/InputMgr.h"
 #include "../GameObject/SpriteObject.h"
 #include "../GameObject/TextObject.h"
+#include "../GameObject/ToolTip.h"
+#include "../Scens/SceneManager.h"
+#include "../Scens/Ready.h"
+#include "../Ui/Ready/ReadyUiMgr.h"
+#include "../Ui/GameSceneUiMgr.h"
+
 
 InvenItem::InvenItem(UiMgr* mgr)
 	:MoveObject(mgr)
@@ -24,6 +30,7 @@ void InvenItem::Init()
 {
 	SetMove(true);
 	SetClkColor(true);
+
 }
 
 void InvenItem::Update(float dt)
@@ -35,6 +42,26 @@ void InvenItem::Update(float dt)
 	if (IsDrag())
 	{
 		GetTextObj()->SetPos(position + Vector2f(bound.width, bound.height));
+	}
+	if (IsStay())
+	{
+		ToolTip* tip;
+		tip = SCENE_MGR->GetCurrSceneType() == Scenes::Ready ? ((ReadyUiMgr*)uimgr)->GetTip() : ((GameSceneUiMgr*)uimgr)->GetTip();
+
+		if (!tip->GetActive())
+		{
+			overLapTimer += dt;
+			if (overLapTimer > initTimer)
+			{
+				tip->SetItem(GetName());
+				tip->SetItemType(FILE_MGR->GetItemInfo(GetName()).type);
+				tip->SetToolPos(position);
+				tip->SetMyItem(this);
+				tip->init();
+				tip->SetActive(true);
+				overLapTimer = 0.f;
+			}
+		}
 	}
 }
 void InvenItem::ButtonUpdate(float dt)
@@ -66,6 +93,10 @@ void InvenItem::Set(int width, int height, Vector2i invenPos,Vector2i invenGreed
 	SetPos((Vector2f)invenPos);
 	SetTexture(*RESOURCES_MGR->GetTexture(path), true);
 	GetTextObj()->SetPos(position + Vector2f(60, 60));
+
+	auto data = FILE_MGR->GetItemInfo(name);
+	SetOverlapTimer(data.tooltipDelay);
+
 }
 
 void InvenItem::SetInvenPos(Vector2i invenPos, Vector2i invenGreedPos)

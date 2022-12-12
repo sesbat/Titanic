@@ -371,6 +371,7 @@ void Player::Update(float dt)
 		}
 		else if (isMove && !InputMgr::GetKeyDown(Keyboard::Escape))
 		{
+			
 			this->PlayerSetIsInven(true);
 			inven->SetActive(true);
 			inven->ResetRightInven();

@@ -176,11 +176,11 @@ void InventoryBox::AddItem(string name, int cnt, Vector2i invenPos, Vector2i gre
 
 		}
 	}
+	item->SetName(name);
 	item->Set(data.width, data.height,
 		{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
 		{ findPos.y, findPos.x }, data.path, data.maxCount, data.price);
 	item->AddCount(cnt);
-	item->SetName(name);
 	item->Init();
 
 	items.push_back(item);
@@ -230,11 +230,11 @@ void InventoryBox::AddItem(string name, int count)
 
 			}
 		}
+		item->SetName(name);
 		item->Set(data.width, data.height,
 			{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
 			{ findPos.y, findPos.x }, data.path, data.maxCount, data.price);
 		item->AddCount(count >= maxCnt ? maxCnt : count);
-		item->SetName(name);
 		item->Init();
 
 		count -= maxCnt;
@@ -257,11 +257,11 @@ void InventoryBox::AddItem(string name, int count, Vector2i findPos)
 
 		}
 	}
+	item->SetName(name);
 	item->Set(data.width, data.height,
 		{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
 		{ findPos.y, findPos.x }, data.path, data.maxCount, data.price);
 	item->AddCount(count);
-	item->SetName(name);
 	item->Init();
 
 	items.push_back(item);

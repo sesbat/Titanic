@@ -91,6 +91,7 @@ GameScene::~GameScene()
 
 void GameScene::Init()
 {
+    uiMgr = new GameSceneUiMgr(this);
     bool testboss = false;
     int id = 0;
     isGameScene = true;
@@ -237,7 +238,6 @@ void GameScene::Init()
     light.setRange(700.f);
     fog.setAreaColor(Color(0, 0, 0, 245));
 
-    uiMgr = new GameSceneUiMgr(this);
     uiMgr->Init();
 
     sort(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), sorting);

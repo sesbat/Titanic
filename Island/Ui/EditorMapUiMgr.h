@@ -27,6 +27,7 @@ private:
 	vector<float> selectPosY;
 	int selIdx;
 	map<string, vector<Button*>> type_selects;
+	int typeIdx = 0;
 
 	vector<DrawSelect*> drawObj;
 	DrawObj* nowDraw;

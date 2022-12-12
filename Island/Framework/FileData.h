@@ -58,7 +58,14 @@ namespace ns {
 		int width;
 		int height;
 		int price;
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemInfo, path, maxCount, weight, width, height, price)
+
+		string uiName;
+		int type;
+		string description;
+		sf::Vector2i toolTipPos;
+		sf::Vector2i toolTipSize;
+		float tooltipDelay;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemInfo, path, maxCount, weight, width, height, price, uiName, type, description, toolTipPos, toolTipSize, tooltipDelay)
 	};
 
 	struct RequiredItem

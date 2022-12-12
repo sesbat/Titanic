@@ -37,7 +37,7 @@ void Craft::Init()
 		Button* button = new Button(uimgr);
 		button->SetClkColor(true);
 		button->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-			50, Color::White, itemList[i], true);
+			50, Color::White, (string)itemList[i], true);
 		button->SetOrigin(Origins::MC);
 		button->SetPos({ 300.f,100.f + FRAMEWORK->GetWindowSize().y/6 *i});
 		categories.push_back(button);

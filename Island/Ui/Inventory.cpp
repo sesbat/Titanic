@@ -358,9 +358,9 @@ void Inventory::SetUserItem(InvneUseInfo data)
 {
 	auto itemData = FILE_MGR->GetItemInfo(data.Type);
 	this->myUseItems[data.useIdx] = new InvenItem(uimgr);
-	this->myUseItems[data.useIdx]->Init();
 	this->myUseItems[data.useIdx]->SetName(data.Type);
 	this->myUseItems[data.useIdx]->Set(itemData.width, itemData.height, data.invenPos, {-1, -1}, data.path, itemData.maxCount, itemData.price);
+	this->myUseItems[data.useIdx]->Init();
 	this->myUseItems[data.useIdx]->AddCount(data.cnt);
 
 	if (data.useIdx == 0 || data.useIdx == 1)

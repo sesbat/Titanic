@@ -13,6 +13,7 @@ class Craft;
 class TextObject;
 class Shop;
 class BoolWindowBox;
+class ToolTip;
 class ReadyUiMgr : public UiMgr
 {
 private:
@@ -63,6 +64,7 @@ private:
 
 	float hpBarSize;
 	float staminaBarSize;
+	ToolTip* tip;
 public:
 	ReadyUiMgr(Scene* scene);
 	~ReadyUiMgr();
@@ -70,5 +72,6 @@ public:
 	virtual void Release();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
+	ToolTip* GetTip() { return tip; }
 };
 

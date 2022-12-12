@@ -17,6 +17,7 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
 
+	void SetText(Font& font, int size, Color color, wstring str);
 	void SetText(Font& font, int size, Color color, string str);
 	void SetTextLine(Color color, float size);
 	void SetPos(Vector2f pos);

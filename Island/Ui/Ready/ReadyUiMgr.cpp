@@ -17,6 +17,7 @@
 #include "../../GameObject/TextObject.h"
 #include "../Shop/Shop.h"
 #include "../BoolWindowBox.h"
+#include "../../GameObject/ToolTip.h"
 
 ReadyUiMgr::ReadyUiMgr(Scene* scene)
 	:UiMgr(scene), messageTime(3.f)
@@ -31,6 +32,9 @@ ReadyUiMgr::~ReadyUiMgr()
 
 void ReadyUiMgr::Init()
 {
+	tip = new ToolTip(this);
+	uiObjList[1].push_back(tip);
+
 	player = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
 	startNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetStartNPC();
 	craftNpc = ((Ready*)(SCENE_MGR->GetCurrScene()))->GetCraftNPC();
@@ -258,7 +262,7 @@ void ReadyUiMgr::Init()
 		}
 
 		map->SetClkColor(!isLock);
-		map->GetTextObj()->SetColor(isLock ? Color::Red : Color::White);
+		map->GetTextObj()->SetColor(isLock ? Color(180,180,180,255) : Color::White);
 		
 	}
 
@@ -268,6 +272,7 @@ void ReadyUiMgr::Init()
 	}
 
 	uiObjList[0].push_back(player->GetInventory());
+
 }
 
 void ReadyUiMgr::Update(float dt)

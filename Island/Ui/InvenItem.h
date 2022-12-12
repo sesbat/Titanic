@@ -2,6 +2,7 @@
 #include "MoveObject.h"
 class UiMgr;
 class TextObject;
+class ToolTip;
 
 class InvenItem : public MoveObject
 {
@@ -19,6 +20,8 @@ private:
 	Vector2i invenPos;
 	Vector2i invenGreedPos;
 	
+	float initTimer;
+	float overLapTimer;
 
 public:
 	InvenItem(UiMgr* mgr);
@@ -41,7 +44,8 @@ public:
 	int GetHeight() { return height; }
 	string GetPath() { return path; }
 	void AddCount(int n);
-
+	void SetOverlapTimer(float ft) { overLapTimer = 0.f; initTimer = ft; }
+	float SetOverlapTimer() { return overLapTimer; }
 	void SetCount(int n);
 
 	
