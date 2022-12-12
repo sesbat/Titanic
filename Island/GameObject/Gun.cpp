@@ -69,11 +69,11 @@ void Gun::Init()
 
 	scene = SCENE_MGR->GetCurrScene();
 
-	gunNameType["Shotgun"] = GunType::Sniper;
-	gunNameType["Rifle"] = GunType::Shotgun;
-	gunNameType["Sniper"] = GunType::Rifle;
+	gunNameType["Shotgun"] = GunType::Shotgun;
+	gunNameType["Rifle"] = GunType::Rifle;
+	gunNameType["Sniper"] = GunType::Sniper;
 	gunNameType["Scop_sniper"] = GunType::Sniper;
-	
+	gunNameType["Up1-Shotgun"] = GunType::Shotgun;
 }
 
 void Gun::Update(float dt)

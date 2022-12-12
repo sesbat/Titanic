@@ -458,12 +458,12 @@ void GameScene::SupplyUpdate(float dt)
             Ment* ment = new Ment();
             ment->SetUiViewCenter(true);
             ment->SetUiView(&uiView);
-            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "º¸±ÞÇ°ÀÌ »ý¼ºµÇ¾ú½À´Ï´Ù");
+            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
             ment->SetOrigin(Origins::MC);
             ment->SetTimer(2);
             ment->SetAlways(false);
             ment->SetActive(true);
-            ment->GetText().setString(L"º¸±ÞÇ°ÀÌ »ý¼ºµÇ¾ú½À´Ï´Ù");
+            ment->GetText().setString(L"ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
             objList[LayerType::Object][1].push_back(ment);
 
 
