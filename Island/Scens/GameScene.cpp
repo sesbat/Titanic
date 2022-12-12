@@ -524,7 +524,7 @@ void GameScene::Draw(RenderWindow& window)
 
     //fog.clear();
     //fog.draw(light);
-   // window.draw(fog);
+    //window.draw(fog);
     //fog.display();
 
     if (uiMgr != nullptr)
