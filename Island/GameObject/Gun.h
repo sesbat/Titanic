@@ -53,6 +53,8 @@ private:
 
     Vector2f lookDir;
     Vector2f pos;
+    Vector2f randDir;
+    float randomNum;
 
     map<string, GunType> gunNameType;
 

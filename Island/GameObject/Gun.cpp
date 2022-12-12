@@ -26,12 +26,12 @@ void OnCreateBullet(Bullet* bullet)
 }
 
 Gun::Gun()
-	:gunType(GunType::Shotgun), isGunFlip(false), bulletSpeed(10000), range(2000), shootDelay(0), isInWall(true)
+	:gunType(GunType::Shotgun), isGunFlip(false), bulletSpeed(10000), range(2000), shootDelay(0), isInWall(true),randomNum(10.f)
 {
 }
 
 Gun::Gun(GunType type, User user)
-	:gunType(type), isGunFlip(false), bulletSpeed(10000), range(2000), user(user), shootDelay(0), isInWall(true)
+	:gunType(type), isGunFlip(false), bulletSpeed(10000), range(2000), user(user), shootDelay(0), isInWall(true), randomNum(10.f)
 {
 }
 
@@ -181,6 +181,11 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 
 	Transform transform = translation * rotation;
 
+	Vector2f randomPos;
+	randomPos.x = InputMgr::GetMousePos().x + Utils::RandomRange(-randomNum, randomNum);
+	randomPos.y = InputMgr::GetMousePos().y + Utils::RandomRange(-randomNum, randomNum);
+	randDir = Utils::Normalize(randomPos - GetPos());
+
 	if (shootDelay <= 0 && isInWall)
 	{
 		switch (gunType)
@@ -233,6 +238,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			bulletSpeed = data.speed;
 			range = data.range;
 			shootDelay = data.shootDelay;
+			randomNum = data.randDir;
 
 			Bullet* bullet = bulletPool.Get();
 			//bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
@@ -242,7 +248,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 
 			SOUND_MGR->Play(data.soundPath);
 
-			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
+			bullet->Fire(startPos, randDir, bulletSpeed, range, isplayer);
 		}
 		break;
 		case GunType::Sniper:
