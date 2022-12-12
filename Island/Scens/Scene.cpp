@@ -253,7 +253,7 @@ void Scene::LayerSort()
 		{
 			another.push_back(obj);
 		}
-		else if (obj->GetName() == "ENEMY" || obj->GetName() == "PLAYER" || obj->GetName() == "NPC")
+		else if (obj->GetName() == "ENEMY" || obj->GetName() == "BOSS" || obj->GetName() == "PLAYER" || obj->GetName() == "NPC")
 		{
 			if (obj->GetName() == "PLAYER")
 				player = ((HitBoxObject*)obj);

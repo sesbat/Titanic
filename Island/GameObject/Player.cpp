@@ -688,7 +688,6 @@ void Player::Collision()
 			{
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "ENEMY" ||
 					obj->GetName() == "RADIATION")
 					SetPlayerPos();
 			}

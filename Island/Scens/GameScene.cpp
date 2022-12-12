@@ -150,10 +150,8 @@ void GameScene::Init()
 
             objList[LayerType::Object][0].push_back(player);
         }
-        else if (obj.type == "ENEMY")
+        else if (obj.type == "BOSS")
         {
-            if (enemyInfo[obj.path].type == "graphics/boss_01.png")
-            {
                 boss = new Boss();
                 boss->SetName(obj.type);
                 boss->SetId(id++);
@@ -165,9 +163,9 @@ void GameScene::Init()
                 boss->SetGreedObject(&isGreedObject);
                 objList[LayerType::Object][0].push_back(boss);
                 testboss = true;
-            }
-            else
-            {
+        }
+        else if (obj.type == "ENEMY")
+        {
                 Enemy* enemy = new Enemy();
                 enemy->SetName(obj.type);
                 enemy->SetId(id++);
@@ -180,7 +178,6 @@ void GameScene::Init()
                 enemies.push_back(enemy);
 
                 objList[LayerType::Object][0].push_back(enemy);
-            }
             
         }
         else if (obj.type == "TILE")
