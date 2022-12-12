@@ -31,5 +31,16 @@
     "patrolTime": 3.0,
     "speed": 100.0,
     "type": "graphics/enemy3.png"
+  },
+  "graphics/boss_01.png": {
+    "gun": 1,
+    "hideDelay": 1.0,
+    "hitTime": 0.8,
+    "maxHp": 500,
+    "moveTime": 10.0,
+    "patrolBlock": 10,
+    "patrolTime": 3.0,
+    "speed": 100.0,
+    "type": "graphics/boss_01.png"
   }
 }

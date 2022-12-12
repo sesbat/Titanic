@@ -20,6 +20,7 @@ public:
 		None = -1,
 		Idle,
 		Move,
+		Dash,
 		Dead,
 	};
 	enum class Type
@@ -49,6 +50,7 @@ protected:
 
 	//valance variable
 	float speed;
+	float maxSpeed;
 	float dashRange;
 	float dashSpeed;
 	float stunTime;
@@ -57,9 +59,14 @@ protected:
 	float damage;
 	float radDamage;
 	float fireRange;
+	float stopTime;
+	float moveTime;
 
 	bool isStun;
 	bool isStart;
+	bool isDash;
+	float timer;
+
 
 	Vector2f look;
 	Vector2f lookDir;
@@ -77,9 +84,10 @@ protected:
 	Pair startPos;
 	Pair destPos;
 	Vector2f bottomPos;
-
+	//dash
+	
 	//timer
-	float moveTime;
+	
 	float hitTime;
 	float getAttackTime;
 
@@ -105,6 +113,7 @@ protected:
 	float hideDelay;
 	float hideDelayTimer;
 	bool isHitBullet;
+
 public:
 	Boss();
 	virtual ~Boss();
@@ -134,11 +143,10 @@ public:
 	Vector2f GetPrevLookDir() { return prevLook; }
 
 	void AttackPattern(float dt);
-	void PatrolPattern(float dt);
 	void Move(float dt);
-	void MoveToPos(float dt);
+	void Dash(float dt);
 	void Collision();
-
+	void SetDashPos();
 	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
 	void FindGrid();
 	void FindGrid(Vector2f pos);

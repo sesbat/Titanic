@@ -14,6 +14,7 @@ class SpriteObject;
 class TextObject;
 class NPC;
 class ItemBoxObject;
+class Boss;
 
 class GameScene :public Scene
 {
@@ -29,6 +30,7 @@ protected:
 
 	Player* player;
 	list<Enemy*> enemies;
+	Boss* boss;
 
 	float timer;
 	Clock clock;

@@ -17,7 +17,7 @@
 
 Enemy::Enemy()
 	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), patrolTime(0.f), hp(500),
-	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false),  isInSight(true), attack(false), isSearch(false), patrolBlock(10)
+	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false),  isInSight(true), attack(false), isSearch(false), patrolBlock(10), initMoveTime(10.f)
 {
 
 }
@@ -340,7 +340,7 @@ void Enemy::AttackPattern(float dt)
 	}
 	//cout << movePos.empty() << endl;
 
-	if ((!movePos.empty() && moveTime < 10.f && (Utils::Distance(player->GetPos(), GetPos()) > 500.f) || !isInSight) || (isHit || isSearch))
+	if ((!movePos.empty() && moveTime < initMoveTime && (Utils::Distance(player->GetPos(), GetPos()) > 500.f) || !isInSight) || (isHit || isSearch))
 	{
 		SetState(States::Move);
 		if (isHit)

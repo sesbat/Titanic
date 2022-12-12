@@ -171,3 +171,11 @@ graphics/rad1.png,0
 graphics/editor/drawRad1.png,0
 graphics/rad.png,0
 graphics/radbk.png,0
+graphics/enemy/boss/Big/Big_idle.png,0
+graphics/enemy/boss/Big/Big_move.png,0
+animations/boss/BossBigIdle.csv,3
+animations/boss/BossBigIdleLeft.csv,3
+animations/boss/BossBigMove.csv,3
+animations/boss/BossBigMoveLeft.csv,3
+graphics/editor/drawEnemy6.png,0
+graphics/boss_01.png,0

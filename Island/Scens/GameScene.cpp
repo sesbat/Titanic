@@ -27,6 +27,7 @@
 
 #include "../3rd/QuadTree_SFML_DEMO.h"
 #include "../GameObject/HitBox.h"
+#include "../GameObject/Boss.h"
 
 using namespace std;
 using namespace sf;
@@ -87,6 +88,7 @@ GameScene::~GameScene()
 
 void GameScene::Init()
 {
+    bool testboss = false;
     int id = 0;
     isGameScene = true;
     auto& data = FILE_MGR->GetMap(sceneName);
@@ -147,18 +149,36 @@ void GameScene::Init()
         }
         else if (obj.type == "ENEMY")
         {
-            Enemy* enemy = new Enemy();
-            enemy->SetName(obj.type);
-            enemy->SetId(id++);
-            enemy->SetPos(obj.position);
-            enemy->SetHitBox(obj.path);
-            enemy->SetType((GunType)enemyInfo[obj.path].gun);
-            enemy->SetEnemyType(enemyInfo[obj.path].type);
-            enemy->SetItem(obj.item);
-            enemy->SetGreedObject(&isGreedObject);
-            enemies.push_back(enemy);
+            if (enemyInfo[obj.path].type == "graphics/boss_01.png")
+            {
+                boss = new Boss();
+                boss->SetName(obj.type);
+                boss->SetId(id++);
+                boss->SetPos(obj.position);
+                boss->SetHitBox(obj.path);
+                //boss->SetType((GunType)enemyInfo[obj.path].gun);
+                //boss->SetEnemyType(enemyInfo[obj.path].type);
+                boss->SetItem(obj.item);
+                boss->SetGreedObject(&isGreedObject);
+                objList[LayerType::Object][0].push_back(boss);
+                testboss = true;
+            }
+            else
+            {
+                Enemy* enemy = new Enemy();
+                enemy->SetName(obj.type);
+                enemy->SetId(id++);
+                enemy->SetPos(obj.position);
+                enemy->SetHitBox(obj.path);
+                enemy->SetType((GunType)enemyInfo[obj.path].gun);
+                enemy->SetEnemyType(enemyInfo[obj.path].type);
+                enemy->SetItem(obj.item);
+                enemy->SetGreedObject(&isGreedObject);
+                enemies.push_back(enemy);
 
-            objList[LayerType::Object][0].push_back(enemy);
+                objList[LayerType::Object][0].push_back(enemy);
+            }
+            
         }
         else if (obj.type == "TILE")
         {
@@ -198,7 +218,13 @@ void GameScene::Init()
     {
         enemy->Init(player);
     }
-
+    //boss
+    if (testboss)
+    {
+        boss->Init(player);
+    }
+  
+    //
 
     auto& tiles = objList[LayerType::Tile][0];
     mapSize.left = 0;
@@ -396,6 +422,7 @@ void GameScene::Update(float dt)
     cursor->SetPos(lines[1].position);
     shot_cursor->SetPos(lines[1].position);
 
+    //boss->Update(dt);
 }
 
 vector<HitBoxObject*> GameScene::ObjListObb(HitBoxObject* obj)
@@ -466,6 +493,8 @@ void GameScene::Draw(RenderWindow& window)
 		cursor->Draw(window);
 	if (player->GetIsMove())
 		shot_cursor->Draw(window);
+
+   //boss->Draw(window);
 }
 
 void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy)
