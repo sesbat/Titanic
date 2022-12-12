@@ -162,6 +162,7 @@ void GameScene::Init()
                 boss->SetItem(obj.item);
                 boss->SetGreedObject(&isGreedObject);
                 objList[LayerType::Object][0].push_back(boss);
+                bosses.push_back(boss);
                 testboss = true;
         }
         else if (obj.type == "ENEMY")
@@ -266,6 +267,7 @@ void GameScene::Release()
     Scene::Release();
     enemies.clear();
     blockPool.clear();
+    bosses.clear();
 }
 
 void GameScene::Enter()
@@ -431,6 +433,40 @@ void GameScene::Update(float dt)
 
 void GameScene::SupplyUpdate(float dt)
 {
+
+    {
+        if (InputMgr::GetKeyDown(Keyboard::F3))
+        {
+            SupplyBox* supBox = new SupplyBox();
+            supBox->SetTexture(*RESOURCES_MGR->GetTexture("graphics/enemy1-die.png"));
+            supBox->SetOrigin(Origins::MC);
+            supBox->SetHitBox("graphics/enemy1-die.png");
+            supBox->SetName("SupplyBox");
+            supBox->SetPlayerPos(player->GetPosPtr());
+            supBox->SetPlayer(player);
+            supBox->SetPos(player->GetPos());
+            supBox->Init();
+            supBox->SetRandPos();
+
+            auto supplyBoxData = FILE_MGR->GetSupplyBoxInfo(sceneName);
+            supBox->SetSupplyItems(supplyBoxData);
+
+            objList[LayerType::Object][0].push_back(supBox);
+            sort(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), sorting);
+
+            Ment* ment = new Ment();
+            ment->SetUiViewCenter(true);
+            ment->SetUiView(&uiView);
+            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "보급품이 생성되었습니다");
+            ment->SetOrigin(Origins::MC);
+            ment->SetTimer(2);
+            ment->SetAlways(false);
+            ment->SetActive(true);
+            ment->GetText().setString(L"보급품이 생성되었습니다");
+            objList[LayerType::Object][1].push_back(ment);
+        }
+    }
+
     if (!isSupply)
     {
         supplyTimer += dt;

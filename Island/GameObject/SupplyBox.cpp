@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "../Ui/Inventory.h"
 #include "Ment.h"
+#include "../GameObject/Boss.h"
 
 SupplyBox::SupplyBox()
 	:lines(LineStrip, 2)
@@ -55,6 +56,7 @@ void SupplyBox::SetSupplyItems(vector<InvenInfo> items)
 Vector2i SupplyBox::GetRandSpawn()
 {
 	auto map_data = ((GameScene*)SCENE_MGR->GetCurrScene())->GetGreedObj();
+	auto bosses = *((GameScene*)SCENE_MGR->GetCurrScene())->GetBossList();
 
 	vector<Vector2i> checkPos;
 
@@ -62,9 +64,22 @@ Vector2i SupplyBox::GetRandSpawn()
 	{
 		for (int j = 0; j < map_data[i].size(); j++)
 		{
-			if (!map_data[i][j])
-				checkPos.push_back(Vector2i{ i,j });
+			bool isBossPos = false;
+			for (auto& boss : bosses)
+			{
+				if (Utils::Distance(Vector2f(j * 60 + 30, i * 60 + 60), boss->GetPos()) < 500.f)
+				{
+					isBossPos = true;
+					break;
+				}
+			}
+			if (!isBossPos)
+			{
+				if (!map_data[i][j])
+					checkPos.push_back(Vector2i{ i,j });
+			}
 		}
+
 	}
 
 	int checkSize = checkPos.size();
@@ -73,6 +88,7 @@ Vector2i SupplyBox::GetRandSpawn()
 
 	return checkPos[getRendPos];
 }
+
 
 void SupplyBox::SetRandPos()
 {

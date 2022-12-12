@@ -30,6 +30,7 @@ protected:
 
 	Player* player;
 	list<Enemy*> enemies;
+	list<Boss*> bosses;
 	Boss* boss;
 
 	float timer;
@@ -85,6 +86,7 @@ public:
 	virtual void Draw(RenderWindow& window) override;
 
 	list<Enemy*>* GetEnemyList() { return &enemies; }
+	list<Boss*>* GetBossList() { return &bosses; }
 	Player* GetPlayer(){ return player; }
 	float GetEscapeTimer() { return escapeTimer; }
 	Vector2f GetEscapePoint() { return escapePoint; }
