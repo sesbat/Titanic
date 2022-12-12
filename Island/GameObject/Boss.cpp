@@ -463,7 +463,7 @@ void Boss::ContactDamage()
 			{
 				player->SetHp(damage);
 				hitTimer = hitTime;
-				cout << "damage" << endl;
+				//cout << "damage" << endl;
 			}
 			break;
 		}
