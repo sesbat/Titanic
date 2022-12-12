@@ -72,6 +72,7 @@
     <ClCompile Include="Ui\BoolWindowBox.cpp" />
     <ClCompile Include="Ui\ConnectWindowBox.cpp" />
     <ClCompile Include="GameObject\SupplyBox.cpp" />
+    <ClCompile Include="GameObject\ToolTip.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\OBB.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="Ui\BoolWindowBox.h" />
     <ClInclude Include="Ui\ConnectWindowBox.h" />
     <ClInclude Include="GameObject\SupplyBox.h" />
+    <ClInclude Include="GameObject\ToolTip.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
