@@ -227,5 +227,6 @@ public:
 
 	const vector<string>& GetClearMpas() const { return clearMaps; } 
 	void ClearMap(string name);
+	void SaveSaveBox();
 };
 
