@@ -181,10 +181,21 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 
 	Transform transform = translation * rotation;
 
-	Vector2f randomPos;
-	randomPos.x = InputMgr::GetMousePos().x + Utils::RandomRange(-randomNum, randomNum);
-	randomPos.y = InputMgr::GetMousePos().y + Utils::RandomRange(-randomNum, randomNum);
-	randDir = Utils::Normalize(randomPos - GetPos());
+	float distance = Utils::Distance(InputMgr::GetMousePos(), GetPos());
+	if (distance < 100.f)
+	{
+		randDir = lookDir;
+	}
+	else
+	{
+		float randomNum1 = randomNum * (distance / 900.f);
+		float randomNum2 = randomNum * (distance / 600.f);
+
+		Vector2f randomPos;
+		randomPos.x = player->GetLook().x + Utils::RandomRange(-randomNum1, randomNum1);
+		randomPos.y = player->GetLook().y + Utils::RandomRange(-randomNum2, randomNum2);
+		randDir = Utils::Normalize(randomPos - player->GetPos());
+	}
 
 	if (shootDelay <= 0 && isInWall)
 	{
