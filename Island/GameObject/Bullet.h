@@ -5,7 +5,7 @@ class Scene;
 class HitBox;
 class Enemy;
 class Player;
-
+class Boss;
 
 class Bullet :public SpriteObject
 {
@@ -17,6 +17,7 @@ private:
 
 	Scene* scene;
 	list<Enemy*>* enemies;
+	list<Boss*>* bosses;
 	Player* player;
 
 	Vector2f dir;
@@ -27,8 +28,10 @@ private:
 	Vector2f nextPos;
 
 	int damage;
+	int radiation;
 
 	bool isplayer;
+	bool israd;
 
 public:
 	Bullet();
@@ -45,10 +48,13 @@ public:
 
 	void SetPlayer(Player* player){this->player = player;}
 	void SetEnemyList(list<Enemy*>* list) { enemies = list; }
+	void SetBossList(list<Boss*>* list) { bosses = list; }
 	void SetDamage(int num) { damage = num; }
+	void SetRadiation(float num) { radiation = num; }
 
 	bool LineRect(Vector2f bulletpos, Vector2f bulletPrevPos, RectangleShape hitObject);
 	bool Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, float y3, float x4, float y4);
 	void Collision();
+	void SetIsRad(bool rad) { israd = rad; }
 };
 

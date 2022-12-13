@@ -93,7 +93,6 @@ GameScene::~GameScene()
 void GameScene::Init()
 {
     uiMgr = new GameSceneUiMgr(this);
-    bool testboss = false;
     int id = 0;
     isGameScene = true;
     auto& data = FILE_MGR->GetMap(sceneName);
@@ -165,19 +164,6 @@ void GameScene::Init()
             boss->SetGreedObject(&isGreedObject);
             objList[LayerType::Object][0].push_back(boss);
             bosses.push_back(boss);
-            //testboss = true;
-                boss = new Boss();
-                boss->SetName(obj.type);
-                boss->SetId(id++);
-                boss->SetPos(obj.position);
-                boss->SetHitBox(obj.path);
-                //boss->SetType((GunType)enemyInfo[obj.path].gun);
-                //boss->SetEnemyType(enemyInfo[obj.path].type);
-                boss->SetItem(obj.item);
-                boss->SetGreedObject(&isGreedObject);
-                objList[LayerType::Object][0].push_back(boss);
-                bosses.push_back(boss);
-                testboss = true;
         }
         else if (obj.type == "ENEMY")
         {

@@ -321,7 +321,12 @@ void Player::Update(float dt)
 			isDash = false;
 		}
 	}
-
+	else
+	{
+		speed = initSpeed;
+		isDash = false;
+	}
+	
 	if (InputMgr::GetKeyDown(Keyboard::Tab) || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
 		if (inven->GetActive() && !isMove)
@@ -464,6 +469,11 @@ void Player::SetHp(int num)
 	{
 		hp = 0;
 	}
+}
+
+void Player::SetRad(float rad)
+{
+	radGuage += rad;
 }
 
 void Player::HealHp(int num)
