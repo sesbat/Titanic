@@ -117,6 +117,12 @@
       "uiPaht": "graphics/editor/drawTile6.png"
     }
   ],
+  "INVISIBLE": [
+    {
+      "texPath": "graphics/invisible.png",
+      "uiPaht": "graphics/editor/drawInvisible.png"
+    }
+  ],
   "ENEMY": [
     {
       "texPath": "graphics/enemy1.png",
