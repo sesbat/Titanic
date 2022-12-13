@@ -48,14 +48,15 @@ void ToolTip::init()
 	GetSpriteObj()->SetSize((Vector2f)itemData.toolTipSize);
 	auto toolTipPos = itemPos + (Vector2f)itemData.toolTipPos;
 
-	//if (toolTipPos.x + itemData.toolTipSize.x > 1080)
-	//{
-	//	toolTipPos.x -= itemData.toolTipSize.x + itemData.toolTipPos.x * -2;
-	//}
-	//if (toolTipPos.x + itemData.toolTipSize.x > 1080)
-	//{
-	//	toolTipPos.x -= itemData.toolTipSize.x + itemData.toolTipPos.x * -2;
-	//}
+
+	if (toolTipPos.x + itemData.toolTipSize.x > 1920)
+	{
+		toolTipPos.x -= itemData.toolTipSize.x + itemData.toolTipPos.x * 2;
+	}
+	if (toolTipPos.y + itemData.toolTipSize.y > 1080)
+	{
+		toolTipPos.y -= itemData.toolTipSize.y + itemData.toolTipPos.y * 2;
+	}
 
 	SetPos(toolTipPos);
 
