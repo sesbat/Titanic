@@ -796,22 +796,18 @@ void Player::SetFireAmmo()
 	case GunType::Shotgun:
 		ammo--;
 		sgAmmo = ammo;
-		gunAmmos[GunType::Shotgun] = sgAmmo;
 		break;
 	case GunType::Up1_ShotGun:
 		ammo--;
 		sgAmmo = ammo;
-		gunAmmos[GunType::Up1_ShotGun] = sgAmmo;
 		break;
 	case GunType::Rifle:
 		ammo--;
 		rfAmmo = ammo;
-		gunAmmos[GunType::Rifle] = rfAmmo;
 		break;
 	case GunType::Sniper:
 		ammo--;
 		snAmmo = ammo;
-		gunAmmos[GunType::Sniper] = snAmmo;
 		break;
 	}
 }
@@ -1054,16 +1050,16 @@ string Player::GetAmmos()
 		return ("No Guns");
 		break;
 	case GunType::Shotgun:
-		return (to_string(gunAmmos[GunType::Shotgun]) + "/" + to_string(magazineSG));
+		return (to_string(ammo) + "/" + to_string(magazineSG));
 		break;
 	case GunType::Up1_ShotGun:
-		return (to_string(gunAmmos[GunType::Up1_ShotGun]) + "/" + to_string(magazineSG));
+		return (to_string(ammo) + "/" + to_string(magazineSG));
 		break;
 	case GunType::Rifle:
-		return (to_string(gunAmmos[GunType::Rifle]) + "/" + to_string(magazineRF));
+		return (to_string(ammo) + "/" + to_string(magazineRF));
 		break;
 	case GunType::Sniper:
-		return (to_string(gunAmmos[GunType::Sniper]) + "/" + to_string(magazineSN));
+		return (to_string(ammo) + "/" + to_string(magazineSN));
 		break;
 	}
 }

@@ -5,7 +5,6 @@
 #include "Candle/RadialLight.hpp"
 #include "Candle/LightingArea.hpp"
 #include <list>
-#include "Gun.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -43,7 +42,6 @@ protected:
 	
 	States currState;
 	
-	map<GunType, int> gunAmmos;
 	
 	Vector2f look;
 	Vector2f lookDir;
