@@ -512,7 +512,8 @@ void Boss::Collision()
 			{
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "RADIATION")
+					obj->GetName() == "RADIATION"||
+					obj->GetName() == "INVISIBLE")
 				{
 					SetBossPos();
 					if (currState == States::Dash)
@@ -537,7 +538,8 @@ void Boss::RampCollision()
 			{
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "RADIATION")
+					obj->GetName() == "RADIATION"||
+					obj->GetName() == "INVISIBLE")
 				{
 					//cout << "count " << rampCount << endl;
 					SetBossPos();
@@ -662,7 +664,8 @@ void Boss::CheckIsInWall()
 
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "RADIATION")
+					obj->GetName() == "RADIATION"||
+					obj->GetName() == "INVISIBLE")
 				{
 					//cout << "wall" << endl;
 					gun->SetIsInWall(false);

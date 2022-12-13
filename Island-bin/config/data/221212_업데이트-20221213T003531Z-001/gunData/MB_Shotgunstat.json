@@ -1,9 +1,9 @@
 {
   "cnt": 5,
-  "damage": 300.0,
+  "damage": 350.0,
   "magazine": 10,
   "name": "Shotgun",
-  "randDir": 10.0,
+  "randDir": 20.0,
   "shotgunDir": 10,
   "range": 800.0,
   "reloadDelay": 3.0,

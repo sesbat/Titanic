@@ -76,7 +76,7 @@ void Inventory::Init()
 
 	Vector2f invenPos[] = { {800.f,140.f},{800.f,310.f},{800.f,471.f},{991.f,471.f},{800.f,721.f},{888.f,721.f},{972.f,721.f},{1055.f,721.f} };
 	string invenPath[] = { "inven-weapon","inven-weapon" ,"inven-cloth" ,"inven-cloth" ,"inven-item","inven-item" ,"inven-item" ,"inven-item" };
-	
+
 	for (int i = 0; i < 8; i++)
 	{
 		invenItemGreed[i] = new Button(uimgr);
@@ -102,7 +102,7 @@ void Inventory::Update(float dt)
 	saveBox->Update(dt);
 
 
-	if (nowDrag != nullptr && IsStay() )
+	if (nowDrag != nullptr && IsStay())
 	{
 		prevInven->ReturnItem();
 	}
@@ -122,19 +122,29 @@ void Inventory::Update(float dt)
 				switch (i)
 				{
 				case 0:
-					if (itemName == "Shotgun" || 
+					if (itemName == "Shotgun" ||
+						itemName == "MB_Shotgun" ||
+						itemName == "Up1-Shotgun" ||
 						itemName == "Rifle" ||
+						itemName == "Scop_Rifle" ||
+						itemName == "MB_Rifle" ||
 						itemName == "Sniper" ||
-						itemName == "Scop_sniper"||
-						itemName == "Up1-Shotgun")
+						itemName == "Scop_sniper" ||
+						itemName == "MB_sniper"||
+						itemName == "SR_25")
 						isUseItemUp = true;
 					break;
 				case 1:
 					if (itemName == "Shotgun" ||
+						itemName == "MB_Shotgun" ||
+						itemName == "Up1-Shotgun" ||
 						itemName == "Rifle" ||
-						itemName == "Sniper"||
-						itemName == "Scop_sniper"||
-						itemName == "Up1-Shotgun")
+						itemName == "Scop_Rifle" ||
+						itemName == "MB_Rifle" ||
+						itemName == "Sniper" ||
+						itemName == "Scop_sniper" ||
+						itemName == "MB_sniper" ||
+						itemName == "SR_25")
 						isUseItemUp = true;
 					break;
 				case 2:
@@ -193,7 +203,7 @@ void Inventory::Update(float dt)
 					{
 						auto player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
 						auto gun = player->GetGun();
-						
+
 						gun->SetGunType(gun->ItemNameToType(nowDrag->GetName()));
 					}
 					SetDrag(nullptr);
@@ -250,7 +260,7 @@ void Inventory::Draw(RenderWindow& window)
 	Button::Draw(window);
 	for (auto& useItem : invenItemGreed)
 	{
-		if(useItem != nullptr)
+		if (useItem != nullptr)
 			useItem->Draw(window);
 	}
 	for (auto& useItem : myUseItems)
@@ -262,7 +272,7 @@ void Inventory::Draw(RenderWindow& window)
 	rightInven->Draw(window);
 	txtMoney->Draw(window);
 	saveBox->Draw(window);
-	
+
 
 }
 
@@ -303,7 +313,7 @@ void Inventory::MoveInvenItem(InventoryBox* nextInven)
 	auto next = nextInven->GetItems();
 
 	auto find_item = find(prev->begin(), prev->end(), nowDrag);
-	if(find_item != prev->end())
+	if (find_item != prev->end())
 		prev->erase(find_item);
 	next->push_back(nowDrag);
 }
@@ -361,7 +371,7 @@ void Inventory::SetUserItem(InvneUseInfo data)
 	auto itemData = FILE_MGR->GetItemInfo(data.Type);
 	this->myUseItems[data.useIdx] = new InvenItem(uimgr);
 	this->myUseItems[data.useIdx]->SetName(data.Type);
-	this->myUseItems[data.useIdx]->Set(itemData.width, itemData.height, data.invenPos, {-1, -1}, data.path, itemData.maxCount, itemData.price);
+	this->myUseItems[data.useIdx]->Set(itemData.width, itemData.height, data.invenPos, { -1, -1 }, data.path, itemData.maxCount, itemData.price);
 	this->myUseItems[data.useIdx]->Init();
 	this->myUseItems[data.useIdx]->AddCount(data.cnt);
 
@@ -377,7 +387,7 @@ void Inventory::SetUserItem(InvneUseInfo data)
 InvenGreed* Inventory::GetGreed(int i, int j)
 {
 	InventoryBox* inven = GetNowInven();
-	
+
 	int	width = inven->GetWidth();
 	int	height = inven->GetHeight();
 	if (i >= height || j >= width)

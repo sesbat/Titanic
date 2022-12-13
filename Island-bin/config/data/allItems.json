@@ -60,7 +60,27 @@
     "tooltipDelay": 1.0
   },
   "Shotgun": {
-    "path": "graphics/items/shotgun/smp153.png",
+    "path": "graphics/items/shotgun/Shotgun.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 5,
+    "height": 1,
+    "price": 5000,
+    "uiName": "test",
+    "type": 1,
+    "description": "test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "MB_Shotgun": {
+    "path": "graphics/items/shotgun/MB_shotgun.png",
     "maxCount": 1,
     "weight": 2.0,
     "width": 5,
@@ -100,7 +120,47 @@
     "tooltipDelay": 1.0
   },
   "Rifle": {
-    "path": "graphics/items/GUN2.png",
+    "path": "graphics/items/rifle/Rifle.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 3,
+    "height": 1,
+    "price": 4000,
+    "uiName": "test",
+    "type": 3,
+    "description": "test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Scop_Rifle": {
+    "path": "graphics/items/rifle/Scop_Rifle.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 3,
+    "height": 1,
+    "price": 4000,
+    "uiName": "test",
+    "type": 3,
+    "description": "test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "MB_Rifle": {
+    "path": "graphics/items/rifle/MB_Rifle.png",
     "maxCount": 1,
     "weight": 2.0,
     "width": 3,
@@ -140,7 +200,47 @@
     "tooltipDelay": 1.0
   },
   "Scop_sniper": {
-    "path": "graphics/items/GUN4.png",
+    "path": "graphics/items/sniper/Scop_sniper.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 5,
+    "height": 1,
+    "price": 10000,
+    "uiName": "test",
+    "type": 3,
+    "description": "test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "MB_sniper": {
+    "path": "graphics/items/sniper/MB_sniper.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 5,
+    "height": 1,
+    "price": 10000,
+    "uiName": "test",
+    "type": 3,
+    "description": "test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "SR_25": {
+    "path": "graphics/items/sniper/SR_25.png",
     "maxCount": 1,
     "weight": 2.0,
     "width": 5,
@@ -161,6 +261,26 @@
   },
   "Scope": {
     "path": "graphics/items/scope.png",
+    "maxCount": 3,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 4000,
+    "uiName": "test",
+    "type": 2,
+    "description": "test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Muzzle Brake": {
+    "path": "graphics/items/Muzzle_Brake.png",
     "maxCount": 3,
     "weight": 2.0,
     "width": 1,
