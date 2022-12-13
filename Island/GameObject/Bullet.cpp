@@ -12,7 +12,7 @@
 #include "../Scens/GameScene.h"
 
 Bullet::Bullet()
-	:dir(), speed(0.f), range(0.f)
+	:dir(), speed(0.f), range(0.f), israd(false)
 {
 }
 
@@ -219,6 +219,11 @@ void Bullet::Collision()
 					nextPos,
 					it->GetHitbox()))
 				{
+					if (israd)
+					{
+						//cout << "rad" << endl;
+						player->SetRad(radiation);
+					}
 					player->SetHp(damage);
 					player->HideStop();
 					SetActive(false);

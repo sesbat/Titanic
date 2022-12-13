@@ -69,6 +69,22 @@ protected:
 	float fireAngle;
 	int fireCount;
 
+	//single shot
+	float singleRange;
+	float singleSpeed;
+	float singleshootDelay;
+	float singleAngle;
+	int singleCount;
+
+	int firePattern;
+
+	//rampage
+	float rampfireRange;
+	float rampfireSpeed;
+	float rampshootDelay;
+	float rampfireAngle;
+	int rampfireCount;
+
 	int rampageCount;
 
 	float rd;
@@ -169,11 +185,14 @@ public:
 	void CheckIsInSight();
 
 	void SetFireVariable();
+	void SetRampageVariable();
+	void SetSingleVariable();
 
 	float GetFireSpeed() { return fs; }
 	float GetFireRange() { return fr; }
 	float GetShootDelay() { return sd; }
 	int GetFireCount() { return fc; }
 	float GetFireAngle() { return fa; }
+	float GetRadiation() { return radDamage; }
 };
 

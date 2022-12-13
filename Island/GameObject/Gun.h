@@ -76,6 +76,7 @@ public:
     void SetEnemy(Enemy* enemy);
     void SetBoss(Boss* enemy);
     void Fire(Vector2f pos, bool isplayer);
+    //void BossFire(Vector2f pos, bool isplayer = false);
     void BossFire(Vector2f pos, bool isplayer = false);
 
     void SetGunType(GunType type);

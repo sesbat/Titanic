@@ -39,7 +39,11 @@ Boss::Boss()
 	isHit(false), isInSight(true), isStart(false), isDash(false), isStun(false),
 	dashAttack(0),
 	startRange(1000.f),
-	fireSpeed(800.f), fireRange(1000.f), shootDelay(1.f), fireCount(15), fireAngle(10.f), rampageCount(5), rampCount(0)
+	firePattern(0),
+	radDamage(5.f),
+	fireSpeed(800.f), fireRange(1000.f), shootDelay(1.f), fireCount(15), fireAngle(35.f), rampageCount(15), rampCount(0),
+	rampfireRange(1000.f), rampfireSpeed(800.f), rampshootDelay(1.f), rampfireAngle(10.f), rampfireCount(20),
+	singleRange(1000.f), singleSpeed(900.f), singleshootDelay(0.5f), singleAngle(0.f), singleCount(1)
 {
 }
 
@@ -180,6 +184,17 @@ void Boss::Update(float dt)
 						}
 						else if ((Utils::Distance(player->GetPos(), GetPos()) > activeDashRange))
 						{
+							cout << "pattern " << firePattern << endl;
+							if (firePattern >= 2)
+							{
+								SetFireVariable();
+								firePattern = 0;
+							}
+							else
+							{
+								SetSingleVariable();
+								firePattern++;
+							}
 							CheckIsInWall();
 							gun->SetLookDir(lookDir);
 							gun->BossFire(GetPos(), false);
@@ -243,7 +258,7 @@ void Boss::Update(float dt)
 		gun->Update(dt);
 
 		//dev
-		if (InputMgr::GetKeyDown(Keyboard::Z))
+		/*if (InputMgr::GetKeyDown(Keyboard::Z))
 		{
 			CheckIsInWall();
 			gun->SetLookDir(lookDir);
@@ -252,7 +267,7 @@ void Boss::Update(float dt)
 		if (InputMgr::GetKeyDown(Keyboard::X))
 		{
 			SetState(States::Idle);
-		}
+		}*/
 	}
 }
 
@@ -295,6 +310,7 @@ void Boss::SetHp(int num)
 	if (hp <= 0)
 	{
 		dashPosition = player->GetPos();
+		SetRampageVariable();
 		hp = 0;
 	}
 
@@ -523,7 +539,7 @@ void Boss::RampCollision()
 					obj->GetName() == "BLOCK" ||
 					obj->GetName() == "RADIATION")
 				{
-					cout << "count " << rampCount << endl;
+					//cout << "count " << rampCount << endl;
 					SetBossPos();
 					isStun = true;
 					movePos.clear();
@@ -704,5 +720,23 @@ void Boss::SetFireVariable()
 	sd = shootDelay;
 	fa = fireAngle;
 	fc = fireCount;
+}
+
+void Boss::SetRampageVariable()
+{
+	fr = rampfireRange;
+	fs = rampfireSpeed;
+	sd = rampshootDelay;
+	fa = rampfireAngle;
+	fc = rampfireCount;
+}
+
+void Boss::SetSingleVariable()
+{
+	fr = singleRange;
+	fs = singleSpeed;
+	sd = singleshootDelay;
+	fa = singleAngle;
+	fc = singleCount;
 }
 

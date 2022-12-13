@@ -349,6 +349,8 @@ void Gun::BossFire(Vector2f pos, bool isplayer)
 				float temp = atan2(lookDir.y, lookDir.x);
 				float F1 = j == 0 ? temp + ((M_PI / dir) * (i + 1)) : temp - ((M_PI / dir) * (i + 1));
 				Vector2f randomShot = { cos(F1),sin(F1) };
+				bullet->SetIsRad(true);
+				bullet->SetRadiation(boss->GetRadiation());
 				bullet->SetOrigin(Origins::MC);
 				bullet->SetDamage(damage);
 				bullet->Fire(startPos, randomShot, bulletSpeed, range, isplayer);
@@ -359,6 +361,8 @@ void Gun::BossFire(Vector2f pos, bool isplayer)
 			Bullet* bullet = bulletPool.Get();
 			bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/acid_Thorn.png"));
 			bullet->SetOrigin(Origins::MC);
+			bullet->SetRadiation(boss->GetRadiation());
+			bullet->SetIsRad(true);
 			bullet->SetDamage(damage);
 			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 		}

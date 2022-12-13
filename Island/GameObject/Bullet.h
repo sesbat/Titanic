@@ -28,8 +28,10 @@ private:
 	Vector2f nextPos;
 
 	int damage;
+	int radiation;
 
 	bool isplayer;
+	bool israd;
 
 public:
 	Bullet();
@@ -48,9 +50,11 @@ public:
 	void SetEnemyList(list<Enemy*>* list) { enemies = list; }
 	void SetBossList(list<Boss*>* list) { bosses = list; }
 	void SetDamage(int num) { damage = num; }
+	void SetRadiation(float num) { radiation = num; }
 
 	bool LineRect(Vector2f bulletpos, Vector2f bulletPrevPos, RectangleShape hitObject);
 	bool Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, float y3, float x4, float y4);
 	void Collision();
+	void SetIsRad(bool rad) { israd = rad; }
 };
 

@@ -488,6 +488,11 @@ void Player::SetHp(int num)
 	}
 }
 
+void Player::SetRad(float rad)
+{
+	radGuage += rad;
+}
+
 void Player::HealHp(int num)
 {
 	hp += num;

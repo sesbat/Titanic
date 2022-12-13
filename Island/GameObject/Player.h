@@ -179,6 +179,7 @@ public:
 	bool Radiation() { return prevRadGuage == (int)radGuage; }
 
 	void SetHp(int num);
+	void SetRad(float rad);
 	void HealHp(int num);
 	void HealHunger(float num);
 	void HealThirst(float num);
