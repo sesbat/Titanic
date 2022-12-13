@@ -652,7 +652,8 @@ void Player::Collision()
 			{
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "RADIATION"//||
+					obj->GetName() == "RADIATION"||
+					obj->GetName() == "INVISIBLE"//||
 					//obj->GetName() == "ENEMY"
 					)
 					SetPlayerPos();
@@ -671,7 +672,8 @@ void Player::Collision()
 
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "RADIATION")
+					obj->GetName() == "RADIATION"||
+					obj->GetName() == "INVISIBLE")
 				{
 					//cout << "wall" << endl;
 					gun->SetIsInWall(false);
@@ -695,7 +697,8 @@ void Player::Collision()
 			{
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "RADIATION")
+					obj->GetName() == "RADIATION"||
+					obj->GetName() == "INVISIBLE")
 					SetPlayerPos();
 			}
 		}

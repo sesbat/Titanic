@@ -112,7 +112,7 @@ void GameScene::Init()
 
     for (auto& obj : data)
     {
-        if (obj.type == "STONE" || obj.type == "BLOCK" || obj.type == "RADIATION")
+        if (obj.type == "STONE" || obj.type == "BLOCK" || obj.type == "RADIATION"|| obj.type == "INVISIBLE")
         {
             isGreedObject[obj.greedIdx.x][obj.greedIdx.y] = true;
             Blocks block = { obj.position, pushBlock(obj.position) };
@@ -134,7 +134,7 @@ void GameScene::Init()
             objList[LayerType::Object][0].push_back(box);
         }
         else if (obj.type == "TREE" || obj.type == "BUSH" ||
-            obj.type == "STONE" || obj.type == "BLOCK" || obj.type == "RADIATION")
+            obj.type == "STONE" || obj.type == "BLOCK" || obj.type == "RADIATION"|| obj.type == "INVISIBLE")
         {
             HitBoxObject* draw = new HitBoxObject();
             draw->SetName(obj.type);
@@ -423,7 +423,8 @@ void GameScene::Update(float dt)
         if (obj->GetName() == "TREE" ||
             obj->GetName() == "STONE" ||
             obj->GetName() == "BLOCK" ||
-            obj->GetName() == "RADIATION")
+            obj->GetName() == "RADIATION"||
+            obj->GetName() == "INVISIBLE")
         {
             auto hit = obj->GetBottom();
             if (LineRect(
@@ -471,12 +472,12 @@ void GameScene::SupplyUpdate(float dt)
             Ment* ment = new Ment();
             ment->SetUiViewCenter(true);
             ment->SetUiView(&uiView);
-            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "º¸±ÞÇ°ÀÌ »ý¼ºµÇ¾ú½À´Ï´Ù");
+            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
             ment->SetOrigin(Origins::MC);
             ment->SetTimer(2);
             ment->SetAlways(false);
             ment->SetActive(true);
-            ment->GetText().setString(L"º¸±ÞÇ°ÀÌ »ý¼ºµÇ¾ú½À´Ï´Ù");
+            ment->GetText().setString(L"ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
             objList[LayerType::Object][1].push_back(ment);
         }
     }

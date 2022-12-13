@@ -65,7 +65,7 @@ void ToolTip::init()
 	GetTextObj()->SetOrigin(Origins::MC);
 
 	auto price = new TextObject();
-	wstring txtPrice = L"°¡°Ý: " + to_string(itemData.price);
+	wstring txtPrice = L"ï¿½ï¿½ï¿½ï¿½: " + to_string(itemData.price);
 	price->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txtPrice);
 	auto pricePos = GetPos() + Vector2f{ 10, 40 };
 	price->SetPos(pricePos);
@@ -85,7 +85,7 @@ void ToolTip::init()
 		if (data.hungerEffect != 0)
 		{
 			auto hunger = new TextObject();
-			wstring txt_hunger = L"Çã±â: " + to_string((int)data.hungerEffect);
+			wstring txt_hunger = L"ï¿½ï¿½ï¿½: " + to_string((int)data.hungerEffect);
 			hunger->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, data.hungerEffect > 0 ? Color::Green : Color::Red, txt_hunger);
 			hunger->SetPos(nextPos);
 			hunger->SetOrigin(Origins::TL);
@@ -95,7 +95,7 @@ void ToolTip::init()
 		if (data.thirstEffect != 0)
 		{
 			auto thirst = new TextObject();
-			wstring txt_thirst = L"°¥Áõ: " + to_string((int)data.thirstEffect);
+			wstring txt_thirst = L"ï¿½ï¿½ï¿½ï¿½: " + to_string((int)data.thirstEffect);
 			thirst->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, data.thirstEffect > 0 ? Color::Green : Color::Red, txt_thirst);
 			thirst->SetPos(nextPos);
 			thirst->SetOrigin(Origins::TL);
@@ -105,7 +105,7 @@ void ToolTip::init()
 		if (data.energyEffect != 0)
 		{
 			auto energy = new TextObject();
-			wstring txt_energy = L"ÇÇ·Î: " + to_string((int)data.energyEffect);
+			wstring txt_energy = L"ï¿½Ç·ï¿½: " + to_string((int)data.energyEffect);
 			energy->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, data.energyEffect > 0 ? Color::Green : Color::Red, txt_energy);
 			energy->SetPos(nextPos);
 			energy->SetOrigin(Origins::TL);
@@ -116,7 +116,7 @@ void ToolTip::init()
 		if (data.radiationEffect != 0)
 		{
 			auto rad = new TextObject();
-			wstring txt_rad = L"¹æ»ç´É: " + to_string((int)data.radiationEffect);
+			wstring txt_rad = L"ï¿½ï¿½ï¿½ï¿½: " + to_string((int)data.radiationEffect);
 			rad->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, data.radiationEffect < 0 ? Color::Green : Color::Red, txt_rad);
 			rad->SetPos(nextPos);
 			rad->SetOrigin(Origins::TL);
@@ -125,7 +125,7 @@ void ToolTip::init()
 		}
 
 		auto des = new TextObject();
-		wstring txt_des = L"¾ÆÀÌÅÛ ¼³¸í\n" + itemData.description;
+		wstring txt_des = L"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\n" + itemData.description;
 		des->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_des);
 		auto desPos = Vector2f{GetPos().x + 10.f  ,nextPos.y};
 		des->SetPos(desPos);
@@ -139,7 +139,7 @@ void ToolTip::init()
 		auto nextPos = pricePos + Vector2f{ itemData.toolTipSize.x / 2.f, 40 };
 
 		auto des = new TextObject();
-		wstring txt_des = L"¾ÆÀÌÅÛ ¼³¸í\n" + itemData.description;
+		wstring txt_des = L"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\n" + itemData.description;
 		des->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_des);
 		auto desPos = Vector2f{ GetPos().x + 10.f  ,nextPos.y };
 		des->SetPos(desPos);
@@ -153,7 +153,7 @@ void ToolTip::init()
 		auto nextPos = pricePos + Vector2f{ itemData.toolTipSize.x / 2.f, 0 };
 
 		auto dmg = new TextObject();
-		wstring txt_dmg = L"°ø°Ý·Â: " + to_string((int)data.damage);
+		wstring txt_dmg = L"ï¿½ï¿½ï¿½Ý·ï¿½: " + to_string((int)data.damage);
 		dmg->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_dmg);
 		dmg->SetPos(nextPos);
 		dmg->SetOrigin(Origins::TL);
@@ -161,7 +161,7 @@ void ToolTip::init()
 		nextPos.y += 40;
 
 		auto shootDelay = new TextObject();
-		wstring txt_shootDelay = L"¿¬»ç·Â: " + to_string(data.shootDelay).substr(0,3);
+		wstring txt_shootDelay = L"ï¿½ï¿½ï¿½ï¿½ï¿½: " + to_string(data.shootDelay).substr(0,3);
 		shootDelay->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_shootDelay);
 		shootDelay->SetPos(nextPos);
 		shootDelay->SetOrigin(Origins::TL);
@@ -169,7 +169,7 @@ void ToolTip::init()
 		nextPos.y += 40;
 
 		auto speed = new TextObject();
-		wstring txt_speed = L"»ç°Å¸®: " + to_string((int)data.speed);
+		wstring txt_speed = L"ï¿½ï¿½Å¸ï¿½: " + to_string((int)data.speed);
 		speed->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_speed);
 		speed->SetPos(nextPos);
 		speed->SetOrigin(Origins::TL);
@@ -178,7 +178,7 @@ void ToolTip::init()
 
 
 		auto des = new TextObject();
-		wstring txt_des = L"¾ÆÀÌÅÛ ¼³¸í\n" + itemData.description;
+		wstring txt_des = L"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\n" + itemData.description;
 		des->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_des);
 		auto desPos = Vector2f{ GetPos().x + 10.f  ,nextPos.y };
 		des->SetPos(desPos);
@@ -194,7 +194,7 @@ void ToolTip::init()
 		//auto nextPos = pricePos + Vector2f{ itemData.toolTipSize.x / 2.f, 0 };
 
 		//auto dmg = new TextObject();
-		//wstring txt_dmg = L"Ã¼·ÂÈ­º¹ " + to_string((int)data.);
+		//wstring txt_dmg = L"Ã¼ï¿½ï¿½È­ï¿½ï¿½ " + to_string((int)data.);
 		//dmg->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_dmg);
 		//dmg->SetPos(nextPos);
 		//dmg->SetOrigin(Origins::TL);
@@ -203,7 +203,7 @@ void ToolTip::init()
 
 
 		//auto des = new TextObject();
-		//wstring txt_des = L"¾ÆÀÌÅÛ ¼³¸í\n" + itemData.description;
+		//wstring txt_des = L"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\n" + itemData.description;
 		//des->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_des);
 		//auto desPos = Vector2f{ GetPos().x + 10.f  ,nextPos.y };
 		//des->SetPos(desPos);
@@ -220,7 +220,7 @@ void ToolTip::init()
 		auto nextPos = pricePos + Vector2f{ itemData.toolTipSize.x / 2.f, 0 };
 
 		auto hp = new TextObject();
-		wstring txt_hp = L"Ã¼·ÂÈ­º¹ " + to_string((int)data.hp);
+		wstring txt_hp = L"Ã¼ï¿½ï¿½È­ï¿½ï¿½ " + to_string((int)data.hp);
 		hp->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_hp);
 		hp->SetPos(nextPos);
 		hp->SetOrigin(Origins::TL);
@@ -229,7 +229,7 @@ void ToolTip::init()
 
 
 		auto des = new TextObject();
-		wstring txt_des = L"¾ÆÀÌÅÛ ¼³¸í\n" + itemData.description;
+		wstring txt_des = L"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\n" + itemData.description;
 		des->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_des);
 		auto desPos = Vector2f{ GetPos().x + 10.f  ,nextPos.y };
 		des->SetPos(desPos);
@@ -243,7 +243,7 @@ void ToolTip::init()
 		auto nextPos = pricePos + Vector2f{ itemData.toolTipSize.x / 2.f, 40 };
 
 		auto des = new TextObject();
-		wstring txt_des = L"¾ÆÀÌÅÛ ¼³¸í\n" + itemData.description;
+		wstring txt_des = L"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\n" + itemData.description;
 		des->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_des);
 		auto desPos = Vector2f{ GetPos().x + 10.f  ,nextPos.y };
 		des->SetPos(desPos);
@@ -256,7 +256,7 @@ void ToolTip::init()
 		auto nextPos = pricePos + Vector2f{ itemData.toolTipSize.x / 2.f, 40 };
 
 		auto des = new TextObject();
-		wstring txt_des = L"¾ÆÀÌÅÛ ¼³¸í\n" + itemData.description;
+		wstring txt_des = L"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\n" + itemData.description;
 		des->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_des);
 		auto desPos = Vector2f{ GetPos().x + 10.f  ,nextPos.y };
 		des->SetPos(desPos);

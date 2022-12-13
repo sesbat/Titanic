@@ -967,6 +967,18 @@
       }
     }
   ],
+  "graphics/invisible.png": [
+    {
+      "pos": {
+        "x": -30.0,
+        "y": -60.0
+      },
+      "size": {
+        "x": 60.0,
+        "y": 60.0
+      }
+    }
+  ],
   "graphics/exit.png": [
     {
       "pos": {
