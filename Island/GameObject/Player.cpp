@@ -894,7 +894,7 @@ void Player::Reload()
 		}
 		for (auto bt : *inven->GetPlayerInven()->GetItems())
 		{
-			if (bt->GetName() == "Up1-Shotgun")
+			if (bt->GetName() == "ShotGunBullet")
 			{
 				SOUND_MGR->Play("sounds/reload.wav");
 				reloadDelaySG = gun->GetReloadDelay();

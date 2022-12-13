@@ -6,7 +6,7 @@
   "randDir": 10.0,
   "shotgunDir": 30,
   "range": 1000.0,
-  "reloadDelay": 3.0,
+  "reloadDelay": 1.5,
   "speed": 10000.0,
   "zoomRange": 1000.0,
   "shootDelay": 0.25,
