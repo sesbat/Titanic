@@ -3,6 +3,7 @@
 #include "../GameObject/SpriteObject.h"
 #include "../Framework/ResourceManager.h"
 #include "../Ui/InvenItem.h"
+#include "../Framework/InputMgr.h"
 #include <locale.h>
 
 std::string w2s(const std::wstring& var)

@@ -30,6 +30,7 @@
 #include "../GameObject/HitBox.h"
 #include "../GameObject/Boss.h"
 #include "../GameObject/Ment.h"
+#include "../GameObject/ToolTip.h"
 
 using namespace std;
 using namespace sf;
@@ -485,7 +486,7 @@ void GameScene::SupplyUpdate(float dt)
             Ment* ment = new Ment();
             ment->SetUiViewCenter(true);
             ment->SetUiView(&uiView);
-            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "보급품이 생성되었습니다");
+            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, L"보급품이 생성되었습니다");
             ment->SetOrigin(Origins::MC);
             ment->SetTimer(2);
             ment->SetAlways(false);
@@ -687,3 +688,9 @@ void GameScene::castAllLights()
 
     }
 }
+
+void GameScene::CloseToolTip()
+{
+    ((GameSceneUiMgr*)uiMgr)->GetTip()->SetActive(false);
+}
+

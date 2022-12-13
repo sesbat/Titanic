@@ -50,6 +50,9 @@ void FileManager::LoadAll()
 	itemsInfo = item_info_d;
 	item_info.close();
 
+	//json item_info_d = json::parse(str);
+	//itemsInfo = item_info_d;
+	//t.close();
 
 	userInfo.hp = 100.f;
 	userInfo.energyGuage = 255.f;

@@ -12,6 +12,7 @@
 #include "../GameObject/HitBoxObject.h"
 #include "../GameObject/Player.h"
 #include "../Framework/Framework.h"
+#include "../GameObject/ToolTip.h"
 
 Ready::Ready()
 	:Scene(Scenes::Ready), treeMap(treeRect, 16, 4)
@@ -209,4 +210,9 @@ void Ready::Draw(RenderWindow& window)
 void Ready::Reset()
 {
 	uiMgr->Init();
+}
+
+void Ready::CloseToolTip()
+{
+	((ReadyUiMgr*)uiMgr)->GetTip()->SetActive(false);
 }

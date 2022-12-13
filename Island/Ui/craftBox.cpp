@@ -59,28 +59,21 @@ void CraftBox::Update(float dt)
 
 	craftButton->Update(dt);
 	Button::Update(dt);
-
-	for (auto& greedLine : itemGreed)
+	
+	for (auto& n : items)
 	{
-		for (auto& greed : greedLine)
+		n->Update(dt);
+		if (!isRequired && n->IsClick())
 		{
-			greed->Update(dt);
-			for (auto& n : items)
+			for (auto& k : FILE_MGR->GetAllCraftTable())
 			{
-				n->Update(dt);
-				if (!isRequired && n->IsClick())
+				for (auto& s : k)
 				{
-					for(auto& k : FILE_MGR->GetAllCraftTable())
+					if (n->GetName() == s.first)
 					{
-						for (auto& s : k)
-						{
-							if (n->GetName() == s.first)
-							{
-								craft->OnClickCraftItem(s.second);
-								craftingItmeName = s.first;
-								return;
-							}
-						}
+						craft->OnClickCraftItem(s.second);
+						craftingItmeName = s.first;
+						return;
 					}
 				}
 			}
@@ -242,11 +235,11 @@ void CraftBox::AddItem(string name, int count)
 
 		}
 	}
+	item->SetName(name);
 	item->Set(data.width, data.height,
 		{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
 		{ findPos.y, findPos.x }, data.path, data.maxCount);
 	item->AddCount(count);
-	item->SetName(name);
 	item->Init();
 
 	items.push_back(item);

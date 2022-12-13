@@ -9,7 +9,7 @@
 #include "../Scens/SceneManager.h"
 #include "../Scens/Scene.h"
 #include "Ment.h"
-
+#include "../Scens/Ready.h"
 NPC::NPC()
 	:isShowMap(false)
 {
@@ -70,6 +70,7 @@ void NPC::Update(float dt)
 
 	if (InputMgr::GetKeyDown(Keyboard::F) || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
+		((Ready*)SCENE_MGR->GetCurrScene())->CloseToolTip();
 		if (Utils::Distance(GetPos(), player->GetPos()) < 100)
 		{
 			switch (type)

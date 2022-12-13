@@ -18,6 +18,8 @@ private:
 	Vector2i invenPos;
 	Vector2i invenGreedPos;
 
+	float initTimer;
+	float overLapTimer;
 	int material;
 public:
 	CraftItem(UiMgr* mgr);
@@ -35,8 +37,14 @@ public:
 	Vector2i GetGreedPos() { return invenGreedPos; }
 	int GetWidth() { return width; }
 	int GetHeight() { return height; }
+	void SetOverlapTimer(float ft) { overLapTimer = 0.f; initTimer = ft; }
+	float SetOverlapTimer() { return overLapTimer; }
 	int GetMetarial() { return material; }
 	void AddCount(int n);
+
+	void ToolTipUpdate(float dt);
+
+	virtual void SetActive(bool state);
 
 
 };

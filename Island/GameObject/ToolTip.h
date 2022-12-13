@@ -15,7 +15,6 @@ private:
 	string itemName;
 	vector<TextObject*> tooltipDatas;
 	Vector2f itemPos;
-	InvenItem* myItem;
 	
 public:
 	ToolTip(UiMgr* uimgr);
@@ -28,7 +27,6 @@ public:
 	virtual void SetItem(string name);
 
 	void SetToolPos(Vector2f v);
-	void SetMyItem(InvenItem* i) { myItem = i; }
 	
 	
 };
