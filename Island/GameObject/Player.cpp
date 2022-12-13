@@ -339,6 +339,11 @@ void Player::Update(float dt)
 			isDash = false;
 		}
 	}
+	else
+	{
+		speed = initSpeed;
+		isDash = false;
+	}
 	
 	if (InputMgr::GetKeyDown(Keyboard::Tab) || InputMgr::GetKeyDown(Keyboard::Escape))
 	{

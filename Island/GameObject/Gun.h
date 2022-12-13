@@ -16,6 +16,7 @@ enum class User
 {
     Player,
     Enemy,
+    Boss,
 };
 
 class Player;
@@ -23,6 +24,7 @@ class Bullet;
 class Enemy;
 class HitBox;
 class Scene;
+class Boss;
 struct GunsType;
 
 class Gun :
@@ -35,6 +37,7 @@ private:
     Gun& operator=( Gun& ref) {}
     Player* player;
     Enemy* enemy;
+    Boss* boss;
     Scene* scene;
 
     GunType gunType;
@@ -71,7 +74,9 @@ public:
 
     void SetPlayer(Player* player);
     void SetEnemy(Enemy* enemy);
+    void SetBoss(Boss* enemy);
     void Fire(Vector2f pos, bool isplayer);
+    void BossFire(Vector2f pos, bool isplayer = false);
 
     void SetGunType(GunType type);
     GunType GetgunType() { return gunType; }

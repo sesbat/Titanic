@@ -1,6 +1,8 @@
 #pragma once
 #include "HitBoxObject.h"
 #include "Animation/Animator.h"
+#include "../Framework/ObjectPool.h"
+#include "SpriteObject.h"
 
 typedef pair<int, int> Pair;
 typedef pair<double, pair<int, int> > pPair;
@@ -11,6 +13,7 @@ class Player;
 class Scene;
 class Gun;
 class Astar;
+//class Bullet;
 
 class Boss : public HitBoxObject
 {
@@ -22,12 +25,6 @@ public:
 		Move,
 		Dash,
 		Dead,
-	};
-	enum class Type
-	{
-		None = -1,
-		Big,
-		Kiba,
 	};
 
 protected:
@@ -47,7 +44,9 @@ protected:
 	RectangleShape healthBar;
 
 	States currState;
-	Type type;
+	//Type type;
+
+	//ObjectPool<Bullet> bulletPool;
 
 	//valance variable
 	int maxHp;
@@ -60,13 +59,32 @@ protected:
 	float dashCoolTime;
 	float dashDamage;
 	float damage;
+	float startRange;
 	
+	//Boss fire
 	float radDamage;
 	float fireRange;
+	float fireSpeed;
+	float shootDelay;
+	float fireAngle;
+	int fireCount;
+
+	int rampageCount;
+
+	float rd;
+	float fr;
+	float fs;
+	float sd;
+	float fa;
+	int fc;
+	int rampCount;
 	
 	float stopTime;
 	float moveTime;
 	float hitTime;
+
+	float randomNum;
+	Vector2f randDir;
 
 	//in class variable
 	int hp;
@@ -76,6 +94,7 @@ protected:
 	bool isDash;
 	bool isHit;
 	bool isInSight;
+	bool isInWall;
 	float timer;
 	float range;
 	float dashTimer;
@@ -90,6 +109,7 @@ protected:
 	Vector2f lastDirection;
 	Vector2f moveDir;
 	Vector2f prevPosition;
+	Vector2f dashPosition;
 
 	//a star dir
 	Vector2f playerPos;
@@ -131,18 +151,29 @@ public:
 	
 
 	void AttackPattern(float dt);
+	void RampagePattern(float dt);
 	void Move(float dt);
 	void Dash(float dt);
+	void RampageDash(float dt);
 	void Collision();
+	void RampCollision();
 	void DashCollision();
 	void ContactDamage();
 	void SetDashPos();
+	void SetRampagePos();
 	void Stun();
 	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
 	void FindGrid();
 	void FindGrid(Vector2f pos);
 	void CheckIsInWall();
 	void CheckIsInSight();
-	
+
+	void SetFireVariable();
+
+	float GetFireSpeed() { return fs; }
+	float GetFireRange() { return fr; }
+	float GetShootDelay() { return sd; }
+	int GetFireCount() { return fc; }
+	float GetFireAngle() { return fa; }
 };
 

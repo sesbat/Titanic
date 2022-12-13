@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Boss.h"
 #include "../Framework/ResourceManager.h"
 #include "../Framework/InputMgr.h"
 #include "../Framework/Utils.h"
@@ -22,6 +23,7 @@ void OnCreateBullet(Bullet* bullet)
 	bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/shotgunbullet.png"));
 	bullet->Init();
 	bullet->SetEnemyList(scene->GetEnemyList());
+	bullet->SetBossList(scene->GetBossList());
 	bullet->SetPlayer(scene->GetPlayer());
 }
 
@@ -62,6 +64,11 @@ void Gun::Init()
 		break;
 	case User::Enemy:
 		SetPos({ enemy->GetPos().x,enemy->GetPos().y + 10.f });
+		SetOrigin(Origins::MC);
+		gunhitbox->SetPos(GetPos());
+		break;
+	case User::Boss:
+		SetPos({ boss->GetPos().x,boss->GetPos().y + 10.f });
 		SetOrigin(Origins::MC);
 		gunhitbox->SetPos(GetPos());
 		break;
@@ -135,12 +142,35 @@ void Gun::Update(float dt)
 		shootDelay -= dt;
 	}
 		break;
+	case User::Boss:
+	{
+		isGunFlip = boss->GetLookDir().x < 0;
+		lookDir = boss->GetLookDir();
+		this->SetFlipY(isGunFlip);
+
+		float angle = Utils::Angle(boss->GetLookDir());
+		GetSprite().setRotation(angle);
+
+		SetPos({ boss->GetPos().x,boss->GetPos().y + 10.f });
+
+		Transform translation;
+		translation.translate(GetPos());
+		float angle2 = Utils::Angle(lookDir);
+		Transform rotation;
+		rotation.rotate(angle2);
+
+		Transform transform = translation * rotation;
+		gunhitbox->SetPos(transform.transformPoint(55.f, 5.f));
+
+		shootDelay -= dt;
+	}
+	break;
 	}
 }
 
 void Gun::Draw(RenderWindow& window)
 {
-	 SpriteObject::Draw(window);
+	SpriteObject::Draw(window);
 	const auto& bulletList = bulletPool.GetUseList();
 	for (auto& bullet : bulletList)
 	{
@@ -161,13 +191,21 @@ void Gun::SetPlayer(Player* player)
 {
 	this->player = player;
 	this->enemy = nullptr;
+	this->boss = nullptr;
 }
 
 void Gun::SetEnemy(Enemy* enemy)
 {
 	this->enemy = enemy;
 	this->player = nullptr;
-	
+	this->boss = nullptr;
+}
+
+void Gun::SetBoss(Boss* boss)
+{
+	this->player = nullptr;
+	this->enemy = nullptr;
+	this->boss = boss;
 }
 
 void Gun::Fire(Vector2f pos, bool isplayer)
@@ -272,6 +310,60 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		}
 	}
 	
+}
+
+void Gun::BossFire(Vector2f pos, bool isplayer)
+{
+	Transform translation;
+	translation.translate(pos);
+
+	float angle = Utils::Angle(lookDir);
+	Transform rotation;
+	rotation.rotate(angle);
+
+	Transform transform = translation * rotation;
+
+	Vector2f randomPos;
+	randomPos.x = InputMgr::GetMousePos().x + Utils::RandomRange(-randomNum, randomNum);
+	randomPos.y = InputMgr::GetMousePos().y + Utils::RandomRange(-randomNum, randomNum);
+	randDir = Utils::Normalize(randomPos - GetPos());
+
+	if (shootDelay <= 0 && isInWall)
+	{
+		Vector2f startPos;
+		startPos = transform.transformPoint(80, 0);
+		bulletSpeed = boss->GetFireSpeed();
+		range = boss->GetFireRange();
+		shootDelay = boss->GetShootDelay();
+
+		int cnt = boss->GetFireCount();
+		float dir = boss->GetFireAngle();
+		int harfCnt = cnt / 2;
+
+		for (int i = 0; i < cnt / 2; i++)
+		{
+			for (int j = 0; j < 2; j++)
+			{
+				Bullet* bullet = bulletPool.Get();
+				bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/acid_Thorn.png"));
+				float temp = atan2(lookDir.y, lookDir.x);
+				float F1 = j == 0 ? temp + ((M_PI / dir) * (i + 1)) : temp - ((M_PI / dir) * (i + 1));
+				Vector2f randomShot = { cos(F1),sin(F1) };
+				bullet->SetOrigin(Origins::MC);
+				bullet->SetDamage(damage);
+				bullet->Fire(startPos, randomShot, bulletSpeed, range, isplayer);
+			}
+		}
+		if (cnt % 2 == 1)
+		{
+			Bullet* bullet = bulletPool.Get();
+			bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/acid_Thorn.png"));
+			bullet->SetOrigin(Origins::MC);
+			bullet->SetDamage(damage);
+			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
+		}
+		//SOUND_MGR->Play(data.soundPath);
+	}
 }
 
 void Gun::SetGunType(GunType type)

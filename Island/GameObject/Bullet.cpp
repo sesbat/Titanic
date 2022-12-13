@@ -3,6 +3,7 @@
 #include "HitBox.h"
 #include "HitBoxObject.h"
 #include "Enemy.h"
+#include "Boss.h"
 #include "../Scens/SceneManager.h"
 #include "../Framework/InputMgr.h"
 #include "../Framework/SoundManager.h"
@@ -167,23 +168,45 @@ void Bullet::Collision()
 			auto hb = ((HitBoxObject*)objects)->GetHitBoxs();
 			for (auto& it : hb)
 			{
-				for (Enemy*& enemy : *enemies)
+				if (objects->GetName() == "ENEMY")
 				{
-					if (objects->GetId() == enemy->GetId())
+					for (Enemy*& enemy : *enemies)
 					{
-						if (LineRect(
-							startPos,
-							nextPos,
-							it->GetHitbox()))
+						if (objects->GetId() == enemy->GetId())
 						{
-							enemy->SetHp(damage);
-							enemy->HideStop();
-							SetActive(false);
-							break;
+							if (LineRect(
+								startPos,
+								nextPos,
+								it->GetHitbox()))
+							{
+								enemy->SetHp(damage);
+								enemy->HideStop();
+								SetActive(false);
+								break;
+							}
+							//break;
 						}
-						//break;
 					}
 				}
+				else if (objects->GetName() == "BOSS")
+				{
+					for (Boss*& boss : *bosses)
+					{
+						if (objects->GetId() == boss->GetId())
+						{
+							if (LineRect(
+								startPos,
+								nextPos,
+								it->GetHitbox()))
+							{
+								boss->SetHp(damage);
+								SetActive(false);
+								break;
+							}
+						}
+					}
+				}
+				
 			}
 		}
 		else if (!isplayer && objects->GetName() == "PLAYER")

@@ -92,7 +92,6 @@ GameScene::~GameScene()
 
 void GameScene::Init()
 {
-    bool testboss = false;
     int id = 0;
     isGameScene = true;
     auto& data = FILE_MGR->GetMap(sceneName);
@@ -164,7 +163,6 @@ void GameScene::Init()
             boss->SetGreedObject(&isGreedObject);
             objList[LayerType::Object][0].push_back(boss);
             bosses.push_back(boss);
-            //testboss = true;
         }
         else if (obj.type == "ENEMY")
         {

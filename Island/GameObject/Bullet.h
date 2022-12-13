@@ -5,7 +5,7 @@ class Scene;
 class HitBox;
 class Enemy;
 class Player;
-
+class Boss;
 
 class Bullet :public SpriteObject
 {
@@ -17,6 +17,7 @@ private:
 
 	Scene* scene;
 	list<Enemy*>* enemies;
+	list<Boss*>* bosses;
 	Player* player;
 
 	Vector2f dir;
@@ -45,6 +46,7 @@ public:
 
 	void SetPlayer(Player* player){this->player = player;}
 	void SetEnemyList(list<Enemy*>* list) { enemies = list; }
+	void SetBossList(list<Boss*>* list) { bosses = list; }
 	void SetDamage(int num) { damage = num; }
 
 	bool LineRect(Vector2f bulletpos, Vector2f bulletPrevPos, RectangleShape hitObject);

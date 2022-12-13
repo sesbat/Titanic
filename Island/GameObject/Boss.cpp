@@ -4,6 +4,7 @@
 #include "HitBox.h"
 #include "Object.h"
 #include "Gun.h"
+#include "Bullet.h"
 #include "VertexArrayObj.h"
 #include "../Scens/SceneManager.h"
 #include "../Framework/ResourceManager.h"
@@ -16,16 +17,29 @@
 #include <stack>
 #include "Ment.h"
 
+//void OnCreateAcidBullet(Bullet* bullet)
+//{
+//	GameScene* scene = (GameScene*)SCENE_MGR->GetScene(Scenes::GameScene);
+//	bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/acid_Thorn.png"));
+//	bullet->Init();
+//	//bullet->SetBossList(scene->GetBossList());
+//	bullet->SetPlayer(scene->GetPlayer());
+//}
+
 Boss::Boss()
-	: currState(States::None), type(Type::None),
+	: currState(States::None),
 	speed(100.f), maxSpeed(100),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	timer(0.f), moveTime(2.f), stopTime(1.f), stunTime(3.f), dashCoolTime(5.f), 
+	timer(0.f), moveTime(2.f), stopTime(1.f), stunTime(3.f), dashCoolTime(5.f),
 	hitTime(1.f), hitTimer(0.f), playerStunTime(2.f),
-	hp(500), maxHp(500), barScaleX(60.f), look(1.f, 0.f),
-	dashRange(1500.f), dashSpeed(800.f), range(500.f), activeDashRange(600.f), dashDamage(100), damage(10),
+	hp(1500), maxHp(1500), barScaleX(60.f), look(1.f, 0.f),
+	dashSpeed(800.f),
+	dashRange(1500.f), range(500.f), activeDashRange(600.f),
+	dashDamage(100), damage(10),
 	isHit(false), isInSight(true), isStart(false), isDash(false), isStun(false),
-	dashAttack(0)
+	dashAttack(0),
+	startRange(1000.f),
+	fireSpeed(800.f), fireRange(1000.f), shootDelay(1.f), fireCount(15), fireAngle(10.f), rampageCount(5), rampCount(0)
 {
 }
 
@@ -36,14 +50,13 @@ Boss::~Boss()
 
 void Boss::Release()
 {
-    if (gun != nullptr)
-        delete gun;
-    gun = nullptr;
-
     if (astar != nullptr)
         delete astar;
     astar = nullptr;
 
+	if (gun != nullptr)
+		delete gun;
+	gun = nullptr;
 
     HitBoxObject::Release();
 }
@@ -55,31 +68,27 @@ void Boss::Init(Player* player)
 
 	hp = maxHp;
 	speed = maxSpeed;
-	type = Type::Big;
 
-	switch (type)
-	{
-	case Boss::Type::Big:
-		animator.SetTarget(&sprite);
-		//animation
-		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigIdle"));
-		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigIdleLeft"));
-		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigMove"));
-		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigMoveLeft"));
-		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigStun"));
-		animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigStunLeft"));
-		dashHitbox = new HitBox();
-		//dashHitbox->SetActive(false);
-		dashHitbox->SetFillColor(Color::Red);
-		dashHitbox->SetPos({ GetPos().x - 100.f,GetPos().y - 60.f });
-		//dashHitbox.set
-		dashHitbox->SetHitbox({ 0.f,0.f,200.f,100.f });
-		break;
-	case Boss::Type::Kiba:
-		break;
-	default:
-		break;
-	}
+	SetFireVariable();
+	
+	gun = new Gun(GunType::Shotgun, User::Boss);
+	gun->SetBoss(this);
+	gun->Init();
+
+	animator.SetTarget(&sprite);
+	//animation
+	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigIdle"));
+	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigIdleLeft"));
+	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigMove"));
+	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigMoveLeft"));
+	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigStun"));
+	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigStunLeft"));
+	dashHitbox = new HitBox();
+	//dashHitbox->SetActive(false);
+	dashHitbox->SetFillColor(Color::Red);
+	dashHitbox->SetPos({ GetPos().x - 100.f,GetPos().y - 60.f });
+	//dashHitbox.set
+	dashHitbox->SetHitbox({ 0.f,0.f,200.f,100.f });
 
 	//health bar
 	healthBar.setFillColor(Color::Green);
@@ -137,9 +146,7 @@ void Boss::Update(float dt)
 	HitBoxObject::Update(dt);
 	CheckIsInSight();
 	//ready
-	//if got shot from range will be problem
-	//need change
-	if (isStart == false && (Utils::Distance(player->GetPos(), GetPos()) < 1000.f))
+	if (isStart == false && (Utils::Distance(player->GetPos(), GetPos()) < startRange))
 	{
 		isStart = true;
 	}
@@ -154,63 +161,72 @@ void Boss::Update(float dt)
 		//enemy dead
 		if (hp <= 0)
 		{
-			SetState(States::Dead);
+			RampagePattern(dt);
+			
 		}
-
 		//enemy attack
-		if (!isStun)
+		if (hp > 0)
 		{
-			if (currState == States::Idle)
+			if (!isStun)
 			{
-				timer -= dt;
-				if (timer <= 0.f)
+				if (currState == States::Idle)
 				{
-					if (dashTimer <= 0.f && (Utils::Distance(player->GetPos(), GetPos()) >= activeDashRange))
+					timer -= dt;
+					if (timer <= 0.f)
 					{
-						SetDashPos();
-					}
-					else
-					{
-						AttackPattern(dt);
-						
+						if (dashTimer <= 0.f && (Utils::Distance(player->GetPos(), GetPos()) <= activeDashRange))
+						{
+							SetDashPos();
+						}
+						else if ((Utils::Distance(player->GetPos(), GetPos()) > activeDashRange))
+						{
+							CheckIsInWall();
+							gun->SetLookDir(lookDir);
+							gun->BossFire(GetPos(), false);
+							AttackPattern(dt);
+						}
+						else
+						{
+							AttackPattern(dt);
+
+						}
+
 					}
 
 				}
-
-			}
-			if (isDash && currState == States::Dash)
-			{
-				Dash(dt);	
+				if (isDash && currState == States::Dash)
+				{
+					Dash(dt);
+				}
+				else
+				{
+					dashTimer -= dt;
+				}
+				//move
+				if (currState == States::Move)
+				{
+					Move(dt);
+					timer -= dt;
+					if (timer <= 0.f)
+					{
+						SetState(States::Idle);
+						movePos.clear();
+						timer = stopTime;
+					}
+				}
 			}
 			else
 			{
-				dashTimer -= dt;	
-			}
-			//move
-			if (currState == States::Move)
-			{
-				Move(dt);
 				timer -= dt;
 				if (timer <= 0.f)
 				{
 					SetState(States::Idle);
-					movePos.clear();
-					timer = stopTime;
+					isStun = false;
 				}
 			}
-			ContactDamage();
 		}
-		else
-		{
-			timer -= dt;
-			if (timer <= 0.f)
-			{
-				SetState(States::Idle);
-				isStun = false;
-			}
-		}
-		
-		
+
+		ContactDamage();
 		//contact hit timer
 		hitTimer -= dt;
 
@@ -224,12 +240,14 @@ void Boss::Update(float dt)
 		bottomPos = bottom->GetHitBottomPos();
 		dashHitbox->SetPos({ GetPos().x - 100.f,GetPos().y - 60.f });
 		//gun
-		//gun->Update(dt);
+		gun->Update(dt);
 
 		//dev
 		if (InputMgr::GetKeyDown(Keyboard::Z))
 		{
-			SetDashPos();
+			CheckIsInWall();
+			gun->SetLookDir(lookDir);
+			gun->BossFire(GetPos(), false);
 		}
 		if (InputMgr::GetKeyDown(Keyboard::X))
 		{
@@ -249,13 +267,15 @@ void Boss::Draw(RenderWindow& window)
 		window.draw(healthBar);
 		SetColor(Color::White);
 	}
-	VertexArray lines(LineStrip, 2);
+	gun->Draw(window);
+
+	/*VertexArray lines(LineStrip, 2);
 	if (isInSight)
 	{
 		lines[0].position = { GetPos().x,GetPos().y + 20.f };
 		lines[1].position = { player->GetPos().x,player->GetPos().y + 20.f };
 		window.draw(lines);
-	}
+	}*/
 
 }
 
@@ -274,6 +294,7 @@ void Boss::SetHp(int num)
 	hp -= num;
 	if (hp <= 0)
 	{
+		dashPosition = player->GetPos();
 		hp = 0;
 	}
 
@@ -345,6 +366,36 @@ void Boss::AttackPattern(float dt)
 	SetState(States::Move);
 }
 
+void Boss::RampagePattern(float dt)
+{
+	if (rampCount > rampageCount)
+	{
+		SetState(States::Dead);
+		return;
+	}
+	if (!isDash)
+	{
+		SetRampagePos();
+		
+	}
+	else if (isDash)
+	{
+		RampageDash(dt);
+	}
+	/*else if (!isDash && isStun)
+	{
+		cout << "count " << rampCount << endl;
+		isStun = false;
+		SetRampagePos();
+		CheckIsInWall();
+		gun->SetLookDir(lookDir);
+		gun->BossFire(GetPos(), false);
+		rampCount++;
+	}*/
+
+	
+}
+
 void Boss::Move(float dt)
 {
 	if (movePos.empty())
@@ -410,6 +461,29 @@ void Boss::Dash(float dt)
 	
 }
 
+void Boss::RampageDash(float dt)
+{
+	
+	if (range <= 0.f)
+	{
+		movePos.clear();
+		isDash = false;
+		range = dashRange;
+		dashPosition = player->GetPos();
+		SetRampagePos();
+		return;
+	}
+	else
+	{
+		speed = dashSpeed;
+	}
+	Translate(dashDir * dt * speed);
+	range -= Utils::Magnitude(dashDir * dt * speed);
+	RampCollision();
+	DashCollision();
+	prevPosition = GetPos();
+}
+
 void Boss::Collision()
 {
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
@@ -429,6 +503,40 @@ void Boss::Collision()
 					{
 						Stun();
 					}
+				}
+			}
+		}
+	}
+}
+
+void Boss::RampCollision()
+{
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+
+		for (auto& obj : boundInObj)
+		{
+			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
+			{
+				if (obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK" ||
+					obj->GetName() == "RADIATION")
+				{
+					cout << "count " << rampCount << endl;
+					SetBossPos();
+					isStun = true;
+					movePos.clear();
+					isDash = false;
+					range = dashRange;
+					dashPosition = dashPosition * -1.f;
+					animator.Play((direction.x > 0.f) ? "BossBigMove" : "BossBigMoveLeft");
+					//CheckIsInWall();
+					gun->SetLookDir(lookDir);
+					gun->BossFire(GetPos(), false);
+					rampCount++;
+					SetRampagePos();
+					break;
 				}
 			}
 		}
@@ -477,6 +585,15 @@ void Boss::SetDashPos()
 	isDash = true;
 	dashAttack = 0;
 	SetState(States::Dash);
+}
+
+void Boss::SetRampagePos()
+{
+	movePos.clear();
+	dashDir = Utils::Normalize((dashPosition - GetPos()));
+	animator.Play((direction.x > 0.f) ? "BossBigMove" : "BossBigMoveLeft");
+	isDash = true;
+	dashAttack = 0;
 }
 
 void Boss::Stun()
@@ -578,3 +695,14 @@ void Boss::CheckIsInSight()
 		}
 	}
 }
+
+void Boss::SetFireVariable()
+{
+	rd = radDamage;
+	fr = fireRange;
+	fs = fireSpeed;
+	sd = shootDelay;
+	fa = fireAngle;
+	fc = fireCount;
+}
+
