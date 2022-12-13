@@ -38,6 +38,8 @@ public:
 	virtual bool GetIsClickColor() { return isClickColor; }
 	virtual void Release();
 	void SetTexture(Texture& t, bool isBound);
+	void SetText(Font& font, int size, Color color, wstring str, bool isBound);
+
 	void SetText(Font& font, int size, Color color, string str, bool isBound);
 
 	void SetOrigin(Origins origin);

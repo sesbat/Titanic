@@ -23,6 +23,14 @@ void TextObject::Draw(RenderWindow& window)
 	Object::Draw(window);
 }
 
+void TextObject::SetText(Font& font, int size, Color color, wstring str)
+{
+	text.setFont(font);
+	text.setCharacterSize(size);
+	text.setString(str);
+	text.setFillColor(color);
+}
+
 void TextObject::SetText(Font& font, int size, Color color, string str)
 {
 	text.setFont(font);

@@ -231,5 +231,6 @@ public:
 	void SetStun(bool stun, float time);
 	const vector<string>& GetClearMpas() const { return clearMaps; } 
 	void ClearMap(string name);
+	void SaveSaveBox();
 };
 

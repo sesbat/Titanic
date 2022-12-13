@@ -157,6 +157,16 @@ void Button::SetTexture(Texture& t, bool isBound)
 	}
 }
 
+void Button::SetText(Font& font, int size, Color color, wstring str, bool isBound)
+{
+	text->SetText(font, size, color, str);
+	if (isBound)
+	{
+		SetBound(text->GetGlobalBound());
+		bndType = BoundType::TEXT;
+	}
+}
+
 void Button::SetText(Font& font, int size, Color color, string str, bool isBound)
 {
 	text->SetText(font, size, color, str);

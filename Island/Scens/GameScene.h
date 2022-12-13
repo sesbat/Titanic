@@ -32,6 +32,7 @@ protected:
 	list<Enemy*> enemies;
 	list<Boss*> bosses;
 	//Boss* boss;
+	Boss* boss;
 
 	float timer;
 	Clock clock;

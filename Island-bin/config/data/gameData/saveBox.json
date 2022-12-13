@@ -1,1 +1,1 @@
-[{"Type":"Water","cnt":2,"invenGreedPos":{"x":0,"y":1},"invenPos":{"x":870,"y":909},"path":"graphics/items/water.png"},{"Type":"Apple","cnt":2,"invenGreedPos":{"x":1,"y":1},"invenPos":{"x":934,"y":909},"path":"graphics/items/apple.png"}]
+[{"Type":"Water","cnt":2,"invenGreedPos":{"x":2,"y":0},"invenPos":{"x":998,"y":845},"path":"graphics/items/water.png"}]

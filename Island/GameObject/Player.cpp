@@ -378,6 +378,7 @@ void Player::Update(float dt)
 		}
 		else if (isMove && !InputMgr::GetKeyDown(Keyboard::Escape))
 		{
+			
 			this->PlayerSetIsInven(true);
 			inven->SetActive(true);
 			inven->ResetRightInven();
@@ -1236,4 +1237,26 @@ void Player::ClearMap(string name)
 	{
 		clearMaps.push_back(name);
 	}
+}
+
+void Player::SaveSaveBox()
+{
+	auto nowSaveBox = inven->GetSaveBox()->GetItems();
+	vector<InvenInfo> saveBoxInven;
+	for (auto& data : *nowSaveBox)
+	{
+		if (data->GetCount() <= 0)
+			continue;
+		InvenInfo d;
+		d.Type = data->GetName();
+		d.invenPos = data->GetInvenPos();
+		d.invenGreedPos = data->GetGreedPos();
+		d.cnt = data->GetCount();
+
+		d.path = data->GetPath();
+
+		saveBoxInven.push_back(d);
+	}
+
+	FILE_MGR->SaveSaveBoxInfo(saveBoxInven);
 }

@@ -150,12 +150,14 @@ void MapEditor::Update(float dt)
 
 	if (InputMgr::GetMouseWheelUp())
 	{
+		if (!((EditorMapUiMgr*)uiMgr)->GetUnderUi()->IsStay())
 		if (!((EditorMapUiMgr*)uiMgr)->GetItemBox()->GetActive())
 			if (!((EditorMapUiMgr*)uiMgr)->LoadActive() && !((EditorMapUiMgr*)uiMgr)->ConnectActive())
 				SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() - (Vector2f{ 19.2,10.8 } *10.f));
 	}
 	if (InputMgr::GetMouseWheelDown())
 	{
+		if (!((EditorMapUiMgr*)uiMgr)->GetUnderUi()->IsStay())
 		if (!((EditorMapUiMgr*)uiMgr)->GetItemBox()->GetActive())
 			if (!((EditorMapUiMgr*)uiMgr)->LoadActive() && !((EditorMapUiMgr*)uiMgr)->ConnectActive())
 				SCENE_MGR->GetCurrScene()->GetWorldView().setSize(SCENE_MGR->GetCurrScene()->GetWorldView().getSize() + (Vector2f{ 19.2,10.8 } *10.f));

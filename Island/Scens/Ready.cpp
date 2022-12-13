@@ -26,6 +26,7 @@ Ready::~Ready()
 
 void Ready::Init()
 {
+	uiMgr = new ReadyUiMgr(this);
 	int id = 0;
 	isGameScene = true;
 	auto& data = FILE_MGR->GetMap("READYSCENE");
@@ -116,7 +117,6 @@ void Ready::Init()
 	healNpc->SetHitBox("graphics/player.png");
 	objList[LayerType::Object][0].push_back(healNpc);
 
-	uiMgr = new ReadyUiMgr(this);
 	uiMgr->Init();
 	treeMap.setFont(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"));
 	treeMap.insert(objList[LayerType::Object][0]);
@@ -126,6 +126,7 @@ void Ready::Init()
 	cursor->SetOrigin(Origins::MC);
 	cursor->SetUI(true);
 	SOUND_MGR->Play("sounds/readyBGM.ogg", true);
+
 }
 
 void Ready::Release()

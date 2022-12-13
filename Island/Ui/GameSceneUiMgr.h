@@ -5,6 +5,7 @@ class Inventory;
 class SpriteObject;
 class Player;
 class NPC;
+class ToolTip;
 class GameSceneUiMgr : public UiMgr
 {
 protected:
@@ -38,7 +39,9 @@ protected:
 
 	float hpBarSize;
 	float staminaBarSize;
+	ToolTip* tip;
 public:
+	ToolTip* GetTip() { return tip; }
 	GameSceneUiMgr(Scene* scene);
 	virtual ~GameSceneUiMgr();
 	virtual void Init();
