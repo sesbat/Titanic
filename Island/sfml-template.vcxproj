@@ -223,6 +223,7 @@
     <ClCompile Include="Ui\Ready\ReadyUiMgr.cpp" />
     <ClCompile Include="Ui\UiMgr.cpp" />
     <ClCompile Include="Ui\UiObject.cpp" />
+    <ClCompile Include="GameObject\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\OBB.h" />
@@ -293,6 +294,7 @@
     <ClInclude Include="Ui\Ready\ReadyUiMgr.h" />
     <ClInclude Include="Ui\UiMgr.h" />
     <ClInclude Include="Ui\UiObject.h" />
+    <ClInclude Include="GameObject\Zombie.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

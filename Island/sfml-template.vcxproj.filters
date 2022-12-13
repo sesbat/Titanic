@@ -74,6 +74,7 @@
     <ClCompile Include="GameObject\Boss.cpp" />
     <ClCompile Include="GameObject\SupplyBox.cpp" />
     <ClCompile Include="GameObject\ToolTip.cpp" />
+    <ClCompile Include="GameObject\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\OBB.h" />
@@ -144,6 +145,7 @@
     <ClInclude Include="GameObject\Boss.h" />
     <ClInclude Include="GameObject\SupplyBox.h" />
     <ClInclude Include="GameObject\ToolTip.h" />
+    <ClInclude Include="GameObject\Zombie.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

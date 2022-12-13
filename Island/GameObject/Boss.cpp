@@ -1,5 +1,4 @@
 #include "Boss.h"
-#include "Enemy.h"
 #include "Player.h"
 #include "HitBox.h"
 #include "Object.h"
@@ -75,7 +74,7 @@ void Boss::Init(Player* player)
 
 	SetFireVariable();
 	
-	gun = new Gun(GunType::Shotgun, User::Boss);
+	gun = new Gun(GunType::None, User::Boss);
 	gun->SetBoss(this);
 	gun->Init();
 
