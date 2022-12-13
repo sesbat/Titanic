@@ -1059,7 +1059,7 @@ void Player::Release()
 
 bool Player::GetHide()
 {
-	cout << isHide << endl;
+	//cout << isHide << endl;
 	return isHide;
 }
 
