@@ -109,6 +109,34 @@
     {
       "texPath": "graphics/tile6.png",
       "uiPaht": "graphics/editor/drawTile6.png"
+    },
+    {
+      "texPath": "graphics/tile_main1.png",
+      "uiPaht": "graphics/editor/editor_tile_main1.png"
+    },
+    {
+      "texPath": "graphics/tile_main2.png",
+      "uiPaht": "graphics/editor/editor_tile_main2.png"
+    },
+    {
+      "texPath": "graphics/tile_main3.png",
+      "uiPaht": "graphics/editor/editor_tile_main3.png"
+    },
+    {
+      "texPath": "graphics/tile_main4.png",
+      "uiPaht": "graphics/editor/editor_tile_main4.png"
+    },
+    {
+      "texPath": "graphics/tile_main5.png",
+      "uiPaht": "graphics/editor/editor_tile_main5.png"
+    },
+    {
+      "texPath": "graphics/tile_main6.png",
+      "uiPaht": "graphics/editor/editor_tile_main6.png"
+    },
+    {
+      "texPath": "graphics/tile_main7.png",
+      "uiPaht": "graphics/editor/editor_tile_main7.png"
     }
   ],
   "ENEMY": [
