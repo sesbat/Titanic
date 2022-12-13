@@ -115,6 +115,34 @@
     {
       "texPath": "graphics/tile6.png",
       "uiPaht": "graphics/editor/drawTile6.png"
+    },
+    {
+      "texPath": "graphics/tile_main1.png",
+      "uiPaht": "graphics/editor/editor_tile_main1.png"
+    },
+    {
+      "texPath": "graphics/tile_main2.png",
+      "uiPaht": "graphics/editor/editor_tile_main2.png"
+    },
+    {
+      "texPath": "graphics/tile_main3.png",
+      "uiPaht": "graphics/editor/editor_tile_main3.png"
+    },
+    {
+      "texPath": "graphics/tile_main4.png",
+      "uiPaht": "graphics/editor/editor_tile_main4.png"
+    },
+    {
+      "texPath": "graphics/tile_main5.png",
+      "uiPaht": "graphics/editor/editor_tile_main5.png"
+    },
+    {
+      "texPath": "graphics/tile_main6.png",
+      "uiPaht": "graphics/editor/editor_tile_main6.png"
+    },
+    {
+      "texPath": "graphics/tile_main7.png",
+      "uiPaht": "graphics/editor/editor_tile_main7.png"
     }
   ],
   "INVISIBLE": [
@@ -209,6 +237,178 @@
     {
       "texPath": "graphics/block15.png",
       "uiPaht": "graphics/editor/drawBlock15.png"
+    },
+    {
+      "texPath": "graphics/browncar1.png",
+      "uiPaht": "graphics/editor/browncar1.png"
+    },
+    {
+      "texPath": "graphics/browncar2.png",
+      "uiPaht": "graphics/editor/browncar2.png"
+    },
+    {
+      "texPath": "graphics/browncar3.png",
+      "uiPaht": "graphics/editor/browncar3.png"
+    },
+    {
+      "texPath": "graphics/browncar4.png",
+      "uiPaht": "graphics/editor/browncar4.png"
+    },
+    {
+      "texPath": "graphics/browncar5.png",
+      "uiPaht": "graphics/editor/browncar5.png"
+    },
+    {
+      "texPath": "graphics/browncar6.png",
+      "uiPaht": "graphics/editor/browncar6.png"
+    },
+    {
+      "texPath": "graphics/dump1.png",
+      "uiPaht": "graphics/editor/dump1.png"
+    },
+    {
+      "texPath": "graphics/dump2.png",
+      "uiPaht": "graphics/editor/dump2.png"
+    },
+    {
+      "texPath": "graphics/dump3.png",
+      "uiPaht": "graphics/editor/dump3.png"
+    },
+    {
+      "texPath": "graphics/dump4.png",
+      "uiPaht": "graphics/editor/dump4.png"
+    },
+    {
+      "texPath": "graphics/dump5.png",
+      "uiPaht": "graphics/editor/dump5.png"
+    },
+    {
+      "texPath": "graphics/dump6.png",
+      "uiPaht": "graphics/editor/dump6.png"
+    },
+    {
+      "texPath": "graphics/dump7.png",
+      "uiPaht": "graphics/editor/dump7.png"
+    },
+    {
+      "texPath": "graphics/dump8.png",
+      "uiPaht": "graphics/editor/dump8.png"
+    },
+    {
+      "texPath": "graphics/dump9.png",
+      "uiPaht": "graphics/editor/dump9.png"
+    },
+    {
+      "texPath": "graphics/dump10.png",
+      "uiPaht": "graphics/editor/dump10.png"
+    },
+    {
+      "texPath": "graphics/dump11.png",
+      "uiPaht": "graphics/editor/dump11.png"
+    },
+    {
+      "texPath": "graphics/dump12.png",
+      "uiPaht": "graphics/editor/dump12.png"
+    },
+    {
+      "texPath": "graphics/dump13.png",
+      "uiPaht": "graphics/editor/dump13.png"
+    },
+    {
+      "texPath": "graphics/dump14.png",
+      "uiPaht": "graphics/editor/dump14.png"
+    },
+    {
+      "texPath": "graphics/dump15.png",
+      "uiPaht": "graphics/editor/dump15.png"
+    },
+    {
+      "texPath": "graphics/gdump1.png",
+      "uiPaht": "graphics/editor/gdump1.png"
+    },
+    {
+      "texPath": "graphics/gdump2.png",
+      "uiPaht": "graphics/editor/gdump2.png"
+    },
+    {
+      "texPath": "graphics/gdump3.png",
+      "uiPaht": "graphics/editor/gdump3.png"
+    },
+    {
+      "texPath": "graphics/gdump4.png",
+      "uiPaht": "graphics/editor/gdump4.png"
+    },
+    {
+      "texPath": "graphics/gdump5.png",
+      "uiPaht": "graphics/editor/gdump5.png"
+    },
+    {
+      "texPath": "graphics/gdump6.png",
+      "uiPaht": "graphics/editor/gdump6.png"
+    },
+    {
+      "texPath": "graphics/gdump7.png",
+      "uiPaht": "graphics/editor/gdump7.png"
+    },
+    {
+      "texPath": "graphics/gdump8.png",
+      "uiPaht": "graphics/editor/gdump8.png"
+    },
+    {
+      "texPath": "graphics/gdump9.png",
+      "uiPaht": "graphics/editor/gdump9.png"
+    },
+    {
+      "texPath": "graphics/gdump10.png",
+      "uiPaht": "graphics/editor/gdump10.png"
+    },
+    {
+      "texPath": "graphics/gdump11.png",
+      "uiPaht": "graphics/editor/gdump11.png"
+    },
+    {
+      "texPath": "graphics/gdump12.png",
+      "uiPaht": "graphics/editor/gdump12.png"
+    },
+    {
+      "texPath": "graphics/gdump13.png",
+      "uiPaht": "graphics/editor/gdump13.png"
+    },
+    {
+      "texPath": "graphics/gdump14.png",
+      "uiPaht": "graphics/editor/gdump14.png"
+    },
+    {
+      "texPath": "graphics/greencar1.png",
+      "uiPaht": "graphics/editor/greencar1.png"
+    },
+    {
+      "texPath": "graphics/greencar2.png",
+      "uiPaht": "graphics/editor/greencar2.png"
+    },
+    {
+      "texPath": "graphics/greencar3.png",
+      "uiPaht": "graphics/editor/greencar3.png"
+    },
+    {
+      "texPath": "graphics/greencar4.png",
+      "uiPaht": "graphics/editor/greencar4.png"
+    },
+    {
+      "texPath": "graphics/greencar5.png",
+      "uiPaht": "graphics/editor/greencar5.png"
+    },
+    {
+      "texPath": "graphics/greencar6.png",
+      "uiPaht": "graphics/editor/greencar6.png"
+    },
+    {
+      "texPath": "graphics/greentruck1.png",
+      "uiPaht": "graphics/editor/greentruck1.png"
+    },
+    {
+      "texPath": "graphics/greentruck2.png",
+      "uiPaht": "graphics/editor/greentruck2.png"
     }
   ],
   "ANOTHER": [

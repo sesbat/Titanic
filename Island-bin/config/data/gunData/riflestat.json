@@ -3,7 +3,6 @@
   "damage": 200.0,
   "magazine": 45,
   "name": "Rifle",
-  "SniperBullet": "RifleBullet",
   "randDir": 100.0,
   "shotgunDir": 0,
   "range": 1000.0,
