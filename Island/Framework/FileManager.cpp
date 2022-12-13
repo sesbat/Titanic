@@ -89,7 +89,8 @@ void FileManager::LoadAll()
 	{
 		"config/data/gunData/shotgunstat.json",
 		"config/data/gunData/riflestat.json",
-		"config/data/gunData/sniperstat.json"
+		"config/data/gunData/sniperstat.json",
+		"config/data/gunData/up1shotgunstat.json"
 	};
 
 	for (auto path : guninfo_paths)

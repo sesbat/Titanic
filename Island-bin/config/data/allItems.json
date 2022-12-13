@@ -60,7 +60,27 @@
     "tooltipDelay": 1.0
   },
   "Shotgun": {
-    "path": "graphics/items/GUN1.png",
+    "path": "graphics/items/shotgun/smp153.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 5,
+    "height": 1,
+    "price": 5000,
+    "uiName": "test",
+    "type": 1,
+    "description": "test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Up1-Shotgun": {
+    "path": "graphics/items/shotgun/smp153-2.png",
     "maxCount": 1,
     "weight": 2.0,
     "width": 5,
@@ -100,10 +120,10 @@
     "tooltipDelay": 1.0
   },
   "Sniper": {
-    "path": "graphics/items/GUN3.png",
+    "path": "graphics/items/GUN1.png",
     "maxCount": 1,
     "weight": 2.0,
-    "width": 3,
+    "width": 5,
     "height": 1,
     "price": 4000,
     "uiName": "test",
@@ -148,6 +168,86 @@
     "price": 4000,
     "uiName": "test",
     "type": 2,
+    "description": "test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ShotgunUpgrade1": {
+    "path": "graphics/items/shotgun/smp153upgrade1.png",
+    "maxCount": 3,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 4000,
+    "uiName": "test",
+    "type": 1,
+    "description": "test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ShotgunUpgrade2": {
+    "path": "graphics/items/shotgun/smp153upgrade2.png",
+    "maxCount": 3,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 4000,
+    "uiName": "test",
+    "type": 1,
+    "description": "test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ShotgunUpgrade3": {
+    "path": "graphics/items/shotgun/smp153upgrade3.png",
+    "maxCount": 3,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 4000,
+    "uiName": "test",
+    "type": 1,
+    "description": "test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ShotgunUpgradeSet": {
+    "path": "graphics/items/shotgun/smp153upgradeset.png",
+    "maxCount": 3,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 10000,
+    "uiName": "test",
+    "type": 1,
     "description": "test des",
     "toolTipPos": {
       "x": -20,

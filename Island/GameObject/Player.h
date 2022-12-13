@@ -159,6 +159,7 @@ public:
 	Vector2f GetPlayerDir() { return direction; }
 	Vector2f GetPlayerLastDir() { return lastDirection; }
 	Vector2f GetLookDir() { return lookDir; }
+	Vector2f GetLook() { return look; }
 	Vector2f GetPrevLookDir() { return prevLook; }
 	Vector2f GetPlayerBottom() { return bottomPos; }
 	States GetCurrState() { return currState; }

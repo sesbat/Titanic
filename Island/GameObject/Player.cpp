@@ -49,7 +49,7 @@ Player::Player()
 	initSpeed = speed = stat.speed;
 	staminaDownSpeed = stat.staminaDownSpeed;
 	staminaUpSpeed = stat.staminaUpSpeed;
-	init_thirstDelay = thirstDelay = stat.thirstDelay; 
+	init_thirstDelay = thirstDelay = stat.thirstDelay;
 
 	hideDelay = 1.f;
 }
@@ -66,7 +66,7 @@ void Player::Init()
 	gun = new Gun(GunType::None, User::Player);
 	gun->SetPlayer(this);
 	gun->Init();
-	
+
 	animator.SetTarget(&sprite);
 
 	//animation
@@ -109,7 +109,7 @@ void Player::SetState(States newState)
 
 void Player::Update(float dt)
 {
-	
+
 	HitBoxObject::Update(dt);
 	Vector2i mousePos = (Vector2i)InputMgr::GetMousePos();
 	Vector2f mouseWorldPos = scene->ScreenToWorld(mousePos);
@@ -121,8 +121,8 @@ void Player::Update(float dt)
 		direction.x = InputMgr::GetAxisRaw(Axis::Horizontal);
 		direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
 	}
-	
-	
+
+
 	soundDelay -= dt;
 	if (soundDelay <= 0 && (InputMgr::GetAxisRaw(Axis::Horizontal) || InputMgr::GetAxisRaw(Axis::Vertical)))
 	{
@@ -139,7 +139,7 @@ void Player::Update(float dt)
 		UpdateMove(dt);
 		break;
 	}
-	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene) 
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
 		hungerDelay -= dt;
 		thirstDelay -= dt;
@@ -150,22 +150,22 @@ void Player::Update(float dt)
 		{
 			radiationDelay -= dt;
 		}
-		if (hungerDelay  < 0.f && hungerGuage > 0.f)
+		if (hungerDelay < 0.f && hungerGuage > 0.f)
 		{
 			hungerGuage -= 2.5;
 			hungerDelay = init_hungerDelay * radDebuffScale;
 		}
-		if (thirstDelay  < 0.f && thirstGuage > 0.f)
+		if (thirstDelay < 0.f && thirstGuage > 0.f)
 		{
 			thirstGuage -= 2.5;
 			thirstDelay = init_thirstDelay * radDebuffScale;
 		}
-		if (energyDelay  < 0.f && energyGuage > 0.f)
+		if (energyDelay < 0.f && energyGuage > 0.f)
 		{
 			energyGuage -= 2.5;
 			energyDelay = init_energyDelay * radDebuffScale;
 		}
-		if (radiationDelay < 0.f && radGuage <=255.f)
+		if (radiationDelay < 0.f && radGuage <= 255.f)
 		{
 			radGuage += 2.5;
 			radiationDelay = init_radiationDelay;
@@ -178,9 +178,9 @@ void Player::Update(float dt)
 				radDebuffScale = 1;
 			}
 		}
-		
+
 	}
-	
+
 	//Dead
 	if (hp <= 0 || hungerGuage <= 0 ||
 		thirstGuage <= 0 || energyGuage <= 0 || radGuage >= 255)
@@ -221,6 +221,9 @@ void Player::Update(float dt)
 		case GunType::Shotgun:
 			reloadDelay = reloadDelaySG;
 			break;
+		case GunType::Up1_ShotGun:
+			reloadDelay = reloadDelaySG;
+			break;
 		case GunType::Rifle:
 			reloadDelay = reloadDelayRF;
 			break;
@@ -241,6 +244,8 @@ void Player::Update(float dt)
 					{
 					case GunType::Shotgun:
 					case GunType::Sniper:
+					case GunType::Up1_ShotGun:
+
 						if (InputMgr::GetMouseButtonDown(Mouse::Left) && !inven->GetActive())
 						{
 							SetFireAmmo();
@@ -339,10 +344,10 @@ void Player::Update(float dt)
 			isDash = false;
 		}
 	}
-	
+
 	if (InputMgr::GetKeyDown(Keyboard::Tab) || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
-		if (inven->GetActive() && !isMove)	
+		if (inven->GetActive() && !isMove)
 		{
 			InputMgr::Clear();
 			SetMove(true);
@@ -378,7 +383,7 @@ void Player::Update(float dt)
 		}
 		else if (isMove && !InputMgr::GetKeyDown(Keyboard::Escape))
 		{
-			
+
 			this->PlayerSetIsInven(true);
 			inven->SetActive(true);
 			inven->ResetRightInven();
@@ -678,7 +683,7 @@ void Player::Collision()
 			{
 
 				if (obj->GetName() == "STONE" ||
-					obj->GetName() == "BLOCK"||
+					obj->GetName() == "BLOCK" ||
 					obj->GetName() == "RADIATION")
 				{
 					//cout << "wall" << endl;
@@ -807,6 +812,10 @@ void Player::SetFireAmmo()
 		ammo--;
 		sgAmmo = ammo;
 		break;
+	case GunType::Up1_ShotGun:
+		ammo--;
+		sgAmmo = ammo;
+		break;
 	case GunType::Rifle:
 		ammo--;
 		rfAmmo = ammo;
@@ -823,6 +832,9 @@ void Player::SetAmmoType()
 	switch (gun->GetgunType())
 	{
 	case GunType::Shotgun:
+		ammo = sgAmmo;
+		break;
+	case GunType::Up1_ShotGun:
 		ammo = sgAmmo;
 		break;
 	case GunType::Rifle:
@@ -851,7 +863,7 @@ void Player::Reload()
 			if (bt->GetName() == "ShotGunBullet")
 			{
 				SOUND_MGR->Play("sounds/reload.wav");
-				reloadDelaySG = 1.5f;
+				reloadDelaySG = gun->GetReloadDelay();
 				isReloading = true;
 				if (bt->GetCount() < magazineSG)
 				{
@@ -861,7 +873,56 @@ void Player::Reload()
 						{
 							ammo = sgAmmo = magazineSG;
 							bt->AddCount(-(magazineSG - ammoCount));
-							
+
+						}
+						else
+						{
+							ammo = sgAmmo = ammo + bt->GetCount();
+							bt->AddCount(-(magazineSG));
+						}
+					}
+					else
+					{
+						ammo = bt->GetCount();
+						sgAmmo = ammo;
+						bt->AddCount(-(magazineSG));
+					}
+				}
+				else
+				{
+					ammo = sgAmmo = magazineSG;
+					bt->AddCount(-(magazineSG - ammoCount));
+				}
+				if (bt->GetCount() <= 0)
+				{
+					inven->AddDeleteItem(bt);
+
+				}
+				return;
+			}
+		}
+		break;
+	case GunType::Up1_ShotGun:
+		if (ammo == magazineSG)
+		{
+			return;
+		}
+		for (auto bt : *inven->GetPlayerInven()->GetItems())
+		{
+			if (bt->GetName() == "ShotGunBullet")
+			{
+				SOUND_MGR->Play("sounds/reload.wav");
+				reloadDelaySG = gun->GetReloadDelay();
+				isReloading = true;
+				if (bt->GetCount() < magazineSG)
+				{
+					if (ammo > 0)
+					{
+						if (ammo + bt->GetCount() >= magazineSG)
+						{
+							ammo = sgAmmo = magazineSG;
+							bt->AddCount(-(magazineSG - ammoCount));
+
 						}
 						else
 						{
@@ -895,13 +956,13 @@ void Player::Reload()
 		{
 			return;
 		}
-		
+
 		for (auto bt : *inven->GetPlayerInven()->GetItems())
 		{
 			if (bt->GetName() == "RifleBullet")
 			{
 				SOUND_MGR->Play("sounds/reload.wav");
-				reloadDelayRF = 1.f;
+				reloadDelayRF = gun->GetReloadDelay();
 				isReloading = true;
 				if (bt->GetCount() < magazineRF)
 				{
@@ -944,13 +1005,13 @@ void Player::Reload()
 		{
 			return;
 		}
-		
+
 		for (auto bt : *inven->GetPlayerInven()->GetItems())
 		{
 			if (bt->GetName() == "SniperBullet")
 			{
 				SOUND_MGR->Play("sounds/reload.wav");
-				reloadDelaySN = 3.f;
+				reloadDelaySN = gun->GetReloadDelay();
 				isReloading = true;
 				if (bt->GetCount() < magazineSN)
 				{
@@ -960,7 +1021,7 @@ void Player::Reload()
 						{
 							ammo = snAmmo = magazineSN;
 							bt->AddCount(-(magazineSN - ammoCount));
-							
+
 						}
 						else
 						{
@@ -1006,6 +1067,9 @@ string Player::GetAmmos()
 	case GunType::Shotgun:
 		return (to_string(ammo) + "/" + to_string(magazineSG));
 		break;
+	case GunType::Up1_ShotGun:
+		return (to_string(ammo) + "/" + to_string(magazineSG));
+		break;
 	case GunType::Rifle:
 		return (to_string(ammo) + "/" + to_string(magazineRF));
 		break;
@@ -1017,7 +1081,7 @@ string Player::GetAmmos()
 
 void Player::Load()
 {
-	
+
 	auto playerData = FILE_MGR->GetUserInfo();
 	hp = playerData.hp;
 	stamina = maxStamina;
@@ -1031,9 +1095,9 @@ void Player::Load()
 	snAmmo = playerData.snAmmo;
 	rfAmmo = playerData.rfAmmo;
 	lastWephon = playerData.lastWephon;
-	
+
 	money = playerData.money;
-	
+
 
 	auto invenData = FILE_MGR->GetInvenInfo();
 
@@ -1221,8 +1285,8 @@ void Player::HideUpdate(float dt)
 }
 
 void Player::HideStop()
-{ 
-	isHitBullet = true; hideDelayTimer = 0.f; isHide = false; 
+{
+	isHitBullet = true; hideDelayTimer = 0.f; isHide = false;
 }
 
 void Player::SetStun(bool stun, float time)

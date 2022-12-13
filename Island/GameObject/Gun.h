@@ -7,6 +7,7 @@ enum class GunType
 {
     None,
     Shotgun,
+    Up1_ShotGun,
     Rifle,
     Sniper,
     TypeCount,
@@ -47,6 +48,7 @@ private:
     float bulletSpeed;
     float range;
     float shootDelay;
+    float reloadDelay;
     int damage;
     bool isGunFlip;
     bool isInWall;
@@ -59,6 +61,7 @@ private:
     map<string, GunType> gunNameType;
 
     map<string, GunStat> gunsInfo;
+    GunStat data;
 public:
     Gun();
     Gun(GunType type, User user);
@@ -77,6 +80,7 @@ public:
     GunType GetgunType() { return gunType; }
     GunType ItemNameToType(string name);
     float GetpShootDelay() { return shootDelay; }
+    float GetReloadDelay() { return reloadDelay; }
     const RectangleShape& GetHitbox() const;
     void SetIsInWall(bool wall) { isInWall = wall; }
     bool GetIsInWall() { return isInWall; }
