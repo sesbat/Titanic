@@ -184,7 +184,7 @@ void Boss::Update(float dt)
 						}
 						else if ((Utils::Distance(player->GetPos(), GetPos()) > activeDashRange))
 						{
-							cout << "pattern " << firePattern << endl;
+							//cout << "pattern " << firePattern << endl;
 							if (firePattern >= 2)
 							{
 								SetFireVariable();
