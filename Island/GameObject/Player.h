@@ -133,6 +133,9 @@ protected:
 	float hideDelay;
 	float hideDelayTimer;
 	bool isHitBullet;
+	bool isStun;
+	//float stunTime;
+	float stun;
 
 	vector<string> clearMaps;
 public:
@@ -225,6 +228,7 @@ public:
 	void HideUpdate(float dt);
 	void HideStop();
 
+	void SetStun(bool stun, float time);
 	const vector<string>& GetClearMpas() const { return clearMaps; } 
 	void ClearMap(string name);
 };
