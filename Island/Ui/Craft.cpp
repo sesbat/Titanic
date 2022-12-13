@@ -89,7 +89,7 @@ void Craft::Update(float dt)
 	{
 		btn->Update(dt);
 	}
-	//requiredItem->Update(dt);
+	requiredItem->Update(dt);
 
 	for (int i = 0; i < categories.size(); i++)
 	{
