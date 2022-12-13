@@ -46,7 +46,18 @@ void ToolTip::init()
 	SetTexture(*RESOURCES_MGR->GetTexture("graphics/100sizeImage.png"), true);
 	GetSpriteObj()->SetColor(Color(127, 127, 127, 255));
 	GetSpriteObj()->SetSize((Vector2f)itemData.toolTipSize);
-	SetPos(itemPos + (Vector2f)itemData.toolTipPos);
+	auto toolTipPos = itemPos + (Vector2f)itemData.toolTipPos;
+
+	//if (toolTipPos.x + itemData.toolTipSize.x > 1080)
+	//{
+	//	toolTipPos.x -= itemData.toolTipSize.x + itemData.toolTipPos.x * -2;
+	//}
+	//if (toolTipPos.x + itemData.toolTipSize.x > 1080)
+	//{
+	//	toolTipPos.x -= itemData.toolTipSize.x + itemData.toolTipPos.x * -2;
+	//}
+
+	SetPos(toolTipPos);
 
 	SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, s2w(itemData.uiName), false);
 	auto txtPos = GetPos() + Vector2f{ GetSpriteObj()->GetGlobalBound().width / 2, 10 };

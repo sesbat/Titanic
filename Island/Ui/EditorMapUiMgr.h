@@ -25,9 +25,9 @@ private:
 	vector<string> selects;
 	vector<int> selectTxtSize;
 	vector<float> selectPosY;
-	int selIdx;
+	int selIdx;	
 	map<string, vector<Button*>> type_selects;
-	int typeIdx = 0;
+	int selectIdx = 0;
 
 	vector<DrawSelect*> drawObj;
 	DrawObj* nowDraw;
@@ -77,8 +77,11 @@ public:
 	string GetPath();
 
 	void BoxingEnd();
+	void SetSelectSize();
 	bool GetIsBox() { return isBox; }
 	ConnectWindowBox* GetConnecntWindow() { return connectWindow; }
+
+	Button* GetUnderUi() { return underUi; }
 
 };
 

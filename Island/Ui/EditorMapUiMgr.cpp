@@ -127,7 +127,7 @@ void EditorMapUiMgr::Init()
 	}
 
 	saveWindow = new SaveWindowBox(this);
-	saveWindow->SetPos({ 350,50 });
+	saveWindow->SetPos({ 350,50 }); 
 	saveWindow->Init();
 	uiObjList[1].push_back(saveWindow);
 	for (auto& obj : type_selects[selects[selIdx]])
@@ -194,6 +194,22 @@ void EditorMapUiMgr::Update(float dt)
 	}
 
 	UiMgr::Update(dt);
+
+	if (underUi->IsStay())
+	{
+		if (InputMgr::GetMouseWheelUp())
+		{
+			selectIdx--;
+			selectIdx = max(selectIdx, 0);
+			SetSelectSize();
+		}
+		if (InputMgr::GetMouseWheelDown())
+		{
+			selectIdx++;
+			selectIdx = min((int)type_selects[selects[selIdx]].size(), selectIdx);
+			SetSelectSize();
+		}
+	}
 
 	if (eraseBtn->IsUp())
 	{
@@ -275,6 +291,7 @@ void EditorMapUiMgr::Update(float dt)
 
 	if (selectBtn->IsUp())
 	{
+		selectIdx = 0;
 		for (auto& obj : type_selects[selects[selIdx]])
 		{
 			obj->SetActive(false);
@@ -292,10 +309,12 @@ void EditorMapUiMgr::Update(float dt)
 
 		DeletDraw();
 		((MapEditor*)(parentScene))->SetType(selects[selIdx]);
+		SetSelectSize();
 	}
 
 	if (selectBtn->IsUpRight())
 	{
+		selectIdx = 0;
 		for (auto& obj : type_selects[selects[selIdx]])
 		{
 			obj->SetActive(false);
@@ -313,6 +332,7 @@ void EditorMapUiMgr::Update(float dt)
 
 		DeletDraw();
 		((MapEditor*)(parentScene))->SetType(selects[selIdx]);
+		SetSelectSize();
 	}
 
 }
@@ -491,6 +511,26 @@ void EditorMapUiMgr::BoxingEnd()
 		delete rect;
 
 	rect = nullptr;
+}
 
+void EditorMapUiMgr::SetSelectSize()
+{
+	Vector2f pos = { 450, underUi->GetPos().y + 40.f };
 
+	int i = 0;
+	int x = 450;
+	for (auto& item : type_selects[selects[selIdx]])
+	{
+		if (i >= selectIdx && i < selectIdx + 12)
+		{
+			item->SetActive(true);
+			item->SetPos(pos);
+			pos.x += 100.f;
+		}
+		else
+		{
+			item->SetActive(false);
+		}
+		i++;
+	}
 }

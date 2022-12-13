@@ -55,7 +55,7 @@ void InvenItem::Update(float dt)
 			{
 				tip->SetItem(GetName());
 				tip->SetItemType(FILE_MGR->GetItemInfo(GetName()).type);
-				tip->SetToolPos(position);
+				tip->SetToolPos(InputMgr::GetMousePos());
 				tip->SetMyItem(this);
 				tip->init();
 				tip->SetActive(true);
