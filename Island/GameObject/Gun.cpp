@@ -222,7 +222,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 	Transform transform = translation * rotation;
 
 	float distance = Utils::Distance(InputMgr::GetMousePos(), GetPos());
-	if (distance < 100.f)
+	if (distance < 100.f||!isplayer)
 	{
 		randDir = lookDir;
 	}
