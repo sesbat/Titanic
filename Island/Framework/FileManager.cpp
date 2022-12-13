@@ -90,7 +90,13 @@ void FileManager::LoadAll()
 		"config/data/gunData/shotgunstat.json",
 		"config/data/gunData/riflestat.json",
 		"config/data/gunData/sniperstat.json",
-		"config/data/gunData/up1shotgunstat.json"
+		"config/data/gunData/up1shotgunstat.json",
+		"config/data/gunData/sr25stat.json",
+		"config/data/gunData/Scop_sniperstat.json",
+		"config/data/gunData/Scop_Riflestat.json",
+		"config/data/gunData/MB_sniperstat.json",
+		"config/data/gunData/MB_Shotgunstat.json",
+		"config/data/gunData/MB_Riflestat.json"
 	};
 
 	for (auto path : guninfo_paths)

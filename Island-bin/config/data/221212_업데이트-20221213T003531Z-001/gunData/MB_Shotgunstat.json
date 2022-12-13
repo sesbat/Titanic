@@ -1,0 +1,14 @@
+{
+  "cnt": 5,
+  "damage": 350.0,
+  "magazine": 10,
+  "name": "Shotgun",
+  "randDir": 20.0,
+  "shotgunDir": 10,
+  "range": 800.0,
+  "reloadDelay": 3.0,
+  "speed": 2000.0,
+  "zoomRange": 1000.0,
+  "shootDelay": 0.3,
+  "soundPath": "sounds/shotgun.wav"
+}

@@ -485,7 +485,8 @@ void Enemy::Collision()
 			{
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "RADIATION")
+					obj->GetName() == "RADIATION"||
+					obj->GetName() == "INVISIBLE")
 					SetEnemyPos();
 			}
 		}
@@ -530,7 +531,8 @@ void Enemy::CheckIsInWall()
 
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "RADIATION")
+					obj->GetName() == "RADIATION"||
+					obj->GetName() == "INVISIBLE")
 				{
 					//cout << "wall" << endl;
 					gun->SetIsInWall(false);

@@ -238,7 +238,8 @@ void Scene::LayerSort()
 			continue;
 		}
 		if (obj->GetName() == "TREE" || obj->GetName() == "BUSH" || obj->GetName() == "STONE" ||
-			obj->GetName() == "BLOCK" || obj->GetName() == "BOX" || obj->GetName() == "SupplyBox" || obj->GetName() == "BOX-ENEMY" || obj->GetName() == "RADIATION")
+			obj->GetName() == "BLOCK" || obj->GetName() == "BOX" || obj->GetName() == "SupplyBox" ||
+			obj->GetName() == "BOX-ENEMY" || obj->GetName() == "RADIATION"|| obj->GetName() == "INVISIBLE")
 		{
 			if (obj->GetName() == "TREE" || obj->GetName() == "BUSH")
 				alphaObj.push_back((HitBoxObject*)obj);
