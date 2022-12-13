@@ -186,3 +186,6 @@ graphics/block15.png,0
 graphics/editor/drawBlock13.png,0
 graphics/editor/drawBlock14.png,0
 graphics/editor/drawBlock15.png,0
+graphics/enemy/boss/Big/Big_Dead.png,0
+animations/boss/BossBigStun.csv,3
+animations/boss/BossBigStunLeft.csv,3
