@@ -191,6 +191,18 @@
     {
       "texPath": "graphics/block12.png",
       "uiPaht": "graphics/editor/drawBlock12.png"
+    },
+    {
+      "texPath": "graphics/block13.png",
+      "uiPaht": "graphics/editor/drawBlock12.png"
+    },
+    {
+      "texPath": "graphics/block14.png",
+      "uiPaht": "graphics/editor/drawBlock14.png"
+    },
+    {
+      "texPath": "graphics/block15.png",
+      "uiPaht": "graphics/editor/drawBlock15.png"
     }
   ],
   "ANOTHER": [
