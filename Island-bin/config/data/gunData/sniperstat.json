@@ -3,6 +3,7 @@
   "damage": 500.0,
   "magazine": 5,
   "name": "Sniper",
+  "bulletName": "SniperBullet",
   "randDir": 10.0,
   "shotgunDir": 0,
   "range": 2000.0,

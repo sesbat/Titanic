@@ -23,9 +23,7 @@ Player::Player()
 	: currState(States::None),
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
-	isDash(false), isAlive(true), isMove(true),
-	magazineSG(10), magazineRF(45), magazineSN(5), shootDelay(0.f),
-	reloadDelaySG(1.5f), reloadDelayRF(1.f), reloadDelaySN(3.f),
+	isDash(false), isAlive(true), isMove(true), shootDelay(0.f),
 	isReloading(false), soundDelay(0.5f), isStun(false), stun(0.f)
 {
 	auto stat = FILE_MGR->GetUserStat();
@@ -203,41 +201,20 @@ void Player::Update(float dt)
 	prevLook = lookDir;
 
 	gun->Update(dt);
-	SetAmmoType();
+	//SetAmmoType();
 	//input
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
 		shootDelay -= dt;
-		reloadDelaySG -= dt;
-		reloadDelayRF -= dt;
-		reloadDelaySN -= dt;
+		reloadDelay -= dt;
 
-		float reloadDelay;
-		switch (gun->GetgunType())
-		{
-		case GunType::None:
-			reloadDelay = 1;
-			break;
-		case GunType::Shotgun:
-			reloadDelay = reloadDelaySG;
-			break;
-		case GunType::Up1_ShotGun:
-			reloadDelay = reloadDelaySG;
-			break;
-		case GunType::Rifle:
-			reloadDelay = reloadDelayRF;
-			break;
-		case GunType::Sniper:
-			reloadDelay = reloadDelaySN;
-			break;
-		}
 		//fire
 		if (!isStun)
 		{
 			if (reloadDelay <= 0)
 			{
 				isReloading = false;
-				if (ammo > 0 && shootDelay <= 0 && gun->GetIsInWall())
+				if (ammo[gun->GetgunType()] > 0 && shootDelay <= 0 && gun->GetIsInWall())
 				{
 					//isReloading = false;
 					switch (gun->GetgunType())
@@ -287,12 +264,12 @@ void Player::Update(float dt)
 				if (myGun == nullptr)
 				{
 					gun->SetGunType(GunType::None);
-					ammo = 0;
+					ammo[gun->GetgunType()] = 0;
 				}
 				else
 				{
 					gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
-					SetAmmoType();
+					//SetAmmoType();
 				}
 				lastWephon = 0;
 			}
@@ -303,12 +280,12 @@ void Player::Update(float dt)
 				if (myGun == nullptr)
 				{
 					gun->SetGunType(GunType::None);
-					ammo = 0;
+					ammo[gun->GetgunType()] = 0;
 				}
 				else
 				{
 					gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
-					SetAmmoType();
+					//SetAmmoType();
 				}
 				lastWephon = 1;
 			}
@@ -806,250 +783,64 @@ void Player::SetStamina(float stamina)
 
 void Player::SetFireAmmo()
 {
-	switch (gun->GetgunType())
-	{
-	case GunType::Shotgun:
-		ammo--;
-		sgAmmo = ammo;
-		break;
-	case GunType::Up1_ShotGun:
-		ammo--;
-		sgAmmo = ammo;
-		break;
-	case GunType::Rifle:
-		ammo--;
-		rfAmmo = ammo;
-		break;
-	case GunType::Sniper:
-		ammo--;
-		snAmmo = ammo;
-		break;
-	}
+	ammo[gun->GetgunType()]--;
 }
 
 void Player::SetAmmoType()
 {
-	switch (gun->GetgunType())
-	{
-	case GunType::Shotgun:
-		ammo = sgAmmo;
-		break;
-	case GunType::Up1_ShotGun:
-		ammo = sgAmmo;
-		break;
-	case GunType::Rifle:
-		ammo = rfAmmo;
-		break;
-	case GunType::Sniper:
-		ammo = snAmmo;
-		break;
-	}
+	ammo[gun->GetgunType()] = maxAmmo[gun->GetgunType()];
 }
 
 void Player::Reload()
 {
-	int ammoCount = ammo;
-	switch (gun->GetgunType())
+	//int ammoCount = ammo;
+	if (ammo[gun->GetgunType()] == maxAmmo[gun->GetgunType()])
 	{
-	case GunType::None:
-		break;
-	case GunType::Shotgun:
-		if (ammo == magazineSG)
-		{
-			return;
-		}
-		for (auto bt : *inven->GetPlayerInven()->GetItems())
-		{
-			if (bt->GetName() == "ShotGunBullet")
-			{
-				SOUND_MGR->Play("sounds/reload.wav");
-				reloadDelaySG = gun->GetReloadDelay();
-				isReloading = true;
-				if (bt->GetCount() < magazineSG)
-				{
-					if (ammo > 0)
-					{
-						if (ammo + bt->GetCount() >= magazineSG)
-						{
-							ammo = sgAmmo = magazineSG;
-							bt->AddCount(-(magazineSG - ammoCount));
+		return;
+	}
 
-						}
-						else
-						{
-							ammo = sgAmmo = ammo + bt->GetCount();
-							bt->AddCount(-(magazineSG));
-						}
+	for (auto bt : *inven->GetPlayerInven()->GetItems())
+	{
+		if (bt->GetName() == gunBulletName[gun->GetgunType()])
+		{
+			SOUND_MGR->Play("sounds/reload.wav");
+
+			reloadDelay = reloadDelayTime[gun->GetgunType()] = gun->GetReloadDelay();
+			isReloading = true;
+			if (bt->GetCount() < maxAmmo[gun->GetgunType()])
+			{
+				if (ammo[gun->GetgunType()] > 0)
+				{
+					if (ammo[gun->GetgunType()] + bt->GetCount() >= maxAmmo[gun->GetgunType()])
+					{
+						ammo[gun->GetgunType()] = maxAmmo[gun->GetgunType()];
+						bt->AddCount(-(maxAmmo[gun->GetgunType()] - ammo[gun->GetgunType()]));
+
 					}
 					else
 					{
-						ammo = bt->GetCount();
-						sgAmmo = ammo;
-						bt->AddCount(-(magazineSG));
+						ammo[gun->GetgunType()] = ammo[gun->GetgunType()] + bt->GetCount();
+						bt->AddCount(-bt->GetCount());
 					}
 				}
 				else
 				{
-					ammo = sgAmmo = magazineSG;
-					bt->AddCount(-(magazineSG - ammoCount));
+					ammo[gun->GetgunType()] = bt->GetCount();
+					bt->AddCount(-(bt->GetCount()));
 				}
-				if (bt->GetCount() <= 0)
-				{
-					inven->AddDeleteItem(bt);
-
-				}
-				return;
 			}
-		}
-		break;
-	case GunType::Up1_ShotGun:
-		if (ammo == magazineSG)
-		{
+			else
+			{
+				bt->AddCount(-(maxAmmo[gun->GetgunType()] - ammo[gun->GetgunType()]));
+				ammo[gun->GetgunType()] = maxAmmo[gun->GetgunType()];
+			}
+			if (bt->GetCount() <= 0)
+			{
+				inven->AddDeleteItem(bt);
+
+			}
 			return;
 		}
-		for (auto bt : *inven->GetPlayerInven()->GetItems())
-		{
-			if (bt->GetName() == "ShotGunBullet")
-			{
-				SOUND_MGR->Play("sounds/reload.wav");
-				reloadDelaySG = gun->GetReloadDelay();
-				isReloading = true;
-				if (bt->GetCount() < magazineSG)
-				{
-					if (ammo > 0)
-					{
-						if (ammo + bt->GetCount() >= magazineSG)
-						{
-							ammo = sgAmmo = magazineSG;
-							bt->AddCount(-(magazineSG - ammoCount));
-
-						}
-						else
-						{
-							ammo = sgAmmo = ammo + bt->GetCount();
-							bt->AddCount(-(magazineSG));
-						}
-					}
-					else
-					{
-						ammo = bt->GetCount();
-						sgAmmo = ammo;
-						bt->AddCount(-(magazineSG));
-					}
-				}
-				else
-				{
-					ammo = sgAmmo = magazineSG;
-					bt->AddCount(-(magazineSG - ammoCount));
-				}
-				if (bt->GetCount() <= 0)
-				{
-					inven->AddDeleteItem(bt);
-
-				}
-				return;
-			}
-		}
-		break;
-	case GunType::Rifle:
-		if (ammo == magazineRF)
-		{
-			return;
-		}
-
-		for (auto bt : *inven->GetPlayerInven()->GetItems())
-		{
-			if (bt->GetName() == "RifleBullet")
-			{
-				SOUND_MGR->Play("sounds/reload.wav");
-				reloadDelayRF = gun->GetReloadDelay();
-				isReloading = true;
-				if (bt->GetCount() < magazineRF)
-				{
-					if (ammo > 0)
-					{
-						if (ammo + bt->GetCount() >= magazineRF)
-						{
-							ammo = rfAmmo = magazineRF;
-							bt->AddCount(-(magazineRF - ammoCount));
-						}
-						else
-						{
-							ammo = rfAmmo = ammo + bt->GetCount();
-							bt->AddCount(-(magazineRF));
-						}
-					}
-					else
-					{
-						ammo = bt->GetCount();
-						rfAmmo = ammo;
-						bt->AddCount(-(magazineRF));
-					}
-				}
-				else
-				{
-					ammo = rfAmmo = magazineRF;
-					bt->AddCount(-(magazineRF - ammoCount));
-				}
-				if (bt->GetCount() <= 0)
-				{
-					inven->AddDeleteItem(bt);
-
-				}
-				return;
-			}
-		}
-		break;
-	case GunType::Sniper:
-		if (ammo == magazineSN)
-		{
-			return;
-		}
-
-		for (auto bt : *inven->GetPlayerInven()->GetItems())
-		{
-			if (bt->GetName() == "SniperBullet")
-			{
-				SOUND_MGR->Play("sounds/reload.wav");
-				reloadDelaySN = gun->GetReloadDelay();
-				isReloading = true;
-				if (bt->GetCount() < magazineSN)
-				{
-					if (ammo > 0)
-					{
-						if (ammo + bt->GetCount() >= magazineSN)
-						{
-							ammo = snAmmo = magazineSN;
-							bt->AddCount(-(magazineSN - ammoCount));
-
-						}
-						else
-						{
-							ammo = snAmmo = ammo + bt->GetCount();
-							bt->AddCount(-(magazineSN));
-						}
-					}
-					else
-					{
-						ammo = bt->GetCount();
-						snAmmo = ammo;
-						bt->AddCount(-(magazineSN));
-					}
-				}
-				else
-				{
-					ammo = snAmmo = magazineSN;
-					bt->AddCount(-(magazineSN - ammoCount));
-				}
-				if (bt->GetCount() <= 0)
-				{
-					inven->AddDeleteItem(bt);
-
-				}
-				return;
-			}
-		}
-		break;
 	}
 }
 
@@ -1059,29 +850,11 @@ string Player::GetAmmos()
 	{
 		return "Reloading";
 	}
-	switch (gun->GetgunType())
-	{
-	case GunType::None:
-		return ("No Guns");
-		break;
-	case GunType::Shotgun:
-		return (to_string(ammo) + "/" + to_string(magazineSG));
-		break;
-	case GunType::Up1_ShotGun:
-		return (to_string(ammo) + "/" + to_string(magazineSG));
-		break;
-	case GunType::Rifle:
-		return (to_string(ammo) + "/" + to_string(magazineRF));
-		break;
-	case GunType::Sniper:
-		return (to_string(ammo) + "/" + to_string(magazineSN));
-		break;
-	}
+	return (to_string(ammo[gun->GetgunType()]) + "/" + to_string(maxAmmo[gun->GetgunType()]));
 }
 
 void Player::Load()
 {
-
 	auto playerData = FILE_MGR->GetUserInfo();
 	hp = playerData.hp;
 	stamina = maxStamina;
@@ -1090,10 +863,7 @@ void Player::Load()
 	energyGuage = playerData.energyGuage;
 	radGuage = playerData.radGuage;
 	clearMaps = playerData.clearMaps;
-	ammo = playerData.ammo;
-	sgAmmo = playerData.sgAmmo;
-	snAmmo = playerData.snAmmo;
-	rfAmmo = playerData.rfAmmo;
+
 	lastWephon = playerData.lastWephon;
 
 	money = playerData.money;
@@ -1134,17 +904,33 @@ void Player::Load()
 	}
 
 
+	auto allGun = FILE_MGR->GetGunInfoAll();
 	auto myGun = inven->GetUsedItem(lastWephon);
+
+	ammo[GunType::Up1_ShotGun] = playerData.sgAmmo_1up;
+	ammo[GunType::Shotgun] = playerData.sgAmmo;
+	ammo[GunType::Sniper] = playerData.snAmmo;
+	ammo[GunType::Rifle] = playerData.rfAmmo;
+
+	maxAmmo[GunType::Up1_ShotGun] = allGun["Up1-Shotgun"].magazine;
+	maxAmmo[GunType::Shotgun] = allGun["Shotgun"].magazine;
+	maxAmmo[GunType::Sniper] = allGun["Sniper"].magazine;
+	maxAmmo[GunType::Rifle] = allGun["Rifle"].magazine;
+
+	gunBulletName[GunType::Up1_ShotGun] = "ShotGunBullet";
+	gunBulletName[GunType::Shotgun] = "ShotGunBullet";
+	gunBulletName[GunType::Sniper] = "SniperBullet";
+	gunBulletName[GunType::Rifle] = "RifleBullet";
+
 
 	if (myGun == nullptr)
 	{
 		gun->SetGunType(GunType::None);
-		ammo = 0;
 	}
 	else
 	{
 		gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
-		SetAmmoType();
+		//SetAmmoType();
 	}
 }
 
@@ -1158,10 +944,10 @@ void Player::Save()
 	nowInfo.money = money;
 	nowInfo.radGuage = radGuage;
 	nowInfo.clearMaps = clearMaps;
-	nowInfo.ammo = ammo;
-	nowInfo.sgAmmo = sgAmmo;
-	nowInfo.snAmmo = snAmmo;
-	nowInfo.rfAmmo = rfAmmo;
+	nowInfo.sgAmmo = ammo[GunType::Shotgun];
+	nowInfo.snAmmo = ammo[GunType::Sniper];
+	nowInfo.rfAmmo = ammo[GunType::Rifle];
+	nowInfo.sgAmmo_1up = ammo[GunType::Up1_ShotGun];
 	nowInfo.lastWephon = lastWephon;
 
 	FILE_MGR->SaveUserInfo(nowInfo);

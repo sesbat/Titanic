@@ -18,6 +18,7 @@ class Bullet;
 class Inventory;
 class ItemBoxObject;
 
+enum class GunType;
 class Player : public HitBoxObject
 {
 public:
@@ -85,14 +86,10 @@ protected:
 	float initRadBufferScale;
 
 	//float reloadDelay;	//delay for reload
-	float reloadDelaySG;
-	float reloadDelayRF;
-	float reloadDelaySN;
+	GunStat gunStat;
 	float soundDelay;	//delay for footstep SE
 
-	int magazineSG;		//magazine sizes
-	int magazineRF;
-	int magazineSN;
+	int magazine;
 	//save data variable
 	int hp;
 
@@ -107,15 +104,19 @@ protected:
 	int prevEnergyGuage;
 	int prevRadGuage;
 
-	int sgAmmo;		//remaining ammo
-	int rfAmmo;
-	int snAmmo;
-
 	int money;
 	
 	//system variable
 	float shootDelay;
-	int ammo;
+	float reloadDelay;
+
+	std::map<GunType, float> shootDelayTime;
+	std::map<GunType, float> reloadDelayTime;
+	std::map<GunType, int> maxAmmo;
+	std::map<GunType, int> ammo;
+	std::map<GunType, string> gunBulletName;
+	int nowAmmo;
+
 	bool isDash;
 	bool isMove;
 	bool isAlive;

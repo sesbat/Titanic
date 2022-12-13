@@ -3,6 +3,7 @@
   "damage": 400.0,
   "magazine": 10,
   "name": "Up1-Shotgun",
+  "bulletName": "ShotGunBullet",
   "randDir": 10.0,
   "shotgunDir": 30,
   "range": 1000.0,

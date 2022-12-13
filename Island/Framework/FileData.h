@@ -93,12 +93,13 @@ namespace ns {
 		int money;
 		int ammo;
 		int sgAmmo;		//remaining ammo
+		int sgAmmo_1up;		//remaining ammo
 		int rfAmmo;
 		int snAmmo;
 		int lastWephon;
 		vector<string> clearMaps;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money, ammo, sgAmmo, rfAmmo, snAmmo, lastWephon, clearMaps)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money, ammo, sgAmmo, sgAmmo_1up, rfAmmo, snAmmo, lastWephon, clearMaps)
 	};
 
 	struct InvenInfo
