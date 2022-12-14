@@ -57,6 +57,7 @@ void Enemy::Init(Player* player)
 	patrolBlock = data.patrolBlock;
 	initPatrolTime = data.patrolTime;
 	speed = data.speed;
+	searchDis = data.searchDis;
 
 
 	gun = new Gun(type, User::Enemy);
@@ -125,7 +126,7 @@ void Enemy::Update(float dt)
 	HitBoxObject::Update(dt);
 	HideUpdate(dt);
 
-	if (!player->GetHide() && isInSight && (Utils::Distance(player->GetPos(), GetPos()) < 500.f) )
+	if (!player->GetHide() && isInSight && (Utils::Distance(player->GetPos(), GetPos()) < searchDis) )
 	{
 		//look = player->GetPos();
 		lookDir = Utils::Normalize(player->GetPos() - GetPos());
@@ -319,7 +320,7 @@ void Enemy::AttackPattern(float dt)
 	//attack motion
 	if (hitTime >= 0.8f &&  gun->GetIsInWall() )
 	{
-		if (!player->GetHide() && (Utils::Distance(player->GetPos(), GetPos()) < 500.f) && isInSight)
+		if (!player->GetHide() && (Utils::Distance(player->GetPos(), GetPos()) < searchDis) && isInSight)
 		{
 			lookDir = Utils::Normalize(player->GetPos() - GetPos());
 			direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
@@ -340,7 +341,7 @@ void Enemy::AttackPattern(float dt)
 	}
 	//cout << movePos.empty() << endl;
 
-	if ((!movePos.empty() && moveTime < initMoveTime && (Utils::Distance(player->GetPos(), GetPos()) > 500.f) || !isInSight) || (isHit || isSearch))
+	if ((!movePos.empty() && moveTime < initMoveTime && (Utils::Distance(player->GetPos(), GetPos()) > searchDis) || !isInSight) || (isHit || isSearch))
 	{
 		SetState(States::Move);
 		if (isHit)
@@ -645,7 +646,7 @@ void Enemy::CallFriends()
 
 		for (auto obj = enemyfriend->begin(); obj != enemyfriend->end(); obj++)
 		{
-			if ((Utils::Distance((*obj)->GetPos(), GetPos()) < 500.f))
+			if ((Utils::Distance((*obj)->GetPos(), GetPos()) < searchDis))
 			{
 				(*obj)->SetIsSearch(true);
 			}

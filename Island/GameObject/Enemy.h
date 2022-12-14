@@ -72,6 +72,7 @@ protected:
 	float initPatrolTime;
 	
 	float getAttackTime;
+	float searchDis;
 
 	//attack
 	bool attack;

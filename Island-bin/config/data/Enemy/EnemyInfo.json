@@ -8,6 +8,7 @@
     "patrolBlock": 10,
     "patrolTime": 3.0,
     "speed": 100.0,
+    "searchDis" : 500.0,
     "type": "graphics/enemy1.png"
   },
   "graphics/enemy2.png": {
@@ -19,6 +20,7 @@
     "patrolBlock": 10,
     "patrolTime": 3.0,
     "speed": 100.0,
+    "searchDis" : 500.0,
     "type": "graphics/enemy2.png"
   },
   "graphics/enemy3.png": {
@@ -30,6 +32,7 @@
     "patrolBlock": 10,
     "patrolTime": 3.0,
     "speed": 100.0,
+    "searchDis" : 500.0,
     "type": "graphics/enemy3.png"
   },
   "graphics/boss_01.png": {
@@ -41,6 +44,7 @@
     "patrolBlock": 10,
     "patrolTime": 3.0,
     "speed": 100.0,
+    "searchDis" : 500.0,
     "type": "graphics/boss_01.png"
   },
   "graphics/enemy/s_infestation.png": {
@@ -52,6 +56,7 @@
     "patrolBlock": 0,
     "patrolTime": 0,
     "speed": 0,
+    "searchDis" : 1000.0,
     "type": "graphics/enemy/s_infestation.png"
   }
 }

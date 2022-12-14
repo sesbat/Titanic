@@ -211,7 +211,8 @@ namespace ns {
 		float hideDelay;
 
 		int patrolBlock;
+		float searchDis;
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(EnemyInfo,
-			gun, speed, maxHp, type, moveTime, hitTime, patrolTime, hideDelay, patrolBlock)
+			gun, speed, maxHp, type, moveTime, hitTime, patrolTime, hideDelay, patrolBlock, searchDis)
 	};

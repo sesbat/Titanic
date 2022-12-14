@@ -26,7 +26,7 @@ void MonsterHouse::Update(float dt)
 	if (!enabled || !IsInView())
 		return;
 	HitBoxObject::Update(dt);
-	if (!player->GetHide() && isInSight && (Utils::Distance(player->GetPos(), GetPos()) < 500.f))
+	if (!player->GetHide() && isInSight && (Utils::Distance(player->GetPos(), GetPos()) < searchDis))
 	{
 		isfindPlayer = true;
 	}
