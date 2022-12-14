@@ -151,6 +151,12 @@
       "uiPaht": "graphics/editor/drawInvisible.png"
     }
   ],
+  "RADTILE": [
+    {
+      "texPath": "graphics/radiationTile.png",
+      "uiPaht": "graphics/editor/drawRadTile.png"
+    }
+  ],
   "ENEMY": [
     {
       "texPath": "graphics/enemy1.png",

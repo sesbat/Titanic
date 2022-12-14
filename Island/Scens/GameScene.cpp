@@ -135,7 +135,7 @@ void GameScene::Init()
             objList[LayerType::Object][0].push_back(box);
         }
         else if (obj.type == "TREE" || obj.type == "BUSH" ||
-            obj.type == "STONE" || obj.type == "BLOCK" || obj.type == "RADIATION"|| obj.type == "INVISIBLE")
+            obj.type == "STONE" || obj.type == "BLOCK" || obj.type == "RADIATION"|| obj.type == "INVISIBLE" || obj.type == "RADTILE")
         {
             HitBoxObject* draw = new HitBoxObject();
             draw->SetName(obj.type);
@@ -143,6 +143,11 @@ void GameScene::Init()
             draw->SetOrigin(Origins::BC);
             draw->SetPos(obj.position);
             draw->SetHitBox(obj.path);
+            if (obj.type == "INVISIBLE" || obj.type == "RADTILE")
+            {
+                draw->SetColor(Color (0, 0, 0, 0));
+            }
+
             objList[LayerType::Object][0].push_back(draw);
         }
         else if (obj.type == "PLAYER")
@@ -182,7 +187,7 @@ void GameScene::Init()
             objList[LayerType::Object][0].push_back(enemy);
 
         }
-        else if (obj.type == "TILE")
+        else if (obj.type == "TILE" )
         {
             HitBoxObject* draw = new HitBoxObject();
             draw->SetName(obj.type);
@@ -278,6 +283,7 @@ void GameScene::Release()
 void GameScene::Enter()
 {
     enemies.clear();
+    radObj.clear();
 
     Init();
 
