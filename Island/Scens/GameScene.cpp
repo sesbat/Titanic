@@ -8,6 +8,7 @@
 #include "../Framework/Framework.h"
 #include "../GameObject/Player.h"
 #include "../GameObject/Enemy.h"
+#include "../GameObject/MonsterHouse.h"
 #include "../GameObject/VertexArrayObj.h"
 #include "../../Framework/info.h"
 #include <SFML/System.hpp>
@@ -94,7 +95,6 @@ GameScene::~GameScene()
 void GameScene::Init()
 {
     uiMgr = new GameSceneUiMgr(this);
-    int id = 0;
     isGameScene = true;
     auto& data = FILE_MGR->GetMap(sceneName);
     isGreedObject.clear();
@@ -156,7 +156,7 @@ void GameScene::Init()
         {
             Boss* boss = new Boss();
             boss->SetName(obj.type);
-            boss->SetId(id++);
+            boss->SetId(enemyId++);
             boss->SetPos(obj.position);
             boss->SetHitBox(obj.path);
             //boss->SetType((GunType)enemyInfo[obj.path].gun);
@@ -168,18 +168,34 @@ void GameScene::Init()
         }
         else if (obj.type == "ENEMY")
         {
-            Enemy* enemy = new Enemy();
-            enemy->SetName(obj.type);
-            enemy->SetId(id++);
-            enemy->SetPos(obj.position);
-            enemy->SetHitBox(obj.path);
-            enemy->SetType((GunType)enemyInfo[obj.path].gun);
-            enemy->SetEnemyType(enemyInfo[obj.path].type);
-            enemy->SetItem(obj.item);
-            enemy->SetGreedObject(&isGreedObject);
-            enemies.push_back(enemy);
+            if (obj.path == "graphics/enemy/s_infestation.png")
+            {
+                MonsterHouse* enemy = new MonsterHouse();
+                enemy->SetName(obj.type);
+                enemy->SetId(enemyId++);
+                enemy->SetPos(obj.position);
+                enemy->SetHitBox(obj.path);
+                enemy->SetEnemyType(enemyInfo[obj.path].type);
+                enemy->SetItem(obj.item);
+                enemy->SetGreedObject(&isGreedObject);
+                enemies.push_back(enemy);
+                objList[LayerType::Object][0].push_back(enemy);
+			}
+			else
+			{
+				Enemy* enemy = new Enemy();
+				enemy->SetName(obj.type);
+				enemy->SetId(enemyId++);
+				enemy->SetPos(obj.position);
+				enemy->SetHitBox(obj.path);
+				enemy->SetType((GunType)enemyInfo[obj.path].gun);
+				enemy->SetEnemyType(enemyInfo[obj.path].type);
+				enemy->SetItem(obj.item);
+				enemy->SetGreedObject(&isGreedObject);
+				enemies.push_back(enemy);
 
-            objList[LayerType::Object][0].push_back(enemy);
+				objList[LayerType::Object][0].push_back(enemy);
+			}
 
         }
         else if (obj.type == "TILE")
@@ -473,7 +489,7 @@ void GameScene::SupplyUpdate(float dt)
             Ment* ment = new Ment();
             ment->SetUiViewCenter(true);
             ment->SetUiView(&uiView);
-            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, L"보급품이 생성되었습니다");
+            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "The supply box has appeared. ");
             ment->SetOrigin(Origins::MC);
             ment->SetTimer(2);
             ment->SetAlways(false);
@@ -507,7 +523,7 @@ void GameScene::SupplyUpdate(float dt)
             Ment* ment = new Ment();
             ment->SetUiViewCenter(true);
             ment->SetUiView(&uiView);
-            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "보급품이 생성되었습니다");
+            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "The supply box has appeared. ");
             ment->SetOrigin(Origins::MC);
             ment->SetTimer(2);
             ment->SetAlways(false);

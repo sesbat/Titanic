@@ -42,5 +42,16 @@
     "patrolTime": 3.0,
     "speed": 100.0,
     "type": "graphics/boss_01.png"
+  },
+  "graphics/enemy/s_infestation.png": {
+    "gun": 0,
+    "hideDelay": 0.0,
+    "hitTime": 5.0,
+    "maxHp": 1000,
+    "moveTime": 0,
+    "patrolBlock": 0,
+    "patrolTime": 0,
+    "speed": 0,
+    "type": "graphics/enemy/s_infestation.png"
   }
 }

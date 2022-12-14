@@ -83,7 +83,7 @@ void Enemy::Init(Player* player)
 
 	astar = new Astar();
 
-	bottomPos = bottom->GetHitBottomPos();
+		bottomPos = bottom->GetHitBottomPos();
 	MakePath();
 	movePos.clear();
 }

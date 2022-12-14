@@ -23,9 +23,9 @@ public:
 	virtual void SetPos(Vector2f pos);
 	virtual void Translate(Vector2f dir);
 	virtual ~HitBoxObject() override;
-	void Init();
-	void Update(float dt);
-	void Draw(RenderWindow& window);
+	virtual void Init();
+	virtual void Update(float dt);
+	virtual void Draw(RenderWindow& window);
 	void SetHitBox(string path);
 	void SetBulletHitBox();
 	const HitBox* GetBottom() { return bottom; } const

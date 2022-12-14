@@ -70,6 +70,8 @@ protected:
 	float supplyTimer;
 	float initSupplyTimer;
 	bool isSupply;
+
+	int enemyId = 0;
 public:
 	GameScene();
 	virtual ~GameScene();
@@ -101,5 +103,6 @@ public:
 	void castAllLights();
 
 	void CloseToolTip();
-
+	int& GetID() { return enemyId; }
+	QuadTree& GetTree() { return treeMap; }
 };

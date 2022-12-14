@@ -163,6 +163,10 @@
     {
       "texPath": "graphics/enemy3.png",
       "uiPaht": "graphics/editor/drawEnemy3.png"
+    },
+    {
+      "texPath": "graphics/enemy/s_infestation.png",
+      "uiPaht": "graphics/editor/drawS_infestation.png"
     }
   ],
   "BOX": [

@@ -100,19 +100,19 @@ public:
 	virtual ~Enemy();
 	virtual void Release();
 
-	void Init(Player* player);
+	virtual void Init(Player* player);
 
 	void SetState(States newState);
 	States GetState();
 
-	void Update(float dt);
-	void Draw(RenderWindow& window);
+	virtual void Update(float dt);
+	virtual void Draw(RenderWindow& window);
 
 	void OnCompleteDead();
 
 	bool EqualFloat(float a, float b);
 
-	void SetHp(int num);
+	virtual	void SetHp(int num);
 	void SetHpBar();
 
 	void SetItem(map<string, Item> items) { this->items = items; }
@@ -142,5 +142,5 @@ public:
 	bool GetHide();
 	void SetHide(bool state);
 	void HideUpdate(float dt);
-	void HideStop();
+	virtual void HideStop();
 };
