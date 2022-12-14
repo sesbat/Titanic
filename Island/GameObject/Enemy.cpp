@@ -257,7 +257,6 @@ void Enemy::SetHp(int num)
 		hp = 0;
 	}
 
-
 	string ments[3] = { "Ouch..!", "Oh No!" , "Fuxx" };
 	Vector2f randPos = { Utils::RandomRange(-20,20) + GetPos().x,
 		Utils::RandomRange(-50,-40) + GetPos().y + 30.f };

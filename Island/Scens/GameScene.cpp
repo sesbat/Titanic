@@ -84,6 +84,7 @@ GameScene::GameScene()
     supplyTimer(0), initSupplyTimer(60), isSupply(false)
 {
     FRAMEWORK->GetWindow().setMouseCursorVisible(false);
+    FRAMEWORK->GetWindow().setMouseCursorGrabbed(true);
 }
 
 GameScene::~GameScene()
