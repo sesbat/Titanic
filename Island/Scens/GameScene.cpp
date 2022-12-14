@@ -478,9 +478,9 @@ void GameScene::SupplyUpdate(float dt)
         if (supplyTimer > initSupplyTimer)
         {
             SupplyBox* supBox = new SupplyBox();
-            supBox->SetTexture(*RESOURCES_MGR->GetTexture("graphics/enemy1-die.png"));
+            supBox->SetTexture(*RESOURCES_MGR->GetTexture("graphics/supplyBox.png"));
             supBox->SetOrigin(Origins::MC);
-            supBox->SetHitBox("graphics/enemy1-die.png");
+            supBox->SetHitBox("graphics/supplyBox.png");
             supBox->SetName("SupplyBox");
             supBox->SetPlayerPos(player->GetPosPtr());
             supBox->SetPlayer(player);
