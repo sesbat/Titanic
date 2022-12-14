@@ -224,8 +224,13 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 	rotation.rotate(angle);
 
 	Transform transform = translation * rotation;
+	Vector2f mouseWorldPos = scene->ScreenToWorld((Vector2i)InputMgr::GetMousePos());
+	data = gunsInfo[GetName()];
+	randomNum = data.randDir;
+	float distance = Utils::Distance(mouseWorldPos, GetPos());
+	cout << InputMgr::GetMousePos().x << " " << InputMgr::GetMousePos().y << endl;
+	cout << GetPos().x << " " << GetPos().y << endl;
 
-	float distance = Utils::Distance(InputMgr::GetMousePos(), GetPos());
 	if (distance < 100.f||!isplayer)
 	{
 		cout << "100" << endl;
@@ -347,7 +352,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			bulletSpeed = data.speed;
 			range = data.range;
 			shootDelay = data.shootDelay;
-			randomNum = data.randDir;
+			//randomNum = data.randDir;
 			reloadDelay = data.reloadDelay;
 
 			Bullet* bullet = bulletPool.Get();
@@ -429,7 +434,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			bulletSpeed = data.speed;
 			range = data.range;
 			shootDelay = data.shootDelay;
-			randomNum = data.randDir;
+			//randomNum = data.randDir;
 			reloadDelay = data.reloadDelay;
 
 			Bullet* bullet = bulletPool.Get();
@@ -478,7 +483,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			bulletSpeed = data.speed;
 			range = data.range;
 			shootDelay = data.shootDelay;
-			randomNum = data.randDir;
+			//randomNum = data.randDir;
 			reloadDelay = data.reloadDelay;
 
 			Bullet* bullet = bulletPool.Get();
@@ -645,7 +650,7 @@ void Gun::SetGunType(GunType type)
 	case GunType::MB_Rifle:
 	{
 		SetActive(true);
-		SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/rifle/Rifle.png"));
+		SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/rifle/MB_Rifle.png"));
 		SetName("MB_Rifle");
 		SetOrigin(Origins::MC);
 	}
@@ -653,7 +658,7 @@ void Gun::SetGunType(GunType type)
 	case GunType::Scop_Rifle:
 	{
 		SetActive(true);
-		SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/rifle/Rifle.png"));
+		SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/rifle/Scop_Rifle.png"));
 		SetName("Scop_Rifle");
 		SetOrigin(Origins::MC);
 	}

@@ -200,7 +200,7 @@ namespace ns {
 	struct EnemyInfo
 	{
 		int gun;
-		
+
 		float speed;
 		int maxHp;
 		string type;
@@ -215,4 +215,11 @@ namespace ns {
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(EnemyInfo,
 			gun, speed, maxHp, type, moveTime, hitTime, patrolTime, hideDelay, patrolBlock, searchDis)
+	};
+	struct ShopItemInfo
+	{
+		string name;
+		int cnt;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ShopItemInfo,name, cnt)
 	};

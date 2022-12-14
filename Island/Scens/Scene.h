@@ -37,6 +37,7 @@ protected:
 	vector<Object*> another;
 	vector<Object*> drawObjs;
 	vector<Vector2f> radPos;
+	vector<Object*> radObj;
 	vector<HitBoxObject*> alphaObj;
 	bool isGameScene;
 
@@ -68,6 +69,7 @@ public:
 	void SetSceneName(string name) { sceneName = name; }
 	string GetSceneName() { return sceneName; }
 	const vector<Vector2f>& GetRadPos() { return radPos; }
+	const vector<Object*>& GetRadObj() { return radObj; }
 	void AddDeleteObject(int idx,Object* obj);
 };
 bool sorting(Object* p1, Object* p2);
