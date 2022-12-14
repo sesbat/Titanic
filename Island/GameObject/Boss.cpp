@@ -30,10 +30,10 @@ Boss::Boss()
 	speed(100.f), maxSpeed(100),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
 	timer(0.f), moveTime(2.f), stopTime(1.f), stunTime(3.f), dashCoolTime(5.f),
-	hitTime(1.f), hitTimer(0.f), playerStunTime(2.f),
+	hitTime(1.f), hitTimer(0.f), playerStunTime(1.f),
 	hp(1500), maxHp(1500), barScaleX(60.f), look(1.f, 0.f),
 	dashSpeed(800.f),
-	dashRange(1500.f), range(500.f), activeDashRange(600.f),
+	dashRange(2000.f), range(500.f), activeDashRange(600.f),
 	dashDamage(100), damage(10), fireDamage(100),
 	isHit(false), isInSight(true), isStart(false), isDash(false), isStun(false), isFire(true),
 	dashAttack(0),
@@ -42,7 +42,7 @@ Boss::Boss()
 	radDamage(5.f),
 	semiDelay(0.5f),
 	fpCount(0),
-	fireSpeed(800.f), fireRange(1000.f), shootDelay(1.f), fireCount(15), fireAngle(35.f), rampageCount(5), rampCount(0),
+	fireSpeed(800.f), fireRange(1000.f), shootDelay(1.f), fireCount(15), fireAngle(35.f), rampageCount(10), rampCount(0),
 	rampfireRange(1000.f), rampfireSpeed(800.f), rampshootDelay(1.f), rampfireAngle(10.f), rampfireCount(20),
 	singleRange(1000.f), singleSpeed(900.f), singleshootDelay(0.5f), singleAngle(0.f), singleCount(1)
 {
@@ -556,13 +556,14 @@ void Boss::RampCollision()
 					obj->GetName() == "RADIATION"||
 					obj->GetName() == "INVISIBLE")
 				{
-					//cout << "count " << rampCount << endl;
+					cout << "count " << rampCount << endl;
 					SetBossPos();
 					isStun = true;
 					movePos.clear();
 					isDash = false;
 					range = dashRange;
-					dashPosition = dashPosition * -1.f;
+					//SetDashAngle(obj->GetBottom()->GetHitbox());
+					dashPosition = player->GetPos();
 					animator.Play((direction.x > 0.f) ? "BossBigMove" : "BossBigMoveLeft");
 					//CheckIsInWall();
 					gun->SetLookDir(lookDir);
@@ -729,6 +730,95 @@ void Boss::CheckIsInSight()
 
 		}
 	}
+}
+
+void Boss::SetDashAngle(RectangleShape block)
+{
+
+	if ((bottom->GetGlobalBound().left < block.getGlobalBounds().left || bottom->GetGlobalBound().left + bottom->GetGlobalBound().width > block.getGlobalBounds().width)&&
+		!(bottom->GetGlobalBound().left < block.getGlobalBounds().left || bottom->GetGlobalBound().left + bottom->GetGlobalBound().width > block.getGlobalBounds().width))
+	{
+		dashPosition.x *= -1;
+	}
+	else
+	{
+		dashPosition.y *= -1;
+	}
+	//Vector2f p1 = { block.getPosition().x - 60.f,block.getPosition().y - 90.f };
+	//Vector2f p2 = { block.getPosition().x,block.getPosition().y - 90.f };
+	//Vector2f p3 = { block.getPosition().x + 60.f,block.getPosition().y - 90.f };
+	//Vector2f p4 = { block.getPosition().x - 60.f,block.getPosition().y - 30.f };
+	//Vector2f p6 = { block.getPosition().x,block.getPosition().y - 120.f };
+	//Vector2f p7 = { block.getPosition().x - 60.f,block.getPosition().y + 30.f };
+	//Vector2f p8 = { block.getPosition().x ,block.getPosition().y + 30.f };
+	//Vector2f p9 = { block.getPosition().x + 60.f,block.getPosition().y + 30.f };
+
+
+	////1
+	//if ((bottom->GetPos().x >= p1.x - 30.f && bottom->GetPos().x <= p1.x + 30.f)&&
+	//	(bottom->GetPos().y >= p1.y - 30.f && bottom->GetPos().y <= p1.y + 30.f))
+	//{
+	//	cout << "1" << endl;
+	//	dashPosition = (Utils::Normalize({ -1,-1 }) * dashRange);
+	//	
+	//}
+	////2
+	//if ((bottom->GetPos().x >= p2.x - 30.f && bottom->GetPos().x <= p2.x + 30.f) &&
+	//	(bottom->GetPos().y >= p2.y - 30.f && bottom->GetPos().y <= p2.y + 30.f))
+	//{
+	//	cout << "2" << endl;
+	//	dashPosition =  (Utils::Normalize({ -1.f,-1.f }) * dashRange);
+
+	//}
+	////3
+	//if ((bottom->GetPos().x >= p3.x - 30.f && bottom->GetPos().x <= p3.x + 30.f) &&
+	//	(bottom->GetPos().y >= p3.y - 30.f && bottom->GetPos().y <= p3.y + 30.f))
+	//{
+	//	cout << "3" << endl;
+	//	dashPosition =  Utils::Normalize({ 1.f,-1.f }) * dashRange;
+
+	//}
+	////4
+	//if ((bottom->GetPos().x >= p4.x - 30.f && bottom->GetPos().x <= p4.x + 30.f) &&
+	//	(bottom->GetPos().y >= p4.y - 30.f && bottom->GetPos().y <= p4.y + 30.f))
+	//{
+	//	cout << "4" << endl;
+	//	dashPosition =  Utils::Normalize({ -1.f,1.f }) * dashRange;
+
+	//}
+	////6
+	//if ((bottom->GetPos().x >= p6.x - 30.f && bottom->GetPos().x <= p6.x + 30.f) &&
+	//	(bottom->GetPos().y >= p6.y - 30.f && bottom->GetPos().y <= p6.y + 30.f))
+	//{
+	//	cout << "6" << endl;
+	//	dashPosition =  Utils::Normalize({ 1.f,-1.f }) * dashRange;
+
+	//}
+	////7
+	//if ((bottom->GetPos().x >= p7.x - 30.f && bottom->GetPos().x <= p7.x + 30.f) &&
+	//	(bottom->GetPos().y >= p7.y - 30.f && bottom->GetPos().y <= p7.y + 30.f))
+	//{
+	//	cout << "7" << endl;
+	//	dashPosition =  Utils::Normalize({ -1.f,1.f }) * dashRange;
+
+	//}
+	////8
+	//if ((bottom->GetPos().x >= p8.x - 30.f && bottom->GetPos().x <= p8.x + 30.f) &&
+	//	(bottom->GetPos().y >= p8.y - 30.f && bottom->GetPos().y <= p8.y + 30.f))
+	//{
+	//	cout << "8" << endl;
+	//	dashPosition =  Utils::Normalize({ -1.f,1.f }) * dashRange;
+
+	//}
+	////9
+	//if ((bottom->GetPos().x >= p9.x - 30.f && bottom->GetPos().x <= p9.x + 30.f) &&
+	//	(bottom->GetPos().y >= p9.y - 30.f && bottom->GetPos().y <= p9.y + 30.f))
+	//{
+	//	cout << "9" << endl;
+	//	dashPosition = Utils::Normalize({ 1.f,1.f }) * dashRange;
+
+	//}
+	
 }
 
 void Boss::SetFireVariable()

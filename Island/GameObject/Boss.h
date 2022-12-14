@@ -170,7 +170,6 @@ public:
 
 	void AttackPattern(float dt);
 	void RampagePattern(float dt);
-	void FirePattern(float dt);
 	void Move(float dt);
 	void Dash(float dt);
 	void RampageDash(float dt);
@@ -186,11 +185,12 @@ public:
 	void FindGrid(Vector2f pos);
 	void CheckIsInWall();
 	void CheckIsInSight();
+	void SetDashAngle(RectangleShape block);
 
 	void SetFireVariable();
 	void SetRampageVariable();
 	void SetSingleVariable();
-
+	
 	float GetFireSpeed() { return fs; }
 	float GetFireRange() { return fr; }
 	float GetShootDelay() { return sd; }
