@@ -96,10 +96,18 @@ namespace ns {
 		int sgAmmo_1up;		//remaining ammo
 		int rfAmmo;
 		int snAmmo;
+		int mb_sgAmmo;
+		int mb_snAmmo;
+		int mb_rfAmmo;
+		int scop_snAmmo;
+		int scop_rfAmmo;
+		int sr25_Ammo;
 		int lastWephon;
 		vector<string> clearMaps;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money, ammo, sgAmmo, sgAmmo_1up, rfAmmo, snAmmo, lastWephon, clearMaps)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money, 
+			ammo, sgAmmo, sgAmmo_1up, rfAmmo, snAmmo, mb_sgAmmo, mb_snAmmo, mb_rfAmmo,
+			scop_snAmmo, scop_rfAmmo, sr25_Ammo,lastWephon, clearMaps)
 	};
 
 	struct InvenInfo
