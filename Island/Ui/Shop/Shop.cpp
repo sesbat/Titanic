@@ -1,6 +1,7 @@
 #include "Shop.h"
 #include "../../Framework/ResourceManager.h"
 #include "../../Framework/InputMgr.h"
+#include "../../Framework/Framework.h"
 #include "../../GameObject/SpriteObject.h"
 #include "../../GameObject/TextObject.h"
 #include "../../Framework/FileManager.h"
@@ -25,9 +26,16 @@ Shop::~Shop()
 
 void Shop::Release()
 {
-	if (npcInvne != nullptr)
+	for(auto& box : shopCategoryBox)
+	{
+		if (box != nullptr)
+			delete box;
+		box = nullptr;
+	}
+
+	/*if (npcInvne != nullptr)
 		delete npcInvne;
-	npcInvne = nullptr;
+	npcInvne = nullptr;*/
 
 	if (sellInven != nullptr)
 		delete sellInven;
@@ -54,9 +62,47 @@ void Shop::Init()
 {
 	SetTexture(*RESOURCES_MGR->GetTexture("graphics/shop.png"), true);
 
-	npcInvne = new InventoryBox(uimgr, this, Vector2i{ 1248,252 });
+	String itemList[] = { "1", "2", "3" };
+
+	for (int i = 0; i < 3; i++)
+	{
+		Button* button = new Button(uimgr);
+		button->SetClkColor(true);
+		button->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+			50, Color::White, (string)itemList[i], true);
+		button->SetOrigin(Origins::MC);
+		button->SetPos({ FRAMEWORK->GetWindowSize().x-100.f,100.f + FRAMEWORK->GetWindowSize().y / 6 * i });
+		shopCategorybtn.push_back(button);
+	}
+
+	String box[] = { "shopBox1", "shopBox2", "shopBox3" };
+	for (int i = 0; i < 3; i++)
+	{
+		auto shopBox = new InventoryBox(uimgr, this, Vector2i{ 1248,252 });
+		shopBox->SetClkColor(true);
+		shopBox->Init();
+		shopBox->SetName(box[i]);
+		shopBox->SetActive(false);
+		shopCategoryBox.push_back(shopBox);
+	}
+
+	info = FILE_MGR->GetAllShopItem();
+
+	int i = 0;
+	for (auto& shopPage : info)
+	{
+		for (auto& shopItem : shopPage)
+		{
+			shopCategoryBox[i]->AddItem(shopItem.first);
+		}
+		i++;
+	}
+
+	shopCategoryBox[0]->SetActive(true);
+
+	/*npcInvne = new InventoryBox(uimgr, this, Vector2i{ 1248,252 });
 	npcInvne->Init();
-	npcInvne->SetName("NpcInven");
+	npcInvne->SetName("NpcInven");*/
 
 	sellInven = new InventoryBox(uimgr, this, Vector2i{ 768,256 });
 	sellInven->SetInvenSize(6, 5);
@@ -72,18 +118,18 @@ void Shop::Init()
 	playerInven->Init();
 
 	player_items = playerInven->GetItems();
-	npc_items = npcInvne->GetItems();
+	//npc_items = npcInvne->GetItems();
 	sell_items = sellInven->GetItems();
 	buy_items = buyInven->GetItems();
 
 	enabled = false;
 
-	npcInvne->AddItem("Recoverykit", 2);
+	/*npcInvne->AddItem("Recoverykit", 2);
 	npcInvne->AddItem("Recoverykit", 2);
 	npcInvne->AddItem("Apple",2);
 	npcInvne->AddItem("Water",2);
 	npcInvne->AddItem("EnergyDrink",2);
-	npcInvne->AddItem("RifleBullet",100);
+	npcInvne->AddItem("RifleBullet",100);*/
 
 	price = 0;
 	money = 0;
@@ -112,6 +158,31 @@ void Shop::Update(float dt)
 	if (!enabled)
 		return;
 
+	for (auto& sc : shopCategorybtn)
+	{
+		sc->Update(dt);
+	}
+
+	/*for (auto& sb : shopCategoryBox)
+	{
+		sb->Update(dt);
+	}*/
+
+	for (int i = 0; i < shopCategorybtn.size(); i++)
+	{
+		if (shopCategorybtn[i]->IsClick())
+		{
+			for (auto& sb : shopCategoryBox)
+			{
+				sb->SetActive(false);
+			}
+			shopCategoryBox[i]->SetActive(true);
+			//shopCategoryBox[i]->craftingItmeName = "";
+		}
+		if (!shopCategoryBox[i]->GetActive())
+			continue;
+	}
+
 	for (auto items : *player_items)
 	{
 		items->ButtonUpdate(dt);
@@ -133,26 +204,32 @@ void Shop::Update(float dt)
 		}
 		items->ToolTipUpdate(dt);
 	}
-	for (auto items : *npc_items)
+	for (auto& box : shopCategoryBox)
 	{
-		items->ButtonUpdate(dt);
-		if (items->IsClick())
+		if (!box->GetActive())
+			continue;
+		for (auto items : *box->GetItems())
 		{
-			cout << "npc_items" << endl;
-			auto move_pos = buyInven->FindInvenPos(items->GetWidth(), items->GetHeight());
-			if (move_pos != Vector2i{ -1,-1 })
+			items->ButtonUpdate(dt);
+			if (items->IsClick())
 			{
-				itemPrevPos[items] = items->GetGreedPos();
-				npcInvne->DeleteItem(items, items->GetGreedPos(), Vector2i{ items->GetWidth(),items->GetHeight() });
-				buyInven->MoveItem(items, Vector2i{ move_pos.y, move_pos.x });
+				cout << "npc_items" << endl;
+				auto move_pos = buyInven->FindInvenPos(items->GetWidth(), items->GetHeight());
+				if (move_pos != Vector2i{ -1,-1 })
+				{
+					itemPrevPos[items] = items->GetGreedPos();
+					prevItemBox[items] = box;
+					box->DeleteItem(items, items->GetGreedPos(), Vector2i{ items->GetWidth(),items->GetHeight() });
+					buyInven->MoveItem(items, Vector2i{ move_pos.y, move_pos.x });
 
-				price -= items->GetPrice() * items->GetCount();
-				txtPrice->SetString("DEAL " + to_string(price));
-				txtPrice->SetOrigin(Origins::MC);
+					price -= items->GetPrice() * items->GetCount();
+					txtPrice->SetString("DEAL " + to_string(price));
+					txtPrice->SetOrigin(Origins::MC);
+				}
+				return;
 			}
-			return;
+			items->ToolTipUpdate(dt);
 		}
-		items->ToolTipUpdate(dt);
 	}
 
 	for (auto items : *sell_items)
@@ -175,27 +252,27 @@ void Shop::Update(float dt)
 		}
 		items->ToolTipUpdate(dt);
 	}
-
-	for (auto items : *buy_items)
-	{
-		items->ButtonUpdate(dt);
-		if (items->IsClick())
+		for (auto items : *buy_items)
 		{
-			cout << "buy_items" << endl;
-			buyInven->DeleteItem(items, items->GetGreedPos(), Vector2i{ items->GetWidth(),items->GetHeight() });
+			items->ButtonUpdate(dt);
+			if (items->IsClick())
+			{
+				cout << "buy_items" << endl;
+				buyInven->DeleteItem(items, items->GetGreedPos(), Vector2i{ items->GetWidth(),items->GetHeight() });
 
-			auto prev = itemPrevPos[items];
+				auto prev = itemPrevPos[items];
+				InventoryBox* box = prevItemBox[items];
+				box->MoveItem(items, prev);
 
-			npcInvne->MoveItem(items, prev);
-
-			itemPrevPos.erase(items);
-			price += items->GetPrice() * items->GetCount();
-			txtPrice->SetString("DEAL " + to_string(price));
-			txtPrice->SetOrigin(Origins::MC);
-			return;
+				itemPrevPos.erase(items);
+				prevItemBox.erase(items);
+				price += items->GetPrice() * items->GetCount();
+				txtPrice->SetString("DEAL " + to_string(price));
+				txtPrice->SetOrigin(Origins::MC);
+				return;
+			}
+			items->ToolTipUpdate(dt);
 		}
-		items->ToolTipUpdate(dt);
-	}
 
 	dealBtn->Update(dt);
 	if (dealBtn->IsUp())
@@ -210,7 +287,7 @@ void Shop::Draw(RenderWindow& window)
 		return;
 	Button::Draw(window);
 	playerInven->Draw(window);
-	npcInvne->Draw(window);
+	//npcInvne->Draw(window);
 	sellInven->Draw(window);
 	buyInven->Draw(window);
 
@@ -218,6 +295,14 @@ void Shop::Draw(RenderWindow& window)
 	dealBtn->Draw(window);
 	txtPrice->Draw(window);
 
+	for (auto& btn : shopCategorybtn)
+	{
+		btn->Draw(window);
+	}
+	for (auto& cg : shopCategoryBox)
+	{
+		cg->Draw(window);
+	}
 }
 
 void Shop::SetActive(bool state)
@@ -243,17 +328,27 @@ void Shop::ClearShop()
 		playerInven->MoveItem(items, prev);
 	}
 	sell_items->clear();
-	for (auto& items : *buy_items)
+	for(auto& box : shopCategoryBox)
 	{
-		auto prev = itemPrevPos[items];
-		npcInvne->MoveItem(items, prev);
+		for (auto& items : *buy_items)
+		{
+			auto prev = itemPrevPos[items];
+			box->MoveItem(items, prev);
+		}
+		buy_items->clear();
 	}
-	buy_items->clear();
+	//for (auto& items : *buy_items)
+	//{
+	//	auto prev = itemPrevPos[items];
+	//	//npcInvne->MoveItem(items, prev);
+	//}
+	//buy_items->clear();
 
 	sellInven->Reset();
 	buyInven->Reset();
 
 	itemPrevPos.clear();
+	prevItemBox.clear();
 	price = 0.f;
 	txtPrice->SetString("DEAL " + to_string(price));
 	txtPrice->SetOrigin(Origins::MC);

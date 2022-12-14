@@ -6,9 +6,12 @@ class TextObject;
 class Shop : public Inventory
 {
 	InventoryBox* playerInven;
-	InventoryBox* npcInvne;
+	//InventoryBox* npcInvne;
 	InventoryBox* sellInven;
 	InventoryBox* buyInven;
+
+	vector<Button*> shopCategorybtn;
+	vector<InventoryBox*> shopCategoryBox;
 
 	vector<InvenItem*>* player_items;
 	vector<InvenItem*>* npc_items;
@@ -17,11 +20,12 @@ class Shop : public Inventory
 
 
 	map<InvenItem*, Vector2i> itemPrevPos;
+	map<InvenItem*, InventoryBox*> prevItemBox;
 
 	Button* dealBtn;
 	TextObject* txtPrice;
 	
-
+	vector<map<string, ShopItemInfo>> info;
 	int price;
 	int money;
 public:

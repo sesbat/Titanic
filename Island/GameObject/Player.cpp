@@ -656,9 +656,7 @@ void Player::RadDistance()
 			if (obj->GetName() == "RADIATION")
 				maxDis = 150;
 			if (obj->GetName() == "RADTILE")
-			{
 				maxDis = 50;
-			}
 
 			if (dis < maxDis)
 			{
