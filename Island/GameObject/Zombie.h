@@ -1,19 +1,7 @@
 #pragma once
-#include "HitBoxObject.h"
-#include "Animation/Animator.h"
-#include "../Framework/ObjectPool.h"
-#include "SpriteObject.h"
+#include "Enemy.h"
 
-typedef pair<int, int> Pair;
-typedef pair<double, pair<int, int> > pPair;
-
-class VertexArrayObj;
-class HitBox;
-class Player;
-class Scene;
-class Astar;
-
-class Zombie : public HitBoxObject
+class Zombie : public Enemy
 {
 public:
 	enum class States
@@ -23,112 +11,33 @@ public:
 		Move,
 		Dead,
 	};
-protected:
-	Zombie(const Zombie& ref) {}
-	Zombie& operator=(const Zombie& ref) {}
-	Zombie(Zombie& ref) {}
-	Zombie& operator=(Zombie& ref) {}
+private:
+	//Astar* astar;
+	//valance variable
+	States curState;
 
-	Player* player;
-	Scene* scene;
-	Astar* astar;
-	HitBox* dashHitbox;
-
-	Animator animator;
-
-	RectangleShape healthBar;
-
-	States currState;
-
-	//valance variable/////
-	int maxHp;
 	float maxSpeed;
 	float dashSpeed;
-	float damage;
 
-	////////////////////////
-
-	float stopTime;
-	float moveTime;
-	float hitTime;
-
-	float patrolTime;
-	float initPatrolTime;
-
-	float randomNum;
-	Vector2f randDir;
-
-	//in class variable
-	int hp;
-	float speed;
-	bool isHit;
-	bool isInSight;
-	bool attack;
-	bool isSearch;
-	float timer;
-	float hitTimer;
-	float barScaleX;
-
-	Vector2f look;
-	Vector2f lookDir;
-	Vector2f direction;
-	Vector2f lastDirection;
-	Vector2f moveDir;
-	Vector2f prevPosition;
-	Vector2f patrolPos;
-	int patrolBlock;
-
-	//a star dir
-	Vector2f playerPos;
-	list<Vector2f> movePos;
-	Pair startPos;
-	Pair destPos;
-	Vector2f bottomPos;
-	vector<vector<bool>>* isGreedObject;
-
-	map<string, Item> items;
-
+	bool isdead = false;
 
 public:
 	Zombie();
 	virtual ~Zombie();
+	virtual void Init(Player* player);
+	virtual void Update(float dt);
+	virtual void Draw(RenderWindow& window);
 	virtual void Release();
+	virtual void SetState(States newState);
+	virtual States GetState();
 
-	void Init(Player* player);
+	virtual void Move(float dt);
+	virtual void AttackPattern(float dt);
+	virtual void PatrolPattern(float dt);
 
-	void SetState(States newState);
-	States GetState();
+	virtual void HideStop() {};
+	//virtual void SetHp(int num);
+	virtual void SetIsSearch(bool hit) {}
 
-	void Update(float dt);
-	void Draw(RenderWindow& window);
-
-	void OnCompleteDead();
-
-	bool EqualFloat(float a, float b);
-
-	void SetHp(int num);
-	void SetHpBar();
-
-	void SetItem(map<string, Item> items) { this->items = items; }
-	void SetZombiePos();
-
-	//void SetType(int num) { type = num; }
-
-	Vector2f GetLookDir() { return lookDir; }
-
-
-	void AttackPattern(float dt);
-	void PatrolPattern(float dt);
-	void Move(float dt);
-	void Collision();
-	void ContactDamage();
-	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
-	void FindGrid();
-	void FindGrid(Vector2f pos);
-	void CheckIsInSight();
-	void MakePath();
-	bool CheckWall(int x, int y);
-	void SetIsSearch(bool hit);
-	void CallFriends();
 };
 

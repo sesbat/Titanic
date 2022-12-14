@@ -10,6 +10,7 @@
 #include "../GameObject/Enemy.h"
 #include "../GameObject/MonsterHouse.h"
 #include "../GameObject/VertexArrayObj.h"
+#include "../GameObject/Zombie.h"
 #include "../../Framework/info.h"
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -26,7 +27,6 @@
 #include "Candle/geometry/Polygon.hpp"
 #include "../GameObject/Gun.h"
 #include "../GameObject/SupplyBox.h"
-
 #include "../3rd/QuadTree_SFML_DEMO.h"
 #include "../GameObject/HitBox.h"
 #include "../GameObject/Boss.h"
@@ -293,7 +293,7 @@ void GameScene::Release()
     enemies.clear();
     bosses.clear();
     blockPool.clear();
-    bosses.clear();
+    //bosses.clear();
 }
 
 void GameScene::Enter()

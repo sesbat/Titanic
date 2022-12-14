@@ -205,7 +205,7 @@ void Boss::Update(float dt)
 							fpCount++;
 							if (fpCount >= 3)
 							{
-								cout << "reset" << endl;
+								//cout << "reset" << endl;
 								AttackPattern(dt);
 								fpCount = 0;
 							}
@@ -382,8 +382,6 @@ void Boss::AttackPattern(float dt)
 {
 	//attack motion
 	lookDir = Utils::Normalize(player->GetPos() - GetPos());
-	//gun->SetLookDir(lookDir);
-	//gun->Fire(GetPos(), false);
 	timer = moveTime;
 	playerPos = player->GetPos();
 	movePos.clear();
@@ -392,7 +390,6 @@ void Boss::AttackPattern(float dt)
 	movePos = astar->GetCoordinate();
 	firePattern = 0;
 	SetState(States::Move);
-	//isFire = true;
 }
 
 void Boss::RampagePattern(float dt)
