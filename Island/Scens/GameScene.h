@@ -99,4 +99,7 @@ public:
 
 	candle::EdgeVector pushBlock(const sf::Vector2f& pos);
 	void castAllLights();
+
+	void CloseToolTip();
+
 };

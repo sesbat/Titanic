@@ -1,1 +1,1 @@
-[{"Type":"Rifle","cnt":1,"invenPos":{"x":800,"y":140},"path":"graphics/items/rifle/Rifle.png","useIdx":0}]
+[{"Type":"MB_Rifle","cnt":1,"invenPos":{"x":800,"y":140},"path":"graphics/items/rifle/MB_Rifle.png","useIdx":0},{"Type":"Rifle","cnt":1,"invenPos":{"x":800,"y":310},"path":"graphics/items/rifle/Rifle.png","useIdx":1}]

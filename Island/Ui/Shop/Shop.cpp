@@ -129,9 +129,9 @@ void Shop::Update(float dt)
 				txtPrice->SetString("DEAL " + to_string(price));
 				txtPrice->SetOrigin(Origins::MC);
 			}
-
 			return;
 		}
+		items->ToolTipUpdate(dt);
 	}
 	for (auto items : *npc_items)
 	{
@@ -152,6 +152,7 @@ void Shop::Update(float dt)
 			}
 			return;
 		}
+		items->ToolTipUpdate(dt);
 	}
 
 	for (auto items : *sell_items)
@@ -172,6 +173,7 @@ void Shop::Update(float dt)
 			txtPrice->SetOrigin(Origins::MC);
 			return;
 		}
+		items->ToolTipUpdate(dt);
 	}
 
 	for (auto items : *buy_items)
@@ -192,6 +194,7 @@ void Shop::Update(float dt)
 			txtPrice->SetOrigin(Origins::MC);
 			return;
 		}
+		items->ToolTipUpdate(dt);
 	}
 
 	dealBtn->Update(dt);

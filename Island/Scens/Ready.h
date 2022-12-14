@@ -40,6 +40,8 @@ public:
 	virtual void Draw(RenderWindow& window) override;
 	virtual void Reset() override;
 
+	void CloseToolTip();
+
 	Player* GetPlayer() { return player; }
 	NPC* GetStartNPC() { return startNpc; }
 	NPC* GetShopNPC() { return shopNpc; }

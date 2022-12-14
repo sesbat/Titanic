@@ -43,26 +43,7 @@ void InvenItem::Update(float dt)
 	{
 		GetTextObj()->SetPos(position + Vector2f(bound.width, bound.height));
 	}
-	if (IsStay())
-	{
-		ToolTip* tip;
-		tip = SCENE_MGR->GetCurrSceneType() == Scenes::Ready ? ((ReadyUiMgr*)uimgr)->GetTip() : ((GameSceneUiMgr*)uimgr)->GetTip();
-
-		if (!tip->GetActive())
-		{
-			overLapTimer += dt;
-			if (overLapTimer > initTimer)
-			{
-				tip->SetItem(GetName());
-				tip->SetItemType(FILE_MGR->GetItemInfo(GetName()).type);
-				tip->SetToolPos(InputMgr::GetMousePos());
-				tip->SetMyItem(this);
-				tip->init();
-				tip->SetActive(true);
-				overLapTimer = 0.f;
-			}
-		}
-	}
+	ToolTipUpdate(dt);
 }
 void InvenItem::ButtonUpdate(float dt)
 {
@@ -147,4 +128,28 @@ void InvenItem::SetCount(int n)
 	GetTextObj()->SetOrigin(Origins::BR);
 	GetTextObj()->SetPos(position + Vector2f(60, 60));
 
+}
+
+void InvenItem::ToolTipUpdate(float dt)
+{
+
+	if (IsStay())
+	{
+		ToolTip* tip;
+		tip = SCENE_MGR->GetCurrSceneType() == Scenes::Ready ? ((ReadyUiMgr*)uimgr)->GetTip() : ((GameSceneUiMgr*)uimgr)->GetTip();
+
+		if (!tip->GetActive())
+		{
+			overLapTimer += dt;
+			if (overLapTimer > initTimer)
+			{
+				tip->SetItem(GetName());
+				tip->SetItemType(FILE_MGR->GetItemInfo(GetName()).type);
+				tip->SetToolPos(InputMgr::GetMousePos());
+				tip->init();
+				tip->SetActive(true);
+				overLapTimer = 0.f;
+			}
+		}
+	}
 }

@@ -48,6 +48,8 @@ public:
 	float SetOverlapTimer() { return overLapTimer; }
 	void SetCount(int n);
 
+	void ToolTipUpdate(float dt);
+
 	
 };
 
