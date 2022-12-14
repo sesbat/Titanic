@@ -16,15 +16,6 @@
 #include <stack>
 #include "Ment.h"
 
-//void OnCreateAcidBullet(Bullet* bullet)
-//{
-//	GameScene* scene = (GameScene*)SCENE_MGR->GetScene(Scenes::GameScene);
-//	bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/acid_Thorn.png"));
-//	bullet->Init();
-//	//bullet->SetBossList(scene->GetBossList());
-//	bullet->SetPlayer(scene->GetPlayer());
-//}
-
 Boss::Boss()
 	: currState(States::None),
 	speed(100.f), maxSpeed(100),
@@ -89,10 +80,8 @@ void Boss::Init(Player* player)
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigStun"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigStunLeft"));
 	dashHitbox = new HitBox();
-	//dashHitbox->SetActive(false);
 	dashHitbox->SetFillColor(Color::Red);
 	dashHitbox->SetPos({ GetPos().x - 100.f,GetPos().y - 60.f });
-	//dashHitbox.set
 	dashHitbox->SetHitbox({ 0.f,0.f,200.f,100.f });
 
 	//health bar
