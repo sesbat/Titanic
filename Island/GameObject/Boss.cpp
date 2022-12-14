@@ -42,7 +42,7 @@ Boss::Boss()
 	radDamage(5.f),
 	semiDelay(0.5f),
 	fpCount(0),
-	fireSpeed(800.f), fireRange(1000.f), shootDelay(1.f), fireCount(15), fireAngle(35.f), rampageCount(15), rampCount(0),
+	fireSpeed(800.f), fireRange(1000.f), shootDelay(1.f), fireCount(15), fireAngle(35.f), rampageCount(5), rampCount(0),
 	rampfireRange(1000.f), rampfireSpeed(800.f), rampshootDelay(1.f), rampfireAngle(10.f), rampfireCount(20),
 	singleRange(1000.f), singleSpeed(900.f), singleshootDelay(0.5f), singleAngle(0.f), singleCount(1)
 {
@@ -245,6 +245,7 @@ void Boss::Update(float dt)
 				timer -= dt;
 				if (timer <= 0.f)
 				{
+					animator.Play((direction.x > 0.f) ? "BossBigIdle" : "BossBigIdleLeft");
 					SetState(States::Idle);
 					isStun = false;
 				}
