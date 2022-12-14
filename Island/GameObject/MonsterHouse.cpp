@@ -101,12 +101,14 @@ void MonsterHouse::Init(Player* player)
 
 	hp = maxHp = data.maxHp;
 	spawnTimer = data.hitTime;
+	searchDis = data.searchDis;
 
 	healthBar.setFillColor(Color::Green);
 	healthBar.setOutlineColor(Color::Black);
 	healthBar.setOutlineThickness(2.f);
 	healthBar.setSize({ barScaleX, 15.f });
 	healthBar.setPosition({ GetPos().x, GetPos().y - 75.f });
+
 
 	Utils::SetOrigin(healthBar, Origins::BC);
 	scene = SCENE_MGR->GetCurrScene();

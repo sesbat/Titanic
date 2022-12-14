@@ -83,7 +83,7 @@ GameScene::GameScene()
         blockCount(0), treeMap(treeRect, 16, 4), lines(LineStrip, 2),isZoom(false),
     supplyTimer(0), initSupplyTimer(60), isSupply(false)
 {
-
+    FRAMEWORK->GetWindow().setMouseCursorVisible(false);
 }
 
 GameScene::~GameScene()
