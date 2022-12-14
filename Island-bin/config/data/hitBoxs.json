@@ -159,6 +159,18 @@
       }
     }
   ],
+  "graphics/supplyBox.png": [
+    {
+      "pos": {
+        "x": -31.0,
+        "y": -21.0
+      },
+      "size": {
+        "x": 61.0,
+        "y": 20.0
+      }
+    }
+  ],
   "graphics/enemy/s_infestation.png": [
     {
       "pos": {
