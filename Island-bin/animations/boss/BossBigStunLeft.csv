@@ -3,3 +3,6 @@ BossBigStunLeft,1,12,,,,,,
 ,,,,,,,,
 TEXTURE ID,L,T,W,H,X,Y,FlipX,FlipY
 graphics/enemy/boss/Big/Big_Dead.png,0,0,256,128,128,64,1,0
+graphics/enemy/boss/Big/Big_Dead.png,256,0,256,128,128,64,1,0
+graphics/enemy/boss/Big/Big_Dead.png,512,0,256,128,128,64,1,0
+graphics/enemy/boss/Big/Big_Dead.png,768,0,256,128,128,64,1,0

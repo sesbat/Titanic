@@ -1,0 +1,9 @@
+ID,LOOPTYPE (0: Single 1: Move),FPS,,,,,,
+ZombileMoveLeft,1,12,,,,,,
+,,,,,,,,
+TEXTURE ID,L,T,W,H,X,Y,FlipX,FlipY
+graphics/enemy/zombieRun.png,0,0,128,128,64,64,1,0
+graphics/enemy/zombieRun.png,128,0,128,128,64,64,1,0
+graphics/enemy/zombieRun.png,256,0,128,128,64,64,1,0
+graphics/enemy/zombieRun.png,384,0,128,128,64,64,1,0
+graphics/enemy/zombieRun.png,512,0,128,128,64,64,1,0
