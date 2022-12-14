@@ -224,8 +224,13 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 	rotation.rotate(angle);
 
 	Transform transform = translation * rotation;
+	Vector2f mouseWorldPos = scene->ScreenToWorld((Vector2i)InputMgr::GetMousePos());
+	data = gunsInfo[GetName()];
+	randomNum = data.randDir;
+	float distance = Utils::Distance(mouseWorldPos, GetPos());
+	cout << InputMgr::GetMousePos().x << " " << InputMgr::GetMousePos().y << endl;
+	cout << GetPos().x << " " << GetPos().y << endl;
 
-	float distance = Utils::Distance(InputMgr::GetMousePos(), GetPos());
 	if (distance < 100.f||!isplayer)
 	{
 		randDir = lookDir;
@@ -345,7 +350,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			bulletSpeed = data.speed;
 			range = data.range;
 			shootDelay = data.shootDelay;
-			randomNum = data.randDir;
+			//randomNum = data.randDir;
 			reloadDelay = data.reloadDelay;
 
 			Bullet* bullet = bulletPool.Get();
@@ -427,7 +432,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			bulletSpeed = data.speed;
 			range = data.range;
 			shootDelay = data.shootDelay;
-			randomNum = data.randDir;
+			//randomNum = data.randDir;
 			reloadDelay = data.reloadDelay;
 
 			Bullet* bullet = bulletPool.Get();
@@ -476,7 +481,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 			bulletSpeed = data.speed;
 			range = data.range;
 			shootDelay = data.shootDelay;
-			randomNum = data.randDir;
+			//randomNum = data.randDir;
 			reloadDelay = data.reloadDelay;
 
 			Bullet* bullet = bulletPool.Get();
