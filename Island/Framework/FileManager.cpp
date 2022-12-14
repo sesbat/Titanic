@@ -67,6 +67,14 @@ void FileManager::LoadAll()
 		craftItemInfos.push_back(craftItemInfo);
 		info.close();
 	}
+	for(int i=1; i<4; i++)
+	{
+		ifstream shop_item("config/data/shop/shoptable"+to_string(i)+".json");
+		json shop_item_d = json::parse(shop_item);
+		shopItemInfo = shop_item_d;
+		shopItemInfos.push_back(shopItemInfo);
+		shop_item.close();
+	}
 
 	ifstream info_user("config/data/gameData/userInfo.json");
 	json info_user_d = json::parse(info_user);

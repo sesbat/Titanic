@@ -12,6 +12,8 @@ private:
 	map<string, ItemEffect> itemEffect;
 	map<string, CraftingInfo> craftItemInfo;
 	vector<map<string, CraftingInfo>> craftItemInfos;
+	map < string, ShopItemInfo> shopItemInfo;
+	vector<map<string, ShopItemInfo>> shopItemInfos;
 	map<string, vector<string>> connecntMaps;
 	map<string, EnemyInfo> enemysInfo;
 	map<string ,vector<InvenInfo>> suppleyBoxInfo;
@@ -50,6 +52,8 @@ public:
 	const vector<map<string, CraftingInfo>>& GetAllCraftTable() { return craftItemInfos; }
 	const map<string, CraftingInfo>& GetAllCraft() { return craftItemInfo; }
 	const CraftingInfo& GetCraftItemInfo(string name) { return craftItemInfo[name]; }
+
+	const vector<map<string, ShopItemInfo>>& GetAllShopItem() { return shopItemInfos; }
 
 	const map<string, ItemEffect>& GetItemEffect() { return itemEffect; }
 

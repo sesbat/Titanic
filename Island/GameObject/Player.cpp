@@ -639,17 +639,26 @@ void Player::RadDistance()
 	isRad = false;
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
-		auto boundInObj = ((GameScene*)scene)->GetRadPos();
+		float maxDis;
+		auto hitBox = bottomPos;
+		hitBox.x += 19.f;
+		hitBox.y +=11.f;
+		auto radObj = ((GameScene*)scene)->GetRadObj();
 
-		for (auto& pos : boundInObj)
+		for (auto& obj : radObj)
 		{
 			float maxRadScale = 0.f;
-			auto obj_pos = pos;
-			Vector2f obj_center = { pos.x, pos.y - 30.f };
+			auto obj_pos = obj->GetPos();
+			Vector2f obj_center = { obj_pos.x, obj_pos.y - 30.f };
+			
+			float dis = Utils::Distance(hitBox, obj_center);
 
-			float dis = Utils::Distance(GetPos(), obj_center);
+			if (obj->GetName() == "RADIATION")
+				maxDis = 150;
+			if (obj->GetName() == "RADTILE")
+				maxDis = 50;
 
-			if (dis < 150)
+			if (dis < maxDis)
 			{
 				isRad = true;
 				maxRadScale = maxRadScale < 2 ? 2 : maxRadScale;

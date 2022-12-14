@@ -643,7 +643,7 @@ void Gun::SetGunType(GunType type)
 	case GunType::MB_Rifle:
 	{
 		SetActive(true);
-		SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/rifle/Rifle.png"));
+		SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/rifle/MB_Rifle.png"));
 		SetName("MB_Rifle");
 		SetOrigin(Origins::MC);
 	}
@@ -651,7 +651,7 @@ void Gun::SetGunType(GunType type)
 	case GunType::Scop_Rifle:
 	{
 		SetActive(true);
-		SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/rifle/Rifle.png"));
+		SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/rifle/Scop_Rifle.png"));
 		SetName("Scop_Rifle");
 		SetOrigin(Origins::MC);
 	}
