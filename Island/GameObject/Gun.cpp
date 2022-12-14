@@ -423,7 +423,7 @@ void Gun::BossFire(Vector2f pos, bool isplayer)
 				bullet->SetIsRad(true);
 				bullet->SetRadiation(boss->GetRadiation());
 				bullet->SetOrigin(Origins::MC);
-				bullet->SetDamage(damage);
+				bullet->SetDamage(boss->GetFireDamage());
 				bullet->Fire(startPos, randomShot, bulletSpeed, range, isplayer);
 			}
 		}
@@ -434,7 +434,7 @@ void Gun::BossFire(Vector2f pos, bool isplayer)
 			bullet->SetOrigin(Origins::MC);
 			bullet->SetRadiation(boss->GetRadiation());
 			bullet->SetIsRad(true);
-			bullet->SetDamage(damage);
+			bullet->SetDamage(boss->GetFireDamage());
 			bullet->Fire(startPos, lookDir, bulletSpeed, range, isplayer);
 		}
 		//SOUND_MGR->Play(data.soundPath);

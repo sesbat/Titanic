@@ -45,11 +45,15 @@ protected:
 	float maxSpeed;
 	float dashSpeed;
 	float damage;
+
 	////////////////////////
 
 	float stopTime;
 	float moveTime;
 	float hitTime;
+
+	float patrolTime;
+	float initPatrolTime;
 
 	float randomNum;
 	Vector2f randDir;
@@ -59,6 +63,8 @@ protected:
 	float speed;
 	bool isHit;
 	bool isInSight;
+	bool attack;
+	bool isSearch;
 	float timer;
 	float hitTimer;
 	float barScaleX;
@@ -69,6 +75,8 @@ protected:
 	Vector2f lastDirection;
 	Vector2f moveDir;
 	Vector2f prevPosition;
+	Vector2f patrolPos;
+	int patrolBlock;
 
 	//a star dir
 	Vector2f playerPos;
@@ -110,13 +118,17 @@ public:
 
 
 	void AttackPattern(float dt);
+	void PatrolPattern(float dt);
 	void Move(float dt);
 	void Collision();
 	void ContactDamage();
-	void SetDashPos();
 	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
 	void FindGrid();
 	void FindGrid(Vector2f pos);
 	void CheckIsInSight();
+	void MakePath();
+	bool CheckWall(int x, int y);
+	void SetIsSearch(bool hit);
+	void CallFriends();
 };
 

@@ -308,3 +308,9 @@ graphics/items/rifle/MB_Rifle.png,0
 graphics/items/rifle/Rifle.png,0
 graphics/items/rifle/Scop_Rifle.png,0
 graphics/items/Muzzle_Brake.png,0
+graphics/enemy/zombieIdle.png,0
+graphics/enemy/zombieRun.png,0
+animations/zombie/ZombileIdle.csv,3
+animations/zombie/ZombileIdleLeft.csv,3
+animations/zombie/ZombileMove.csv,3
+animations/zombie/ZombileMoveLeft.csv,3

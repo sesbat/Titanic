@@ -34,12 +34,14 @@ Boss::Boss()
 	hp(1500), maxHp(1500), barScaleX(60.f), look(1.f, 0.f),
 	dashSpeed(800.f),
 	dashRange(1500.f), range(500.f), activeDashRange(600.f),
-	dashDamage(100), damage(10),
-	isHit(false), isInSight(true), isStart(false), isDash(false), isStun(false),
+	dashDamage(100), damage(10), fireDamage(100),
+	isHit(false), isInSight(true), isStart(false), isDash(false), isStun(false), isFire(true),
 	dashAttack(0),
 	startRange(1000.f),
 	firePattern(0),
 	radDamage(5.f),
+	semiDelay(0.5f),
+	fpCount(0),
 	fireSpeed(800.f), fireRange(1000.f), shootDelay(1.f), fireCount(15), fireAngle(35.f), rampageCount(15), rampCount(0),
 	rampfireRange(1000.f), rampfireSpeed(800.f), rampshootDelay(1.f), rampfireAngle(10.f), rampfireCount(20),
 	singleRange(1000.f), singleSpeed(900.f), singleshootDelay(0.5f), singleAngle(0.f), singleCount(1)
@@ -152,6 +154,7 @@ void Boss::Update(float dt)
 	if (isStart == false && (Utils::Distance(player->GetPos(), GetPos()) < startRange))
 	{
 		isStart = true;
+		//SetState(States::Idle);
 	}
 
 	//start fight
@@ -183,7 +186,7 @@ void Boss::Update(float dt)
 						}
 						else if ((Utils::Distance(player->GetPos(), GetPos()) > activeDashRange))
 						{
-							//cout << "pattern " << firePattern << endl;
+							
 							if (firePattern >= 2)
 							{
 								SetFireVariable();
@@ -197,7 +200,15 @@ void Boss::Update(float dt)
 							CheckIsInWall();
 							gun->SetLookDir(lookDir);
 							gun->BossFire(GetPos(), false);
-							AttackPattern(dt);
+							//SetState(States::Idle);
+							timer = semiDelay;
+							fpCount++;
+							if (fpCount >= 3)
+							{
+								cout << "reset" << endl;
+								AttackPattern(dt);
+								fpCount = 0;
+							}
 						}
 						else
 						{
@@ -378,7 +389,9 @@ void Boss::AttackPattern(float dt)
 	FindGrid();
 	astar->AstarSearch(*isGreedObject, startPos, destPos);
 	movePos = astar->GetCoordinate();
+	firePattern = 0;
 	SetState(States::Move);
+	//isFire = true;
 }
 
 void Boss::RampagePattern(float dt)
@@ -410,6 +423,8 @@ void Boss::RampagePattern(float dt)
 
 	
 }
+
+
 
 void Boss::Move(float dt)
 {
@@ -601,6 +616,7 @@ void Boss::SetDashPos()
 	dashDir = Utils::Normalize(player->GetPos() - GetPos());
 	isDash = true;
 	dashAttack = 0;
+	firePattern = 0;
 	SetState(States::Dash);
 }
 

@@ -55,7 +55,8 @@ protected:
 	float activeDashRange;
 	float dashCoolTime;
 	float dashDamage;
-	float damage;
+	int damage;
+	int fireDamage;
 	float startRange;
 	
 	//Boss fire
@@ -79,6 +80,9 @@ protected:
 	float rampshootDelay;
 	float rampfireAngle;
 	int rampfireCount;
+
+	float semiDelay;
+	int fpCount;
 	////////////////////////
 
 	int rampageCount;
@@ -108,6 +112,7 @@ protected:
 	bool isHit;
 	bool isInSight;
 	bool isInWall;
+	bool isFire;
 	float timer;
 	float range;
 	float dashTimer;
@@ -165,6 +170,7 @@ public:
 
 	void AttackPattern(float dt);
 	void RampagePattern(float dt);
+	void FirePattern(float dt);
 	void Move(float dt);
 	void Dash(float dt);
 	void RampageDash(float dt);
@@ -191,5 +197,6 @@ public:
 	int GetFireCount() { return fc; }
 	float GetFireAngle() { return fa; }
 	float GetRadiation() { return radDamage; }
+	int GetFireDamage() { return fireDamage; }
 };
 
