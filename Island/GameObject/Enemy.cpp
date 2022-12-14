@@ -83,7 +83,7 @@ void Enemy::Init(Player* player)
 
 	astar = new Astar();
 
-		bottomPos = bottom->GetHitBottomPos();
+	bottomPos = bottom->GetHitBottomPos();
 	MakePath();
 	movePos.clear();
 }
@@ -201,10 +201,12 @@ void Enemy::Draw(RenderWindow& window)
 {
 	if (!enabled || !IsInView())
 		return;
-	if ( GetActive() )
+	if ( GetActive() && isInSight)
 	{
 		HitBoxObject::Draw(window);
 		window.draw(healthBar);
+		SetColor(Color::White);
+		gun->Draw(window);
 	}
 	if (isHitBox)
 	{
@@ -213,16 +215,16 @@ void Enemy::Draw(RenderWindow& window)
 			hit->Draw(window);
 		}
 	}
-	gun->Draw(window);
+	
 	
 	//dev
-	VertexArray lines(LineStrip, 2);
+	/*VertexArray lines(LineStrip, 2);
 	if (isInSight)
 	{
 		lines[0].position = { GetPos() };
 		lines[1].position = { player->GetPos() };
 		window.draw(lines);
-	}
+	}*/
 	
 	
 }
@@ -416,41 +418,41 @@ void Enemy::Move(float dt)
 	Collision();
 }
 
-void Enemy::MoveToPos(float dt)
-{
-	if (movePos.empty())
-	{
-		//cout << "empty list1" << endl;
-		SetState(States::Idle);
-		Translate({ 0.f, 0.f });
-		return;
-	}
-	
-	Vector2f aPos = movePos.front();
-	if ((Utils::Distance(aPos, GetPos()) <= 10.f))
-	{
-		if (movePos.empty())
-		{
-			//cout << "empty list2" << endl;
-			SetState(States::Idle);
-			return;
-		}
-		//cout << "in position" << endl;
-		movePos.pop_front();
-	}
-	moveDir = Utils::Normalize(aPos - GetPos());
-
-	prevPosition = GetPos();
-	Translate( moveDir * this->speed * dt );
-
-	//position
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(GetPos());
-	}
-	//wall bound
-	Collision();
-}
+//void Enemy::MoveToPos(float dt)
+//{
+//	if (movePos.empty())
+//	{
+//		//cout << "empty list1" << endl;
+//		SetState(States::Idle);
+//		Translate({ 0.f, 0.f });
+//		return;
+//	}
+//	
+//	Vector2f aPos = movePos.front();
+//	if ((Utils::Distance(aPos, GetPos()) <= 10.f))
+//	{
+//		if (movePos.empty())
+//		{
+//			//cout << "empty list2" << endl;
+//			SetState(States::Idle);
+//			return;
+//		}
+//		//cout << "in position" << endl;
+//		movePos.pop_front();
+//	}
+//	moveDir = Utils::Normalize(aPos - GetPos());
+//
+//	prevPosition = GetPos();
+//	Translate( moveDir * this->speed * dt );
+//
+//	//position
+//	for (auto& hit : hitboxs)
+//	{
+//		hit->SetPos(GetPos());
+//	}
+//	//wall bound
+//	Collision();
+//}
 
 void Enemy::Collision()
 {

@@ -127,7 +127,7 @@ public:
 	void AttackPattern(float dt);
 	void PatrolPattern(float dt);
 	void Move(float dt);
-	void MoveToPos(float dt);
+	//void MoveToPos(float dt);
 	void Collision();
 	
 	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
