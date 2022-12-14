@@ -137,7 +137,7 @@ public:
 	void CheckIsInSight();
 	void MakePath();
 	bool CheckWall(int x, int y);
-	void SetIsSearch(bool hit);
+	virtual void SetIsSearch(bool hit);
 	void CallFriends();
 	bool GetHide();
 	void SetHide(bool state);

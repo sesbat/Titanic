@@ -81,7 +81,7 @@ GameScene::GameScene()
           sf::Vector2f(0.f, 0.f),
           sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)),
         blockCount(0), treeMap(treeRect, 16, 4), lines(LineStrip, 2),isZoom(false),
-    supplyTimer(0), initSupplyTimer(3), isSupply(false)
+    supplyTimer(0), initSupplyTimer(60), isSupply(false)
 {
 
 }
@@ -466,38 +466,6 @@ void GameScene::Update(float dt)
 void GameScene::SupplyUpdate(float dt)
 {
 
-    {
-        if (InputMgr::GetKeyDown(Keyboard::F3))
-        {
-            SupplyBox* supBox = new SupplyBox();
-            supBox->SetTexture(*RESOURCES_MGR->GetTexture("graphics/enemy1-die.png"));
-            supBox->SetOrigin(Origins::MC);
-            supBox->SetHitBox("graphics/enemy1-die.png");
-            supBox->SetName("SupplyBox");
-            supBox->SetPlayerPos(player->GetPosPtr());
-            supBox->SetPlayer(player);
-            supBox->SetPos(player->GetPos());
-            supBox->Init();
-            supBox->SetRandPos();
-
-            auto supplyBoxData = FILE_MGR->GetSupplyBoxInfo(sceneName);
-            supBox->SetSupplyItems(supplyBoxData);
-
-            objList[LayerType::Object][0].push_back(supBox);
-            sort(objList[LayerType::Object][0].begin(), objList[LayerType::Object][0].end(), sorting);
-
-            Ment* ment = new Ment();
-            ment->SetUiViewCenter(true);
-            ment->SetUiView(&uiView);
-            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "The supply box has appeared. ");
-            ment->SetOrigin(Origins::MC);
-            ment->SetTimer(2);
-            ment->SetAlways(false);
-            ment->SetActive(true);
-            objList[LayerType::Object][1].push_back(ment);
-        }
-    }
-
     if (!isSupply)
     {
         supplyTimer += dt;
@@ -528,7 +496,6 @@ void GameScene::SupplyUpdate(float dt)
             ment->SetTimer(2);
             ment->SetAlways(false);
             ment->SetActive(true);
-            ment->GetText().setString(L"보급품이 생성되었습니다");
             objList[LayerType::Object][1].push_back(ment);
 
 

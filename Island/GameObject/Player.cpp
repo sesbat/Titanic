@@ -222,7 +222,10 @@ void Player::Update(float dt)
 					case GunType::Shotgun:
 					case GunType::Sniper:
 					case GunType::Up1_ShotGun:
-
+					case GunType::MB_Shotgun:
+					case GunType::MB_sniper:
+					case GunType::Scop_sniper:
+					case GunType::SR_25:
 						if (InputMgr::GetMouseButtonDown(Mouse::Left) && !inven->GetActive())
 						{
 							SetFireAmmo();
@@ -232,6 +235,8 @@ void Player::Update(float dt)
 						}
 						break;
 					case GunType::Rifle:
+					case GunType::MB_Rifle:
+					case GunType::Scop_Rifle:
 						if (InputMgr::GetMouseButton(Mouse::Left) && !inven->GetActive())
 						{
 							SetFireAmmo();
@@ -897,16 +902,34 @@ void Player::Load()
 	ammo[GunType::Shotgun] = playerData.sgAmmo;
 	ammo[GunType::Sniper] = playerData.snAmmo;
 	ammo[GunType::Rifle] = playerData.rfAmmo;
+	ammo[GunType::MB_Shotgun] = playerData.mb_sgAmmo;
+	ammo[GunType::MB_sniper] = playerData.mb_snAmmo;
+	ammo[GunType::Scop_sniper] = playerData.scop_snAmmo;
+	ammo[GunType::MB_Rifle] = playerData.mb_rfAmmo;
+	ammo[GunType::Scop_Rifle] = playerData.scop_rfAmmo;
+	ammo[GunType::SR_25] = playerData.sr25_Ammo;
 
 	maxAmmo[GunType::Up1_ShotGun] = allGun["Up1-Shotgun"].magazine;
 	maxAmmo[GunType::Shotgun] = allGun["Shotgun"].magazine;
 	maxAmmo[GunType::Sniper] = allGun["Sniper"].magazine;
 	maxAmmo[GunType::Rifle] = allGun["Rifle"].magazine;
+	maxAmmo[GunType::MB_Shotgun] = allGun["MB_Shotgun"].magazine;
+	maxAmmo[GunType::MB_sniper] = allGun["MB_sniper"].magazine;
+	maxAmmo[GunType::Scop_sniper] = allGun["Scop_sniper"].magazine;
+	maxAmmo[GunType::MB_Rifle] = allGun["MB_Rifle"].magazine;
+	maxAmmo[GunType::Scop_Rifle] = allGun["Scop_Rifle"].magazine;
+	maxAmmo[GunType::SR_25] = allGun["SR_25"].magazine;
 
 	gunBulletName[GunType::Up1_ShotGun] = "ShotGunBullet";
 	gunBulletName[GunType::Shotgun] = "ShotGunBullet";
 	gunBulletName[GunType::Sniper] = "SniperBullet";
 	gunBulletName[GunType::Rifle] = "RifleBullet";
+	gunBulletName[GunType::MB_Shotgun] = "ShotGunBullet";
+	gunBulletName[GunType::MB_sniper] = "SniperBullet";
+	gunBulletName[GunType::Scop_sniper] = "SniperBullet";
+	gunBulletName[GunType::MB_Rifle] = "RifleBullet";
+	gunBulletName[GunType::Scop_Rifle] = "RifleBullet";
+	gunBulletName[GunType::SR_25] = "SniperBullet";
 
 
 	if (myGun == nullptr)
@@ -933,6 +956,12 @@ void Player::Save()
 	nowInfo.snAmmo = ammo[GunType::Sniper];
 	nowInfo.rfAmmo = ammo[GunType::Rifle];
 	nowInfo.sgAmmo_1up = ammo[GunType::Up1_ShotGun];
+	nowInfo.mb_sgAmmo = ammo[GunType::MB_Shotgun];
+	nowInfo.mb_rfAmmo = ammo[GunType::MB_Rifle];
+	nowInfo.mb_snAmmo = ammo[GunType::MB_sniper];
+	nowInfo.scop_rfAmmo = ammo[GunType::Scop_Rifle];
+	nowInfo.scop_snAmmo = ammo[GunType::Scop_sniper];
+	nowInfo.sr25_Ammo = ammo[GunType::SR_25];
 	nowInfo.lastWephon = lastWephon;
 
 	FILE_MGR->SaveUserInfo(nowInfo);

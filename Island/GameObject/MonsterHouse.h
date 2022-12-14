@@ -17,6 +17,7 @@ public:
 	virtual void Init(Player* player);
 	virtual void HideStop() {};
 	virtual void SetHp(int num);
+	virtual void SetIsSearch(bool hit) {}
 
 };
 

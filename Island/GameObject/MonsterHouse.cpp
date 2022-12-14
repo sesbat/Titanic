@@ -48,8 +48,10 @@ void MonsterHouse::Update(float dt)
 				enemy->SetId(((GameScene*)SCENE_MGR->GetCurrScene())->GetID()++);
 				enemy->SetPos(GetPos());
 				enemy->SetHitBox("graphics/enemy1.png");
+				enemy->SetType((GunType)1);
 				enemy->SetEnemyType("graphics/enemy1.png");
 				enemy->SetGreedObject(isGreedObject);
+				enemy->SetItem(map<string, Item>());
 				enemy->Init(player);
 				(SCENE_MGR->GetCurrScene())->AddGameObject(enemy, LayerType::Object, 0);
 				((GameScene*)SCENE_MGR->GetCurrScene())->GetEnemyList()->push_back(enemy);

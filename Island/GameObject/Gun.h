@@ -10,6 +10,12 @@ enum class GunType
     Up1_ShotGun,
     Rifle,
     Sniper,
+    MB_Shotgun,
+    MB_Rifle,
+    MB_sniper,
+    Scop_Rifle,
+    Scop_sniper,
+    SR_25,
     TypeCount,
 };
 
