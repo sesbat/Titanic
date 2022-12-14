@@ -17,10 +17,8 @@ private:
 	States curState;
 
 	float maxSpeed;
+	float dashSpeed;
 
-	float spawnTimer;
-	float nowTime;
-	bool isfindPlayer;
 	bool isdead = false;
 
 public:
@@ -34,11 +32,11 @@ public:
 	virtual States GetState();
 
 	virtual void Move(float dt);
-	//virtual void AttackPattern(float dt);
+	virtual void AttackPattern(float dt);
 	virtual void PatrolPattern(float dt);
 
 	virtual void HideStop() {};
-	virtual void SetHp(int num);
+	//virtual void SetHp(int num);
 	virtual void SetIsSearch(bool hit) {}
 
 };

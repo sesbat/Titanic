@@ -9,7 +9,7 @@
 #include <iostream>
 
 Zombie::Zombie()
-	:maxSpeed(100)
+	:maxSpeed(100.f), dashSpeed(110.f)
 {
 }
 
@@ -89,11 +89,9 @@ void Zombie::Update(float dt)
 	//enemy attack
 	if (curState != States::Dead && curState == States::Idle)
 	{
-		cout << "move" << endl;
 		PatrolPattern(dt);
 		/*if (patrolTime <= 0.f && !attack)
 		{
-			cout << "move" << endl;
 			PatrolPattern(dt);
 			patrolTime = 5.f;
 		}
@@ -157,7 +155,7 @@ void Zombie::Draw(RenderWindow& window)
 			hit->Draw(window);
 		}
 	}
-	VertexArray lines(LineStrip, 2);
+	/*VertexArray lines(LineStrip, 2);
 	if (isInSight)
 	{
 		HitBoxObject::Draw(window);
@@ -167,7 +165,7 @@ void Zombie::Draw(RenderWindow& window)
 		lines[0].position = { GetPos() };
 		lines[1].position = { player->GetPos() };
 		window.draw(lines);
-	}
+	}*/
 }
 
 void Zombie::Release()
@@ -208,7 +206,6 @@ void Zombie::Move(float dt)
 {
 	if (movePos.empty())
 	{
-		cout << "empty list1" << endl;
 		SetState(States::Idle);
 		Translate({ 0.f, 0.f });
 		isHit = false;
@@ -245,56 +242,19 @@ void Zombie::Move(float dt)
 	Collision();
 }
 
-//void Zombie::AttackPattern(float dt)
-//{
-//	CheckIsInSight();
-//	
-//	//attack motion
-//	if (hitTime >= 0.8f )
-//	{
-//		if (!player->GetHide() && (Utils::Distance(player->GetPos(), GetPos()) < 500.f) && isInSight)
-//		{
-//			lookDir = Utils::Normalize(player->GetPos() - GetPos());
-//			direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
-//			SetState(States::Idle);
-//			animator.Play((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
-//			gun->SetLookDir(lookDir);
-//			gun->Fire(GetPos(), false);
-//			HideStop();
-//			hitTime = 0.f;
-//			moveTime = 0.f;
-//			playerPos = player->GetPos();
-//			movePos.clear();
-//			FindGrid();
-//			astar->AstarSearch(*isGreedObject, startPos, destPos);
-//			movePos = astar->GetCoordinate();
-//			attack = true;
-//		}
-//	}
-//	//cout << movePos.empty() << endl;
-//
-//	if ((!movePos.empty() && moveTime < initMoveTime && (Utils::Distance(player->GetPos(), GetPos()) > 500.f) || !isInSight) || (isHit || isSearch))
-//	{
-//		SetState(States::Move);
-//		if (isHit)
-//		{
-//			CallFriends();
-//		}
-//		//direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
-//	}
-//	else
-//	{
-//		//SetState(States::Idle);
-//		isHit = false;
-//		isSearch = false;
-//		attack = false;
-//
-//	}
-//
-//	//timer
-//	hitTime += dt;
-//	moveTime += dt;
-//}
+void Zombie::AttackPattern(float dt)
+{
+	CheckIsInSight();
+	if (!player->GetHide() &&
+		(Utils::Distance(player->GetPos(), GetPos()) < 500.f) && isInSight)
+	{
+		movePos.clear();
+		FindGrid(patrolPos);
+		astar->AstarSearch(*isGreedObject, startPos, destPos);
+		movePos = astar->GetCoordinate();
+		SetState(States::Move);
+	}
+}
 
 void Zombie::PatrolPattern(float dt)
 {
@@ -405,18 +365,18 @@ void Zombie::PatrolPattern(float dt)
 //{
 //}
 
-void Zombie::SetHp(int num)
-{
-	if (isdead)
-		return;
-
-	hp -= num;
-	SetHpBar();
-	healthBar.setPosition({ GetPos().x, GetPos().y - 75.f });
-	if (hp <= 0)
-	{
-		hp = 0;
-		SOUND_MGR->Play("sounds/death.wav");
-		isdead = true;
-	}
-}
+//void Zombie::SetHp(int num)
+//{
+//	if (isdead)
+//		return;
+//
+//	hp -= num;
+//	SetHpBar();
+//	healthBar.setPosition({ GetPos().x, GetPos().y - 75.f });
+//	if (hp <= 0)
+//	{
+//		hp = 0;
+//		SOUND_MGR->Play("sounds/death.wav");
+//		isdead = true;
+//	}
+//}

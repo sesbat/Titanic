@@ -205,7 +205,7 @@ void Boss::Update(float dt)
 							fpCount++;
 							if (fpCount >= 3)
 							{
-								cout << "reset" << endl;
+								//cout << "reset" << endl;
 								AttackPattern(dt);
 								fpCount = 0;
 							}
