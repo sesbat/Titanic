@@ -1,4 +1,4 @@
-﻿{
+{
   "Recoverykit": {
     "path": "graphics/items/recoverykit.png",
     "maxCount": 2,
@@ -6,9 +6,9 @@
     "width": 1,
     "height": 1,
     "price": 500,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 5,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -26,9 +26,9 @@
     "width": 2,
     "height": 1,
     "price": 300,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 7,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -46,9 +46,9 @@
     "width": 2,
     "height": 2,
     "price": 2000,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 4,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -86,9 +86,9 @@
     "width": 5,
     "height": 1,
     "price": 5000,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 1,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -106,9 +106,9 @@
     "width": 5,
     "height": 1,
     "price": 5000,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 3,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -166,9 +166,9 @@
     "width": 3,
     "height": 1,
     "price": 4000,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 3,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -186,9 +186,9 @@
     "width": 5,
     "height": 1,
     "price": 4000,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 3,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -246,9 +246,9 @@
     "width": 5,
     "height": 1,
     "price": 10000,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 3,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -266,9 +266,9 @@
     "width": 1,
     "height": 1,
     "price": 4000,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 2,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -306,9 +306,9 @@
     "width": 1,
     "height": 1,
     "price": 4000,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 1,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -326,9 +326,9 @@
     "width": 1,
     "height": 1,
     "price": 4000,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 1,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -346,9 +346,9 @@
     "width": 1,
     "height": 1,
     "price": 4000,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 1,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -366,9 +366,9 @@
     "width": 1,
     "height": 1,
     "price": 10000,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 1,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -386,9 +386,9 @@
     "width": 1,
     "height": 1,
     "price": 200,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 1,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -406,9 +406,9 @@
     "width": 1,
     "height": 1,
     "price": 300,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 1,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -426,9 +426,9 @@
     "width": 1,
     "height": 1,
     "price": 300,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 1,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -446,9 +446,9 @@
     "width": 1,
     "height": 1,
     "price": 100,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 1,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -466,9 +466,9 @@
     "width": 1,
     "height": 1,
     "price": 100,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 6,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -486,9 +486,9 @@
     "width": 1,
     "height": 1,
     "price": 100,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 6,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20
@@ -506,9 +506,9 @@
     "width": 1,
     "height": 1,
     "price": 100,
-    "uiName": "test",
+    "uiName": "Test",
     "type": 6,
-    "description": "test des",
+    "description": "Test des",
     "toolTipPos": {
       "x": -20,
       "y": -20

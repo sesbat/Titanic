@@ -30,6 +30,7 @@
 #include "../GameObject/HitBox.h"
 #include "../GameObject/Boss.h"
 #include "../GameObject/Ment.h"
+#include "../GameObject/ToolTip.h"
 
 using namespace std;
 using namespace sf;
@@ -79,7 +80,7 @@ GameScene::GameScene()
           sf::Vector2f(0.f, 0.f),
           sf::Vector2f(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)),
         blockCount(0), treeMap(treeRect, 16, 4), lines(LineStrip, 2),isZoom(false),
-    supplyTimer(0), initSupplyTimer(60), isSupply(false)
+    supplyTimer(0), initSupplyTimer(3), isSupply(false)
 {
 
 }
@@ -472,12 +473,11 @@ void GameScene::SupplyUpdate(float dt)
             Ment* ment = new Ment();
             ment->SetUiViewCenter(true);
             ment->SetUiView(&uiView);
-            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
+            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, L"º¸±ÞÇ°ÀÌ »ý¼ºµÇ¾ú½À´Ï´Ù");
             ment->SetOrigin(Origins::MC);
             ment->SetTimer(2);
             ment->SetAlways(false);
             ment->SetActive(true);
-            ment->GetText().setString(L"ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
             objList[LayerType::Object][1].push_back(ment);
         }
     }
@@ -507,12 +507,12 @@ void GameScene::SupplyUpdate(float dt)
             Ment* ment = new Ment();
             ment->SetUiViewCenter(true);
             ment->SetUiView(&uiView);
-            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
+            ment->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 24, Color::White, "º¸±ÞÇ°ÀÌ »ý¼ºµÇ¾ú½À´Ï´Ù");
             ment->SetOrigin(Origins::MC);
             ment->SetTimer(2);
             ment->SetAlways(false);
             ment->SetActive(true);
-            ment->GetText().setString(L"ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
+            ment->GetText().setString(L"º¸±ÞÇ°ÀÌ »ý¼ºµÇ¾ú½À´Ï´Ù");
             objList[LayerType::Object][1].push_back(ment);
 
 
@@ -674,3 +674,9 @@ void GameScene::castAllLights()
 
     }
 }
+
+void GameScene::CloseToolTip()
+{
+    ((GameSceneUiMgr*)uiMgr)->GetTip()->SetActive(false);
+}
+

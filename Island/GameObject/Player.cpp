@@ -334,6 +334,15 @@ void Player::Update(float dt)
 			InputMgr::Clear();
 			SetMove(true);
 			inven->SetActive(!(inven->GetActive()));
+			if (!inven->GetActive())
+			{
+				if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+					((GameScene*)SCENE_MGR->GetCurrScene())->CloseToolTip();
+				else if (SCENE_MGR->GetCurrSceneType() == Scenes::Ready)
+				{
+					((Ready*)SCENE_MGR->GetCurrScene())->CloseToolTip();
+				}
+			}
 
 			//inven->ResetRightInven();
 			if (inven->GetRightInven()->GetItems()->size() > 0 && isInven)
@@ -371,7 +380,15 @@ void Player::Update(float dt)
 			inven->ResetRightInven();
 			inven->ClearInven();
 			SetMove(false);
+			if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+				((GameScene*)SCENE_MGR->GetCurrScene())->CloseToolTip();
+			else if (SCENE_MGR->GetCurrSceneType() == Scenes::Ready)
+			{
+				((Ready*)SCENE_MGR->GetCurrScene())->CloseToolTip();
+			}
 			rightInvenObj = nullptr;
+
+
 		}
 	}
 
@@ -728,49 +745,6 @@ void Player::UseItems(int num)
 		return;
 	string name = inven->GetUsedItem(num)->GetName();
 
-	//if (name == "Recoverykit")
-	//{
-	//	HealHp(maxHp / 4);
-
-	//	inven->GetUsedItem(num)->AddCount(-1);
-	//	if (inven->GetUsedItem(num)->GetCount() <= 0)
-	//		inven->AddDeleteObj(inven->GetUsedItem(num));
-
-	//	return;
-	//}
-	/////////add other items/////////
-	//else if (name == "Apple")
-	//{
-	//	HealHunger(maxHungerGuage / 4);
-	//	inven->GetUsedItem(num)->AddCount(-1);
-	//	if (inven->GetUsedItem(num)->GetCount() <= 0)
-	//		inven->AddDeleteObj(inven->GetUsedItem(num));
-	//	return;
-	//}
-	//else if (name == "Meat")
-	//{
-	//	HealHunger(maxHungerGuage / 2);
-	//	inven->GetUsedItem(num)->AddCount(-1);
-	//	if (inven->GetUsedItem(num)->GetCount() <= 0)
-	//		inven->AddDeleteObj(inven->GetUsedItem(num));
-	//	return;
-	//}
-	//else if (name == "Water")
-	//{
-	//	HealThirst(maxThirstGuage / 3);
-	//	inven->GetUsedItem(num)->AddCount(-1);
-	//	if (inven->GetUsedItem(num)->GetCount() <= 0)
-	//		inven->AddDeleteObj(inven->GetUsedItem(num));
-	//	return;
-	//}
-	//else if (name == "EnergyDrink")
-	//{
-	//	HealEnergy(maxEnergyGuage / 2);
-	//	inven->GetUsedItem(num)->AddCount(-1);
-	//	if (inven->GetUsedItem(num)->GetCount() <= 0)
-	//		inven->AddDeleteObj(inven->GetUsedItem(num));
-	//	return;
-	//}
 	auto itemEffect = FILE_MGR->GetItemEffect();
 
 	for (auto& k : itemEffect)
@@ -786,7 +760,6 @@ void Player::UseItems(int num)
 				inven->AddDeleteObj(inven->GetUsedItem(num));
 		}
 	}
-
 }
 
 void Player::SetStamina(float stamina)
@@ -943,7 +916,6 @@ void Player::Load()
 	else
 	{
 		gun->SetGunType(gun->ItemNameToType(myGun->GetName()));
-		//SetAmmoType();
 	}
 }
 
