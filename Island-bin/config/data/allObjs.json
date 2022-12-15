@@ -173,6 +173,10 @@
     {
       "texPath": "graphics/enemy/s_infestation.png",
       "uiPaht": "graphics/editor/drawS_infestation.png"
+    },
+    {
+      "texPath": "graphics/enemy/zombie.png",
+      "uiPaht": "graphics/Editor/drawZombie.png"
     }
   ],
   "BOX": [
