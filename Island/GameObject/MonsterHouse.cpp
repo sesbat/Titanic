@@ -80,7 +80,7 @@ void MonsterHouse::Draw(RenderWindow& window)
 	{
 		HitBoxObject::Draw(window);
 		if (!isdead)
-			window.draw(healthBar);
+			//window.draw(healthBar);
 		lines[0].position = { GetPos() };
 		lines[1].position = { player->GetPos() };
 		window.draw(lines);
