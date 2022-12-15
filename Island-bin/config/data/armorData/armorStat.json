@@ -1,0 +1,18 @@
+{
+  "PoliceArmor": {
+    "name": "PoliceArmor",
+    "defencePower": 100
+  },
+  "HunterArmor": {
+    "name": "HunterArmor",
+    "defencePower": 150
+  },
+  "ReinforcedArmor": {
+    "name": "PoliceArmor",
+    "defencePower": 200
+  },
+  "HDF-Armor": {
+    "name": "HDF-Armor",
+    "defencePower": 250
+  }
+}

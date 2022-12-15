@@ -149,16 +149,14 @@ void Inventory::Update(float dt)
 					break;
 				case 2:
 					if (itemName == "Armor-1"||
-						itemName == "Armor-2" || 
-						itemName == "Armor-3" || 
-						itemName == "Armor-4")
+						itemName == "PoliceArmor" || 
+						itemName == "HunterArmor" || 
+						itemName == "ReinforcedArmor"||
+						itemName == "HDF-Armor")
 						isUseItemUp = true;
 					break;
 				case 3:
-					if (itemName == "Armor-1" ||
-						itemName == "Armor-2" ||
-						itemName == "Armor-3" ||
-						itemName == "Armor-4")
+					if (itemName == "Armor-1"/*Ghillie suit position*/)
 						isUseItemUp = true;
 					break;
 				case 4:
@@ -288,6 +286,11 @@ void Inventory::Update(float dt)
 
 						gun->SetGunType(gun->ItemNameToType(nowDrag->GetName()));
 					}
+					if (i == 2)
+					{
+						auto player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
+						player->SetArmorType(nowDrag->GetName());
+					}
 					SetDrag(nullptr);
 					useIdx = -1;
 				}
@@ -318,6 +321,11 @@ void Inventory::Update(float dt)
 					auto gun = player->GetGun();
 
 					gun->SetGunType(GunType::None);
+				}
+				if (i == 2 )
+				{
+					auto player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
+					player->SetArmorType("");
 				}
 				break;
 			}
