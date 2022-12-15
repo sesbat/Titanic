@@ -5,6 +5,8 @@
 #include "../Ui/InvenItem.h"
 #include "../Framework/InputMgr.h"
 #include <locale.h>
+#include "../Scens/SceneManager.h"
+#include "../Scens/Scene.h"
 
 std::string w2s(const std::wstring& var)
 {
@@ -305,5 +307,6 @@ void ToolTip::SetItem(string name)
 
 void ToolTip::SetToolPos(Vector2f v)
 {
+	v = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)v);
 	itemPos = v;
 }

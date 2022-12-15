@@ -28,6 +28,11 @@ void MenuUiMgr::Update(float dt)
 			cout << "dkR" << endl;
 		}*/
 
+		if (startBtn0->IsUp())
+		{
+			SCENE_MGR->ChangeScene(Scenes::Tutorial);
+			return;
+		}
 		if (startBtn1->IsUp())
 		{
 			SCENE_MGR->ChangeScene(Scenes::Ready);
@@ -58,6 +63,15 @@ void MenuUiMgr::Init()
 	startBtn->SetOrigin(Origins::MC);
 	uiObjList[0].push_back(startBtn);*/
 
+	startBtn0 = new Button(this);
+	startBtn0->SetClkColor(true);
+	/*startBtn2->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		75, Color::White,"Start",true);*/
+	startBtn0->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		75, Color::White, "Tutorial", true);
+	startBtn0->SetOrigin(Origins::MC);
+	startBtn0->SetPos({ WINDOW_WIDTH -200,WINDOW_HEIGHT / 2 });
+	uiObjList[0].push_back(startBtn0);
 
 	startBtn1 = new Button(this);
 	startBtn1->SetClkColor(true);

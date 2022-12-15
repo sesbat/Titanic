@@ -12,7 +12,7 @@ class Object;
 class HitBoxObject;
 enum class Scenes
 {
-	None = -1, Menu,Ready,MapEditor,Count,GameScene
+	None = -1, Menu,Ready,MapEditor,Count,GameScene, Tutorial
 };
 
 // �ٴ�, Ǯ, ������Ʈ + ��(Ư��), ���ʹ�

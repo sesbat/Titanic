@@ -29,6 +29,7 @@ private:
 	std::vector<InvenInfo> resetInven;;
 	std::vector<InvenInfo> saveAllItems;
 	std::vector<InvneUseInfo> useItemInfo;
+	std::vector<string> tutorialImages;
 
 	UserStat userStat;
 
@@ -82,8 +83,10 @@ public:
 	const vector<InvenInfo>& GetSupplyBoxInfo(string name) { return suppleyBoxInfo[name]; }
 	const vector<InvneUseInfo>& GetUseItemInfo() const { return useItemInfo; }
 	const UserStat& GetUserStat() const { return userStat; }
+	
 
 	const map<string, EnemyInfo>& GetEnemyInfo() { return enemysInfo; }
+	const std::vector<string>& GetTutorialPath() { return tutorialImages; }
 };
 
 #define FILE_MGR (FileManager::GetInstance())

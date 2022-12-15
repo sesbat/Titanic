@@ -76,6 +76,8 @@
     <ClCompile Include="GameObject\ToolTip.cpp" />
     <ClCompile Include="GameObject\MonsterHouse.cpp" />
     <ClCompile Include="GameObject\Zombie.cpp" />
+    <ClCompile Include="Scens\Tutorial.cpp" />
+    <ClCompile Include="Ui\TutorialUiMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\OBB.h" />
@@ -148,6 +150,8 @@
     <ClInclude Include="GameObject\ToolTip.h" />
     <ClInclude Include="GameObject\MonsterHouse.h" />
     <ClInclude Include="GameObject\Zombie.h" />
+    <ClInclude Include="Scens\Tutorial.h" />
+    <ClInclude Include="Ui\TutorialUiMgr.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

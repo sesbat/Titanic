@@ -16,6 +16,10 @@ FileManager::~FileManager()
 
 void FileManager::LoadAll()
 {
+	for (int i = 1; i < 10; i++)
+	{
+		tutorialImages.push_back("graphics/Tutorial/" + to_string(i) + ".png");
+	}
 	for (const auto& file : std::experimental::filesystem::directory_iterator("config/data/map/"))
 	{
 		auto path = file.path().string();

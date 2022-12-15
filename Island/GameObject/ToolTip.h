@@ -27,7 +27,5 @@ public:
 	virtual void SetItem(string name);
 
 	void SetToolPos(Vector2f v);
-	
-	
 };
 
