@@ -41,10 +41,10 @@ void HitBoxObject::Init()
 void HitBoxObject::Update(float dt)
 {
 	SpriteObject::Update(dt);
-	if (InputMgr::GetKeyDown(Keyboard::F1))
-	{
-		isHitBox = !isHitBox;
-	}
+	//if (InputMgr::GetKeyDown(Keyboard::F1))
+	//{
+	//	isHitBox = !isHitBox;
+	//}
 }
 
 void HitBoxObject::Draw(RenderWindow& window)
