@@ -24,7 +24,8 @@ Player::Player()
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
 	isDash(false), isAlive(true), isMove(true), shootDelay(0.f),
-	isReloading(false), soundDelay(0.5f), isStun(false), stun(0.f), isMoving(false)
+	isReloading(false), soundDelay(0.5f), isStun(false), stun(0.f), isMoving(false),
+	defencePower(0)
 {
 	auto stat = FILE_MGR->GetUserStat();
 
@@ -486,7 +487,12 @@ bool Player::EqualFloat(float a, float b)
 
 void Player::SetHp(int num)
 {
-	hp -= num;
+	auto damage = num - defencePower;
+	if (damage < 50)
+	{
+		damage = 50;
+	}
+	hp -= damage;
 	if (hp <= 0)
 	{
 		hp = 0;
@@ -843,6 +849,16 @@ void Player::Reload()
 		}
 	}
 }
+void Player::SetArmorType(string name)
+{
+	if (name == "")
+	{
+		defencePower = 0;
+		return;
+	}
+	auto armorStat = FILE_MGR->GetArmorInfo();
+	this->defencePower = armorStat[name].defencePower;
+}
 
 string Player::GetAmmos()
 {
@@ -863,7 +879,6 @@ void Player::Load()
 	energyGuage = playerData.energyGuage;
 	radGuage = playerData.radGuage;
 	clearMaps = playerData.clearMaps;
-
 	lastWephon = playerData.lastWephon;
 
 	money = playerData.money;
@@ -901,6 +916,14 @@ void Player::Load()
 	{
 		if (data.useIdx != -1)
 			inven->SetUserItem(data);
+
+	}
+	auto useItem = inven->GetUseItems();
+	if (useItem[2] == nullptr)
+		defencePower = 0;
+	else
+	{
+		SetArmorType(useItem[2]->GetName());
 	}
 
 

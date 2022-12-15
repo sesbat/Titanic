@@ -82,6 +82,13 @@ namespace ns {
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(CraftingInfo, useItem)
 	};
 	
+	struct ArmorStat
+	{
+		string name;
+		int defencePower;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ArmorStat, name, defencePower)
+	};
 
 	struct UserInfo
 	{
@@ -103,6 +110,7 @@ namespace ns {
 		int scop_rfAmmo;
 		int sr25_Ammo;
 		int lastWephon;
+
 		vector<string> clearMaps;
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money, 
@@ -183,7 +191,7 @@ namespace ns {
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GunStat,
 			name, damage, speed, range, reloadDelay, magazine, randDir, zoomRange, shootDelay, shotgunDir, soundPath, cnt)
 	};
-
+	
 	struct ItemEffect
 	{
 		string name;

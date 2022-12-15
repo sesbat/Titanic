@@ -142,6 +142,11 @@ void FileManager::LoadAll()
 	json enemy_d = json::parse(enemy_info);
 	enemysInfo = enemy_d;
 	enemy_info.close();
+
+	ifstream armor_Info("config/data/armorData/armorStat.json");
+	json armor_Info_d = json::parse(armor_Info);
+	armorInfos = armor_Info_d;
+	armor_Info.close();
 }
 
 const vector<ObjectData>& FileManager::GetMap(string name)

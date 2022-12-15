@@ -19,6 +19,7 @@ private:
 	map<string ,vector<InvenInfo>> suppleyBoxInfo;
 
 	UserInfo userInfo;
+	map<string,ArmorStat> armorInfos;
 
 	map<string, GunStat> gunsInfo;
 	//GunStat shotgunInfo;
@@ -71,6 +72,7 @@ public:
 	const map<string, vector<string>>& const GetConnecntInfoAll();
 
 	const GunStat& GetGunInfo(string name)  { return gunsInfo[name]; }
+	const map<string, ArmorStat>& GetArmorInfo() { return armorInfos; }
 	const UserInfo& GetUserInfo() const { return userInfo; }
 	const map<string, GunStat>& GetGunInfoAll() { return gunsInfo; }
 	//const GunStat& GetShotGunInfo() const { return shotgunInfo; }
