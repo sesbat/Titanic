@@ -17,7 +17,6 @@ class Gun;
 class Bullet;
 class Inventory;
 class ItemBoxObject;
-
 enum class GunType;
 class Player : public HitBoxObject
 {
@@ -139,6 +138,8 @@ protected:
 	bool isMoving;
 	float stun;
 
+	int defencePower;
+
 	vector<string> clearMaps;
 public:
 	Player();
@@ -213,6 +214,7 @@ public:
 	void SetFireAmmo();
 	void SetAmmoType();
 	void Reload();
+	void SetArmorType(string name);
 	string GetAmmos();
 
 	void Load();
