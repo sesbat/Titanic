@@ -233,6 +233,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 
 	if (distance < 100.f||!isplayer)
 	{
+		cout << "100" << endl;
 		randDir = lookDir;
 	}
 	else
@@ -243,6 +244,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 		Vector2f randomPos;
 		randomPos.x = player->GetLook().x + Utils::RandomRange(-randomNum1, randomNum1);
 		randomPos.y = player->GetLook().y + Utils::RandomRange(-randomNum2, randomNum2);
+
 		randDir = Utils::Normalize(randomPos - player->GetPos());
 	}
 

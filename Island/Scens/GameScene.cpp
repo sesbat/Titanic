@@ -10,6 +10,7 @@
 #include "../GameObject/Enemy.h"
 #include "../GameObject/MonsterHouse.h"
 #include "../GameObject/VertexArrayObj.h"
+#include "../GameObject/Zombie.h"
 #include "../../Framework/info.h"
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -26,7 +27,6 @@
 #include "Candle/geometry/Polygon.hpp"
 #include "../GameObject/Gun.h"
 #include "../GameObject/SupplyBox.h"
-
 #include "../3rd/QuadTree_SFML_DEMO.h"
 #include "../GameObject/HitBox.h"
 #include "../GameObject/Boss.h"
@@ -83,7 +83,8 @@ GameScene::GameScene()
         blockCount(0), treeMap(treeRect, 16, 4), lines(LineStrip, 2),isZoom(false),
     supplyTimer(0), initSupplyTimer(60), isSupply(false)
 {
-
+    FRAMEWORK->GetWindow().setMouseCursorVisible(false);
+    FRAMEWORK->GetWindow().setMouseCursorGrabbed(true);
 }
 
 GameScene::~GameScene()
@@ -293,7 +294,7 @@ void GameScene::Release()
     enemies.clear();
     bosses.clear();
     blockPool.clear();
-    bosses.clear();
+    //bosses.clear();
 }
 
 void GameScene::Enter()
@@ -478,9 +479,9 @@ void GameScene::SupplyUpdate(float dt)
         if (supplyTimer > initSupplyTimer)
         {
             SupplyBox* supBox = new SupplyBox();
-            supBox->SetTexture(*RESOURCES_MGR->GetTexture("graphics/enemy1-die.png"));
+            supBox->SetTexture(*RESOURCES_MGR->GetTexture("graphics/supplyBox.png"));
             supBox->SetOrigin(Origins::MC);
-            supBox->SetHitBox("graphics/enemy1-die.png");
+            supBox->SetHitBox("graphics/supplyBox.png");
             supBox->SetName("SupplyBox");
             supBox->SetPlayerPos(player->GetPosPtr());
             supBox->SetPlayer(player);
@@ -582,14 +583,14 @@ void GameScene::Draw(RenderWindow& window)
    //boss->Draw(window);
 }
 
-void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy)
+void GameScene::SetDeadEnemy(map<string, Item> items, Vector2f pos, Object* enemy, string boxPath)
 {
     ItemBoxObject* box = new ItemBoxObject();
     box->SetItems(items);
-    box->SetTexture(*RESOURCES_MGR->GetTexture("graphics/enemy1-die.png"));
+    box->SetTexture(*RESOURCES_MGR->GetTexture(boxPath));
 
     box->SetOrigin(Origins::MC);
-    box->SetHitBox("graphics/enemy1-die.png");
+    box->SetHitBox(boxPath);
     box->SetPos(pos);
     box->SetName("BOX-ENEMY");
     box->SetPlayerPos(player->GetPosPtr());

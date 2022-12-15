@@ -27,6 +27,8 @@ Ready::~Ready()
 
 void Ready::Init()
 {
+	FRAMEWORK->GetWindow().setMouseCursorVisible(false);
+	FRAMEWORK->GetWindow().setMouseCursorGrabbed(true);
 	uiMgr = new ReadyUiMgr(this);
 	int id = 0;
 	isGameScene = true;

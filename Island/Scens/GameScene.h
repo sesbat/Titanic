@@ -93,7 +93,7 @@ public:
 	Player* GetPlayer(){ return player; }
 	float GetEscapeTimer() { return escapeTimer; }
 	Vector2f GetEscapePoint() { return escapePoint; }
-	void SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy);
+	void SetDeadEnemy(map<string, Item> items, Vector2f pos, Object* enemy ,string boxPath = "graphics/enemy1-die.png");
 	void DropItems(map<string, Item> items, Vector2f pos);
 	void EmpytyInven(ItemBoxObject* inven);
 	//void SetDeadEnemy(map<string, Item> items, Vector2f pos);

@@ -5,6 +5,7 @@
 #include "../GameObject/HitBox.h"
 #include "../Framework/ResourceManager.h"
 #include "../Framework/SoundManager.h"	
+#include "Zombie.h"
 #include <iostream>
 
 
@@ -16,6 +17,8 @@ MonsterHouse::MonsterHouse()
 
 MonsterHouse::~MonsterHouse()
 {
+	HitBoxObject::Release();
+	Release();
 }
 
 void MonsterHouse::Update(float dt)
@@ -43,25 +46,22 @@ void MonsterHouse::Update(float dt)
 			nowTime = 0.f;
 
 			{
-				Enemy* enemy = new Enemy();
+				Zombie* enemy = new Zombie();
 				enemy->SetName("ENEMY");
 				enemy->SetId(((GameScene*)SCENE_MGR->GetCurrScene())->GetID()++);
-				enemy->SetPos(GetPos());
+				enemy->SetPos({ GetPos().x,GetPos().y + 50.f });
 				enemy->SetHitBox("graphics/enemy1.png");
-				enemy->SetType((GunType)1);
+				enemy->SetType((GunType)0);
 				enemy->SetEnemyType("graphics/enemy1.png");
 				enemy->SetGreedObject(isGreedObject);
 				enemy->SetItem(map<string, Item>());
+				enemy->SetItem(items);
 				enemy->Init(player);
 				(SCENE_MGR->GetCurrScene())->AddGameObject(enemy, LayerType::Object, 0);
 				((GameScene*)SCENE_MGR->GetCurrScene())->GetEnemyList()->push_back(enemy);
 				((GameScene*)SCENE_MGR->GetCurrScene())->GetTree().insert(enemy);
 			}
 		}
-	}
-	else
-	{
-		
 	}
 }
 
@@ -101,12 +101,14 @@ void MonsterHouse::Init(Player* player)
 
 	hp = maxHp = data.maxHp;
 	spawnTimer = data.hitTime;
+	searchDis = data.searchDis;
 
 	healthBar.setFillColor(Color::Green);
 	healthBar.setOutlineColor(Color::Black);
 	healthBar.setOutlineThickness(2.f);
 	healthBar.setSize({ barScaleX, 15.f });
 	healthBar.setPosition({ GetPos().x, GetPos().y - 75.f });
+
 
 	Utils::SetOrigin(healthBar, Origins::BC);
 	scene = SCENE_MGR->GetCurrScene();

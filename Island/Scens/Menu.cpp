@@ -23,6 +23,8 @@ Menu::~Menu()
 
 void Menu::Init()
 {
+	FRAMEWORK->GetWindow().setMouseCursorVisible(true);
+	FRAMEWORK->GetWindow().setMouseCursorGrabbed(false);
 	backGround = new SpriteObject();
 	backGround->SetTexture(*RESOURCES_MGR->GetTexture("graphics/title.png"));
 	backGround->SetSize({ WINDOW_WIDTH, WINDOW_HEIGHT });
