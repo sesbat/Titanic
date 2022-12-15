@@ -9,7 +9,7 @@
 #include <iostream>
 
 Zombie::Zombie()
-	:maxSpeed(100.f), dashSpeed(110.f)
+	:maxSpeed(80.f), dashSpeed(150.f), hitTime(1.f), hitTimer(0.f), damage(10)
 {
 }
 
@@ -46,17 +46,18 @@ void Zombie::Init(Player* player)
 
 	scene = SCENE_MGR->GetCurrScene();
 
-	bottomPos = bottom->GetHitBottomPos();
+	dashHitbox = new HitBox();
+	dashHitbox->SetFillColor(Color::Yellow);
+	dashHitbox->SetPos({ GetPos().x - 25.f,GetPos().y - 30.f });
+	dashHitbox->SetHitbox({ 0.f,0.f,45.f,60.f });
 
 	astar = new Astar();
 
+	bottomPos = bottom->GetHitBottomPos();
+
 	MakePath();
 	movePos.clear();
-
-	//SetTexture(*RESOURCES_MGR->GetTexture(enemyType));
-	SetOrigin(Origins::BC);
 	SetState(States::Idle);
-	animator.Play((direction.x > 0.f) ? "ZombileIdle" : "ZombileIdleLeft");
 }
 
 void Zombie::Update(float dt)
@@ -85,29 +86,32 @@ void Zombie::Update(float dt)
 		SetState(States::Dead);
 
 	}
-
+	if (((Utils::Distance(player->GetPos(), GetPos()) < searchDis) && isInSight))
+	{
+		isHit = true;
+		
+	}
 	//enemy attack
-	if (curState != States::Dead && curState == States::Idle)
+	if (curState == States::Idle && !isHit)
 	{
 		PatrolPattern(dt);
-		/*if (patrolTime <= 0.f && !attack)
-		{
-			PatrolPattern(dt);
-			patrolTime = 5.f;
-		}
-		if (curState == States::Idle)
-		{
-			patrolTime -= dt;
-		}*/
-		//AttackPattern(dt);
+		
 	}
-
+	if (isHit)
+	{
+		AttackPattern(dt);
+		
+	}
 	//move
 	if (curState == States::Move)
 	{
 		Move(dt);
 
 	}
+
+	ContactDamage();
+	//contact hit timer
+	hitTimer -= dt;
 
 	//hp bar
 	SetHpBar();
@@ -117,7 +121,7 @@ void Zombie::Update(float dt)
 
 	//position
 	bottomPos = bottom->GetHitBottomPos();
-
+	dashHitbox->SetPos({ GetPos().x - 25.f,GetPos().y - 30.f });
 
 
 	auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
@@ -141,10 +145,11 @@ void Zombie::Draw(RenderWindow& window)
 {
 	if (!enabled || !IsInView())
 		return;
+	//dashHitbox->Draw(window);
 	if (GetActive() && isInSight)
 	{
 		HitBoxObject::Draw(window);
-		window.draw(healthBar);
+		//window.draw(healthBar);
 		SetColor(Color::White);
 		
 	}
@@ -246,139 +251,80 @@ void Zombie::Move(float dt)
 
 void Zombie::AttackPattern(float dt)
 {
-	CheckIsInSight();
-	if (!player->GetHide() &&
-		(Utils::Distance(player->GetPos(), GetPos()) < 500.f) && isInSight)
-	{
-		movePos.clear();
-		FindGrid(patrolPos);
-		astar->AstarSearch(*isGreedObject, startPos, destPos);
-		movePos = astar->GetCoordinate();
-		SetState(States::Move);
-	}
+	speed = dashSpeed;
+	MakePath();
+	movePos.clear();
+	FindGrid();
+	astar->AstarSearch(*isGreedObject, startPos, destPos);
+	movePos = astar->GetCoordinate();
+	CallFriends();
+	SetState(States::Move);
 }
 
 void Zombie::PatrolPattern(float dt)
 {
 	MakePath();
-	//int num = Utils::RandomRange(0, 5);
-	//Vector2f point = patrolPos[num];
 	movePos.clear();
 	FindGrid(patrolPos);
 	astar->AstarSearch(*isGreedObject, startPos, destPos);
 	movePos = astar->GetCoordinate();
+	isHit = false;
 	SetState(States::Move);
 }
 
-//void Zombie::FindGrid()
-//{
-//	//Enemy start pos
-//	startPos.first = (int)bottomPos.x / 60;
-//	startPos.second = (int)bottomPos.y / 60;
-//
-//	//Enemy dest pos
-//	destPos.first = (int)player->GetPlayerBottom().x / 60;
-//	destPos.second = (int)player->GetPlayerBottom().y / 60;
-//}
-//
-//void Zombie::FindGrid(Vector2f pos)
-//{
-//	//Enemy start pos
-//	startPos.first = (int)bottomPos.x / 60;
-//	startPos.second = (int)bottomPos.y / 60;
-//
-//	//Enemy dest pos
-//	destPos.first = (int)pos.x / 60;
-//	destPos.second = (int)pos.y / 60;
-//}
-//
-//void Zombie::CheckIsInSight()
-//{
-//	VertexArray lines(LineStrip, 2);
-//	lines[0].position = { GetPos() };
-//	lines[1].position = { player->GetPos() };
-//
-//	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
-//	{
-//		auto boundInObj = ((GameScene*)scene)->ObjListObb(lines.getBounds());
-//
-//		for (auto& obj : boundInObj)
-//		{
-//			if (Utils::LineRect(
-//				GetPos(),
-//				player->GetPos(),
-//				obj->GetBottom()->GetHitbox()))
-//			{
-//				if (obj->GetName() == "TREE" ||
-//					obj->GetName() == "STONE" ||
-//					obj->GetName() == "BLOCK")
-//				{
-//					isInSight = false;
-//					break;
-//				}
-//			}
-//			else
-//			{
-//				isInSight = true;
-//			}
-//
-//		}
-//	}
-//}
-//
-//void Zombie::MakePath()
-//{
-//	int x, y;
-//	//int num = 0;
-//	while (1)
-//	{
-//		if (Utils::RandomRange(0, 2) == 0)
-//		{
-//			x = ((int)bottomPos.x / 60) + Utils::RandomRange(0, patrolBlock);
-//			y = ((int)bottomPos.y / 60) + Utils::RandomRange(0, patrolBlock);
-//		}
-//		else
-//		{
-//			x = ((int)bottomPos.x / 60) + Utils::RandomRange(-patrolBlock, 0);
-//			y = ((int)bottomPos.y / 60) + Utils::RandomRange(-patrolBlock, 0);
-//		}
-//		if (x > 0 && y > 0 && y < 72 && x < 128)
-//		{
-//			if (!CheckWall(x, y))
-//			{
-//				patrolPos = { x * 60.f,y * 60.f };
-//				break;
-//
-//				//cout << "path x: " << x << " y: " << y << endl;
-//			}
-//		}
-//
-//	}
-//	return;
-//}
-//
-//bool Zombie::CheckWall(int x, int y)
-//{
-//	return (*isGreedObject)[y][x];
-//}
-//
-//
-//void Zombie::CallFriends()
-//{
-//}
+void Zombie::CallFriends()
+{
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+		auto* enemyfriend = ((GameScene*)scene)->GetEnemyList();
+		if (enemyfriend->size() <= 1)
+		{
+			return;
+		}
 
-//void Zombie::SetHp(int num)
-//{
-//	if (isdead)
-//		return;
-//
-//	hp -= num;
-//	SetHpBar();
-//	healthBar.setPosition({ GetPos().x, GetPos().y - 75.f });
-//	if (hp <= 0)
-//	{
-//		hp = 0;
-//		SOUND_MGR->Play("sounds/death.wav");
-//		isdead = true;
-//	}
-//}
+		for (auto obj = enemyfriend->begin(); obj != enemyfriend->end(); obj++)
+		{
+			if ((Utils::Distance((*obj)->GetPos(), GetPos()) < searchDis))
+			{
+				(*obj)->SetIsHit(true);
+			}
+		}
+
+	}
+}
+
+void Zombie::ContactDamage()
+{
+	for (auto& pHit : player->GetHitBoxs())
+	{
+		if (dashHitbox->GetActive() && Utils::OBB(dashHitbox->GetHitbox(), pHit->GetHitbox()))
+		{
+			if (hitTimer <= 0)
+			{
+				player->SetHp(damage);
+				hitTimer = hitTime;
+				//cout << "damage" << endl;
+			}
+			break;
+		}
+	}
+}
+
+void Zombie::SetHp(int num)
+{
+	isHit = true;
+	moveTime = 0.f;
+	playerPos = player->GetPos();
+	movePos.clear();
+	FindGrid();
+	astar->AstarSearch(*isGreedObject, startPos, destPos);
+	movePos = astar->GetCoordinate();
+
+	hp -= num;
+	if (hp <= 0)
+	{
+		hp = 0;
+	}
+}
+

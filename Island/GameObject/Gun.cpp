@@ -233,7 +233,7 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 
 	if (distance < 100.f||!isplayer)
 	{
-		cout << "100" << endl;
+		//cout << "100" << endl;
 		randDir = lookDir;
 	}
 	else

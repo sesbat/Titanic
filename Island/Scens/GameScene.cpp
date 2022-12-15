@@ -420,7 +420,8 @@ void GameScene::Update(float dt)
     if (!player->GetIsAlive())
     {
         player->SaveSaveBox();
-        FILE_MGR->SaveInvenInfo(vector<InvenInfo>());
+        auto reset_inven = FILE_MGR->GetResetInvenInfo();
+        FILE_MGR->SaveInvenInfo(reset_inven);
         FILE_MGR->SaveUseItemInfo(vector<InvneUseInfo>());
         SCENE_MGR->ChangeScene(Scenes::Ready);
         return;
@@ -574,7 +575,7 @@ void GameScene::Draw(RenderWindow& window)
 
 	window.setView(worldView);
 
-	window.draw(lines);
+	//window.draw(lines);
 	if (!player->GetIsMove())
 		cursor->Draw(window);
 	if (player->GetIsMove())

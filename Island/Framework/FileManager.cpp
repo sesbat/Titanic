@@ -86,6 +86,11 @@ void FileManager::LoadAll()
 	invenAllItems = info_inven_d;
 	info_inven.close();
 
+	ifstream reset_info_inven("config/data/gameData/reset_invenInfo.json");
+	json reset_info_inven_d = json::parse(reset_info_inven);
+	resetInven = reset_info_inven_d;
+	reset_info_inven.close();
+
 	ifstream save_box_inven("config/data/gameData/saveBox.json");
 	json info_inven_save_d = json::parse(save_box_inven);
 	saveAllItems = info_inven_save_d;

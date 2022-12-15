@@ -76,15 +76,9 @@ void MonsterHouse::Draw(RenderWindow& window)
 			hit->Draw(window);
 		}
 	}
-	VertexArray lines(LineStrip, 2);
 	if (isInSight)
 	{
 		HitBoxObject::Draw(window);
-		if (!isdead)
-			window.draw(healthBar);
-		lines[0].position = { GetPos() };
-		lines[1].position = { player->GetPos() };
-		window.draw(lines);
 	}
 }
 

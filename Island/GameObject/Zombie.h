@@ -14,10 +14,16 @@ public:
 private:
 	//Astar* astar;
 	//valance variable
-	States curState;
-
 	float maxSpeed;
 	float dashSpeed;
+	float hitTime;
+	int damage;
+	/////////
+
+
+	HitBox* dashHitbox;
+	float hitTimer;
+	States curState;
 
 	bool isdead = false;
 
@@ -34,9 +40,11 @@ public:
 	virtual void Move(float dt);
 	virtual void AttackPattern(float dt);
 	virtual void PatrolPattern(float dt);
-
+	virtual void CallFriends();
+	void ContactDamage();
+	virtual void SetIsHit(bool hit) { isHit = hit; }
 	virtual void HideStop() {};
-	//virtual void SetHp(int num);
+	virtual void SetHp(int num);
 	virtual void SetIsSearch(bool hit) {}
 
 };
