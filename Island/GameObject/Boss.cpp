@@ -22,7 +22,7 @@ Boss::Boss()
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
 	timer(0.f), moveTime(2.f), stopTime(1.f), stunTime(3.f), dashCoolTime(5.f),
 	hitTime(1.f), hitTimer(0.f), playerStunTime(1.f),
-	hp(1500), maxHp(1500), barScaleX(60.f), look(1.f, 0.f),
+	hp(30000), maxHp(30000), barScaleX(60.f), look(1.f, 0.f),
 	dashSpeed(800.f),
 	dashRange(2000.f), range(500.f), activeDashRange(600.f),
 	dashDamage(100), damage(10), fireDamage(100),
