@@ -99,6 +99,7 @@ void Boss::Init(Player* player)
 	bottomPos = bottom->GetHitBottomPos();
 	range = dashRange;
 	movePos.clear();
+	direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 	SetState(States::Idle);
 }
 
@@ -189,12 +190,12 @@ void Boss::Update(float dt)
 							CheckIsInWall();
 							gun->SetLookDir(lookDir);
 							gun->BossFire(GetPos(), false);
-							//SetState(States::Idle);
+							
 							timer = semiDelay;
 							fpCount++;
 							if (fpCount >= 3)
 							{
-								//cout << "reset" << endl;
+								
 								AttackPattern(dt);
 								fpCount = 0;
 							}
@@ -257,17 +258,6 @@ void Boss::Update(float dt)
 		//gun
 		gun->Update(dt);
 
-		//dev
-		/*if (InputMgr::GetKeyDown(Keyboard::Z))
-		{
-			CheckIsInWall();
-			gun->SetLookDir(lookDir);
-			gun->BossFire(GetPos(), false);
-		}
-		if (InputMgr::GetKeyDown(Keyboard::X))
-		{
-			SetState(States::Idle);
-		}*/
 	}
 }
 
@@ -279,18 +269,10 @@ void Boss::Draw(RenderWindow& window)
 	if (GetActive() && isInSight)
 	{
 		HitBoxObject::Draw(window);
-		window.draw(healthBar);
+		//window.draw(healthBar);
 		SetColor(Color::White);
 	}
 	gun->Draw(window);
-
-	/*VertexArray lines(LineStrip, 2);
-	if (isInSight)
-	{
-		lines[0].position = { GetPos().x,GetPos().y + 20.f };
-		lines[1].position = { player->GetPos().x,player->GetPos().y + 20.f };
-		window.draw(lines);
-	}*/
 
 }
 

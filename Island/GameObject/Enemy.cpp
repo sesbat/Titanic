@@ -85,8 +85,10 @@ void Enemy::Init(Player* player)
 	astar = new Astar();
 
 	bottomPos = bottom->GetHitBottomPos();
+	direction.x = (this->player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 	MakePath();
 	movePos.clear();
+
 }
 
 void Enemy::SetState(States newState)
@@ -205,7 +207,7 @@ void Enemy::Draw(RenderWindow& window)
 	if ( GetActive() && isInSight)
 	{
 		HitBoxObject::Draw(window);
-		window.draw(healthBar);
+		//window.draw(healthBar);
 		SetColor(Color::White);
 		gun->Draw(window);
 	}
@@ -243,6 +245,7 @@ bool Enemy::EqualFloat(float a, float b)
 void Enemy::SetHp(int num)
 {
 	//move trigger
+	direction.x = (this->player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 	isHit = true;
 	moveTime = 0.f;
 	playerPos = player->GetPos();

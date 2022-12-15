@@ -86,9 +86,10 @@ void Zombie::Update(float dt)
 		SetState(States::Dead);
 
 	}
-	if (((Utils::Distance(player->GetPos(), GetPos()) < 500.f) && isInSight))
+	if (((Utils::Distance(player->GetPos(), GetPos()) < searchDis) && isInSight))
 	{
 		isHit = true;
+		
 	}
 	//enemy attack
 	if (curState == States::Idle && !isHit)
@@ -98,8 +99,8 @@ void Zombie::Update(float dt)
 	}
 	if (isHit)
 	{
-		speed = dashSpeed;
 		AttackPattern(dt);
+		
 	}
 	//move
 	if (curState == States::Move)
@@ -144,11 +145,11 @@ void Zombie::Draw(RenderWindow& window)
 {
 	if (!enabled || !IsInView())
 		return;
-	dashHitbox->Draw(window);
+	//dashHitbox->Draw(window);
 	if (GetActive() && isInSight)
 	{
 		HitBoxObject::Draw(window);
-		window.draw(healthBar);
+		//window.draw(healthBar);
 		SetColor(Color::White);
 		
 	}
@@ -248,12 +249,13 @@ void Zombie::Move(float dt)
 
 void Zombie::AttackPattern(float dt)
 {
+	speed = dashSpeed;
 	MakePath();
 	movePos.clear();
 	FindGrid();
 	astar->AstarSearch(*isGreedObject, startPos, destPos);
 	movePos = astar->GetCoordinate();
-	//isHit = false;
+	CallFriends();
 	SetState(States::Move);
 }
 
@@ -266,6 +268,28 @@ void Zombie::PatrolPattern(float dt)
 	movePos = astar->GetCoordinate();
 	isHit = false;
 	SetState(States::Move);
+}
+
+void Zombie::CallFriends()
+{
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+		auto* enemyfriend = ((GameScene*)scene)->GetEnemyList();
+		if (enemyfriend->size() <= 1)
+		{
+			return;
+		}
+
+		for (auto obj = enemyfriend->begin(); obj != enemyfriend->end(); obj++)
+		{
+			if ((Utils::Distance((*obj)->GetPos(), GetPos()) < searchDis))
+			{
+				(*obj)->SetIsHit(true);
+			}
+		}
+
+	}
 }
 
 void Zombie::ContactDamage()

@@ -40,9 +40,9 @@ public:
 	virtual void Move(float dt);
 	virtual void AttackPattern(float dt);
 	virtual void PatrolPattern(float dt);
-
+	virtual void CallFriends();
 	void ContactDamage();
-
+	virtual void SetIsHit(bool hit) { isHit = hit; }
 	virtual void HideStop() {};
 	virtual void SetHp(int num);
 	virtual void SetIsSearch(bool hit) {}

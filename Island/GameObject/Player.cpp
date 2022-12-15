@@ -24,7 +24,7 @@ Player::Player()
 	look(1.f, 0.f), prevLook(1.f, 0.f),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
 	isDash(false), isAlive(true), isMove(true), shootDelay(0.f),
-	isReloading(false), soundDelay(0.5f), isStun(false), stun(0.f)
+	isReloading(false), soundDelay(0.5f), isStun(false), stun(0.f), isMoving(false)
 {
 	auto stat = FILE_MGR->GetUserStat();
 
@@ -315,7 +315,7 @@ void Player::Update(float dt)
 		}
 
 		//dash
-		if (stamina > 0.5f && InputMgr::GetKeyDown(Keyboard::LShift))
+		if (stamina > 0.5f && InputMgr::GetKeyDown(Keyboard::LShift) && (InputMgr::GetAxisRaw(Axis::Horizontal) || InputMgr::GetAxisRaw(Axis::Vertical)))
 		{
 			speed = dashSpeed;
 			isDash = true;
