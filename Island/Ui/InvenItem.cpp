@@ -144,6 +144,7 @@ void InvenItem::ToolTipUpdate(float dt)
 			if (overLapTimer > initTimer)
 			{
 				tip->SetItem(GetName());
+				tip->SetCnt(count);
 				tip->SetItemType(FILE_MGR->GetItemInfo(GetName()).type);
 				tip->SetToolPos(InputMgr::GetMousePos());
 				tip->init();

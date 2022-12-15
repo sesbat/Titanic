@@ -15,6 +15,7 @@ private:
 	string itemName;
 	vector<TextObject*> tooltipDatas;
 	Vector2f itemPos;
+	int cnt = 0;
 	
 public:
 	ToolTip(UiMgr* uimgr);
@@ -25,6 +26,8 @@ public:
 	virtual ~ToolTip();
 	virtual void SetItemType(int i) { type = (ItemType)i; }
 	virtual void SetItem(string name);
+
+	void SetCnt(int c);
 
 	void SetToolPos(Vector2f v);
 };
