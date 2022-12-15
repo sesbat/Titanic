@@ -8,7 +8,7 @@
 #include "../GameObject/Boss.h"
 
 SupplyBox::SupplyBox()
-	:lines(LineStrip, 2)
+	//:lines(LineStrip, 2)
 {
 	pickState = false; 
 }
@@ -20,15 +20,15 @@ SupplyBox::~SupplyBox()
 
 void SupplyBox::Update(float dt)
 {
-	lines[1] = *playerPos;
-	lines[0] = GetPos();
+	//lines[1] = *playerPos;
+	//lines[0] = GetPos();
 	ItemBoxObject::Update(dt);
 }
 
 void SupplyBox::Draw(RenderWindow& window)
 {
 	ItemBoxObject::Draw(window);
-	window.draw(lines);
+	//window.draw(lines);
 }
 
 void SupplyBox::SetSupplyItems(vector<InvenInfo> items)

@@ -319,6 +319,10 @@ animations/zombie/ZombileMove.csv,3
 animations/zombie/ZombileMoveLeft.csv,3
 graphics/radiationTile.png,0
 graphics/editor/drawRadTile.png,0
+graphics/trader_ammo_icon.png,0
+graphics/trader_armor_icon.png,0
+graphics/trader_consumable_icon.png,0
+graphics/trader_weapon_icon.png,0
 graphics/supplyBox.png,0
 graphics/zombieDead.png,0
 graphics/Big_Death.png,0

@@ -16,15 +16,6 @@
 #include <stack>
 #include "Ment.h"
 
-//void OnCreateAcidBullet(Bullet* bullet)
-//{
-//	GameScene* scene = (GameScene*)SCENE_MGR->GetScene(Scenes::GameScene);
-//	bullet->SetTexture(*RESOURCES_MGR->GetTexture("graphics/acid_Thorn.png"));
-//	bullet->Init();
-//	//bullet->SetBossList(scene->GetBossList());
-//	bullet->SetPlayer(scene->GetPlayer());
-//}
-
 Boss::Boss()
 	: currState(States::None),
 	speed(100.f), maxSpeed(100),
@@ -89,10 +80,8 @@ void Boss::Init(Player* player)
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigStun"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("BossBigStunLeft"));
 	dashHitbox = new HitBox();
-	//dashHitbox->SetActive(false);
 	dashHitbox->SetFillColor(Color::Red);
 	dashHitbox->SetPos({ GetPos().x - 100.f,GetPos().y - 60.f });
-	//dashHitbox.set
 	dashHitbox->SetHitbox({ 0.f,0.f,200.f,100.f });
 
 	//health bar
@@ -110,6 +99,7 @@ void Boss::Init(Player* player)
 	bottomPos = bottom->GetHitBottomPos();
 	range = dashRange;
 	movePos.clear();
+	direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 	SetState(States::Idle);
 }
 
@@ -198,12 +188,12 @@ void Boss::Update(float dt)
 							CheckIsInWall();
 							gun->SetLookDir(lookDir);
 							gun->BossFire(GetPos(), false);
-							//SetState(States::Idle);
+							
 							timer = semiDelay;
 							fpCount++;
 							if (fpCount >= 3)
 							{
-								//cout << "reset" << endl;
+								
 								AttackPattern(dt);
 								fpCount = 0;
 							}
@@ -266,17 +256,6 @@ void Boss::Update(float dt)
 		//gun
 		gun->Update(dt);
 
-		//dev
-		/*if (InputMgr::GetKeyDown(Keyboard::Z))
-		{
-			CheckIsInWall();
-			gun->SetLookDir(lookDir);
-			gun->BossFire(GetPos(), false);
-		}
-		if (InputMgr::GetKeyDown(Keyboard::X))
-		{
-			SetState(States::Idle);
-		}*/
 	}
 }
 
@@ -288,18 +267,10 @@ void Boss::Draw(RenderWindow& window)
 	if (GetActive() && isInSight)
 	{
 		HitBoxObject::Draw(window);
-		window.draw(healthBar);
+		//window.draw(healthBar);
 		SetColor(Color::White);
 	}
 	gun->Draw(window);
-
-	/*VertexArray lines(LineStrip, 2);
-	if (isInSight)
-	{
-		lines[0].position = { GetPos().x,GetPos().y + 20.f };
-		lines[1].position = { player->GetPos().x,player->GetPos().y + 20.f };
-		window.draw(lines);
-	}*/
 
 }
 
@@ -553,7 +524,7 @@ void Boss::RampCollision()
 					obj->GetName() == "RADIATION"||
 					obj->GetName() == "INVISIBLE")
 				{
-					cout << "count " << rampCount << endl;
+					//cout << "count " << rampCount << endl;
 					SetBossPos();
 					isStun = true;
 					movePos.clear();
