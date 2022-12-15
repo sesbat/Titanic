@@ -27,6 +27,7 @@ public:
 		None = -1,
 		Idle,
 		Move,
+		Stun,
 	};
 
 protected:

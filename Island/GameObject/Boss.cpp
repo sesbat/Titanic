@@ -142,7 +142,7 @@ void Boss::Update(float dt)
 	if (isStart == false && (Utils::Distance(player->GetPos(), GetPos()) < startRange))
 	{
 		isStart = true;
-		//SetState(States::Idle);
+		SOUND_MGR->Play("sounds/bossHowl.wav");
 	}
 
 	//start fight
@@ -277,7 +277,7 @@ void Boss::Draw(RenderWindow& window)
 void Boss::OnCompleteDead()
 {
 	((GameScene*)(SCENE_MGR->GetCurrScene()))->SetDeadEnemy(items, position, this, "graphics/Big_Death.png");
-	SOUND_MGR->Play("sounds/death.wav");
+	SOUND_MGR->Play("sounds/bossDead.wav");
 	SetActive(false);
 }
 

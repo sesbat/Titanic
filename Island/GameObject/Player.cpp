@@ -74,6 +74,9 @@ void Player::Init()
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerIdleLeft"));
 	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerMoveLeft"));
 
+	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerStun"));
+	animator.AddClip(*ResourceManager::GetInstance()->GetAnimationClip("PlayerStunLeft"));
+
 	scene = SCENE_MGR->GetCurrScene();
 
 	SetState(States::Idle);
@@ -102,6 +105,9 @@ void Player::SetState(States newState)
 		animator.Play((lookDir.x > 0.f) ? "PlayerMove" : "PlayerMoveLeft");
 		lastDirection = direction;
 		break;
+	case Player::States::Stun:
+		animator.Play((lookDir.x > 0.f) ? "PlayerStun" : "PlayerStunLeft");
+		break;
 	}
 }
 
@@ -127,16 +133,19 @@ void Player::Update(float dt)
 		SOUND_MGR->Play("sounds/footstep.ogg");
 		soundDelay = 0.5f;
 	}
-
-	switch (currState)
+	if (!isStun)
 	{
-	case Player::States::Idle:
-		UpdateIdle(dt);
-		break;
-	case Player::States::Move:
-		UpdateMove(dt);
-		break;
+		switch (currState)
+		{
+		case Player::States::Idle:
+			UpdateIdle(dt);
+			break;
+		case Player::States::Move:
+			UpdateMove(dt);
+			break;
+		}
 	}
+	
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
 		hungerDelay -= dt;
@@ -165,6 +174,7 @@ void Player::Update(float dt)
 		}
 		if (radiationDelay < 0.f && radGuage <= 255.f)
 		{
+			SOUND_MGR->Play("sounds/radsound.wav");
 			radGuage += 2.5;
 			radiationDelay = init_radiationDelay;
 			if ((radGuage / 255) * 100 >= radDebuffLevel)
@@ -420,6 +430,7 @@ void Player::Update(float dt)
 		stun -= dt;
 		if (stun <= 0)
 		{
+			SetState(States::Idle);
 			isStun = false;
 		}
 	}
@@ -1100,6 +1111,7 @@ void Player::HideStop()
 
 void Player::SetStun(bool stun, float time)
 {
+	SetState(States::Stun);
 	isStun = stun;
 	this->stun = time;
 }

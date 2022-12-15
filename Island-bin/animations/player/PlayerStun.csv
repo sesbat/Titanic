@@ -1,0 +1,8 @@
+ID,LOOPTYPE (0: Single 1: Move),FPS,,,,,,
+PlayerStun,1,10,,,,,,
+,,,,,,,,
+TEXTURE ID,L,T,W,H,X,Y,FlipX,FlipY
+graphics/player/playerStun.png,0,0,38,60,19,30,0,0
+graphics/player/playerStun.png,38,0,38,60,19,30,0,0
+graphics/player/playerStun.png,76,0,38,60,19,30,0,0
+graphics/player/playerStun.png,114,0,38,60,19,30,0,0
