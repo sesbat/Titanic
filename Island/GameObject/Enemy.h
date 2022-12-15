@@ -144,4 +144,5 @@ public:
 	void SetHide(bool state);
 	void HideUpdate(float dt);
 	virtual void HideStop();
+	virtual void SetIsHit(bool hit) {}
 };

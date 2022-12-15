@@ -574,7 +574,7 @@ void GameScene::Draw(RenderWindow& window)
 
 	window.setView(worldView);
 
-	window.draw(lines);
+	//window.draw(lines);
 	if (!player->GetIsMove())
 		cursor->Draw(window);
 	if (player->GetIsMove())

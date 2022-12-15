@@ -135,7 +135,7 @@ protected:
 	float hideDelayTimer;
 	bool isHitBullet;
 	bool isStun;
-	//float stunTime;
+	bool isMoving;
 	float stun;
 
 	vector<string> clearMaps;

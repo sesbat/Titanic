@@ -85,8 +85,10 @@ void Enemy::Init(Player* player)
 	astar = new Astar();
 
 	bottomPos = bottom->GetHitBottomPos();
+	direction.x = (this->player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 	MakePath();
 	movePos.clear();
+
 }
 
 void Enemy::SetState(States newState)
@@ -205,7 +207,7 @@ void Enemy::Draw(RenderWindow& window)
 	if ( GetActive() && isInSight)
 	{
 		HitBoxObject::Draw(window);
-		window.draw(healthBar);
+		//window.draw(healthBar);
 		SetColor(Color::White);
 		gun->Draw(window);
 	}
@@ -243,6 +245,7 @@ bool Enemy::EqualFloat(float a, float b)
 void Enemy::SetHp(int num)
 {
 	//move trigger
+	direction.x = (this->player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 	isHit = true;
 	moveTime = 0.f;
 	playerPos = player->GetPos();
@@ -418,65 +421,8 @@ void Enemy::Move(float dt)
 	Collision();
 }
 
-//void Enemy::MoveToPos(float dt)
-//{
-//	if (movePos.empty())
-//	{
-//		//cout << "empty list1" << endl;
-//		SetState(States::Idle);
-//		Translate({ 0.f, 0.f });
-//		return;
-//	}
-//	
-//	Vector2f aPos = movePos.front();
-//	if ((Utils::Distance(aPos, GetPos()) <= 10.f))
-//	{
-//		if (movePos.empty())
-//		{
-//			//cout << "empty list2" << endl;
-//			SetState(States::Idle);
-//			return;
-//		}
-//		//cout << "in position" << endl;
-//		movePos.pop_front();
-//	}
-//	moveDir = Utils::Normalize(aPos - GetPos());
-//
-//	prevPosition = GetPos();
-//	Translate( moveDir * this->speed * dt );
-//
-//	//position
-//	for (auto& hit : hitboxs)
-//	{
-//		hit->SetPos(GetPos());
-//	}
-//	//wall bound
-//	Collision();
-//}
-
 void Enemy::Collision()
 {
-	//auto obj = scene->GetObjList();
-	////wall bound
-	//for (auto& objects : obj[LayerType::Object][0])
-	//{
-	//	auto hit = ((HitBoxObject*)objects)->GetBottom();
-	//	if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
-	//		continue;
-	//	if (objects->GetName() == "TREE" ||
-	//		objects->GetName() == "STONE" ||
-	//		objects->GetName() == "BLOCK" ||
-	//		objects->GetName() == "PLAYER")
-	//	{
-	//		if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
-	//		{
-	//			SetEnemyPos();
-	//			break;
-	//		}
-	//	}
-	//}
-
-
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
 		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
