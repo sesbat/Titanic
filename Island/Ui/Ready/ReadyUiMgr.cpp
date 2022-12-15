@@ -405,7 +405,7 @@ void ReadyUiMgr::Update(float dt)
 				player->GetEnergyGuage() < 255.f) &&
 			player->GetMoney() >= 500)
 		{
-			player->AddMoney(-500 + (500 * (player->GetHp() / player->GetMaxHp())));
+			player->AddMoney(-500 /*+ (500 * (player->GetHp() / player->GetMaxHp()))*/);
 			player->HealHunger(255.f);
 			player->HealEnergy(255.f);
 			player->HealThirst(255.f);
