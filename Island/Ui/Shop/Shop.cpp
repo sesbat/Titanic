@@ -12,6 +12,7 @@
 #include "../InvenGreed.h"
 #include "../InvenItem.h"
 #include "../InventoryBox.h"
+#include "../../Framework/SoundManager.h"
 
 Shop::Shop(UiMgr* mgr)
 	:Inventory(mgr)
@@ -236,6 +237,7 @@ void Shop::Update(float dt)
 		items->ButtonUpdate(dt);
 		if (items->IsClick())
 		{
+			SOUND_MGR->Play("sounds/dealSound.wav");
 			cout << "sell_items" << endl;
 			sellInven->DeleteItem(items, items->GetGreedPos(), Vector2i{ items->GetWidth(),items->GetHeight() });
 
@@ -256,6 +258,7 @@ void Shop::Update(float dt)
 			items->ButtonUpdate(dt);
 			if (items->IsClick())
 			{
+				SOUND_MGR->Play("sounds/dealSound.wav");
 				cout << "buy_items" << endl;
 				buyInven->DeleteItem(items, items->GetGreedPos(), Vector2i{ items->GetWidth(),items->GetHeight() });
 

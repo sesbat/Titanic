@@ -367,3 +367,14 @@ graphics/items/Armor-2.png,0
 graphics/items/Armor-3.png,0
 graphics/items/Armor-4.png,0
 graphics/items/Armor-5.png,0
+sounds/bossHowl.wav,2
+sounds/zombieDead.wav,2
+sounds/zombispawnerBreak.wav,2
+sounds/eatSound.wav,2
+sounds/drinkSound.wav,2
+sounds/dealSound.wav,2
+sounds/radsound.wav,2
+graphics/player/playerStun.png,0
+animations/player/PlayerStun.csv,3
+animations/player/PlayerStunLeft.csv,3
+sounds/bossDead.wav,2

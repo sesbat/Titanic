@@ -197,7 +197,7 @@ void Zombie::SetState(States newState)
 	case Zombie::States::Dead:
 	{
 		((GameScene*)(SCENE_MGR->GetCurrScene()))->SetDeadEnemy(items, position, this, "graphics/zombieDead.png");
-		SOUND_MGR->Play("sounds/death.wav");
+		SOUND_MGR->Play("sounds/zombieDead.wav");
 		SetActive(false);
 	}
 	break;

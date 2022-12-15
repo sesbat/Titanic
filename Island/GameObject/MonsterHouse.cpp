@@ -124,7 +124,7 @@ void MonsterHouse::SetHp(int num)
 	if (hp <= 0)
 	{
 		hp = 0;
-		SOUND_MGR->Play("sounds/death.wav");
+		SOUND_MGR->Play("sounds/zombispawnerBreak.wav");
 		SetTexture(*RESOURCES_MGR->GetTexture("graphics/enemy/s_infestation_dead.png"));
 		isdead = true;
 	}
