@@ -67,7 +67,7 @@ void FileManager::LoadAll()
 		craftItemInfos.push_back(craftItemInfo);
 		info.close();
 	}
-	for(int i=1; i<4; i++)
+	for(int i=1; i<5; i++)
 	{
 		ifstream shop_item("config/data/shop/shoptable"+to_string(i)+".json");
 		json shop_item_d = json::parse(shop_item);

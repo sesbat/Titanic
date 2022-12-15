@@ -225,11 +225,11 @@ void Gun::Fire(Vector2f pos, bool isplayer)
 
 	Transform transform = translation * rotation;
 	Vector2f mouseWorldPos = scene->ScreenToWorld((Vector2i)InputMgr::GetMousePos());
+
 	data = gunsInfo[GetName()];
 	randomNum = data.randDir;
+
 	float distance = Utils::Distance(mouseWorldPos, GetPos());
-	cout << InputMgr::GetMousePos().x << " " << InputMgr::GetMousePos().y << endl;
-	cout << GetPos().x << " " << GetPos().y << endl;
 
 	if (distance < 100.f||!isplayer)
 	{

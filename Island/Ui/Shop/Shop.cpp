@@ -62,21 +62,20 @@ void Shop::Init()
 {
 	SetTexture(*RESOURCES_MGR->GetTexture("graphics/shop.png"), true);
 
-	String itemList[] = { "1", "2", "3" };
+	String itemTab[] = { "trader_consumable_icon", "trader_armor_icon", "trader_ammo_icon", "trader_weapon_icon"};
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		Button* button = new Button(uimgr);
 		button->SetClkColor(true);
-		button->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-			50, Color::White, (string)itemList[i], true);
-		button->SetOrigin(Origins::MC);
-		button->SetPos({ FRAMEWORK->GetWindowSize().x-100.f,100.f + FRAMEWORK->GetWindowSize().y / 6 * i });
+		button->SetTexture(*RESOURCES_MGR->GetTexture("graphics/" + itemTab[i] + ".png"),true);
+		//button->SetOrigin(Origins::MC);
+		button->SetPos({ FRAMEWORK->GetWindowSize().x - 130.f,252 + i * 64.f });
 		shopCategorybtn.push_back(button);
 	}
 
-	String box[] = { "shopBox1", "shopBox2", "shopBox3" };
-	for (int i = 0; i < 3; i++)
+	String box[] = { "shopBox1", "shopBox2", "shopBox3","shopBox4"};
+	for (int i = 0; i < 4; i++)
 	{
 		auto shopBox = new InventoryBox(uimgr, this, Vector2i{ 1248,252 });
 		shopBox->SetClkColor(true);
