@@ -518,5 +518,625 @@
       "y": 400
     },
     "tooltipDelay": 1.0
+  },
+  "Bread": {
+    "path": "graphics/items/item_bread.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 35,
+    "uiName": "Bread",
+    "type": 1,
+    "description": "Bread for a light meal.\nIt smells and tastes good, but get hung\nry soon.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "RottenBread": {
+    "path": "graphics/items/item_bread_rotten.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 20,
+    "uiName": "Rotten Bread",
+    "type": 1,
+    "description": "Moldy and dry bread.\nIt seems to taste like metal.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Cheese": {
+    "path": "graphics/items/item_cheese.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 50,
+    "uiName": "Cheese",
+    "type": 1,
+    "description": "low weight, high calorie.\nSuitable for survival food.\nIf you give up nutritional balance..",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "RottenCheese": {
+    "path": "graphics/items/item_cheese_rotten.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 35,
+    "uiName": "Rotten Cheese",
+    "type": 1,
+    "description": "Cheese is rotten too.\nWhat's the difference between fermentation\nand decay.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Egg": {
+    "path": "graphics/items/item_egg.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 100,
+    "uiName": "Egg",
+    "type": 1,
+    "description": "\"Why's the egg so dry?\" -Detective Ma",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "RottenEgg": {
+    "path": "graphics/items/item_egg_rotten.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 50,
+    "uiName": "Rotten Egg",
+    "type": 1,
+    "description": "You want me to eat this?\nYuuuuck disgusting!",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Sandwitch": {
+    "path": "graphics/items/item_sandwich_meat.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 300,
+    "uiName": "Sandwitch",
+    "type": 1,
+    "description": "I'll cut it into a star shape.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "MRE": {
+    "path": "graphics/items/item_mre.png",
+    "maxCount": 3,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 500,
+    "uiName": "MRE",
+    "type": 1,
+    "description": "Apart from the taste, It's the perfect\nlunchbox.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "RottenWater": {
+    "path": "graphics/items/item_water_bottle_rotten.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 50,
+    "uiName": "Rotten Water",
+    "type": 1,
+    "description": "Ugh. stinky smell, what the hell is mixed\nwith the water?",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Milk": {
+    "path": "graphics/items/item_milk.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 100,
+    "uiName": "Milk",
+    "type": 1,
+    "description": "There Is No Cow Level.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "RottenMilk": {
+    "path": "graphics/items/item_milk_rotten.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 50,
+    "uiName": "Rotten Milk",
+    "type": 1,
+    "description": "It's been a long time since the expiration date,\nand it smells thick and sour.\nI just imagine making cheese.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Coke": {
+    "path": "graphics/items/item_coke.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 200,
+    "uiName": "Coke",
+    "type": 1,
+    "description": "Please don't ask for Coke, ask for Cola.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Coffee": {
+    "path": "graphics/items/item_cup_coffee.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 200,
+    "uiName": "Coffee",
+    "type": 1,
+    "description": "What else?",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Vodka": {
+    "path": "graphics/items/item_vodka.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 400,
+    "uiName": "Vodka",
+    "type": 1,
+    "description": "Vodka! Vodka!\nDrinking is good for you",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Whisky": {
+    "path": "graphics/items/item_whisky.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 400,
+    "uiName": "Whisky",
+    "type": 1,
+    "description": "American bourbon whiskey.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "AntiRad": {
+    "path": "graphics/items/item_pillanti_rad.png",
+    "maxCount": 3,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 1000,
+    "uiName": "AntiRad",
+    "type": 1,
+    "description": "It has the effect of lowering the level of\nradiation in the body.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "RawMeat": {
+    "path": "graphics/items/item_meat_raw.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 50,
+    "uiName": "Raw Meat",
+    "type": 1,
+    "description": "Ah, Fresh Meat!",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "StandardMedikit": {
+    "path": "graphics/items/med1.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 300,
+    "uiName": "Standard Medikit",
+    "type": 5,
+    "description": "Standard medical kit supplied.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ModernMedikit": {
+    "path": "graphics/items/med2.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 500,
+    "uiName": "Modern Medikit",
+    "type": 5,
+    "description": "Specially designed medical kit for seekers\nentering Zarkov.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "IdentificationTag": {
+    "path": "graphics/items/item_identificationtag.png",
+    "maxCount": 3,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 100,
+    "uiName": "Identification Tag",
+    "type": 7,
+    "description": "Evidence that the owner is a former soldier.\nwho cares? Let's sell it to the shop.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "lighter": {
+    "path": "graphics/items/item_lighter.png",
+    "maxCount": 3,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 50,
+    "uiName": "lighter",
+    "type": 7,
+    "description": "Tool for making a fire in the field.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Watch": {
+    "path": "graphics/items/item_watch.png",
+    "maxCount": 3,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 200,
+    "uiName": "Watch",
+    "type": 7,
+    "description": "It's expensive! Get it first.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Tentacles": {
+    "path": "graphics/items/item_tentacles.png",
+    "maxCount": 3,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 100,
+    "uiName": "Tentacles",
+    "type": 7,
+    "description": "Which part is this?",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Claw": {
+    "path": "graphics/items/item_claw.png",
+    "maxCount": 3,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 300,
+    "uiName": "Claw",
+    "type": 7,
+    "description": "Sharp Blink's Claws.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Fang": {
+    "path": "graphics/items/item_fang.png",
+    "maxCount": 3,
+    "weight": 1.0,
+    "width": 1,
+    "height": 2,
+    "price": 1500,
+    "uiName": "Fang",
+    "type": 7,
+    "description": "Big's Fang, as huge as its name.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ZombieMeat": {
+    "path": "graphics/items/item_zombiemeat.png",
+    "maxCount": 3,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 250,
+    "uiName": "Zombie Meat",
+    "type": 7,
+    "description": "Oh no, This must be kryptonite",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Gameboy": {
+    "path": "graphics/items/item_gameboy.png",
+    "maxCount": 3,
+    "weight": 1.0,
+    "width": 1,
+    "height": 2,
+    "price": 250,
+    "uiName": "Game Boy",
+    "type": 7,
+    "description": "33 years old, still Referred to as 'boy'",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "PoliceArmor": {
+    "path": "graphics/items/Armor-2.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 2,
+    "height": 2,
+    "price": 1000,
+    "uiName": "Police Armor",
+    "type": 4,
+    "description": "Armor with helmet used by police.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "HunterArmor": {
+    "path": "graphics/items/Armor-3.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 2,
+    "height": 2,
+    "price": 2000,
+    "uiName": "Hunter Armor",
+    "type": 4,
+    "description": "Armor crafted by seekers entering Zarkov to\nprotect themselves.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ReinforcedArmor": {
+    "path": "graphics/items/Armor-4.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 2,
+    "height": 2,
+    "price": 3000,
+    "uiName": "Reinforced Armor",
+    "type": 4,
+    "description": "Metal-reinforced sturdy Armor.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "HDF-Armor": {
+    "path": "graphics/items/Armor-5.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 2,
+    "height": 2,
+    "price": 4000,
+    "uiName": "HDF-Armor",
+    "type": 4,
+    "description": "Heavy Armor reinforced with lead and metal.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   }
 }

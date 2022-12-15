@@ -1,6 +1,18 @@
 {
-  "Apple": {
-    "name": "Apple",
-    "cnt": 2
+  "PoliceArmor": {
+    "name": "PoliceArmor",
+    "cnt": 1
+  },
+  "HunterArmor": {
+    "name": "PoliceArmor",
+    "cnt": 1
+  },
+  "ReinforcedArmor": {
+    "name": "PoliceArmor",
+    "cnt": 1
+  },
+  "HDF-Armor": {
+    "name": "PoliceArmor",
+    "cnt": 1
   }
 }

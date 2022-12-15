@@ -21,7 +21,7 @@
     "hungerEffect": 0.0,
     "name": "Water",
     "radiationEffect": 0.0,
-    "thirstEffect": 20.0
+    "thirstEffect": 15.0
   },
   "Meat": {
     "energyEffect": 10.0,
@@ -33,10 +33,162 @@
   },
   "Recoverykit": {
     "energyEffect": 0.0,
-    "hp": 250.0,
+    "hp": 300.0,
     "hungerEffect": 0.0,
     "name": "Recoverykit",
-    "radiationEffect": -10.0,
+    "radiationEffect": 0.0,
+    "thirstEffect": 0.0
+  },
+  "Bread": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 10.0,
+    "name": "Bread",
+    "radiationEffect": 0.0,
+    "thirstEffect": 0.0
+  },
+  "RottenBread": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 10.0,
+    "name": "RottenBread",
+    "radiationEffect": 0.2,
+    "thirstEffect": -3.0
+  },
+  "Cheese": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 15.0,
+    "name": "Cheese",
+    "radiationEffect": 0.0,
+    "thirstEffect": -3.0
+  },
+  "RottenCheese": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 15.0,
+    "name": "RottenCheese",
+    "radiationEffect": 0.3,
+    "thirstEffect": -3.0
+  },
+  "Egg": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 15.0,
+    "name": "Egg",
+    "radiationEffect": 0.0,
+    "thirstEffect": -5.0
+  },
+  "RottenEgg": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 15.0,
+    "name": "RottenEgg",
+    "radiationEffect": 0.2,
+    "thirstEffect": -5.0
+  },
+  "Sandwitch": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 30.0,
+    "name": "Sandwitch",
+    "radiationEffect": 0.0,
+    "thirstEffect": 0.0
+  },
+  "MRE": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 50.0,
+    "name": "MRE",
+    "radiationEffect": 0.0,
+    "thirstEffect": 10.0
+  },
+  "RottenWater": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 0.0,
+    "name": "RottenWater",
+    "radiationEffect": 0.2,
+    "thirstEffect": 10.0
+  },
+  "Milk": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 5.0,
+    "name": "Milk",
+    "radiationEffect": 0.0,
+    "thirstEffect": 10.0
+  },
+  "RottenMilk": {
+    "energyEffect": -10.0,
+    "hp": 0.0,
+    "hungerEffect": 5.0,
+    "name": "RottenMilk",
+    "radiationEffect": 0.3,
+    "thirstEffect": 10.0
+  },
+  "Coke": {
+    "energyEffect": 10.0,
+    "hp": 0.0,
+    "hungerEffect": 0.0,
+    "name": "Coke",
+    "radiationEffect": 0.0,
+    "thirstEffect": 13.0
+  },
+  "Coffee": {
+    "energyEffect": 20.0,
+    "hp": 0.0,
+    "hungerEffect": 0.0,
+    "name": "Coffee",
+    "radiationEffect": 0.0,
+    "thirstEffect": 10.0
+  },
+  "Vodka": {
+    "energyEffect": -15.0,
+    "hp": 0.0,
+    "hungerEffect": 30.0,
+    "name": "Vodka",
+    "radiationEffect": 0.0,
+    "thirstEffect": -5.0
+  },
+  "Whisky": {
+    "energyEffect": -10.0,
+    "hp": 0.0,
+    "hungerEffect": 30.0,
+    "name": "Whisky",
+    "radiationEffect": 0.0,
+    "thirstEffect": -10.0
+  },
+  "AntiRad": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 0.0,
+    "name": "AntiRad",
+    "radiationEffect": -1.5,
+    "thirstEffect": 0.0
+  },
+  "RawMeat": {
+    "energyEffect": 0.0,
+    "hp": 0.0,
+    "hungerEffect": 15.0,
+    "name": "RawMeat",
+    "radiationEffect": 0.2,
+    "thirstEffect": 0.0
+  },
+  "StandardMedikit": {
+    "energyEffect": 0.0,
+    "hp": 600.0,
+    "hungerEffect": 0.0,
+    "name": "StandardMedikit",
+    "radiationEffect": 0.0,
+    "thirstEffect": 0.0
+  },
+  "ModernMedikit": {
+    "energyEffect": 0.0,
+    "hp": 900.0,
+    "hungerEffect": 0.0,
+    "name": "ModernMedikit",
+    "radiationEffect": 0.0,
     "thirstEffect": 0.0
   }
 }

@@ -108,7 +108,7 @@ void CraftItem::ToolTipUpdate(float dt)
 			{
 				tip->SetItem(GetName());
 				tip->SetItemType(FILE_MGR->GetItemInfo(GetName()).type);
-				tip->SetToolPos(SCENE_MGR->GetCurrScene()->ScreenToWorld((Vector2i)InputMgr::GetMousePos()));
+				tip->SetToolPos(InputMgr::GetMousePos());
 				tip->init();
 				tip->SetActive(true);
 				overLapTimer = 0.f;
