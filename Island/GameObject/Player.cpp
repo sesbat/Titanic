@@ -566,6 +566,10 @@ void Player::HealRad(float num)
 	{
 		radGuage = maxRadiation;
 	}
+	if (radGuage < 0)
+	{
+		radGuage = 0;
+	}
 }
 
 void Player::SetPlayerPos()

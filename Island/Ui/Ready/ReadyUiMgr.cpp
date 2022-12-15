@@ -397,11 +397,20 @@ void ReadyUiMgr::Update(float dt)
 	}
 	if (yesORno->GetActive())
 	{
-		if (yesORno->GetYes()&&player->GetHp()<player->GetMaxHp()&&
-			player->GetMoney()>=500)
+		if (yesORno->GetYes() &&
+			(player->GetHp() < player->GetMaxHp() ||
+				player->GetRadiGuage() > 0.f ||
+				player->GetThirstGuage() < 255.f ||
+				player->GetHungerGuage() < 255.f ||
+				player->GetEnergyGuage() < 255.f) &&
+			player->GetMoney() >= 500)
 		{
-			player->HealHp(player->GetMaxHp());
 			player->AddMoney(-500 + (500 * (player->GetHp() / player->GetMaxHp())));
+			player->HealHunger(255.f);
+			player->HealEnergy(255.f);
+			player->HealThirst(255.f);
+			player->HealRad(-255.f);
+			player->HealHp(player->GetMaxHp());
 			yesORno->SetYes(false);
 			healNpc->SetIsHeal(false);
 			player->SetMove(true);
