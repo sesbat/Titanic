@@ -12,7 +12,7 @@
     "type": "graphics/enemy1.png"
   },
   "graphics/enemy2.png": {
-    "gun": 2,
+    "gun": 3,
     "hideDelay": 1.0,
     "hitTime": 0.8,
     "maxHp": 500,
@@ -36,7 +36,7 @@
     "type": "graphics/enemy3.png"
   },
   "graphics/boss_01.png": {
-    "gun": 1,
+    "gun": 4,
     "hideDelay": 1.0,
     "hitTime": 0.8,
     "maxHp": 500,

@@ -26,6 +26,7 @@ private:
 	//GunStat sniperInfo;
 
 	std::vector<InvenInfo> invenAllItems;
+	std::vector<InvenInfo> resetInven;;
 	std::vector<InvenInfo> saveAllItems;
 	std::vector<InvneUseInfo> useItemInfo;
 
@@ -76,6 +77,7 @@ public:
 	//const GunStat& GetRifleInfo() const { return rifleInfo; }
 	//const GunStat& GetSniperInfo() const { return sniperInfo; }
 	const vector<InvenInfo>& GetInvenInfo() const { return invenAllItems; }
+	const vector<InvenInfo>& GetResetInvenInfo() const { return resetInven; }
 	const vector<InvenInfo>& GetSaveBoxInfo() const { return saveAllItems; }
 	const vector<InvenInfo>& GetSupplyBoxInfo(string name) { return suppleyBoxInfo[name]; }
 	const vector<InvneUseInfo>& GetUseItemInfo() const { return useItemInfo; }
