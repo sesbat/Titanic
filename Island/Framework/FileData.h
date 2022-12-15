@@ -202,6 +202,8 @@ namespace ns {
 		int gun;
 
 		float speed;
+		float maxSpeed;
+		float dashSpeed;
 		int maxHp;
 		string type;
 
@@ -212,9 +214,10 @@ namespace ns {
 
 		int patrolBlock;
 		float searchDis;
+		int damage;
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(EnemyInfo,
-			gun, speed, maxHp, type, moveTime, hitTime, patrolTime, hideDelay, patrolBlock, searchDis)
+			gun, speed, maxSpeed, dashSpeed,  maxHp, type, moveTime, hitTime, patrolTime, hideDelay, patrolBlock, searchDis, damage)
 	};
 	struct ShopItemInfo
 	{

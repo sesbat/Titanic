@@ -378,3 +378,5 @@ graphics/player/playerStun.png,0
 animations/player/PlayerStun.csv,3
 animations/player/PlayerStunLeft.csv,3
 sounds/bossDead.wav,2
+graphics/Editor/drawZombie.png,0
+graphics/enemy/zombie.png,0

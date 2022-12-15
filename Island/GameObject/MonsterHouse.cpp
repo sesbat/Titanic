@@ -50,9 +50,9 @@ void MonsterHouse::Update(float dt)
 				enemy->SetName("ENEMY");
 				enemy->SetId(((GameScene*)SCENE_MGR->GetCurrScene())->GetID()++);
 				enemy->SetPos({ GetPos().x,GetPos().y + 50.f });
-				enemy->SetHitBox("graphics/enemy1.png");
+				enemy->SetHitBox("graphics/enemy/zombie.png");
 				enemy->SetType((GunType)0);
-				enemy->SetEnemyType("graphics/enemy1.png");
+				enemy->SetEnemyType("graphics/enemy/zombie.png");
 				enemy->SetGreedObject(isGreedObject);
 				enemy->SetItem(map<string, Item>());
 				enemy->SetItem(items);

@@ -187,6 +187,22 @@ void GameScene::Init()
                 enemies.push_back(enemy);
                 objList[LayerType::Object][0].push_back(enemy);
 			}
+            else if (obj.path == "graphics/enemy/zombie.png")
+            {
+                Zombie* enemy = new Zombie();
+                enemy->SetName(obj.type);
+                enemy->SetId(enemyId++);
+                enemy->SetPos({ obj.position });
+                enemy->SetHitBox(obj.path);
+                enemy->SetType((GunType)0);
+                enemy->SetEnemyType(enemyInfo[obj.path].type);
+                enemy->SetGreedObject(&isGreedObject);
+                enemy->SetItem(obj.item);
+                enemy->Init(player);
+
+                enemies.push_back(enemy);
+                objList[LayerType::Object][0].push_back(enemy);
+			}
 			else
 			{
 				Enemy* enemy = new Enemy();

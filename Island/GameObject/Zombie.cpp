@@ -23,8 +23,21 @@ void Zombie::Init(Player* player)
 {
 	HitBoxObject::Init();
 	this->player = player;
-	
-	hp = maxHp;
+
+	auto enemys = FILE_MGR->GetEnemyInfo();
+	auto data = enemys[enemyType];
+	hp = maxHp = data.maxHp;
+
+	hideDelay = data.hideDelay;
+	initHitTime = data.hitTime;
+	moveTime = data.moveTime;
+	patrolBlock = data.patrolBlock;
+	initPatrolTime = data.patrolTime;
+	speed = data.speed;
+	searchDis = data.searchDis;
+	dashSpeed = data.dashSpeed;
+	maxSpeed = data.maxSpeed;
+
 	speed = maxSpeed;
 
 	animator.SetTarget(&sprite);
@@ -68,7 +81,7 @@ void Zombie::Update(float dt)
 	HitBoxObject::Update(dt);
 	HideUpdate(dt);
 	CheckIsInSight();
-	if (!player->GetHide() && isInSight && (Utils::Distance(player->GetPos(), GetPos()) < 500.f))
+	if (!player->GetHide() && isInSight && (Utils::Distance(player->GetPos(), GetPos()) < searchDis))
 	{
 		//look = player->GetPos();
 		lookDir = Utils::Normalize(player->GetPos() - GetPos());
