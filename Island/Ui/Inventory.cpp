@@ -148,11 +148,17 @@ void Inventory::Update(float dt)
 						isUseItemUp = true;
 					break;
 				case 2:
-					if (itemName == "Armor-1")
+					if (itemName == "Armor-1"||
+						itemName == "Armor-2" || 
+						itemName == "Armor-3" || 
+						itemName == "Armor-4")
 						isUseItemUp = true;
 					break;
 				case 3:
-					if (itemName == "Armor-1")
+					if (itemName == "Armor-1" ||
+						itemName == "Armor-2" ||
+						itemName == "Armor-3" ||
+						itemName == "Armor-4")
 						isUseItemUp = true;
 					break;
 				case 4:
@@ -160,7 +166,26 @@ void Inventory::Update(float dt)
 						itemName == "Apple" ||
 						itemName == "Meat" ||
 						itemName == "Water" ||
-						itemName == "EnergyDrink")
+						itemName == "EnergyDrink"||
+						itemName == "Bread" || 
+						itemName == "RottenBread" || 
+						itemName == "Cheese" || 
+						itemName == "RottenCheese" || 
+						itemName == "Egg" || 
+						itemName == "RottenEgg" || 
+						itemName == "Sandwitch" || 
+						itemName == "MRE" || 
+						itemName == "RottenWater" || 
+						itemName == "Milk" || 
+						itemName == "RottenMilk" || 
+						itemName == "Coke" || 
+						itemName == "Coffee" || 
+						itemName == "Vodka" ||
+						itemName == "Whisky" || 
+						itemName == "AntiRad" || 
+						itemName == "RawMeat" || 
+						itemName == "StandardMedikit" || 
+						itemName == "ModernMedikit" )
 						isUseItemUp = true;
 					break;
 				case 5:
@@ -168,7 +193,26 @@ void Inventory::Update(float dt)
 						itemName == "Apple" ||
 						itemName == "Meat" ||
 						itemName == "Water" ||
-						itemName == "EnergyDrink")
+						itemName == "EnergyDrink" ||
+						itemName == "Bread" ||
+						itemName == "RottenBread" ||
+						itemName == "Cheese" ||
+						itemName == "RottenCheese" ||
+						itemName == "Egg" ||
+						itemName == "RottenEgg" ||
+						itemName == "Sandwitch" ||
+						itemName == "MRE" ||
+						itemName == "RottenWater" ||
+						itemName == "Milk" ||
+						itemName == "RottenMilk" ||
+						itemName == "Coke" ||
+						itemName == "Coffee" ||
+						itemName == "Vodka" ||
+						itemName == "Whisky" ||
+						itemName == "AntiRad" ||
+						itemName == "RawMeat" ||
+						itemName == "StandardMedikit" ||
+						itemName == "ModernMedikit")
 						isUseItemUp = true;
 					break;
 				case 6:
@@ -176,7 +220,26 @@ void Inventory::Update(float dt)
 						itemName == "Apple" ||
 						itemName == "Meat" ||
 						itemName == "Water" ||
-						itemName == "EnergyDrink")
+						itemName == "EnergyDrink" ||
+						itemName == "Bread" ||
+						itemName == "RottenBread" ||
+						itemName == "Cheese" ||
+						itemName == "RottenCheese" ||
+						itemName == "Egg" ||
+						itemName == "RottenEgg" ||
+						itemName == "Sandwitch" ||
+						itemName == "MRE" ||
+						itemName == "RottenWater" ||
+						itemName == "Milk" ||
+						itemName == "RottenMilk" ||
+						itemName == "Coke" ||
+						itemName == "Coffee" ||
+						itemName == "Vodka" ||
+						itemName == "Whisky" ||
+						itemName == "AntiRad" ||
+						itemName == "RawMeat" ||
+						itemName == "StandardMedikit" ||
+						itemName == "ModernMedikit")
 						isUseItemUp = true;
 					break;
 				case 7:
@@ -184,7 +247,26 @@ void Inventory::Update(float dt)
 						itemName == "Apple" ||
 						itemName == "Meat" ||
 						itemName == "Water" ||
-						itemName == "EnergyDrink")
+						itemName == "EnergyDrink" ||
+						itemName == "Bread" ||
+						itemName == "RottenBread" ||
+						itemName == "Cheese" ||
+						itemName == "RottenCheese" ||
+						itemName == "Egg" ||
+						itemName == "RottenEgg" ||
+						itemName == "Sandwitch" ||
+						itemName == "MRE" ||
+						itemName == "RottenWater" ||
+						itemName == "Milk" ||
+						itemName == "RottenMilk" ||
+						itemName == "Coke" ||
+						itemName == "Coffee" ||
+						itemName == "Vodka" ||
+						itemName == "Whisky" ||
+						itemName == "AntiRad" ||
+						itemName == "RawMeat" ||
+						itemName == "StandardMedikit" ||
+						itemName == "ModernMedikit")
 						isUseItemUp = true;
 					break;
 				}

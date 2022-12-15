@@ -92,7 +92,7 @@ void Shop::Init()
 	{
 		for (auto& shopItem : shopPage)
 		{
-			shopCategoryBox[i]->AddItem(shopItem.first);
+			shopCategoryBox[i]->AddItem(shopItem.first,shopItem.second.cnt);
 		}
 		i++;
 	}
