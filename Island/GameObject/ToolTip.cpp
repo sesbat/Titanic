@@ -191,27 +191,27 @@ void ToolTip::init()
 	break;
 	case ToolTip::ItemType::Armor:
 	{
-		//auto all_ExpendablesData = FILE_MGR->GetItemEffect();
-		//auto data = all_ExpendablesData[itemName];
+		auto all_armor = FILE_MGR->GetArmorInfo();
+		auto data = all_armor[itemName];
 
-		//auto nextPos = pricePos + Vector2f{ itemData.toolTipSize.x / 2.f, 0 };
+		auto nextPos = pricePos + Vector2f{ itemData.toolTipSize.x / 2.f, 0 };
 
-		//auto dmg = new TextObject();
-		//wstring txt_dmg = L"Info\n" + to_string((int)data.);
-		//dmg->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_dmg);
-		//dmg->SetPos(nextPos);
-		//dmg->SetOrigin(Origins::TL);
-		//tooltipDatas.push_back(dmg);
-		//nextPos.y += 40;
+		auto dmg = new TextObject();
+		wstring txt_armor = L"Defence: " + to_string((int)data.defencePower);
+		dmg->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_armor);
+		dmg->SetPos(nextPos);
+		dmg->SetOrigin(Origins::TL);
+		tooltipDatas.push_back(dmg);
+		nextPos.y += 40;
 
 
-		//auto des = new TextObject();
-		//wstring txt_des = L"Info\n" + itemData.description;
-		//des->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_des);
-		//auto desPos = Vector2f{ GetPos().x + 10.f  ,nextPos.y };
-		//des->SetPos(desPos);
-		//des->SetOrigin(Origins::TL);
-		//tooltipDatas.push_back(des);
+		auto des = new TextObject();
+		wstring txt_des = L"Info\n" + itemData.description;
+		des->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txt_des);
+		auto desPos = Vector2f{ GetPos().x + 10.f  ,nextPos.y };
+		des->SetPos(desPos);
+		des->SetOrigin(Origins::TL);
+		tooltipDatas.push_back(des);
 	}
 	break;
 	case ToolTip::ItemType::Medical:
