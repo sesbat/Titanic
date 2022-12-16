@@ -526,7 +526,9 @@ void Player::HealHp(int num)
 
 void Player::HealHunger(float num)
 {
-	hungerGuage += num;
+	int nn = (int)((num / 255) * 100);
+	num = nn * 255 / 100;
+	hungerGuage += (int)num;
 	if (hungerGuage > maxHungerGuage)
 	{
 		hungerGuage = maxHungerGuage;
@@ -535,6 +537,8 @@ void Player::HealHunger(float num)
 
 void Player::HealThirst(float num)
 {
+	int nn = (int)((num / 255) * 100);
+	num = nn * 255 / 100;
 	thirstGuage += num;
 	if (thirstGuage > maxThirstGuage)
 	{
@@ -544,6 +548,8 @@ void Player::HealThirst(float num)
 
 void Player::HealEnergy(float num)
 {
+	int nn = (int)((num / 255) * 100);
+	num = nn * 255 / 100;
 	energyGuage += num;
 	if (energyGuage > maxEnergyGuage)
 	{
@@ -553,10 +559,16 @@ void Player::HealEnergy(float num)
 
 void Player::HealRad(float num)
 {
+	int nn = (int)((num / 255) * 100);
+	num = nn * 255 / 100;
 	radGuage += num;
 	if (radGuage > maxRadiation)
 	{
 		radGuage = maxRadiation;
+	}
+	if (radGuage < 0)
+	{
+		radGuage = 0;
 	}
 }
 

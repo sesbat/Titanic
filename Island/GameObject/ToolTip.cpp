@@ -69,7 +69,7 @@ void ToolTip::init()
 	GetTextObj()->SetOrigin(Origins::MC);
 
 	auto price = new TextObject();
-	wstring txtPrice = L"가격: " + to_string(itemData.price * cnt);
+	wstring txtPrice = L"price: " + to_string(itemData.price * cnt);
 	price->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, Color::White, txtPrice);
 	auto pricePos = GetPos() + Vector2f{ 10, 40 };
 	price->SetPos(pricePos);
@@ -88,7 +88,7 @@ void ToolTip::init()
 		if (data.hungerEffect != 0)
 		{
 			auto hunger = new TextObject();
-			wstring txt_hunger = L"Hunger: " + to_string((int)data.hungerEffect);
+			wstring txt_hunger = L"Hunger: " + to_string((int)((data.hungerEffect/255) * 100));
 			hunger->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, data.hungerEffect > 0 ? Color::Green : Color::Red, txt_hunger);
 			hunger->SetPos(nextPos);
 			hunger->SetOrigin(Origins::TL);
@@ -98,7 +98,7 @@ void ToolTip::init()
 		if (data.thirstEffect != 0)
 		{
 			auto thirst = new TextObject();
-			wstring txt_thirst = L"Thirst: " + to_string((int)data.thirstEffect);
+			wstring txt_thirst = L"Thirst: " + to_string((int)((data.thirstEffect / 255) * 100));
 			thirst->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, data.thirstEffect > 0 ? Color::Green : Color::Red, txt_thirst);
 			thirst->SetPos(nextPos);
 			thirst->SetOrigin(Origins::TL);
@@ -108,7 +108,7 @@ void ToolTip::init()
 		if (data.energyEffect != 0)
 		{
 			auto energy = new TextObject();
-			wstring txt_energy = L"Energy: " + to_string((int)data.energyEffect);
+			wstring txt_energy = L"Energy: " + to_string((int)((data.energyEffect / 255) * 100));
 			energy->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, data.energyEffect > 0 ? Color::Green : Color::Red, txt_energy);
 			energy->SetPos(nextPos);
 			energy->SetOrigin(Origins::TL);
@@ -119,7 +119,7 @@ void ToolTip::init()
 		if (data.radiationEffect != 0)
 		{
 			auto rad = new TextObject();
-			wstring txt_rad = L"Radiation: " + to_string((int)data.radiationEffect);
+			wstring txt_rad = L"Radiation: " + to_string((int)((data.radiationEffect / 255) * 100));
 			rad->SetText(*RESOURCES_MGR->GetFont("fonts/NotoSansKR-Medium.otf"), 20, data.radiationEffect < 0 ? Color::Green : Color::Red, txt_rad);
 			rad->SetPos(nextPos);
 			rad->SetOrigin(Origins::TL);

@@ -1,6 +1,6 @@
 [
   {
-    "Type": "MB_Rifle",
+    "Type": "Rifle",
     "cnt": 1,
     "invenGreedPos": {
       "x": 0,
@@ -10,7 +10,7 @@
       "x": 163,
       "y": 252
     },
-    "path": "graphics/items/rifle/MB_Rifle.png"
+    "path": "graphics/items/rifle/Rifle.png"
   },
   {
     "Type": "RifleBullet",
