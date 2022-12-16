@@ -18,14 +18,14 @@
 
 Boss::Boss()
 	: currState(States::None),
-	speed(100.f), maxSpeed(100),
+	speed(250.f), maxSpeed(250),
 	direction(1.f, 0.f), lastDirection(1.f, 0.f),
 	timer(0.f), moveTime(2.f), stopTime(1.f), stunTime(3.f), dashCoolTime(5.f),
 	hitTime(1.f), hitTimer(0.f), playerStunTime(1.f),
 	hp(30000), maxHp(30000), barScaleX(60.f), look(1.f, 0.f),
-	dashSpeed(800.f),
+	dashSpeed(1000.f),
 	dashRange(2000.f), range(500.f), activeDashRange(600.f),
-	dashDamage(100), damage(10), fireDamage(100),
+	dashDamage(500), damage(200), fireDamage(150),
 	isHit(false), isInSight(true), isStart(false), isDash(false), isStun(false), isFire(true),
 	dashAttack(0),
 	startRange(1000.f),

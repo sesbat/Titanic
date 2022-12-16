@@ -83,10 +83,10 @@
     "patrolBlock": 10,
     "patrolTime": 3.0,
     "speed": 100.0,
-    "maxSpeed": 80.0,
-    "dashSpeed": 150.0,
+    "maxSpeed": 150.0,
+    "dashSpeed": 250.0,
     "searchDis": 500.0,
-    "damage" :  10,
+    "damage" :  100,
     "type": "graphics/enemy/zombie.png"
   }
 }

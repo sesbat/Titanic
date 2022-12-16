@@ -15,7 +15,7 @@
   "radDebuffHPDelay": 3,
   "radiationDelay": 1,
   "speed": 200.0,
-  "staminaDownSpeed": 0.1,
-  "staminaUpSpeed": 0.1,
+  "staminaDownSpeed": 0.015,
+  "staminaUpSpeed": 0.01,
   "thirstDelay": 2.0
 }

@@ -25,7 +25,11 @@
   },
   "AntiRad": {
     "name": "AntiRad",
-    "cnt": 3
+    "cnt": 2
+  },
+  "ImprovedAntirad": {
+    "name": "ImprovedAntirad",
+    "cnt": 1
   },
   "Water": {
     "name": "Water",

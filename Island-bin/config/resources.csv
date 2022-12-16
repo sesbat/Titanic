@@ -122,8 +122,8 @@ graphics/items/inven-item.png,0
 graphics/items/Armor-1.png,0
 graphics/items/hammer.png,0
 graphics/items/apple.png,0
-graphics/items/water.png,0
-graphics/items/drink.png,0
+graphics/items/item_water_bottle.png,0
+graphics/items/item_energy_drink.png,0
 graphics/items/meat.png,0
 graphics/items/shotgunbullet.png,0
 graphics/items/riflebullet.png,0
@@ -378,5 +378,6 @@ graphics/player/playerStun.png,0
 animations/player/PlayerStun.csv,3
 animations/player/PlayerStunLeft.csv,3
 sounds/bossDead.wav,2
+graphics/items/item_pillanti_rad2.png,0
 graphics/Editor/drawZombie.png,0
 graphics/enemy/zombie.png,0
