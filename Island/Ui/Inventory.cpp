@@ -183,7 +183,8 @@ void Inventory::Update(float dt)
 						itemName == "AntiRad" || 
 						itemName == "RawMeat" || 
 						itemName == "StandardMedikit" || 
-						itemName == "ModernMedikit" )
+						itemName == "ModernMedikit" ||
+						itemName =="ImprovedAntirad")
 						isUseItemUp = true;
 					break;
 				case 5:
@@ -210,7 +211,8 @@ void Inventory::Update(float dt)
 						itemName == "AntiRad" ||
 						itemName == "RawMeat" ||
 						itemName == "StandardMedikit" ||
-						itemName == "ModernMedikit")
+						itemName == "ModernMedikit" ||
+						itemName == "ImprovedAntirad")
 						isUseItemUp = true;
 					break;
 				case 6:
@@ -237,7 +239,8 @@ void Inventory::Update(float dt)
 						itemName == "AntiRad" ||
 						itemName == "RawMeat" ||
 						itemName == "StandardMedikit" ||
-						itemName == "ModernMedikit")
+						itemName == "ModernMedikit" ||
+						itemName == "ImprovedAntirad")
 						isUseItemUp = true;
 					break;
 				case 7:
@@ -264,7 +267,8 @@ void Inventory::Update(float dt)
 						itemName == "AntiRad" ||
 						itemName == "RawMeat" ||
 						itemName == "StandardMedikit" ||
-						itemName == "ModernMedikit")
+						itemName == "ModernMedikit" ||
+						itemName == "ImprovedAntirad")
 						isUseItemUp = true;
 					break;
 				}
