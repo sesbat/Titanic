@@ -1,0 +1,15 @@
+{
+  "cnt": 5,
+  "damage": 400.0,
+  "magazine": 10,
+  "name": "Up1-Shotgun",
+  "bulletName": "ShotGunBullet",
+  "randDir": 10.0,
+  "shotgunDir": 30,
+  "range": 1000.0,
+  "reloadDelay": 1.5,
+  "speed": 10000.0,
+  "zoomRange": 1000.0,
+  "shootDelay": 0.25,
+  "soundPath": "sounds/shotgun.wav"
+}

@@ -4,19 +4,21 @@
 class HitBox : public Object
 {
 protected:
+	HitBox(const HitBox& ref) {}
+	HitBox& operator=(const HitBox& ref) {}
+	HitBox( HitBox& ref) {}
+	HitBox& operator=( HitBox& ref) {}
 	FloatRect hitBoxRect;
 	Vector2f initPos;
 
 public:
 	RectangleShape hitbox;
 	HitBox();
-	virtual ~HitBox();
 
 	virtual void SetActive(bool active);
 	virtual bool GetActive() const;
 
 	virtual void Init();
-	virtual void Release();
 
 	virtual void Reset();
 

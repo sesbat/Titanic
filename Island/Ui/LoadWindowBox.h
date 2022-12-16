@@ -4,6 +4,10 @@
 class LoadWindowBox : public Button
 {
 private:
+	LoadWindowBox(const LoadWindowBox& ref) : Button(nullptr) {}
+	LoadWindowBox& operator=(const LoadWindowBox& ref) {}
+	LoadWindowBox(LoadWindowBox& ref) : Button(nullptr) {}
+	LoadWindowBox& operator=(LoadWindowBox& ref) {}
 	vector<Button*> loadFiles;
 	map<string, vector<ObjectData>> allMaps;
 	int idx;

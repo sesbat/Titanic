@@ -9,11 +9,10 @@ class DblClkObject;
 class MenuUiMgr : public UiMgr
 {
 private:
+	Button* startBtn0;
 	Button* startBtn1;
 	Button* startBtn2;
 	Button* startBtn3;
-
-	Fade* fade;
 
 	MoveObject* move;
 public:
@@ -22,7 +21,7 @@ public:
 	virtual void Init() override;
 	virtual void Release() override;
 	virtual void Reset() override;
-
+		
 	void ClickStartBtn();
 };
 

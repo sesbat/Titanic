@@ -5,11 +5,11 @@ class Inventory;
 class SpriteObject;
 class Player;
 class NPC;
+class ToolTip;
 class GameSceneUiMgr : public UiMgr
 {
 protected:
 	Player* player;
-	Inventory* inven;
 
 	Button* hpBar;
 	Button* hpBarBK;
@@ -31,16 +31,23 @@ protected:
 	Button* energyBK;
 	Button* energyTex;
 
+	Button* radiationBK;
+	Button* radiation;
+	Button* radiationTex;
+
+	Button* ammoText;
+
 	float hpBarSize;
 	float staminaBarSize;
+	ToolTip* tip;
 public:
+	ToolTip* GetTip() { return tip; }
 	GameSceneUiMgr(Scene* scene);
 	virtual ~GameSceneUiMgr();
 	virtual void Init();
 	virtual void Reset();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
-
-	void SetPlayer(Player* player);
+	virtual void Releas();
 };
 

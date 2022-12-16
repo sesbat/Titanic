@@ -3,6 +3,10 @@
 class DrawObj : public Button
 {
 private:
+	DrawObj(const DrawObj& ref) : Button(nullptr) {}
+	DrawObj& operator=(const DrawObj& ref) {}
+	DrawObj(DrawObj& ref) : Button(nullptr) {}
+	DrawObj& operator=(DrawObj& ref) {}
 	string type;
 	string path;
 	bool isMove;
@@ -22,6 +26,6 @@ public:
 	void SetData(EditorObjs d) { data = d; }
 	void SetItem(map<string, Item> items) { this->items = items; }
 	map<string, Item>& GetItem() { return items; }
-
+	virtual void Release();
 };
 

@@ -7,6 +7,7 @@ class DrawSelect;
 class DrawObj;
 class SaveWindowBox;
 class LoadWindowBox;
+class ConnectWindowBox;
 class EditorMapUiMgr : public UiMgr
 {
 private:
@@ -16,15 +17,17 @@ private:
 	Button* exitBtn;
 	Button* underUi;
 	Button* boxBtn;
+	Button* connecntBtn;
+	Button* selectBtn;
 
 	bool isErase;
 
-	Button* selectBtn;
 	vector<string> selects;
 	vector<int> selectTxtSize;
 	vector<float> selectPosY;
-	int selIdx;
+	int selIdx;	
 	map<string, vector<Button*>> type_selects;
+	int selectIdx = 0;
 
 	vector<DrawSelect*> drawObj;
 	DrawObj* nowDraw;
@@ -32,6 +35,7 @@ private:
 
 	SaveWindowBox* saveWindow;
 	LoadWindowBox* loadWindow;
+	ConnectWindowBox* connectWindow;
 	AddItemBox* itemBox;
 
 	bool isBox;
@@ -42,6 +46,7 @@ private:
 public:
 	EditorMapUiMgr(Scene* scene);
 	virtual ~EditorMapUiMgr();
+	virtual void Release();
 	virtual void Init();
 	virtual void Reset();
 	virtual void Update(float dt);
@@ -59,6 +64,7 @@ public:
 	//bool IsCancle();
 	bool IsLoad();
 	bool LoadActive();
+	bool ConnectActive();
 	string loadFile();
 	bool IsErase() { return isErase; }
 	bool IsExit();
@@ -71,7 +77,11 @@ public:
 	string GetPath();
 
 	void BoxingEnd();
+	void SetSelectSize();
 	bool GetIsBox() { return isBox; }
+	ConnectWindowBox* GetConnecntWindow() { return connectWindow; }
+
+	Button* GetUnderUi() { return underUi; }
 
 };
 

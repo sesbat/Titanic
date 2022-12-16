@@ -11,7 +11,11 @@ enum class InvenIdx
 };
 class Inventory : public Button
 {
-private:
+protected:
+	Inventory(const Inventory& ref) : Button(nullptr) {}
+	Inventory& operator=(const InvenItem& ref) {}
+	Inventory(Inventory& ref) : Button(nullptr) {}
+	Inventory& operator=(InvenItem& ref) {}
 	float totalWeight;
 
 	InvenItem* nowDrag;
@@ -20,21 +24,24 @@ private:
 	InventoryBox* initRightInven;
 	InventoryBox* rightInven;
 	InventoryBox* prevInven;
+	InventoryBox* saveBox;
 
 	Button* invenItemGreed[(int)InvenIdx::Count];
 	vector<InvenItem*> myUseItems;
 
 	int useIdx;
+	TextObject* txtMoney;
 
 	vector<vector<InvenItem*>::iterator> deleteUseItem;
 
 public:
 	Inventory(UiMgr* mgr);
 	virtual ~Inventory();
+	virtual void Release();
 	virtual void Init();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
-	void SetDrag(InvenItem* item);
+	virtual void SetDrag(InvenItem* item);
 	InvenItem* GetNowDrag() { return nowDrag; }
 	InvenGreed* GetGreed(int i, int j);
 	InventoryBox* GetNowInven();
@@ -49,9 +56,13 @@ public:
 	void ResetRightInven();
 	InvenItem* GetUsedItem(int i);
 	InventoryBox* GetPlayerInven() { return myInven; }
+	InventoryBox* GetSaveBox() { return saveBox; }
 	void AddDeleteObj(InvenItem* obj);
 	void AddDeleteItem(InvenItem* item);
 	void SetUserItem(InvneUseInfo data);
 	const vector<InvenItem*>& GetUseItems() { return myUseItems; }
 	int GetUseIdx() { return useIdx; }
+
+	TextObject* GetMoneyTxt() { return txtMoney; }
+
 };

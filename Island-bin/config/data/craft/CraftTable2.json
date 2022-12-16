@@ -1,0 +1,86 @@
+{
+  "Scop_Rifle": {
+    "useItem": [
+      {
+        "cnt": 1,
+        "id": "Rifle"
+      },
+      {
+        "cnt": 1,
+        "id": "Scope"
+      }
+    ]
+  },
+  "MB_Rifle": {
+    "useItem": [
+      {
+        "cnt": 1,
+        "id": "Rifle"
+      },
+      {
+        "cnt": 1,
+        "id": "Muzzle Brake"
+      }
+    ]
+  },
+  "Scop_sniper": {
+    "useItem": [
+      {
+        "cnt": 1,
+        "id": "Sniper"
+      },
+      {
+        "cnt": 1,
+        "id": "Scope"
+      }
+    ]
+  },
+  "MB_sniper": {
+    "useItem": [
+      {
+        "cnt": 1,
+        "id": "Sniper"
+      },
+      {
+        "cnt": 1,
+        "id": "Muzzle Brake"
+      }
+    ]
+  },
+  "MB_Shotgun": {
+    "useItem": [
+      {
+        "cnt": 1,
+        "id": "Shotgun"
+      },
+      {
+        "cnt": 1,
+        "id": "Muzzle Brake"
+      }
+    ]
+  },
+  "Up1-Shotgun": {
+    "useItem": [
+      {
+        "cnt": 1,
+        "id": "Shotgun"
+      },
+      {
+        "cnt": 1,
+        "id": "ShotgunUpgrade1"
+      },
+      {
+        "cnt": 1,
+        "id": "ShotgunUpgrade2"
+      },
+      {
+        "cnt": 1,
+        "id": "ShotgunUpgrade3"
+      },
+      {
+        "cnt": 1,
+        "id": "ShotgunUpgradeSet"
+      }
+    ]
+  }
+}

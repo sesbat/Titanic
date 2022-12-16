@@ -16,12 +16,13 @@
 #include "../GameObject/Player.h"
 
 Craft::Craft(UiMgr* mgr)
-	: Button(mgr), totalWeight(0.f), nowDrag(nullptr), prevCraft(nullptr), useIdx(-1),categoryCount(3)
+	: Button(mgr), nowDrag(nullptr), prevCraft(nullptr), categoryCount(3)
 {
 }
 
 Craft::~Craft()
 {
+	Release();
 }
 
 void Craft::Init()
@@ -36,7 +37,7 @@ void Craft::Init()
 		Button* button = new Button(uimgr);
 		button->SetClkColor(true);
 		button->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-			50, Color::White, itemList[i], true);
+			50, Color::White, (string)itemList[i], true);
 		button->SetOrigin(Origins::MC);
 		button->SetPos({ 300.f,100.f + FRAMEWORK->GetWindowSize().y/6 *i});
 		categories.push_back(button);
@@ -49,41 +50,29 @@ void Craft::Init()
 		craftBox->SetClkColor(true);
 		craftBox->Init();
 		craftBox->SetName(box[i]);
-		//craftBox->SetPair((CraftBox*)player->GetInventory());
 		craftBox->SetActive(false);
 		categoryBox.push_back(craftBox);
 	}
 
-	String items[] = { "Recoverykit", "handsaw", "Armor-1" };
-	for (int i = 0; i < myUseItems.size(); i++)
-	{
-		myUseItems[i] = nullptr;
-	}
-
 	requiredItem = new CraftBox(uimgr, this, Vector2i{ 512,704 });
+	requiredItem->isRequired = true;
 	requiredItem->SetBoxSize(10, 4);
 	requiredItem->Init();
 	initRequiredItem = requiredItem;
 
+	auto& map = FILE_MGR->GetAllCraftTable();
 
-	
-	/*Vector2f invenPos[] = { {504.f,56.f},{504.f,696.f} };
-	string invenPath[] = { "craft-buy","craft-sel"};
-
-	for (int i = 0; i < 8; i++)
+	int i = 0;
+	for (auto& craftPage : map)
 	{
-		craftGreed[i] = new Button(uimgr);
-		craftGreed[i]->SetTexture(*RESOURCES_MGR->GetTexture("graphics/items/" + invenPath[i] + ".png"), true);
-		craftGreed[i]->SetPos(invenPos[i]);
-		craftGreed[i]->SetClkColor(false);
-	}*/
-
-
-	auto& map = FILE_MGR->GetAllCraft();
-	for (auto& n : map)
-	{
-		categoryBox[0]->AddItem(n.first);
+		for(auto& craftItem : craftPage)
+		{
+			categoryBox[i]->AddItem(craftItem.first);
+		}
+		i++;
 	}
+
+	categoryBox[0]->SetActive(true);
 }
 
 void Craft::Update(float dt)
@@ -91,18 +80,11 @@ void Craft::Update(float dt)
 	if (!enabled)
 		return;
 
-	if (categoryBox[0]->IsClick())
-	{
-
-	}
-
 	for (auto& cg : categories)
 	{
 		cg->Update(dt);
 	}
 
-	//	Button::Update(dt);
-	
 	for (auto& btn : categoryBox)
 	{
 		btn->Update(dt);
@@ -118,104 +100,10 @@ void Craft::Update(float dt)
 				btn->SetActive(false);
 			}
 			categoryBox[i]->SetActive(true);
+			categoryBox[i]->craftingItmeName = "";
 		}
 		if (!categoryBox[i]->GetActive())
 			continue;
-
-		if (InputMgr::GetKeyDown(Keyboard::Q))
-		{
-			categoryBox[i]->AddItem("Recoverykit");
-		}
-		if (InputMgr::GetKeyDown(Keyboard::W))
-		{
-			categoryBox[i]->AddItem("handsaw");
-		}
-		if (InputMgr::GetKeyDown(Keyboard::T))
-		{
-			categoryBox[i]->AddItem("Armor-1");
-		}
-		if (InputMgr::GetKeyDown(Keyboard::E))
-		{
-			requiredItem->AddItem("Recoverykit");
-		}
-		if (InputMgr::GetKeyDown(Keyboard::R))
-		{
-			requiredItem->AddItem("handsaw");
-		}
-	}
-
-	
-
-	if (nowDrag != nullptr && IsStay())
-	{
-		prevCraft->ReturnItem();
-	}
-	int i = 0;
-	for (auto& useItem : craftGreed)
-	{
-		if (useItem == nullptr)
-			continue;
-		useItem->Update(dt);
-
-		if (useItem->IsUp())
-		{
-			if (nowDrag != nullptr && myUseItems[i] == nullptr)
-			{
-				string itemName = nowDrag->GetName();
-				if (itemName == "Recoverykit")
-				{
-					if (!(i > 3 && i < 8))
-					{
-						prevCraft->ReturnItem();
-						break;
-					}
-				}
-				if (itemName == "Armor-1")
-				{
-					if (i != 2)
-					{
-						prevCraft->ReturnItem();
-						break;
-					}
-				}
-				if (itemName == "handsaw")
-				{
-					break;
-				}
-				//nowDrag->SetPos(useItem->GetPos());
-				nowDrag->SetInvenPos(useItem->GetPos());
-				auto item = prevCraft->GetItems();
-
-				auto find_item = find(item->begin(), item->end(), nowDrag);
-				if (find_item != item->end())
-					item->erase(find_item);
-
-				myUseItems[i] = nowDrag;
-				SetDrag(nullptr);
-				useIdx = -1;
-			}
-		}
-		i++;
-	}
-	i = 0;
-	for (auto& useItem : myUseItems)
-	{
-		if (nowDrag != nullptr)
-			break;
-		if (useItem != nullptr)
-		{
-			useItem->Update(dt);
-			if (useItem->IsDown())
-			{
-				SetDrag(useItem);
-				prevCraft = craftBox;
-				SetPrevInven(craftBox);
-				useItem = nullptr;
-				useIdx = i;
-				break;
-			}
-		}
-		i++;
 	}
 }
 
@@ -230,11 +118,7 @@ void Craft::Draw(RenderWindow& window)
 		if (useItem != nullptr)
 			useItem->Draw(window);
 	}
-	for (auto& useItem : myUseItems)
-	{
-		if (useItem != nullptr)
-			useItem->Draw(window);
-	}
+
 	for (auto& btn : categoryBox)
 	{
 		btn->Draw(window);
@@ -249,8 +133,6 @@ void Craft::Draw(RenderWindow& window)
 void Craft::SetDrag(CraftItem* item)
 {
 	nowDrag = item;
-	craftBox->SetDrag(item);
-	requiredItem->SetDrag(item);
 }
 CraftBox* Craft::GetNowInven()
 {
@@ -273,11 +155,6 @@ CraftBox* Craft::GetPairBox(CraftBox* now)
 
 void Craft::MoveInvenItem(CraftBox* nextInven)
 {
-	if (prevCraft == nextInven && useIdx == -1)
-	{
-		return;
-	}
-
 	auto prev = prevCraft->GetItems();
 	auto next = nextInven->GetItems();
 
@@ -287,15 +164,6 @@ void Craft::MoveInvenItem(CraftBox* nextInven)
 	next->push_back(nowDrag);
 }
 
-void Craft::ReturnUseItem()
-{
-	nowDrag->SetInvenPos(craftGreed[useIdx]->GetPos());
-	myUseItems[useIdx] = nowDrag;
-	SetDrag(nullptr);
-	SetPrevInven(nullptr);
-	useIdx = -1;
-}
-
 void Craft::ClearInven()
 {
 	initRequiredItem->ClearInven();
@@ -303,11 +171,7 @@ void Craft::ClearInven()
 
 void Craft::ResetRightInven()
 {
-	cout << craftBox->GetName() << endl;
-	cout << requiredItem->GetName() << endl;
 	requiredItem = initRequiredItem;
-	craftBox->SetPair(requiredItem);
-	requiredItem->SetPair(craftBox);
 }
 
 void Craft::OnClickCraftItem(const CraftingInfo& info)

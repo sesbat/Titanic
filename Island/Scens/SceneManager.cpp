@@ -6,6 +6,7 @@
 #include "../Framework/info.h"
 #include "../Framework/ResourceManager.h"
 #include "../Framework/InputMgr.h"
+#include "Tutorial.h"
 
 SceneManager::~SceneManager()
 {
@@ -59,6 +60,7 @@ bool SceneManager::Init()
 	sceneMap[Scenes::Ready] = new Ready();
 	sceneMap[Scenes::GameScene] = new GameScene();
 	sceneMap[Scenes::MapEditor] = new MapEditor();
+	sceneMap[Scenes::Tutorial] = new Tutorial();
 
 	currScene = Scenes::Menu;
 	sceneMap[currScene]->SetSceneName("READYSCENE");

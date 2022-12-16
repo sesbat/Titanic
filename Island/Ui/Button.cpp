@@ -1,6 +1,8 @@
 #include "Button.h"
 #include "../../GameObject/SpriteObject.h"
 #include "../../GameObject/TextObject.h"
+#include "../Scens/Scene.h"
+#include "../Scens/SceneManager.h"
 #include <iostream>
 
 using namespace std;
@@ -16,16 +18,7 @@ Button::Button(UiMgr* mgr)
 
 Button::~Button()
 {
-	if (sprite != nullptr)
-	{
-		delete sprite;
-		sprite = nullptr;
-	}
-	if (text != nullptr)
-	{
-		delete text;
-		text = nullptr;
-	}
+	Release();
 }
 
 void Button::Init()
@@ -142,7 +135,6 @@ void Button::SetPos(Vector2f pos)
 
 void Button::Release()
 {
-	Object::Release();
 	if (sprite != nullptr)
 	{
 		delete sprite;
@@ -162,6 +154,16 @@ void Button::SetTexture(Texture& t, bool isBound)
 	{
 		SetBound(sprite->GetGlobalBound());
 		bndType = BoundType::SPRIT;
+	}
+}
+
+void Button::SetText(Font& font, int size, Color color, wstring str, bool isBound)
+{
+	text->SetText(font, size, color, str);
+	if (isBound)
+	{
+		SetBound(text->GetGlobalBound());
+		bndType = BoundType::TEXT;
 	}
 }
 
@@ -204,6 +206,29 @@ void Button::ReBound()
 		break;
 	}
 
+}
+
+bool Button::IsInView()
+{
+	if (isUi)
+	{
+		viewIn = true;
+		return true;
+	}
+
+	auto& view = SCENE_MGR->GetCurrScene()->GetWorldView();
+	auto& viewSize = view.getSize();
+	auto& viewCenter = view.getCenter();
+	auto bound = GetGlobalBound();
+
+	if (((bound.left > viewCenter.x + viewSize.x / 2) || (bound.left + bound.width < viewCenter.x - viewSize.x / 2)) ||
+		((bound.top > viewCenter.y + viewSize.y / 2) || (bound.top + bound.height < viewCenter.y - viewSize.y / 2)))
+	{
+		viewIn = false;
+		return false;
+	}
+	viewIn = true;
+	return true;
 }
 
 std::ofstream& operator<<(std::ofstream& ofs, const Button& cur)

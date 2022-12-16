@@ -10,21 +10,11 @@ UiObject::UiObject()
 {
 }
 
-UiObject::~UiObject()
-{
-	Release();
-}
-
 
 void UiObject::Init()
 {
 	Object::Init();
 	Reset();
-}
-
-void UiObject::Release()
-{
-	Object::Release();
 }
 
 void UiObject::Reset()
@@ -195,7 +185,7 @@ void UiObject::Update(float dt)
 		}
 		else if (!Utils::IsRange(btnBoudn, mousePos))
 		{
-			cout << "This" << endl;
+			
 			btnState = UiState::Exit;
 			isEvent = true;
 		}

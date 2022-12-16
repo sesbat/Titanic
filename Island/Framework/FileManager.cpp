@@ -8,98 +8,6 @@
 
 FileManager::FileManager()
 {
-	//{
-	//	CookieHitBox hit;
-	//	ns::RectangleInfo bottom{ { 40, 10 }, { 180, 354  } };
-	//	ns::RectangleInfo body{ { 45.f,52.f }, { 176,300 } };
-	//	ns::CircleInfo cir{ 38,sf::Vector2f{ 186,234} };
-	//	hit.type = "Run";
-	//	hit.bottom = bottom;
-	//	hit.hitBox.circles.push_back(cir);
-	//	hit.hitBox.rectangls.push_back(body);
-	//	hit.hitBox.rectangls.push_back(bottom);
-	//	cookieInfo["Jungle"]["Run"] = hit;
-	//	bottom = { { 40, 10 }, { 180, 354  } };
-	//	body = { { 45.f,52.f }, { 176,300 } };
-	//	CookieHitBox hit1;
-	//	hit1.type = "Slide";
-	//	hit1.bottom = bottom;
-	//	hit1.hitBox.circles.push_back(cir);
-	//	hit1.hitBox.rectangls.push_back(body);
-	//	hit1.hitBox.rectangls.push_back(bottom);
-	//	cookieInfo["Jungle"]["Slide"] = hit1;
-	//	ofstream cookie1("config/data/cookieInfo.json");
-	//	json data = cookieInfo;
-	//	cookie1 << data;
-	//	
-	//}
-	//{
-	//	map<string, vector<ObjectData>> stage;
-	//	vector<ObjectData> objData;
-	//	ObjectData d;
-	//	d.type = "TREE";
-	//	d.path = "graphics/editor/tree1.png";
-	//	d.uiPath = "graphics/editor/drawTree1.png";
-	//	d.position = sf::Vector2f(100.f,100.f);
-	//	d.bottom = {};
-	//	d.hitBox.push_back({});
-	//	d.hitBox.push_back({});
-	//	d.item.push_back({});
-	//	d.item.push_back({});
-	//	d.randomItem.push_back({});
-	//	d.randomItem.push_back({});
-	//	
-	//	objData.push_back(d);
-	//	stage["Tutorial"] = objData;
-	//	ofstream cookie1("config/data/map.json");
-	//	json data = stage;
-	//	cookie1 << data;
-	//}
-	//{
-	//	map<string, vector<EditorObjs>> objData;
-	//	vector<EditorObjs> paths;
-	//	paths.push_back({ "graphics/editor/tree1.png" ,"graphics/editor/drawTree1.png" });
-	//	paths.push_back({ "graphics/editor/tree2.png" ,"graphics/editor/drawTree2.png"});
-	//	objData["TREE"] = paths;
-	//	ofstream allObj("config/data/allObjs.json");
-	//	json data = objData;
-	//	allObj << data;
-	//}
-
-	//{
-	//	CraftingInfo testItem;
-	//	testItem.path = "graphics/items/hammer.png";
-
-	//	RequiredItem useItem;
-	//	useItem.path = "graphics/material/stone.png";
-	//	useItem.cnt = 1;
-
-	//	RequiredItem useItem2;
-	//	useItem2.path = "graphics/material/wood.png";
-	//	useItem2.cnt = 1;
-	//	testItem.path = "graphics/items/Armor-1.png";
-
-	//	CraftItem useItem;
-	//	useItem.path = "graphics/items/handsaw.png";
-	//	useItem.cnt = 1;
-
-	//	CraftItem useItem2;
-	//	useItem2.path = "graphics/items/recoverykit.png";
-	//	useItem2.cnt = 5;
-
-	//	testItem.useItem.push_back(useItem);
-	//	testItem.useItem.push_back(useItem2);
-
-	//	testItem;
-
-	//	itemInfo[testItem.path] = testItem;
-
-	//	json data = itemInfo;
-	//	ofstream ofs("config/data/CraftTable.json");
-	//	ofs << data;
-	//	ofs.close();
-	//}
-
 
 }
 FileManager::~FileManager()
@@ -108,6 +16,10 @@ FileManager::~FileManager()
 
 void FileManager::LoadAll()
 {
+	for (int i = 1; i < 10; i++)
+	{
+		tutorialImages.push_back("graphics/Tutorial/" + to_string(i) + ".png");
+	}
 	for (const auto& file : std::experimental::filesystem::directory_iterator("config/data/map/"))
 	{
 		auto path = file.path().string();
@@ -119,6 +31,12 @@ void FileManager::LoadAll()
 		json allMap_d = json::parse(allMap);
 		mapInfo[name] = allMap_d;
 		allMap.close();
+
+		string supplyPath = "config/data/supplyBox/" + name + ".json";
+		ifstream ios_supply(supplyPath);
+		json supply_d = json::parse(ios_supply);
+		suppleyBoxInfo[name] = supply_d;
+		ios_supply.close();
 	}
 
 	ifstream ao("config/data/allObjs.json");
@@ -133,19 +51,34 @@ void FileManager::LoadAll()
 
 	ifstream item_info("config/data/allItems.json");
 	json item_info_d = json::parse(item_info);
-	itemInfos = item_info_d;
+	itemsInfo = item_info_d;
 	item_info.close();
 
+	//json item_info_d = json::parse(str);
+	//itemsInfo = item_info_d;
+	//t.close();
 
 	userInfo.hp = 100.f;
 	userInfo.energyGuage = 255.f;
 	userInfo.hungerGuage = 255.f;
 	userInfo.thirstGuage = 255.f;
 
-	ifstream info_craft("config/data/CraftTable.json");
-	json info_craft_d = json::parse(info_craft);
-	craftItemInfo = info_craft_d;
-	info.close();
+	for(int i =1; i<4; i++)
+	{
+		ifstream info_craft("config/data/craft/CraftTable"+to_string(i)+".json");
+		json info_craft_d = json::parse(info_craft);
+		craftItemInfo = info_craft_d;
+		craftItemInfos.push_back(craftItemInfo);
+		info.close();
+	}
+	for(int i=1; i<5; i++)
+	{
+		ifstream shop_item("config/data/shop/shoptable"+to_string(i)+".json");
+		json shop_item_d = json::parse(shop_item);
+		shopItemInfo = shop_item_d;
+		shopItemInfos.push_back(shopItemInfo);
+		shop_item.close();
+	}
 
 	ifstream info_user("config/data/gameData/userInfo.json");
 	json info_user_d = json::parse(info_user);
@@ -157,17 +90,67 @@ void FileManager::LoadAll()
 	invenAllItems = info_inven_d;
 	info_inven.close();
 
+	ifstream reset_info_inven("config/data/gameData/reset_invenInfo.json");
+	json reset_info_inven_d = json::parse(reset_info_inven);
+	resetInven = reset_info_inven_d;
+	reset_info_inven.close();
+
+	ifstream save_box_inven("config/data/gameData/saveBox.json");
+	json info_inven_save_d = json::parse(save_box_inven);
+	saveAllItems = info_inven_save_d;
+	save_box_inven.close();
+
 	ifstream info_inven_use("config/data/gameData/invenUseInfo.json");
 	json info_inven_use_d = json::parse(info_inven_use);
 	useItemInfo = info_inven_use_d;
 	info_inven_use.close();
 
-	//ifstream hitbox("config/data/hitBox.json");
-	//json hit_d = json::parse(hitbox);
-	//hitBoxMap = hit_d;
-	//hitbox.close();
+	string guninfo_paths[] =
+	{
+		"config/data/gunData/shotgunstat.json",
+		"config/data/gunData/riflestat.json",
+		"config/data/gunData/sniperstat.json",
+		"config/data/gunData/up1shotgunstat.json",
+		"config/data/gunData/sr25stat.json",
+		"config/data/gunData/Scop_sniperstat.json",
+		"config/data/gunData/Scop_Riflestat.json",
+		"config/data/gunData/MB_sniperstat.json",
+		"config/data/gunData/MB_Shotgunstat.json",
+		"config/data/gunData/MB_Riflestat.json"
+	};
 
+	for (auto path : guninfo_paths)
+	{
+		ifstream ios_gun(path);
+		json gun_info = json::parse(ios_gun);
+		ios_gun.close();
+		gunsInfo[gun_info["name"]] = gun_info;
+	}
 
+	ifstream info_user_stat("config/data/gameData/userStat.json");
+	json info_user_stat_d = json::parse(info_user_stat);
+	userStat = info_user_stat_d;
+	info_user_stat.close();
+
+	ifstream effect_item("config/data/itemEffect.json");
+	json effect_item_d = json::parse(effect_item);
+	itemEffect = effect_item_d;
+	effect_item.close();
+
+	ifstream connect("config/data/mapConnecnt.json");
+	json connect_d = json::parse(connect);
+	connecntMaps = connect_d;
+	connect.close();
+
+	ifstream enemy_info("config/data/Enemy/EnemyInfo.json");
+	json enemy_d = json::parse(enemy_info);
+	enemysInfo = enemy_d;
+	enemy_info.close();
+
+	ifstream armor_Info("config/data/armorData/armorStat.json");
+	json armor_Info_d = json::parse(armor_Info);
+	armorInfos = armor_Info_d;
+	armor_Info.close();
 }
 
 const vector<ObjectData>& FileManager::GetMap(string name)
@@ -211,6 +194,16 @@ void FileManager::SaveInvenInfo(vector<InvenInfo> datas)
 	ofs.close();
 }
 
+void FileManager::SaveSaveBoxInfo(vector<InvenInfo> datas)
+{
+	saveAllItems = datas;
+
+	json data = saveAllItems;
+	ofstream ofs("config/data/gameData/saveBox.json");
+	ofs << data;
+	ofs.close();
+}
+
 void FileManager::SaveUseItemInfo(vector<InvneUseInfo> datas)
 {
 	useItemInfo = datas;
@@ -219,5 +212,20 @@ void FileManager::SaveUseItemInfo(vector<InvneUseInfo> datas)
 	ofstream ofs("config/data/gameData/invenUseInfo.json");
 	ofs << data;
 	ofs.close();
+}
+
+void FileManager::SaveConnecnt(string name, vector<string> need)
+{
+	connecntMaps[name] = need;
+
+	json data = connecntMaps;
+	ofstream ofs("config/data/mapConnecnt.json");
+	ofs << data;
+	ofs.close();
+}
+
+const map<string, vector<string>>& FileManager::GetConnecntInfoAll()
+{
+	return connecntMaps; 
 }
 

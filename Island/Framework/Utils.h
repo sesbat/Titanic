@@ -35,6 +35,7 @@ public:
 	static float RandomRange(float min, float max);
 	static float RandomRange();
 	static Vector2f RandAreaPoint();
+	static Vector2f RandAreaPoint(float rad);
 	static Vector2f RandContact(float rad);
 
 	static float SqrMagnitude(const Vector2f& vec);
@@ -54,5 +55,7 @@ public:
 	static bool OBB(const RectangleShape& obb1, const RectangleShape& obb2);
 	static bool OBB(const vector<HitBox*> obb1, const HitBox* obb2);
 	static bool OBB( FloatRect& obb1,  HitBox& obb2);
+	static bool LineRect(Vector2f startPos, Vector2f nextPos, RectangleShape hitObject);
+	static bool Lineline(Vector2f startPos, Vector2f nextPos, float x3, float y3, float x4, float y4);
 };
 

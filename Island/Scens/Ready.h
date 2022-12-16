@@ -16,6 +16,7 @@ protected:
 	NPC* startNpc;
 	NPC* shopNpc;
 	NPC* craftNpc;
+	NPC* healNpc;
 
 	float timer;
 	Clock clock;
@@ -24,6 +25,8 @@ protected:
 	FloatRect MAP_BOUNDS = { 0, 0, 1920 * 4, 1080 * 4 };
 	TreeRect treeRect = { 0,0,1920 * 4,1080 * 4 };
 	QuadTree treeMap;
+
+	SpriteObject* cursor;
 public:
 	Ready();
 	~Ready();
@@ -37,9 +40,13 @@ public:
 	virtual void Draw(RenderWindow& window) override;
 	virtual void Reset() override;
 
+	void CloseToolTip();
+
 	Player* GetPlayer() { return player; }
 	NPC* GetStartNPC() { return startNpc; }
 	NPC* GetShopNPC() { return shopNpc; }
 	NPC* GetCraftNPC() { return craftNpc; }
+	NPC* GetHealNPC() { return healNpc; }
+
 };
 

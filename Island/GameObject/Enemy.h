@@ -11,6 +11,7 @@ class Player;
 class Scene;
 class Gun;
 class Astar;
+enum class GunType;
 
 class Enemy : public HitBoxObject
 {
@@ -24,6 +25,10 @@ public:
 	};
 
 protected:
+	Enemy(const Enemy& ref) {}
+	Enemy& operator=(const Enemy& ref) {}
+	Enemy( Enemy& ref) {}
+	Enemy& operator=( Enemy& ref) {}
 	Player* player;
 	Scene* scene;
 	Gun* gun;
@@ -46,23 +51,33 @@ protected:
 	Vector2f moveDir;
 	Vector2f prevPosition;
 	bool isFlip;
-	
+	Vector2f patrolPos;
+	int patrolBlock;
+
 	//a star dir
 	Vector2f playerPos;
 	list<Vector2f> movePos;
 	Pair startPos;
 	Pair destPos;
 	Vector2f bottomPos;
-
+	Vector2f firstPos;
 	//timer
 	float moveTime;
+	float initMoveTime;
+
 	float hitTime;
+	float initHitTime;
+	
+	float patrolTime;
+	float initPatrolTime;
+	
 	float getAttackTime;
+	float searchDis;
 
 	//attack
 	bool attack;
 	bool isHit;
-	
+	bool isSearch;
 	//hp
 	int maxHp;
 	int hp;
@@ -71,43 +86,63 @@ protected:
 	map<string, Item> items;
 	vector<vector<bool>> *isGreedObject;
 
-	int type;
+	//init
+	GunType type;
+	string enemyType;
 	//dev
-	//bool isMove;
+	bool isInSight;
 
+	bool isHide;
+	float hideDelay;
+	float hideDelayTimer;
+	bool isHitBullet;
 public:
 	Enemy();
 	virtual ~Enemy();
+	virtual void Release();
 
-	void Init(Player* player);
+	virtual void Init(Player* player);
 
 	void SetState(States newState);
 	States GetState();
 
-	void Update(float dt);
-	void Draw(RenderWindow& window);
+	virtual void Update(float dt);
+	virtual void Draw(RenderWindow& window);
 
 	void OnCompleteDead();
 
 	bool EqualFloat(float a, float b);
 
-	void SetHp(int num);
+	virtual	void SetHp(int num);
 	void SetHpBar();
 
 	void SetItem(map<string, Item> items) { this->items = items; }
 	void SetEnemyPos();
 
-	void SetType(int num) { type = num; }
+	void SetType(GunType t) { type = t; }
+	void SetEnemyType(string t) { enemyType = t; }
 
 	Vector2f GetLookDir() { return lookDir; }
 	Vector2f GetPrevLookDir() { return prevLook; }
 
 	void AttackPattern(float dt);
+	void PatrolPattern(float dt);
 	void Move(float dt);
-	void MoveToPos(float dt);
+	//void MoveToPos(float dt);
 	void Collision();
 	
 	void SetGreedObject(vector<vector<bool>>* greed) { isGreedObject = greed; }
-
 	void FindGrid();
+	void FindGrid(Vector2f pos);
+	void CheckIsInWall();
+	void CheckIsInSight();
+	void MakePath();
+	bool CheckWall(int x, int y);
+	virtual void SetIsSearch(bool hit);
+	void CallFriends();
+	bool GetHide();
+	void SetHide(bool state);
+	void HideUpdate(float dt);
+	virtual void HideStop();
+	virtual void SetIsHit(bool hit) {}
 };

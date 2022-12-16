@@ -1,0 +1,70 @@
+{
+  "Bread": {
+    "name": "Bread",
+    "cnt": 2
+  },
+  "Cheese": {
+    "name": "Cheese",
+    "cnt": 2
+  },
+  "Egg": {
+    "name": "Egg",
+    "cnt": 2
+  },
+  "RawMeat": {
+    "name": "RawMeat",
+    "cnt": 2
+  },
+  "Sandwitch": {
+    "name": "Sandwitch",
+    "cnt": 2
+  },
+  "MRE": {
+    "name": "MRE",
+    "cnt": 1
+  },
+  "AntiRad": {
+    "name": "AntiRad",
+    "cnt": 2
+  },
+  "ImprovedAntirad": {
+    "name": "ImprovedAntirad",
+    "cnt": 1
+  },
+  "Water": {
+    "name": "Water",
+    "cnt": 2
+  },
+  "Milk": {
+    "name": "Milk",
+    "cnt": 1
+  },
+  "Coke": {
+    "name": "Coke",
+    "cnt": 1
+  },
+  "Coffee": {
+    "name": "Coffee",
+    "cnt": 1
+  },
+  "EnergyDrink": {
+    "name": "EnergyDrink",
+    "cnt": 1
+  },
+  "Vodka": {
+    "name": "Vodka",
+    "cnt": 1
+  },
+  "Whisky": {
+    "name": "Whisky",
+    "cnt": 1
+  },
+  "StandardMedikit": {
+    "name": "StandardMedikit",
+    "cnt": 2
+  },
+  "ModernMedikit": {
+    "name": "ModernMedikit",
+    "cnt": 1
+  }
+}

@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
-// Framework는 새로 만드는 게임마다 상속 받게 됨
 class Framework : public Singleton<Framework>
 {
 protected:

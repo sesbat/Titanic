@@ -5,6 +5,10 @@ class TextObject;
 class SaveWindowBox : public Button 
 {
 private:
+	SaveWindowBox(const SaveWindowBox& ref) : Button(nullptr) {}
+	SaveWindowBox& operator=(const SaveWindowBox& ref) {}
+	SaveWindowBox(SaveWindowBox& ref) : Button(nullptr) {}
+	SaveWindowBox& operator=(SaveWindowBox& ref) {}
 	Button* save;
 	//Button* cancle;
 	string path;

@@ -32,7 +32,7 @@ public:
 template<typename T>
 void ObjectPool<T>::Reset()
 {
-	for (auto ptr : use)
+	for (auto& ptr : use)
 	{
 		ptr->SetActive(false);
 		unuse.push_back(ptr);
@@ -84,13 +84,13 @@ void ObjectPool<T>::Init(int cacheSize)
 template<typename T>
 void ObjectPool<T>::Release()
 {
-	for (auto obj : unuse)
+	for (auto& obj : unuse)
 	{
 		delete obj;
 	}
 	unuse.clear();
 
-	for (auto obj : use)
+	for (auto& obj : use)
 	{
 		delete obj;
 	}

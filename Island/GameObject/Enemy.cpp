@@ -16,33 +16,51 @@
 #include "Ment.h"
 
 Enemy::Enemy()
-	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), attack(false), hp(500),
-	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false), type(1)
+	: currState(States::None), speed(100.f), direction(1.f, 0.f), lastDirection(1.f, 0.f), moveTime(15.f), hitTime(0.f), getAttackTime(1.f), patrolTime(0.f), hp(500),
+	maxHp(500), barScaleX(60.f), look(1.f, 0.f), isHit(false),  isInSight(true), attack(false), isSearch(false), patrolBlock(10), initMoveTime(10.f)
 {
+
 }
 
 Enemy::~Enemy()
 {
+	Release();
+}
+
+void Enemy::Release()
+{
+
+	if (gun != nullptr)
+		delete gun;
+	gun = nullptr;
+
+	if (astar != nullptr)
+		delete astar;
+	astar = nullptr;
+
+
+	HitBoxObject::Release();
 }
 
 void Enemy::Init(Player* player)
 {
 	HitBoxObject::Init();
 	this->player = player;
+	
+	auto enemys = FILE_MGR->GetEnemyInfo();
+	auto data = enemys[enemyType];
+	hp = maxHp = data.maxHp;
 
-	hp = maxHp;
-	switch (type)
-	{
-	case 1:
-		gun = new Gun(GunType::Shotgun, User::Enemy);
-		break;
-	case 2:
-		gun = new Gun(GunType::Rifle, User::Enemy);
-		break;
-	case 3:
-		gun = new Gun(GunType::Sniper, User::Enemy);
-		break;
-	}
+	hideDelay = data.hideDelay;
+	initHitTime = data.hitTime;
+	moveTime = data.moveTime;
+	patrolBlock = data.patrolBlock;
+	initPatrolTime = data.patrolTime;
+	speed = data.speed;
+	searchDis = data.searchDis;
+
+
+	gun = new Gun(type, User::Enemy);
 	gun->SetEnemy(this);
 	gun->Init();
 
@@ -65,6 +83,12 @@ void Enemy::Init(Player* player)
 	scene = SCENE_MGR->GetCurrScene();
 
 	astar = new Astar();
+
+	bottomPos = bottom->GetHitBottomPos();
+	direction.x = (this->player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+	MakePath();
+	movePos.clear();
+
 }
 
 void Enemy::SetState(States newState)
@@ -73,7 +97,8 @@ void Enemy::SetState(States newState)
 		return;
 
 	currState = newState;
-	
+	//lastDirection = direction;
+
 	switch ( currState )
 	{
 	case Enemy::States::Idle:
@@ -84,6 +109,7 @@ void Enemy::SetState(States newState)
 		break;
 	case Enemy::States::Dead:
 		((GameScene*)(SCENE_MGR->GetCurrScene()))->SetDeadEnemy(items, position, this);
+		SOUND_MGR->Play("sounds/death.wav");
 		SetActive(false);
 		break;
 	}
@@ -100,11 +126,14 @@ void Enemy::Update(float dt)
 		return;
 
 	HitBoxObject::Update(dt);
-	if (Utils::Distance(player->GetPos(), GetPos()) < 500.f)
+	HideUpdate(dt);
+
+	if (!player->GetHide() && isInSight && (Utils::Distance(player->GetPos(), GetPos()) < searchDis) )
 	{
 		//look = player->GetPos();
 		lookDir = Utils::Normalize(player->GetPos() - GetPos());
 		direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+		lastDirection = direction;
 	}
 	else
 	{
@@ -117,10 +146,19 @@ void Enemy::Update(float dt)
 		SetState(States::Dead);
 
 	}
-
+	
 	//enemy attack
 	if (currState != States::Dead)
 	{
+		if (patrolTime <= 0.f && !attack)
+		{
+			PatrolPattern(dt);
+			patrolTime = 5.f;
+		}
+		if (currState == States::Idle)
+		{
+			patrolTime -= dt;
+		}
 		AttackPattern(dt);
 	}
 	
@@ -128,6 +166,7 @@ void Enemy::Update(float dt)
 	if (currState == States::Move)
 	{
 		Move(dt);
+		
 	}
 	
 	//hp bar
@@ -142,31 +181,35 @@ void Enemy::Update(float dt)
 	//gun
 	gun->Update(dt);
 
-	//dev input
-	if (InputMgr::GetKeyDown(Keyboard::F2))
+
+
+	auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+
+	bool isNowHide = false;
+	for (auto& obj : boundInObj)
 	{
-		isHit = !isHit;
+		if (obj->GetName() == "BUSH" && Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
+		{
+			isNowHide = true;
+			SetHide(true);
+			break;
+		}
 	}
-	if (InputMgr::GetKeyDown(Keyboard::F3))
-	{
-		//isMove = !isMove;
-		playerPos = player->GetPos();
-		movePos.clear();
-		FindGrid();
-		astar->AstarSearch(*isGreedObject, startPos, destPos);
-		movePos = astar->GetCoordinate();
-		SetState(States::Move);
-	}
+
+	if (!isNowHide)
+		SetHide(false);
 }
 
 void Enemy::Draw(RenderWindow& window)
 {
 	if (!enabled || !IsInView())
 		return;
-	if ( GetActive() )
+	if ( GetActive() && isInSight)
 	{
 		HitBoxObject::Draw(window);
-		window.draw(healthBar);
+		//window.draw(healthBar);
+		SetColor(Color::White);
+		gun->Draw(window);
 	}
 	if (isHitBox)
 	{
@@ -175,21 +218,18 @@ void Enemy::Draw(RenderWindow& window)
 			hit->Draw(window);
 		}
 	}
-	gun->Draw(window);
+	
+	
 	//dev
-	/*if (isMove)
+	/*VertexArray lines(LineStrip, 2);
+	if (isInSight)
 	{
-		VertexArray lines(Quads, 4);
-		if (!movePos.empty())
-		{
-			lines[0].position = { movePos.front().x - 30,movePos.front().y - 30.f };
-			lines[1].position = { movePos.front().x + 30.f,movePos.front().y - 30.f };
-			lines[2].position = { movePos.front().x + 30.f,movePos.front().y + 30.f };
-			lines[3].position = { movePos.front().x - 30.f,movePos.front().y + 30.f };
-		}
+		lines[0].position = { GetPos() };
+		lines[1].position = { player->GetPos() };
 		window.draw(lines);
 	}*/
-
+	
+	
 }
 
 void Enemy::OnCompleteDead()
@@ -205,6 +245,7 @@ bool Enemy::EqualFloat(float a, float b)
 void Enemy::SetHp(int num)
 {
 	//move trigger
+	direction.x = (this->player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 	isHit = true;
 	moveTime = 0.f;
 	playerPos = player->GetPos();
@@ -212,13 +253,12 @@ void Enemy::SetHp(int num)
 	FindGrid();
 	astar->AstarSearch(*isGreedObject, startPos, destPos);
 	movePos = astar->GetCoordinate();
-
+	
 	hp -= num;
 	if ( hp <= 0 )
 	{
 		hp = 0;
 	}
-
 
 	string ments[3] = { "Ouch..!", "Oh No!" , "Fuxx" };
 	Vector2f randPos = { Utils::RandomRange(-20,20) + GetPos().x,
@@ -237,25 +277,30 @@ void Enemy::SetHpBar()
 {
 	healthBar.setPosition({ GetPos().x, GetPos().y - 35.f });
 	healthBar.setSize({ (barScaleX / maxHp) * hp, 15.f });
-	if ( hp > (maxHp / 2) )
+	if (hp > (maxHp / 2))
 	{
-		healthBar.setFillColor(Color::Green);
+		if (!isHide)
+			healthBar.setFillColor(Color::Green);
 	}
-	else if ( hp <= (maxHp / 2) && hp > (maxHp / 5) )
+	else if (hp <= (maxHp / 2) && hp > (maxHp / 5))
 	{
-		healthBar.setFillColor(Color::Yellow);
-	}
-	else
-	{
-		healthBar.setFillColor(Color::Red);
-	}
-	if ( hp <= 0 )
-	{
-		healthBar.setOutlineThickness(0.f);
+		if (!isHide)
+			healthBar.setFillColor(Color::Yellow);
 	}
 	else
 	{
-		healthBar.setOutlineThickness(2.f);
+		if (!isHide)
+			healthBar.setFillColor(Color::Red);
+	}
+	if (hp <= 0)
+	{
+		if (!isHide)
+			healthBar.setOutlineThickness(0.f);
+	}
+	else
+	{
+		if (!isHide)
+			healthBar.setOutlineThickness(2.f);
 	}
 }
 
@@ -274,32 +319,65 @@ void Enemy::SetEnemyPos()
 
 void Enemy::AttackPattern(float dt)
 {
+	CheckIsInSight();
+	CheckIsInWall();
 	//attack motion
-	if (hitTime >= 0.8f && (Utils::Distance(player->GetPos(), GetPos()) < 500.f))
+	if (hitTime >= 0.8f &&  gun->GetIsInWall() )
 	{
-		gun->Fire(GetPos(), false);
-		hitTime = 0.f;
-		moveTime = 0.f;
-		playerPos = player->GetPos();
-		movePos.clear();
-		FindGrid();
-		astar->AstarSearch(*isGreedObject, startPos, destPos);
-		movePos = astar->GetCoordinate();
+		if (!player->GetHide() && (Utils::Distance(player->GetPos(), GetPos()) < searchDis) && isInSight)
+		{
+			lookDir = Utils::Normalize(player->GetPos() - GetPos());
+			direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
+			SetState(States::Idle);
+			animator.Play((direction.x > 0.f) ? "EnemyIdle" : "EnemyIdleLeft");
+			gun->SetLookDir(lookDir);
+			gun->Fire(GetPos(), false);
+			HideStop();
+			hitTime = 0.f;
+			moveTime = 0.f;
+			playerPos = player->GetPos();
+			movePos.clear();
+			FindGrid();
+			astar->AstarSearch(*isGreedObject, startPos, destPos);
+			movePos = astar->GetCoordinate();
+			attack = true;
+		}
 	}
+	//cout << movePos.empty() << endl;
 
-	if (!movePos.empty() && moveTime < 10.f && ((Utils::Distance(player->GetPos(), GetPos()) > 500.f) || isHit))
+	if ((!movePos.empty() && moveTime < initMoveTime && (Utils::Distance(player->GetPos(), GetPos()) > searchDis) || !isInSight) || (isHit || isSearch))
 	{
 		SetState(States::Move);
+		if (isHit)
+		{
+			CallFriends();
+		}
+		//direction.x = (player->GetPos().x > GetPos().x) ? 1.f : -1.f;
 	}
 	else
 	{
-		SetState(States::Idle);
+		//SetState(States::Idle);
 		isHit = false;
+		isSearch = false;
+		attack = false;
+		
 	}
 	
 	//timer
 	hitTime += dt;
 	moveTime += dt;
+}
+
+void Enemy::PatrolPattern(float dt)
+{
+	MakePath();
+	//int num = Utils::RandomRange(0, 5);
+	//Vector2f point = patrolPos[num];
+	movePos.clear();
+	FindGrid(patrolPos);
+	astar->AstarSearch(*isGreedObject, startPos, destPos);
+	movePos = astar->GetCoordinate();
+	SetState(States::Move);
 }
 
 void Enemy::Move(float dt)
@@ -309,16 +387,21 @@ void Enemy::Move(float dt)
 		//cout << "empty list1" << endl;
 		SetState(States::Idle);
 		Translate({ 0.f, 0.f });
+		isHit = false;
+		isSearch = false;
+		//patrolTime = 5.f;
 		return;
 	}
 
 	Vector2f aPos = movePos.front();
+	direction.x = (aPos.x > GetPos().x) ? 1.f : -1.f;
 	if ((Utils::Distance(aPos, GetPos()) <= 10.f))
 	{
 		if (movePos.empty())
 		{
 			//cout << "empty list2" << endl;
 			SetState(States::Idle);
+			
 			return;
 		}
 		//cout << "in position" << endl;
@@ -338,76 +421,20 @@ void Enemy::Move(float dt)
 	Collision();
 }
 
-void Enemy::MoveToPos(float dt)
-{
-	if (movePos.empty())
-	{
-		//cout << "empty list1" << endl;
-		SetState(States::Idle);
-		Translate({ 0.f, 0.f });
-		return;
-	}
-	
-	Vector2f aPos = movePos.front();
-	if ((Utils::Distance(aPos, GetPos()) <= 10.f))
-	{
-		if (movePos.empty())
-		{
-			//cout << "empty list2" << endl;
-			SetState(States::Idle);
-			return;
-		}
-		//cout << "in position" << endl;
-		movePos.pop_front();
-	}
-	moveDir = Utils::Normalize(aPos - GetPos());
-
-	prevPosition = GetPos();
-	Translate( moveDir * this->speed * dt );
-
-	//position
-	for (auto& hit : hitboxs)
-	{
-		hit->SetPos(GetPos());
-	}
-	//wall bound
-	Collision();
-}
-
 void Enemy::Collision()
 {
-	//auto obj = scene->GetObjList();
-	////wall bound
-	//for (auto& objects : obj[LayerType::Object][0])
-	//{
-	//	auto hit = ((HitBoxObject*)objects)->GetBottom();
-	//	if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
-	//		continue;
-	//	if (objects->GetName() == "TREE" ||
-	//		objects->GetName() == "STONE" ||
-	//		objects->GetName() == "BLOCK" ||
-	//		objects->GetName() == "PLAYER")
-	//	{
-	//		if (Utils::OBB(hit->GetHitbox(), bottom->GetHitbox()))
-	//		{
-	//			SetEnemyPos();
-	//			break;
-	//		}
-	//	}
-	//}
-
-
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
 		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
 
-		for (auto obj : boundInObj)
+		for (auto& obj : boundInObj)
 		{
 			if (Utils::OBB(obj->GetBottom()->GetHitbox(), bottom->GetHitbox()))
 			{
 				if (obj->GetName() == "STONE" ||
 					obj->GetName() == "BLOCK" ||
-					obj->GetName() == "ENEMY")
+					obj->GetName() == "RADIATION"||
+					obj->GetName() == "INVISIBLE")
 					SetEnemyPos();
 			}
 		}
@@ -419,10 +446,215 @@ void Enemy::FindGrid()
 	//Enemy start pos
 	startPos.first = (int)bottomPos.x / 60;
 	startPos.second = (int)bottomPos.y / 60;
-	//cout << "start pos" << startPos.first << " " << startPos.second << endl;
 	
 	//Enemy dest pos
 	destPos.first = (int)player->GetPlayerBottom().x / 60;
 	destPos.second = (int)player->GetPlayerBottom().y / 60;
-	//cout << "dest pos" << destPos.first << " " << destPos.second << endl;
+	
+}
+
+void Enemy::FindGrid(Vector2f pos)
+{
+	//Enemy start pos
+	startPos.first = (int)bottomPos.x / 60;
+	startPos.second = (int)bottomPos.y / 60;
+	
+	//Enemy dest pos
+	destPos.first = (int)pos.x / 60;
+	destPos.second = (int)pos.y / 60;
+	
+}
+
+void Enemy::CheckIsInWall()
+{
+	//gun fire
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+
+		for (auto& obj : boundInObj)
+		{
+			if (Utils::OBB(obj->GetBottom()->GetHitbox(), gun->GetHitbox()))
+			{
+
+				if (obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK" ||
+					obj->GetName() == "RADIATION"||
+					obj->GetName() == "INVISIBLE")
+				{
+					//cout << "wall" << endl;
+					gun->SetIsInWall(false);
+					break;
+				}
+			}
+			else
+			{
+				//cout << "not wall" << endl;
+				gun->SetIsInWall(true);
+			}
+		}
+	}
+}
+
+void Enemy::CheckIsInSight()
+{
+	VertexArray lines(LineStrip, 2);
+	lines[0].position = { GetPos() };
+	lines[1].position = { player->GetPos() };
+	
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(lines.getBounds());
+
+		for (auto& obj : boundInObj)
+		{
+			if (Utils::LineRect(
+				GetPos(),
+				player->GetPos(),
+				obj->GetBottom()->GetHitbox()))
+			{
+				if (obj->GetName() == "TREE" ||
+					obj->GetName() == "STONE" ||
+					obj->GetName() == "BLOCK")
+				{
+					isInSight = false;
+					break;
+				}
+			}
+			else
+			{
+				isInSight = true;
+			}
+			
+		}
+	}
+}
+
+void Enemy::MakePath()
+{
+	//cout << "pos x: " << ((int)bottomPos.x / 60) << " y: " << ((int)bottomPos.y / 60) << endl;
+	int x, y;
+	//int num = 0;
+	while (1)
+	{
+		if (Utils::RandomRange(0, 2) == 0)
+		{
+			x = ((int)bottomPos.x / 60) + Utils::RandomRange(0, patrolBlock);
+			y = ((int)bottomPos.y / 60) + Utils::RandomRange(0, patrolBlock);
+		}
+		else
+		{
+			x = ((int)bottomPos.x / 60) + Utils::RandomRange(-patrolBlock, 0);
+			y = ((int)bottomPos.y / 60) + Utils::RandomRange(-patrolBlock, 0);
+		}
+		if (x > 0 && y > 0 && y < 72 && x < 128)
+		{
+			if (!CheckWall(x, y))
+			{
+				patrolPos = { x * 60.f,y * 60.f };
+				break;
+				
+				//cout << "path x: " << x << " y: " << y << endl;
+			}
+		}
+		
+	}
+	return;
+}
+
+bool Enemy::CheckWall(int x, int y)
+{
+	return (*isGreedObject)[y][x];
+}
+
+void Enemy::SetIsSearch(bool hit)
+{
+	moveTime = 0.f;
+	playerPos = player->GetPos();
+	movePos.clear();
+	FindGrid();
+	astar->AstarSearch(*isGreedObject, startPos, destPos);
+	movePos = astar->GetCoordinate();
+	isSearch = hit;
+	patrolTime = 3.f;
+	//SetState(States::Move);
+}
+
+void Enemy::CallFriends()
+{
+	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
+	{
+		auto boundInObj = ((GameScene*)scene)->ObjListObb(this);
+		auto* enemyfriend = ((GameScene*)scene)->GetEnemyList();
+		if (enemyfriend->size() <= 1)
+		{
+			return;
+		}
+
+		for (auto obj = enemyfriend->begin(); obj != enemyfriend->end(); obj++)
+		{
+			if ((Utils::Distance((*obj)->GetPos(), GetPos()) < searchDis))
+			{
+				(*obj)->SetIsSearch(true);
+			}
+		}
+
+	}
+	isHit = false;
+}
+
+bool Enemy::GetHide()
+{
+	return isHide;
+}
+
+void Enemy::SetHide(bool state)
+{
+	if (isHide && !state)
+	{
+		SetColor(Color::White);
+		gun->SetColor(Color::White);
+		healthBar.setFillColor(Color::White);
+		SetHpBar();
+		hideDelayTimer = 0.f;
+		isHitBullet = false;
+	}
+	if (isHitBullet)
+	{
+		return;
+	}
+	if (!isHide && state)
+	{
+		SetColor(Color(0, 0, 0, 0));
+		gun->SetColor(Color(0, 0, 0, 0));
+		healthBar.setFillColor(Color(0, 0, 0, 0));
+		healthBar.setOutlineThickness(0.f);
+
+	}
+	isHide = state;
+}
+
+void Enemy::HideUpdate(float dt)
+{
+	if (isHitBullet)
+	{
+		hideDelayTimer += dt;
+		if (hideDelayTimer > hideDelay)
+		{
+			hideDelayTimer = 0.f;
+			isHitBullet = false;
+			gun->SetColor(Color::White);
+			SetColor(Color::White);
+			healthBar.setFillColor(Color::White);
+		}
+	}
+}
+
+void Enemy::HideStop()
+{
+	isHitBullet = true; hideDelayTimer = 0.f; isHide = false;
+
+	SetColor(Color::White);
+	gun->SetColor(Color::White);
+	healthBar.setFillColor(Color::White);
 }

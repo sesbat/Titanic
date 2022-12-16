@@ -14,6 +14,7 @@ class SpriteObject;
 class TextObject;
 class NPC;
 class ItemBoxObject;
+class Boss;
 
 class GameScene :public Scene
 {
@@ -24,18 +25,19 @@ public:
 		candle::EdgeVector edgePool;
 	};
 protected:
+	GameScene& operator=(const GameScene& ref) {}
+	GameScene& operator=(GameScene& ref) {}
+
 	Player* player;
-
 	list<Enemy*> enemies;
-
+	list<Boss*> bosses;
+	//Boss* boss;
+	Boss* boss;
 
 	float timer;
 	Clock clock;
-
 	IntRect mapSize;
 	
-	//vector<SpriteObject*> sprObj;
-
 	//mission
 	Vector2f escapePoint;
 	float escapeTimer;
@@ -48,14 +50,28 @@ protected:
 	QuadTree treeMap;
 
 	//view sight
-	//std::vector<std::shared_ptr<candle::LightSource>> lights1;
 	candle::RadialLight light;
 	candle::LightingArea fog;
-	
-	//list<candle::EdgeVector>blockPool;
 	vector<Blocks> blockPool;
 	int blockCount;
 
+	SpriteObject* cursor;
+	SpriteObject* shot_cursor;
+
+	bool targeting = false;
+	VertexArray lines;
+
+	bool isZoom;
+	float r = 0.1f;
+	float MaxR = 0.4f;
+	float MinR = 0.1f;
+	float zoomInOutSpeed = 0.01f;
+
+	float supplyTimer;
+	float initSupplyTimer;
+	bool isSupply;
+
+	int enemyId = 0;
 public:
 	GameScene();
 	virtual ~GameScene();
@@ -67,15 +83,17 @@ public:
 	virtual void Exit() override;
 
 	virtual void Update(float dt) override;
+	void SupplyUpdate(float dt);
 	vector<HitBoxObject*> ObjListObb(HitBoxObject* obj);
 	vector<HitBoxObject*> ObjListObb(FloatRect obj);
 	virtual void Draw(RenderWindow& window) override;
 
 	list<Enemy*>* GetEnemyList() { return &enemies; }
+	list<Boss*>* GetBossList() { return &bosses; }
 	Player* GetPlayer(){ return player; }
 	float GetEscapeTimer() { return escapeTimer; }
 	Vector2f GetEscapePoint() { return escapePoint; }
-	void SetDeadEnemy(map<string, Item> items, Vector2f pos, Enemy* enemy);
+	void SetDeadEnemy(map<string, Item> items, Vector2f pos, Object* enemy ,string boxPath = "graphics/enemy1-die.png");
 	void DropItems(map<string, Item> items, Vector2f pos);
 	void EmpytyInven(ItemBoxObject* inven);
 	//void SetDeadEnemy(map<string, Item> items, Vector2f pos);
@@ -83,4 +101,8 @@ public:
 
 	candle::EdgeVector pushBlock(const sf::Vector2f& pos);
 	void castAllLights();
+
+	void CloseToolTip();
+	int& GetID() { return enemyId; }
+	QuadTree& GetTree() { return treeMap; }
 };

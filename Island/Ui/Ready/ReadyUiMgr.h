@@ -10,15 +10,25 @@ class NPC;
 class Button;
 class Inventory;
 class Craft;
+class TextObject;
+class Shop;
+class BoolWindowBox;
+class ToolTip;
 class ReadyUiMgr : public UiMgr
 {
 private:
 	Player* player;
 	NPC* startNpc;
 	NPC* craftNpc;
+	NPC* shopNpc;
+	NPC* healNpc;
 
-	Inventory* inVen;
+	BoolWindowBox* yesORno;
+	Button* healed; //you have been healed
+	float messageTime;
+
 	Craft* craft;
+	Shop* shop;
 
 	UiMgr* uiMgr;
 
@@ -27,16 +37,41 @@ private:
 
 	vector<Button*> categories;
 	Button* categoryBK;
+
+	Button* hpBar;
+	Button* hpBarBK;
+	Button* hpSprite;
+
+	Button* staminaBar;
+	Button* staminaBK;
+	Button* staminaSprite;
+
+	Button* hunger;
+	Button* hungerBK;
+	Button* hungerTex;
+
+	Button* thirst;
+	Button* thirstBK;
+	Button* thirstTex;
+
+	Button* energy;
+	Button* energyBK;
+	Button* energyTex;
+
+	Button* radiationBK;
+	Button* radiation;
+	Button* radiationTex;
+
+	float hpBarSize;
+	float staminaBarSize;
+	ToolTip* tip;
 public:
 	ReadyUiMgr(Scene* scene);
+	~ReadyUiMgr();
 	virtual void Init();
 	virtual void Release();
 	virtual void Update(float dt);
 	virtual void Draw(RenderWindow& window);
-
-	void ClickEpisodeBtn();
-
-	void ClickEditortBtn();
-
+	ToolTip* GetTip() { return tip; }
 };
 

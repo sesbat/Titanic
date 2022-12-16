@@ -9,6 +9,10 @@ class CraftItem;
 class CraftGreed : public Button
 {
 private:
+	CraftGreed(const CraftGreed& ref) : Button(nullptr) {}
+	CraftGreed& operator=(const CraftGreed& ref) {}
+	CraftGreed(CraftGreed& ref) : Button(nullptr) {}
+	CraftGreed& operator=(CraftGreed& ref) {}
 	Vector2i invenPos;
 	Craft* inven;
 	CraftBox* invenBox;

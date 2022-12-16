@@ -15,17 +15,17 @@ ResourceManager::~ResourceManager()
 
 void ResourceManager::ReleaseAll()
 {
-    for (auto it : texMap)
+    for (auto& it : texMap)
     {
         delete it.second;
     }
     texMap.clear();
-    for (auto it : fontMap)
+    for (auto &it : fontMap)
     {
         delete it.second;
     }
     fontMap.clear();
-    for (auto it : soundMap)
+    for (auto& it : soundMap)
     {
         delete it.second;
     }
@@ -139,7 +139,7 @@ Texture* ResourceManager::GetTexture(string id)
     auto it = texMap.find(id);
     if (it == texMap.end())
         return nullptr;
-    return it->second;
+    return (it->second);
 }
 
 Font* ResourceManager::GetFont(string id)

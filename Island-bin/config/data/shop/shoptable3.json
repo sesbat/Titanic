@@ -1,0 +1,14 @@
+{
+  "RifleBullet": {
+    "name": "RifleBullet",
+    "cnt": 90
+  },
+  "ShotGunBullet": {
+    "name": "ShotGunBullet",
+    "cnt": 50
+  },
+  "SniperBullet": {
+    "name": "SniperBullet",
+    "cnt": 30
+  }
+}

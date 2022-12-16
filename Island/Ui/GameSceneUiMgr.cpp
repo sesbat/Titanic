@@ -14,6 +14,7 @@
 #include "../Framework/Framework.h"
 #include "../GameObject/NPC.h"
 #include "InventoryBox.h"
+#include "../GameObject/ToolTip.h"
 
 GameSceneUiMgr::GameSceneUiMgr(Scene* scene)
 	:UiMgr(scene), hpBarSize(1.f),staminaBarSize(1.f)
@@ -22,10 +23,14 @@ GameSceneUiMgr::GameSceneUiMgr(Scene* scene)
 
 GameSceneUiMgr::~GameSceneUiMgr()
 {
+	player->Save();
+	Releas();
 }
 
 void GameSceneUiMgr::Init()
 {
+	tip = new ToolTip(this);
+	uiObjList[1].push_back(tip);
 	player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
 
 	//hp
@@ -33,14 +38,14 @@ void GameSceneUiMgr::Init()
 	hpBar->SetClkColor(false);
 	hpBar->SetTexture(*RESOURCES_MGR->GetTexture("graphics/hpbar.png"), false);
 	hpBar->SetOrigin(Origins::ML);
-	hpBar->SetPos({ 300,100 });
+	hpBar->SetPos({ 100,100 });
 	uiObjList[0].push_back(hpBar);
 
 	hpBarBK = new Button(this);
 	hpBarBK->SetClkColor(false);
 	hpBarBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/hpbarbk.png"), false);
 	hpBarBK->SetOrigin(Origins::ML);
-	hpBarBK->SetPos({ 300,100 });
+	hpBarBK->SetPos({ 100,100 });
 	uiObjList[0].push_back(hpBarBK);
 
 	hpSprite = new Button(this);
@@ -48,7 +53,7 @@ void GameSceneUiMgr::Init()
 	hpSprite->SetTexture(*RESOURCES_MGR->GetTexture("graphics/hpsprite.png"), false);
 	hpSprite->SetOrigin(Origins::MC);
 	hpSprite->GetSpriteObj()->SetScale({ 0.8f,0.8f });
-	hpSprite->SetPos({ 250,100 });
+	hpSprite->SetPos({ 50,100 });
 	uiObjList[0].push_back(hpSprite);
 
 	//stamina
@@ -56,14 +61,14 @@ void GameSceneUiMgr::Init()
 	staminaBar->SetClkColor(false);
 	staminaBar->SetTexture(*RESOURCES_MGR->GetTexture("graphics/stamina.png"), false);
 	staminaBar->SetOrigin(Origins::ML);
-	staminaBar->SetPos({ 300,150 });
+	staminaBar->SetPos({ 100,150 });
 	uiObjList[0].push_back(staminaBar);
 
 	staminaBK = new Button(this);
 	staminaBK->SetClkColor(false);
 	staminaBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/staminabk.png"), false);
 	staminaBK->SetOrigin(Origins::ML);
-	staminaBK->SetPos({ 300,150 });
+	staminaBK->SetPos({ 100,150 });
 	uiObjList[0].push_back(staminaBK);
 
 	staminaSprite = new Button(this);
@@ -71,7 +76,7 @@ void GameSceneUiMgr::Init()
 	staminaSprite->SetTexture(*RESOURCES_MGR->GetTexture("graphics/staminasprite.png"), false);
 	staminaSprite->SetOrigin(Origins::MC);
 	staminaSprite->GetSpriteObj()->SetScale({ 0.5f,0.5f });
-	staminaSprite->SetPos({ 250,150 });
+	staminaSprite->SetPos({ 50,150 });
 	uiObjList[0].push_back(staminaSprite);
 
 	//hunger
@@ -81,14 +86,14 @@ void GameSceneUiMgr::Init()
 	hunger->GetSpriteObj()->SetColor(Color(169, 57, 53, (int)player->GetHungerGuage()));
 	hunger->SetOrigin(Origins::MC);
 	//hunger->GetSpriteObj()->SetScale({ 0.5f,0.5f });
-	hunger->SetPos({ 500,100 });
+	hunger->SetPos({ 350,100 });
 	uiObjList[0].push_back(hunger);
 
 	hungerBK = new Button(this);
 	hungerBK->SetClkColor(false);
 	hungerBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/hungerbk.png"), false);
 	hungerBK->SetOrigin(Origins::MC);
-	hungerBK->SetPos({ 500,100 });
+	hungerBK->SetPos({ 350,100 });
 	uiObjList[0].push_back(hungerBK);
 
 	//thirst
@@ -97,14 +102,14 @@ void GameSceneUiMgr::Init()
 	thirst->SetTexture(*RESOURCES_MGR->GetTexture("graphics/thirst.png"), false);
 	thirst->GetSpriteObj()->SetColor(Color(0, 145, 255, (int)player->GetThirstGuage()));
 	thirst->SetOrigin(Origins::MC);
-	thirst->SetPos({ 600,100 });
+	thirst->SetPos({ 450,100 });
 	uiObjList[0].push_back(thirst);
 
 	thirstBK = new Button(this);
 	thirstBK->SetClkColor(false);
 	thirstBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/thirstbk.png"), false);
 	thirstBK->SetOrigin(Origins::MC);
-	thirstBK->SetPos({ 600,100 });
+	thirstBK->SetPos({ 450,100 });
 	uiObjList[0].push_back(thirstBK);
 
 	//energy
@@ -114,7 +119,7 @@ void GameSceneUiMgr::Init()
 	energy->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)player->GetEnergyGuage()));
 	energy->SetOrigin(Origins::MC);
 	energy->GetSpriteObj()->SetScale({ 1.5f,1.5f });
-	energy->SetPos({ 700,100 });
+	energy->SetPos({ 550,100 });
 	uiObjList[0].push_back(energy);
 
 	energyBK = new Button(this);
@@ -122,19 +127,15 @@ void GameSceneUiMgr::Init()
 	energyBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/energybk.png"), false);
 	energyBK->SetOrigin(Origins::MC);
 	energyBK->GetSpriteObj()->SetScale({ 1.5f,1.5f });
-	energyBK->SetPos({ 700,100 });
+	energyBK->SetPos({ 550,100 });
 	uiObjList[0].push_back(energyBK);
-
-	inven = player->GetInventory();
-	uiObjList[1].push_back(inven);
-
 
 	hungerTex = new Button(this);
 	hungerTex->SetClkColor(true);
 	hungerTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		20, Color::White, to_string(((player->GetHungerGuage() / 255) * 100)), true);
 	hungerTex->SetOrigin(Origins::MC);
-	hungerTex->SetPos({ 500,50 });
+	hungerTex->SetPos({ 380,40 });
 	uiObjList[0].push_back(hungerTex);
 
 	thirstTex = new Button(this);
@@ -142,7 +143,7 @@ void GameSceneUiMgr::Init()
 	thirstTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		20, Color::White, to_string(((player->GetThirstGuage() / 255) * 100)), true);
 	thirstTex->SetOrigin(Origins::MC);
-	thirstTex->SetPos({ 600,50 });
+	thirstTex->SetPos({ 480,40 });
 	uiObjList[0].push_back(thirstTex);
 
 	energyTex = new Button(this);
@@ -150,9 +151,45 @@ void GameSceneUiMgr::Init()
 	energyTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		20, Color::White, to_string(((player->GetEnergyGuage() / 255) * 100)), true);
 	energyTex->SetOrigin(Origins::MC);
-	energyTex->SetPos({ 700,50 });
+	energyTex->SetPos({ 580,40 });
 	uiObjList[0].push_back(energyTex);
 
+	
+	radiation = new Button(this);
+	radiation->SetClkColor(false);
+	radiation->SetTexture(*RESOURCES_MGR->GetTexture("graphics/rad.png"), false);
+	radiation->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)player->GetRadiGuage()));
+	radiation->SetOrigin(Origins::MC);
+	radiation->GetSpriteObj()->SetScale({ 1.5f,1.5f });
+	radiation->SetPos({ 650,100 });
+	uiObjList[0].push_back(radiation);
+
+
+	radiationBK = new Button(this);
+	radiationBK->SetClkColor(false);
+	radiationBK->SetTexture(*RESOURCES_MGR->GetTexture("graphics/radbk.png"), false);
+	radiationBK->SetOrigin(Origins::MC);
+	radiationBK->GetSpriteObj()->SetScale({ 1.5f,1.5f });
+	radiationBK->SetPos({ 650,100 });
+	uiObjList[0].push_back(radiationBK);
+
+	radiationTex = new Button(this);
+	radiationTex->SetClkColor(false);
+	radiationTex->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		20, Color::White, to_string((int)((player->GetRadiGuage() / 255) * 100)), true);
+	radiationTex->SetOrigin(Origins::MC);
+	radiationTex->SetPos({ 680,40 });
+	uiObjList[0].push_back(radiationTex);
+
+	ammoText = new Button(this);
+	ammoText->SetClkColor(true);
+	ammoText->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		40, Color::White, player->GetAmmos(), true);
+	ammoText->SetOrigin(Origins::MC);
+	ammoText->SetPos({ 150,200 });
+	uiObjList[0].push_back(ammoText);
+
+	uiObjList[0].push_back(player->GetInventory());
 }
 
 void GameSceneUiMgr::Reset()
@@ -189,7 +226,7 @@ void GameSceneUiMgr::Update(float dt)
 	{
 		player->SetPrevThirstGuage(player->GetThirstGuage());
 		int result = ((player->GetThirstGuage() / 255) * 100);
-		thirstTex->GetTextObj()->SetString(to_string(result));
+		thirstTex->GetTextObj()->SetString(to_string((int)result));
 		thirst->GetSpriteObj()->SetColor(Color(0, 145, 255, (int)player->GetThirstGuage()));
 		if (result < 30.f)
 		{
@@ -204,7 +241,7 @@ void GameSceneUiMgr::Update(float dt)
 	{
 		player->SetPrevEnergyGuage(player->GetEnergyGuage());
 		int result = ((player->GetEnergyGuage() / 255) * 100);
-		energyTex->GetTextObj()->SetString(to_string(result));
+		energyTex->GetTextObj()->SetString(to_string((result)));
 		energy->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)player->GetEnergyGuage()));
 		if (result < 30.f)
 		{
@@ -215,7 +252,22 @@ void GameSceneUiMgr::Update(float dt)
 			energyTex->GetTextObj()->SetColor(Color::White);
 		}
 	}
-
+	if (!player->Radiation())
+	{
+		player->SetPrevRadGuage(player->GetRadiGuage());
+		int result = ((player->GetRadiGuage() / 255) * 100);
+		radiationTex->GetTextObj()->SetString(to_string((int)(result)));
+		radiation->GetSpriteObj()->SetColor(Color(235, 255, 0, (int)player->GetRadiGuage()));
+		if (result > 125.f)
+		{
+			radiationTex->GetTextObj()->SetColor(Color::Red);
+		}
+		else
+		{
+			radiationTex->GetTextObj()->SetColor(Color::White);
+		}
+	}
+	ammoText->GetTextObj()->SetString(player->GetAmmos());
 	UiMgr::Update(dt);
 
 }
@@ -224,5 +276,10 @@ void GameSceneUiMgr::Draw(RenderWindow& window)
 {
 	window.setView(parentScene->GetUiView());
 	UiMgr::Draw(window);
+}
+
+void GameSceneUiMgr::Releas()
+{
+	UiMgr::Release();
 }
 

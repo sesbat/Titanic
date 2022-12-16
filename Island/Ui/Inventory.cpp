@@ -20,23 +20,63 @@ Inventory::Inventory(UiMgr* mgr)
 
 Inventory::~Inventory()
 {
+	Release();
+}
+
+void Inventory::Release()
+{
+	for (auto& useItem : invenItemGreed)
+	{
+		if (useItem != nullptr)
+		{
+			delete useItem;
+			useItem = nullptr;
+		}
+	}
+	for (auto& useItem : myUseItems)
+	{
+		delete useItem;
+	}
+	myUseItems.clear();
+
+	if (myInven != nullptr)
+		delete myInven;
+	myInven = nullptr;
+
+	if (rightInven != nullptr)
+		delete rightInven;
+	rightInven = nullptr;
+
+	if (txtMoney != nullptr)
+		delete txtMoney;
+	txtMoney = nullptr;
+
+	Button::Release();
 }
 
 void Inventory::Init()
 {
 	SetTexture(*RESOURCES_MGR->GetTexture("graphics/inventory.png"), true);
 	myInven = new InventoryBox(uimgr, this, Vector2i{ 163,252 });
-	myInven->Init();
 	myInven->SetName("MyInventory");
+	myInven->Init();
 	rightInven = new InventoryBox(uimgr, this, Vector2i{ 1248,252 });
-	rightInven->Init();
 	rightInven->SetName("RightInventory");
+	rightInven->Init();
 	initRightInven = rightInven;
+
+	saveBox = new InventoryBox(uimgr, this, Vector2i{ 870, 845 });
+	saveBox->SetInvenSize(3, 2);
+	saveBox->SetName("SaveBox");
+	saveBox->Init();
+	saveBox->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		30, Color::White, "SAVE BOX", false);
+	saveBox->GetTextObj()->SetPos(Vector2f{ 880.f, 800.f });
 
 
 	Vector2f invenPos[] = { {800.f,140.f},{800.f,310.f},{800.f,471.f},{991.f,471.f},{800.f,721.f},{888.f,721.f},{972.f,721.f},{1055.f,721.f} };
 	string invenPath[] = { "inven-weapon","inven-weapon" ,"inven-cloth" ,"inven-cloth" ,"inven-item","inven-item" ,"inven-item" ,"inven-item" };
-	
+
 	for (int i = 0; i < 8; i++)
 	{
 		invenItemGreed[i] = new Button(uimgr);
@@ -45,6 +85,11 @@ void Inventory::Init()
 		invenItemGreed[i]->SetClkColor(false);
 	}
 	myUseItems = { nullptr,nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+
+	txtMoney = new TextObject();
+	txtMoney->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 20, Color::White, to_string(((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer()->GetMoney()));
+	txtMoney->SetPos(Vector2f{ 660.f,990.f });
+	txtMoney->SetOrigin(Origins::MR);
 }
 
 void Inventory::Update(float dt)
@@ -54,53 +99,10 @@ void Inventory::Update(float dt)
 	Button::Update(dt);
 	myInven->Update(dt);
 	rightInven->Update(dt);
+	saveBox->Update(dt);
 
-	if (InputMgr::GetKeyDown(Keyboard::Q))
-	{
-		myInven->AddItem("Recoverykit");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::W))
-	{
-		myInven->AddItem("handsaw");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::Y))
-	{
-		myInven->AddItem("Meat");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::T))
-	{
-		myInven->AddItem("Armor-1");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::I))
-	{
-		myInven->AddItem("Apple");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::O))
-	{
-		myInven->AddItem("Water");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::P))
-	{
-		myInven->AddItem("EnergyDrink");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::J))
-	{
-		myInven->AddItem("RifleBullet");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::K))
-	{
-		myInven->AddItem("ShotGunBullet");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::L))
-	{
-		myInven->AddItem("SniperBullet");
-	}
-	if (InputMgr::GetKeyDown(Keyboard::E))
-	{
-		rightInven->AddItem("Recoverykit");
-	}
 
-	if (nowDrag != nullptr && IsStay() )
+	if (nowDrag != nullptr && IsStay())
 	{
 		prevInven->ReturnItem();
 	}
@@ -120,23 +122,41 @@ void Inventory::Update(float dt)
 				switch (i)
 				{
 				case 0:
-					if (itemName == "GUN1" || 
-						itemName == "GUN2" ||
-						itemName == "GUN3")
+					if (itemName == "Shotgun" ||
+						itemName == "MB_Shotgun" ||
+						itemName == "Up1-Shotgun" ||
+						itemName == "Rifle" ||
+						itemName == "Scop_Rifle" ||
+						itemName == "MB_Rifle" ||
+						itemName == "Sniper" ||
+						itemName == "Scop_sniper" ||
+						itemName == "MB_sniper"||
+						itemName == "SR_25")
 						isUseItemUp = true;
 					break;
 				case 1:
-					if (itemName == "GUN1" ||
-						itemName == "GUN2" ||
-						itemName == "GUN3")
+					if (itemName == "Shotgun" ||
+						itemName == "MB_Shotgun" ||
+						itemName == "Up1-Shotgun" ||
+						itemName == "Rifle" ||
+						itemName == "Scop_Rifle" ||
+						itemName == "MB_Rifle" ||
+						itemName == "Sniper" ||
+						itemName == "Scop_sniper" ||
+						itemName == "MB_sniper" ||
+						itemName == "SR_25")
 						isUseItemUp = true;
 					break;
 				case 2:
-					if (itemName == "Armor-1")
+					if (itemName == "Armor-1"||
+						itemName == "PoliceArmor" || 
+						itemName == "HunterArmor" || 
+						itemName == "ReinforcedArmor"||
+						itemName == "HDF-Armor")
 						isUseItemUp = true;
 					break;
 				case 3:
-					if (itemName == "Armor-1")
+					if (itemName == "Armor-1"/*Ghillie suit position*/)
 						isUseItemUp = true;
 					break;
 				case 4:
@@ -144,7 +164,27 @@ void Inventory::Update(float dt)
 						itemName == "Apple" ||
 						itemName == "Meat" ||
 						itemName == "Water" ||
-						itemName == "EnergyDrink")
+						itemName == "EnergyDrink"||
+						itemName == "Bread" || 
+						itemName == "RottenBread" || 
+						itemName == "Cheese" || 
+						itemName == "RottenCheese" || 
+						itemName == "Egg" || 
+						itemName == "RottenEgg" || 
+						itemName == "Sandwitch" || 
+						itemName == "MRE" || 
+						itemName == "RottenWater" || 
+						itemName == "Milk" || 
+						itemName == "RottenMilk" || 
+						itemName == "Coke" || 
+						itemName == "Coffee" || 
+						itemName == "Vodka" ||
+						itemName == "Whisky" || 
+						itemName == "AntiRad" || 
+						itemName == "RawMeat" || 
+						itemName == "StandardMedikit" || 
+						itemName == "ModernMedikit" ||
+						itemName =="ImprovedAntirad")
 						isUseItemUp = true;
 					break;
 				case 5:
@@ -152,7 +192,27 @@ void Inventory::Update(float dt)
 						itemName == "Apple" ||
 						itemName == "Meat" ||
 						itemName == "Water" ||
-						itemName == "EnergyDrink")
+						itemName == "EnergyDrink" ||
+						itemName == "Bread" ||
+						itemName == "RottenBread" ||
+						itemName == "Cheese" ||
+						itemName == "RottenCheese" ||
+						itemName == "Egg" ||
+						itemName == "RottenEgg" ||
+						itemName == "Sandwitch" ||
+						itemName == "MRE" ||
+						itemName == "RottenWater" ||
+						itemName == "Milk" ||
+						itemName == "RottenMilk" ||
+						itemName == "Coke" ||
+						itemName == "Coffee" ||
+						itemName == "Vodka" ||
+						itemName == "Whisky" ||
+						itemName == "AntiRad" ||
+						itemName == "RawMeat" ||
+						itemName == "StandardMedikit" ||
+						itemName == "ModernMedikit" ||
+						itemName == "ImprovedAntirad")
 						isUseItemUp = true;
 					break;
 				case 6:
@@ -160,7 +220,27 @@ void Inventory::Update(float dt)
 						itemName == "Apple" ||
 						itemName == "Meat" ||
 						itemName == "Water" ||
-						itemName == "EnergyDrink")
+						itemName == "EnergyDrink" ||
+						itemName == "Bread" ||
+						itemName == "RottenBread" ||
+						itemName == "Cheese" ||
+						itemName == "RottenCheese" ||
+						itemName == "Egg" ||
+						itemName == "RottenEgg" ||
+						itemName == "Sandwitch" ||
+						itemName == "MRE" ||
+						itemName == "RottenWater" ||
+						itemName == "Milk" ||
+						itemName == "RottenMilk" ||
+						itemName == "Coke" ||
+						itemName == "Coffee" ||
+						itemName == "Vodka" ||
+						itemName == "Whisky" ||
+						itemName == "AntiRad" ||
+						itemName == "RawMeat" ||
+						itemName == "StandardMedikit" ||
+						itemName == "ModernMedikit" ||
+						itemName == "ImprovedAntirad")
 						isUseItemUp = true;
 					break;
 				case 7:
@@ -168,7 +248,27 @@ void Inventory::Update(float dt)
 						itemName == "Apple" ||
 						itemName == "Meat" ||
 						itemName == "Water" ||
-						itemName == "EnergyDrink")
+						itemName == "EnergyDrink" ||
+						itemName == "Bread" ||
+						itemName == "RottenBread" ||
+						itemName == "Cheese" ||
+						itemName == "RottenCheese" ||
+						itemName == "Egg" ||
+						itemName == "RottenEgg" ||
+						itemName == "Sandwitch" ||
+						itemName == "MRE" ||
+						itemName == "RottenWater" ||
+						itemName == "Milk" ||
+						itemName == "RottenMilk" ||
+						itemName == "Coke" ||
+						itemName == "Coffee" ||
+						itemName == "Vodka" ||
+						itemName == "Whisky" ||
+						itemName == "AntiRad" ||
+						itemName == "RawMeat" ||
+						itemName == "StandardMedikit" ||
+						itemName == "ModernMedikit" ||
+						itemName == "ImprovedAntirad")
 						isUseItemUp = true;
 					break;
 				}
@@ -187,12 +287,18 @@ void Inventory::Update(float dt)
 					{
 						auto player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
 						auto gun = player->GetGun();
-						
+
 						gun->SetGunType(gun->ItemNameToType(nowDrag->GetName()));
+					}
+					if (i == 2)
+					{
+						auto player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
+						player->SetArmorType(nowDrag->GetName());
 					}
 					SetDrag(nullptr);
 					useIdx = -1;
 				}
+
 			}
 		}
 		i++;
@@ -220,13 +326,18 @@ void Inventory::Update(float dt)
 
 					gun->SetGunType(GunType::None);
 				}
+				if (i == 2 )
+				{
+					auto player = ((GameScene*)(SCENE_MGR->GetCurrScene()))->GetPlayer();
+					player->SetArmorType("");
+				}
 				break;
 			}
 		}
 		i++;
 	}
 
-	for (auto del : deleteUseItem)
+	for (auto& del : deleteUseItem)
 	{
 		int idx = del - myUseItems.begin();
 		delete* del;
@@ -243,7 +354,7 @@ void Inventory::Draw(RenderWindow& window)
 	Button::Draw(window);
 	for (auto& useItem : invenItemGreed)
 	{
-		if(useItem != nullptr)
+		if (useItem != nullptr)
 			useItem->Draw(window);
 	}
 	for (auto& useItem : myUseItems)
@@ -253,6 +364,9 @@ void Inventory::Draw(RenderWindow& window)
 	}
 	myInven->Draw(window);
 	rightInven->Draw(window);
+	txtMoney->Draw(window);
+	saveBox->Draw(window);
+
 
 }
 
@@ -261,6 +375,7 @@ void Inventory::SetDrag(InvenItem* item)
 	nowDrag = item;
 	myInven->SetDrag(item);
 	rightInven->SetDrag(item);
+	saveBox->SetDrag(item);
 }
 InventoryBox* Inventory::GetNowInven()
 {
@@ -292,7 +407,7 @@ void Inventory::MoveInvenItem(InventoryBox* nextInven)
 	auto next = nextInven->GetItems();
 
 	auto find_item = find(prev->begin(), prev->end(), nowDrag);
-	if(find_item != prev->end())
+	if (find_item != prev->end())
 		prev->erase(find_item);
 	next->push_back(nowDrag);
 }
@@ -349,9 +464,9 @@ void Inventory::SetUserItem(InvneUseInfo data)
 {
 	auto itemData = FILE_MGR->GetItemInfo(data.Type);
 	this->myUseItems[data.useIdx] = new InvenItem(uimgr);
-	this->myUseItems[data.useIdx]->Init();
 	this->myUseItems[data.useIdx]->SetName(data.Type);
-	this->myUseItems[data.useIdx]->Set(itemData.width, itemData.height, data.invenPos, {-1, -1}, data.path, itemData.maxCount);
+	this->myUseItems[data.useIdx]->Set(itemData.width, itemData.height, data.invenPos, { -1, -1 }, data.path, itemData.maxCount, itemData.price);
+	this->myUseItems[data.useIdx]->Init();
 	this->myUseItems[data.useIdx]->AddCount(data.cnt);
 
 	if (data.useIdx == 0 || data.useIdx == 1)
@@ -366,7 +481,7 @@ void Inventory::SetUserItem(InvneUseInfo data)
 InvenGreed* Inventory::GetGreed(int i, int j)
 {
 	InventoryBox* inven = GetNowInven();
-	
+
 	int	width = inven->GetWidth();
 	int	height = inven->GetHeight();
 	if (i >= height || j >= width)

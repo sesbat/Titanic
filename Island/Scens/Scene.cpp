@@ -5,8 +5,11 @@
 #include "../Ui/Menu/MenuUiMgr.h"
 #include "../GameObject/HitBoxObject.h"
 #include "../GameObject/HitBox.h"
+#include "../Scens/GameScene.h"
+#include "../Scens/Ready.h"
+#include "../GameObject/Player.h"
 
-Scene::Scene(Scenes type) :type(type), uiMgr(nullptr), isMap(false)
+Scene::Scene(Scenes type) :type(type), uiMgr(nullptr), isGameScene(false)
 {
 }
 
@@ -25,9 +28,10 @@ void Scene::Release()
 	drawObjs.clear();
 	alphaObj.clear();
 	another.clear();
+
 	if (uiMgr != nullptr)
 	{
-		((MenuUiMgr*)uiMgr)->Release();
+		uiMgr->Release();
 		uiMgr = nullptr;
 	}
 	uiMgr = nullptr;
@@ -35,14 +39,15 @@ void Scene::Release()
 	{
 		for (auto& obj_pair : layer.second)
 		{
-			auto objs = obj_pair.second;
-
-			for (auto& obj : objs)
+			for (auto& obj : obj_pair.second)
 			{
-				if(obj != nullptr)
+				if (obj != nullptr)
+				{
 					delete obj;
+				}
+				obj = nullptr;
 			}
-			objs.clear();
+			obj_pair.second.clear();
 		}
 		layer.second.clear();
 	}
@@ -64,20 +69,37 @@ Vector2f Scene::ScreenToUiPosition(Vector2i screenPos)
 }
 void Scene::Update(float dt)
 {
-	for (auto& layer : objList)
+	if (!isGameScene)
 	{
-		for (auto& obj_pair : layer.second)
+		for (auto& layer : objList)
 		{
-			auto objs = obj_pair.second;
-
-			for (auto& obj : objs)
+			for (auto& obj_pair : layer.second)
 			{
-				if (obj->GetActive())
+				auto objs = obj_pair.second;
+
+				for (auto& obj : objs)
 				{
-					obj->Update(dt);
+					if (obj->GetActive())
+					{
+						obj->Update(dt);
+					}
 				}
 			}
 		}
+		if (uiMgr != nullptr)
+			uiMgr->Update(dt);
+
+		return;
+	}
+
+	for (auto& obj : drawObjs)
+	{
+		obj->Update(dt);
+
+	}
+	for (auto& obj : objList[LayerType::Object][1])
+	{
+		obj->Update(dt);
 	}
 
 	for (auto& del : deleteContainer)
@@ -114,7 +136,7 @@ void Scene::Draw(RenderWindow& window)
 {
 	window.setView(worldView);
 
-	if (!isMap)
+	if (!isGameScene)
 	{
 		for (auto& layer : objList)
 		{
@@ -140,7 +162,8 @@ void Scene::Draw(RenderWindow& window)
 		{
 			for (auto& o : obj.second)
 			{
-				o->Draw(window);
+				if (((SpriteObject*)o)->IsInView())
+					o->Draw(window);
 			}
 		}
 		for (auto& obj : another)
@@ -198,6 +221,8 @@ void Scene::LayerSort()
 	moves.clear();
 	drawObjs.clear();
 	another.clear();
+	//radPos.clear();
+	radObj.clear();
 	HitBoxObject* player = nullptr;
 
 	for (auto& obj : alphaObj)
@@ -214,10 +239,16 @@ void Scene::LayerSort()
 			continue;
 		}
 		if (obj->GetName() == "TREE" || obj->GetName() == "BUSH" || obj->GetName() == "STONE" ||
-			obj->GetName() == "BLOCK" || obj->GetName() == "BOX" || obj->GetName() == "BOX-ENEMY")
+			obj->GetName() == "BLOCK" || obj->GetName() == "BOX" || obj->GetName() == "SupplyBox" ||
+			obj->GetName() == "BOX-ENEMY" || obj->GetName() == "RADIATION"|| obj->GetName() == "INVISIBLE"|| obj->GetName() == "RADTILE")
 		{
 			if (obj->GetName() == "TREE" || obj->GetName() == "BUSH")
 				alphaObj.push_back((HitBoxObject*)obj);
+			if (obj->GetName() == "RADIATION" || obj->GetName() == "RADTILE")
+			{
+				//radPos.push_back(obj->GetPos());
+				radObj.push_back(obj);
+			}
 
 			if(obj->GetActive())
 				drawObjs.push_back(obj);
@@ -227,7 +258,7 @@ void Scene::LayerSort()
 		{
 			another.push_back(obj);
 		}
-		else if (obj->GetName() == "ENEMY" || obj->GetName() == "PLAYER" || obj->GetName() == "NPC")
+		else if (obj->GetName() == "ENEMY" || obj->GetName() == "BOSS" || obj->GetName() == "PLAYER" || obj->GetName() == "NPC")
 		{
 			if (obj->GetName() == "PLAYER")
 				player = ((HitBoxObject*)obj);
@@ -237,15 +268,19 @@ void Scene::LayerSort()
 		}
 	}
 
+	bool playerIsHide = false;
 	if (player != nullptr)
 	{
 		for (auto& obj : alphaObj)
 		{
 			if (Utils::OBB(obj->GetHitBoxs(), player->GetBottom()))
 			{
-				obj->SetHitPlayer(true);
+				obj->SetHitPlayer(Utils::OBB(obj->GetHitBoxs(), player->GetBottom()));
+				if(obj->GetName() == "BUSH")
+					playerIsHide = true;
 			}
 		}
+		((Player*)player)->SetHide(playerIsHide);
 	}
 	sort(moves.begin(), moves.end(), sorting);
 	auto dit = drawObjs.begin();

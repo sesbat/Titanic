@@ -24,6 +24,9 @@ private:
 	DrawObj* now_exit;
 	Vector2i exitPos;
 
+	Vector2i view_start_pos;
+	Vector2i veiw_end_pos;
+
 public:
 	MapEditor();
 	virtual void Init() override;

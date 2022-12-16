@@ -8,14 +8,6 @@
 using json = nlohmann::json;
 using namespace std;	
 
-enum class FileTypes
-{
-	EpisodeInfo,
-	HitBoxInfo,
-	CookieHitBox,
-};
-
-
 namespace sf {
 	void to_json(json& j, const Vector2f& p);
 	void from_json(const json& j, Vector2f& p);
@@ -65,7 +57,15 @@ namespace ns {
 		float weight;
 		int width;
 		int height;
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemInfo, path, maxCount, weight, width, height)
+		int price;
+
+		string uiName;
+		int type;
+		string description;
+		sf::Vector2i toolTipPos;
+		sf::Vector2i toolTipSize;
+		float tooltipDelay;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemInfo, path, maxCount, weight, width, height, price, uiName, type, description, toolTipPos, toolTipSize, tooltipDelay)
 	};
 
 	struct RequiredItem
@@ -82,6 +82,13 @@ namespace ns {
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(CraftingInfo, useItem)
 	};
 	
+	struct ArmorStat
+	{
+		string name;
+		int defencePower;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ArmorStat, name, defencePower)
+	};
 
 	struct UserInfo
 	{
@@ -89,10 +96,27 @@ namespace ns {
 		float hungerGuage;
 		float thirstGuage;
 		float energyGuage;
+		float radGuage;
+		int money;
+		int ammo;
+		int sgAmmo;		//remaining ammo
+		int sgAmmo_1up;		//remaining ammo
+		int rfAmmo;
+		int snAmmo;
+		int mb_sgAmmo;
+		int mb_snAmmo;
+		int mb_rfAmmo;
+		int scop_snAmmo;
+		int scop_rfAmmo;
+		int sr25_Ammo;
+		int lastWephon;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage)
+		vector<string> clearMaps;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserInfo, hp, hungerGuage, thirstGuage, energyGuage, radGuage, money, 
+			ammo, sgAmmo, sgAmmo_1up, rfAmmo, snAmmo, mb_sgAmmo, mb_snAmmo, mb_rfAmmo,
+			scop_snAmmo, scop_rfAmmo, sr25_Ammo,lastWephon, clearMaps)
 	};
-
 
 	struct InvenInfo
 	{
@@ -114,4 +138,99 @@ namespace ns {
 		string path;
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(InvneUseInfo, Type, useIdx, invenPos, cnt, path)
+	};
+
+	struct UserStat
+	{
+		string name;	//valancing variable
+
+		int maxHp;
+		float speed;
+		float dashSpeed;
+
+		float staminaUpSpeed;
+		float staminaDownSpeed;
+		float maxStamina;
+
+		float maxHungerGuage;
+		float maxThirstGuage;
+		float maxEnergyGuage;
+		float maxRadiation;
+
+		float hungerDelay;
+		float thirstDelay;
+		float energyDelay;
+		float radiationDelay;
+
+		float radDebuffLevel;
+		float radDebuffScale;
+		float radDebuffHPDelay;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(UserStat, name, maxHp, speed, dashSpeed,
+			staminaUpSpeed, staminaDownSpeed, maxStamina, maxHungerGuage, maxThirstGuage, maxEnergyGuage, maxRadiation,
+			hungerDelay, thirstDelay, energyDelay, radiationDelay, radDebuffLevel, radDebuffScale, radDebuffHPDelay)
+	};
+
+	struct GunStat
+	{
+		string name;	//valancing variable
+
+		float damage;
+		float speed;
+		float range;
+		float reloadDelay;
+		int magazine;
+		float randDir;
+		float zoomRange;
+		float shootDelay;
+		float shotgunDir;
+		string soundPath;
+
+		int cnt;
+		
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GunStat,
+			name, damage, speed, range, reloadDelay, magazine, randDir, zoomRange, shootDelay, shotgunDir, soundPath, cnt)
+	};
+	
+	struct ItemEffect
+	{
+		string name;
+		float hp;
+		float hungerEffect;
+		float thirstEffect;
+		float energyEffect;
+		float radiationEffect;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ItemEffect,
+			name, hp, hungerEffect, thirstEffect, energyEffect, radiationEffect)
+	};
+
+	struct EnemyInfo
+	{
+		int gun;
+
+		float speed;
+		float maxSpeed;
+		float dashSpeed;
+		int maxHp;
+		string type;
+
+		float moveTime;
+		float hitTime;
+		float patrolTime;
+		float hideDelay;
+
+		int patrolBlock;
+		float searchDis;
+		int damage;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(EnemyInfo,
+			gun, speed, maxSpeed, dashSpeed,  maxHp, type, moveTime, hitTime, patrolTime, hideDelay, patrolBlock, searchDis, damage)
+	};
+	struct ShopItemInfo
+	{
+		string name;
+		int cnt;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ShopItemInfo,name, cnt)
 	};

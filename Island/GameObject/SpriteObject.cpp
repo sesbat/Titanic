@@ -6,13 +6,9 @@ SpriteObject::SpriteObject()
 {
 }
 
-SpriteObject::~SpriteObject()
-{
-	Release();
-}
-
 void SpriteObject::Init()
 {
+	Object::Init();
 }
 
 void SpriteObject::Update(float dt)

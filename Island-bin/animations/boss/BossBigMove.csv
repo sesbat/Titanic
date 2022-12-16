@@ -1,0 +1,10 @@
+ID,LOOPTYPE (0: Single 1: Move),FPS,,,,,,
+BossBigMove,1,12,,,,,,
+,,,,,,,,
+TEXTURE ID,L,T,W,H,X,Y,FlipX,FlipY
+graphics/enemy/boss/Big/Big_move.png,0,0,256,128,128,64,0,0
+graphics/enemy/boss/Big/Big_move.png,256,0,256,128,128,64,0,0
+graphics/enemy/boss/Big/Big_move.png,512,0,256,128,128,64,0,0
+graphics/enemy/boss/Big/Big_move.png,768,0,256,128,128,64,0,0
+graphics/enemy/boss/Big/Big_move.png,1024,0,256,128,128,64,0,0
+graphics/enemy/boss/Big/Big_move.png,1280,0,256,128,128,64,0,0

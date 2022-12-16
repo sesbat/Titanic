@@ -5,6 +5,10 @@
 class VertexArrayObj : public Object
 {
 protected:
+	VertexArrayObj(const VertexArrayObj& ref) {}
+	VertexArrayObj& operator=(const VertexArrayObj& ref) {}
+	VertexArrayObj( VertexArrayObj& ref) {}
+	VertexArrayObj& operator=( VertexArrayObj& ref) {}
 	VertexArray vertexArray;
 	Texture* texture;
 	Origins origin;

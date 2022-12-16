@@ -5,9 +5,6 @@ HitBox::HitBox()
 {
 }
 
-HitBox::~HitBox()
-{
-}
 
 void HitBox::SetActive(bool active)
 {
@@ -23,10 +20,6 @@ void HitBox::Init()
 {
 }
 
-void HitBox::Release()
-{
-
-}
 
 void HitBox::Reset()
 {

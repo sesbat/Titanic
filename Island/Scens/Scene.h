@@ -12,13 +12,13 @@ class Object;
 class HitBoxObject;
 enum class Scenes
 {
-	None = -1, Menu,Ready,MapEditor,Count,GameScene
+	None = -1, Menu,Ready,MapEditor,Count,GameScene, Tutorial
 };
 
 // �ٴ�, Ǯ, ������Ʈ + ��(Ư��), ���ʹ�
 enum class LayerType
 {
-	None, Back, Tile, Object
+	None, Back, Tile, Object, Cursor, COUNT
 };
 
 class Scene
@@ -33,12 +33,13 @@ protected:
 	UiMgr* uiMgr;
 
 	vector <Object*> deleteContainer;
-
 	vector<Object*> moves;
 	vector<Object*> another;
 	vector<Object*> drawObjs;
+	vector<Vector2f> radPos;
+	vector<Object*> radObj;
 	vector<HitBoxObject*> alphaObj;
-	bool isMap;
+	bool isGameScene;
 
 	string sceneName;
 public:
@@ -67,6 +68,8 @@ public:
 	virtual void LayerSort();
 	void SetSceneName(string name) { sceneName = name; }
 	string GetSceneName() { return sceneName; }
+	const vector<Vector2f>& GetRadPos() { return radPos; }
+	const vector<Object*>& GetRadObj() { return radObj; }
 	void AddDeleteObject(int idx,Object* obj);
 };
 bool sorting(Object* p1, Object* p2);

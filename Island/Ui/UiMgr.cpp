@@ -8,7 +8,7 @@ UiMgr::UiMgr(Scene* scene) : parentScene(scene), enabled(true)
 
 UiMgr::~UiMgr()
 {
-   // Release();
+   Release();
 }
 
 void UiMgr::Init()
@@ -31,9 +31,9 @@ void UiMgr::Release()
                 delete obj;
             obj = nullptr;
         }
+        uiObjs.second.clear();
     }
     uiObjList.clear();
-    Object::Release();
 }
 
 

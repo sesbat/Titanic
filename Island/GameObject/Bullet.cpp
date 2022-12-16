@@ -3,18 +3,16 @@
 #include "HitBox.h"
 #include "HitBoxObject.h"
 #include "Enemy.h"
+#include "Boss.h"
 #include "../Scens/SceneManager.h"
 #include "../Framework/InputMgr.h"
+#include "../Framework/SoundManager.h"
 #include <iostream>
 
 #include "../Scens/GameScene.h"
 
 Bullet::Bullet()
-	:dir(), speed(0.f), range(0.f), showLine(false)
-{
-}
-
-Bullet::~Bullet()
+	:dir(), speed(0.f), range(0.f), israd(false)
 {
 }
 
@@ -35,7 +33,8 @@ void Bullet::Update(float dt)
 		range -= Utils::Magnitude(dir * dt * speed);
 		
 		// collision
-		Collision();
+		startPos = GetPos() - dir * ((float)sprite.getLocalBounds().width);;
+
 		if (GetActive())
 		{
 			if (range >= 0.f)
@@ -47,27 +46,20 @@ void Bullet::Update(float dt)
 				SetActive(false);
 			}
 		}
-		
-		nextPos = GetPos() - dir * ((float)sprite.getLocalBounds().width);
+		nextPos = GetPos();// -dir * ((float)sprite.getLocalBounds().width);
+
+		Collision();
 	}
-	if (InputMgr::GetKeyDown(Keyboard::P))
-	{
-		showLine = !showLine;
-	}
+
 }
 
 void Bullet::Draw(RenderWindow& window)
 {
-	VertexArray lines(LineStrip, 2);
-	lines[0].position = { startPos - dir * ((float)sprite.getLocalBounds().width) };
+	/*VertexArray lines(LineStrip, 2);
+	lines[0].position = { startPos };
 	lines[1].position = { nextPos };
-	if (showLine)
-	{
-		window.draw(lines);
-	}
-	
+	window.draw(lines);*/
 	SpriteObject::Draw(window);
-	
 }
 
 void Bullet::Reset()
@@ -81,17 +73,11 @@ void Bullet::Reset()
 	SpriteObject::Reset();
 }
 
-void Bullet::Release()
-{
-	SpriteObject::Release();
-}
-
-
 void Bullet::Fire(const Vector2f& pos, const Vector2f& dir, float speed, float range, bool isplayer)
 {
 	sprite.setRotation(Utils::Angle(dir));
 	startPos = pos;
-	nextPos = startPos - dir * ((float)sprite.getLocalBounds().width);
+	nextPos = startPos + dir * ((float)sprite.getLocalBounds().width);
 	SetPos(pos);
 	this->isplayer = isplayer;
 	SetActive(true);
@@ -150,74 +136,97 @@ bool Bullet::Lineline(Vector2f bulletpos, Vector2f bulletPrevPos, float x3, floa
 
 void Bullet::Collision()
 {
-	auto obj = scene->GetObjList();
-
 	vector<HitBoxObject*> boundInObj;
 	if (SCENE_MGR->GetCurrSceneType() == Scenes::GameScene)
 	{
 		boundInObj = ((GameScene*)scene)->ObjListObb(sprite.getGlobalBounds());
 	}
-	//for (auto& objects : obj[LayerType::Object][0])
 	for (auto& objects : boundInObj)
 	{
 		auto hit = ((HitBoxObject*)objects)->GetBottom();
-		//cout << hit->GetHitbox().getPosition().x << " " 
-		//	<< hit->GetHitbox().getPosition().y << endl;
-
 		if (hit == nullptr || !((SpriteObject*)objects)->IsInView())
 			continue;
 
 		if (objects->GetName() == "TREE" ||
 			objects->GetName() == "STONE" ||
-			objects->GetName() == "BLOCK")
+			objects->GetName() == "BLOCK" ||
+			objects->GetName() == "RADIATION"||
+			objects->GetName() == "INVISIBLE")
 		{
 			if (LineRect(
-				startPos - dir * ((float)sprite.getLocalBounds().width),
+				startPos,
 				nextPos,
 				hit->GetHitbox()))
 			{
 				speed = 0;
 				SetActive(false);
-				//cout << "hit" << endl;
 				break;
+				
 			}
 		}
-		else if (isplayer && objects->GetName() == "ENEMY")
+		else if (isplayer && objects->GetName() == "ENEMY" || isplayer && objects->GetName() == "BOSS")
 		{
 			auto hb = ((HitBoxObject*)objects)->GetHitBoxs();
-			for (auto it : hb)
+			for (auto& it : hb)
 			{
-				for (Enemy* enemy : *enemies)
+				if (objects->GetName() == "ENEMY")
 				{
-					if (objects->GetId() == enemy->GetId())
+					for (Enemy*& enemy : *enemies)
 					{
-						if (LineRect(
-							startPos - dir * ((float)sprite.getLocalBounds().width),
-							nextPos,
-							it->GetHitbox()))
+						if (objects->GetId() == enemy->GetId())
 						{
-							//cout << "hit" << endl;
-							enemy->SetHp(damage);
-							SetActive(false);
-							break;
+							if (LineRect(
+								startPos,
+								nextPos,
+								it->GetHitbox()))
+							{
+								enemy->SetHp(damage);
+								enemy->HideStop();
+								SetActive(false);
+								break;
+							}
+							//break;
 						}
-						break;
 					}
 				}
+				else if (objects->GetName() == "BOSS")
+				{
+					for (Boss*& boss : *bosses)
+					{
+						if (objects->GetId() == boss->GetId())
+						{
+							if (LineRect(
+								startPos,
+								nextPos,
+								it->GetHitbox()))
+							{
+								boss->SetHp(damage);
+								SetActive(false);
+								break;
+							}
+						}
+					}
+				}
+				
 			}
 		}
 		else if (!isplayer && objects->GetName() == "PLAYER")
 		{
 			auto hb = ((HitBoxObject*)objects)->GetHitBoxs();
-			for (auto it : hb)
+			for (auto &it : hb)
 			{
 				if (LineRect(
-					startPos - dir * ((float)sprite.getLocalBounds().width),
+					startPos,
 					nextPos,
 					it->GetHitbox()))
 				{
-					//cout << "player hit" << endl;
+					if (israd)
+					{
+						//cout << "rad" << endl;
+						player->SetRad(radiation);
+					}
 					player->SetHp(damage);
+					player->HideStop();
 					SetActive(false);
 					break;
 				}

@@ -14,6 +14,7 @@ InventoryBox::InventoryBox(UiMgr* mgr, Inventory* inven, Vector2i startPos)
 
 InventoryBox::~InventoryBox()
 {
+	Release();
 }
 
 void InventoryBox::Init()
@@ -37,6 +38,32 @@ void InventoryBox::Init()
 	}
 }
 
+void InventoryBox::Release()
+{
+	for (auto& greeds : itemGreed)
+	{
+		for (auto& greed : greeds)
+		{
+			if (greed != nullptr)
+				delete greed;
+			greed = nullptr;
+		}
+	}
+
+	itemGreed.clear();
+
+	for (auto& item : items)
+	{
+		if (item != nullptr)
+			delete item;
+		item = nullptr;
+	}
+	items.clear();
+	allPos.clear();
+
+	Button::Release();
+}
+
 void InventoryBox::Update(float dt)
 {
 	if (!enabled)
@@ -58,15 +85,16 @@ void InventoryBox::Update(float dt)
 					for (int j = invenPos.y; j < invenPos.y + nowDrag->GetHeight(); j++)
 					{
 						allPos[j][i] = false;
-						itemGreed[j][i]->SetState(false, nullptr);
+						itemGreed[j][i]->SetState(false);
 					}
 				}
 				//items.erase(items.begin(), find(items.begin(), items.end(), item));
 				//items.push_back(item);
 				break;
 			}
-			else if (item->IsClickRight())
+			else if (name != "SaveBox" && item->IsClickRight())
 			{
+				
 				auto pos = pairInven->FindInvenPos(item->GetWidth(), item->GetHeight());
 				auto invenPos = item->GetGreedPos();
 
@@ -88,6 +116,7 @@ void InventoryBox::Update(float dt)
 				}
 				break;
 			}
+			
 		}
 	}
 	else
@@ -147,11 +176,11 @@ void InventoryBox::AddItem(string name, int cnt, Vector2i invenPos, Vector2i gre
 
 		}
 	}
+	item->SetName(name);
 	item->Set(data.width, data.height,
 		{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
-		{ findPos.y, findPos.x }, data.path, data.maxCount);
+		{ findPos.y, findPos.x }, data.path, data.maxCount, data.price);
 	item->AddCount(cnt);
-	item->SetName(name);
 	item->Init();
 
 	items.push_back(item);
@@ -179,15 +208,45 @@ void InventoryBox::AddItem(string name, int count)
 		}
 	}
 
-	auto findPos = FindInvenPos(data.width, data.height);
-
-	if (findPos == Vector2i{ -1, -1 })
-	{
-		return;
-	}
-
 	int maxCnt = data.maxCount;
 
+	while (count != 0)
+	{
+		auto findPos = FindInvenPos(data.width, data.height);
+
+		if (findPos == Vector2i{ -1, -1 })
+		{
+			return;
+		}
+
+
+		InvenItem* item = new InvenItem(uimgr);
+		for (int i = findPos.x; i < findPos.x + data.height; i++)
+		{
+			for (int j = findPos.y; j < findPos.y + data.width; j++)
+			{
+				allPos[i][j] = true;
+				itemGreed[i][j]->SetState(true, item);
+
+			}
+		}
+		item->SetName(name);
+		item->Set(data.width, data.height,
+			{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
+			{ findPos.y, findPos.x }, data.path, data.maxCount, data.price);
+		item->AddCount(count >= maxCnt ? maxCnt : count);
+		item->Init();
+
+		count -= maxCnt;
+		count = max(count, 0);
+		items.push_back(item);
+	}
+	inven->SetDrag(nullptr);
+}
+void InventoryBox::AddItem(string name, int count, Vector2i findPos)
+{
+	auto data = FILE_MGR->GetItemInfo(name);
+	
 	InvenItem* item = new InvenItem(uimgr);
 	for (int i = findPos.x; i < findPos.x + data.height; i++)
 	{
@@ -198,11 +257,11 @@ void InventoryBox::AddItem(string name, int count)
 
 		}
 	}
+	item->SetName(name);
 	item->Set(data.width, data.height,
 		{ startPos.x + findPos.y * 60 + padding * findPos.y , startPos.y + findPos.x * 60 + padding * findPos.x },
-		{ findPos.y, findPos.x }, data.path, data.maxCount);
+		{ findPos.y, findPos.x }, data.path, data.maxCount, data.price);
 	item->AddCount(count);
-	item->SetName(name);
 	item->Init();
 
 	items.push_back(item);
@@ -274,16 +333,118 @@ void InventoryBox::MoveItem(int i, int j)
 		}
 	}
 
-	if (find(items.begin(), items.end(), nowDrag) == items.end())
-	{
-		cout << "this11" << endl;
-		//items.push_back(nowDrag);
-	}
+	//if (find(items.begin(), items.end(), nowDrag) == items.end())
+	//{
+	//	//
+	//  << "this11" << endl;
+	//	//items.push_back(nowDrag);
+	//}
 
 	inven->MoveInvenItem(this);
-
 	inven->SetDrag(nullptr);
 	inven->SetPrevInven(nullptr);
+}
+
+bool InventoryBox::CheckSaveBoxOverlap()
+{
+	string now_item_name = nowDrag->GetName();
+	if (find(saveBox_overlap_info.begin(), saveBox_overlap_info.end(), now_item_name) == saveBox_overlap_info.end())
+		return false;
+	for (auto& i : items)
+	{
+		if (i->GetName() == nowDrag->GetName())
+			return true;
+	}
+	return false;
+}
+void InventoryBox::MoveSaveBox(int i, int j)
+{
+	if (nowDrag->GetCount() <= 99)
+	{
+		nowDrag->SetInvenPos({ startPos.x + i * 60 + padding * i , startPos.y + j * 60 + padding * j },
+			{ i, j });
+
+		int w = nowDrag->GetWidth();
+		int h = nowDrag->GetHeight();
+		for (int x = 0; x < w; x++)
+		{
+			for (int y = 0; y < h; y++)
+			{
+				allPos[y + j][x + i] = true;
+				itemGreed[y + j][x + i]->SetState(true, nowDrag);
+			}
+		}
+	}
+	else
+	{
+		int n = nowDrag->GetCount() / 99;
+		auto itemName = nowDrag->GetName();
+		auto allCount = nowDrag->GetCount() - 99;
+		auto prevDragPos = nowDrag->GetGreedPos();
+		nowDrag->SetCount(99);
+
+		int w = nowDrag->GetWidth();
+		int h = nowDrag->GetHeight();
+		for (int x = 0; x < w; x++)
+		{
+			for (int y = 0; y < h; y++)
+			{
+				allPos[y + j][x + i] = true;
+				itemGreed[y + j][x + i]->SetState(true, nowDrag);
+			}
+		}
+
+		nowDrag->SetInvenPos({ startPos.x + i * 60 + padding * i , startPos.y + j * 60 + padding * j },
+			{ i, j });
+		inven->MoveInvenItem(this);
+
+		for (int _i = 0; _i < n; _i++)
+		{
+			auto findPos = FindInvenPos(w, h);
+			if (findPos == Vector2i{ -1,-1 })
+			{
+				inven->GetPrevInven()->AddItem(itemName, allCount, Vector2i{ prevDragPos.y, prevDragPos.x });
+				break;
+			}
+
+			int nowCount = allCount > 99 ? 99 : allCount;
+			if (nowCount == 0)
+				break;
+			AddItem(itemName, nowCount, findPos);
+			allCount -= 99;
+		}
+		inven->SetDrag(nullptr);
+		inven->SetPrevInven(nullptr);
+		return;
+	}
+
+
+	inven->MoveInvenItem(this);
+	inven->SetDrag(nullptr);
+	inven->SetPrevInven(nullptr);
+}
+
+void InventoryBox::MoveItem(InvenItem* item, Vector2i move_pos)
+{
+	auto data = FILE_MGR->GetItemInfo(item->GetName());
+
+	for (int i = move_pos.y; i < move_pos.y + data.height; i++)
+	{
+		for (int j = move_pos.x; j < move_pos.x + data.width; j++)
+		{
+			allPos[i][j] = true;
+			itemGreed[i][j]->SetState(true, item);
+
+		}
+	}
+	item->Set(data.width, data.height,
+		{ startPos.x + move_pos.x * 60 + padding * move_pos.x , startPos.y + move_pos.y * 60 + padding * move_pos.y },
+		{ move_pos.x, move_pos.y }, data.path, data.maxCount, data.price);
+	item->SetCount(item->GetCount());
+	item->Init();
+
+	items.push_back(item);
+	inven->SetDrag(nullptr);
 }
 
 void InventoryBox::ReturnItem()
@@ -317,25 +478,49 @@ void InventoryBox::ReturnItem()
 
 void InventoryBox::DeleteItem(InvenItem* item)
 {
-	
 	for (int i = 0; i < width; i++)
 	{
 		for (int j = 0; j < height; j++)
 		{
 			if (itemGreed[j][i]->GetItem() == item)
 			{
-				allPos[j][i] = false;
-				itemGreed[j][i]->SetState(false, nullptr);
-				items.erase(find(items.begin(), items.end(), item));
+				int w = item->GetWidth();
+				int h = item->GetHeight();
+				for (int x = 0; x < w; x++)
+				{
+					for (int y = 0; y < h; y++)
+					{
+						itemGreed[y + j][x + i]->SetState(false, nullptr);
+						allPos[y + j][x + i] = false;
+					}
+				}
+				if(find(items.begin(), items.end(), item) != items.end())
+					items.erase(find(items.begin(), items.end(), item));
 				return;
 			}
 		}
 	}
 }
 
+void InventoryBox::DeleteItem(InvenItem* item,Vector2i startPos, Vector2i size)
+{
+	for (int i = startPos.y; i < startPos.y + size.y; i++)
+	{
+		for (int j = startPos.x; j < startPos.x + size.x; j++)
+		{
+			allPos[i][j] = false;
+			itemGreed[i][j]->SetState(false, nullptr);
+		}
+	}
+
+	auto it = find(items.begin(), items.end(), item);
+	if(it != items.end())
+		items.erase(it);
+}
+
 void InventoryBox::ClearInven()
 {
-	for (auto item :items)
+	for (auto& item :items)
 	{
 		delete item;
 	}
@@ -343,7 +528,7 @@ void InventoryBox::ClearInven()
 
 	for (auto& greed_line : itemGreed)
 	{
-		for (auto greed : greed_line)
+		for (auto& greed : greed_line)
 		{
 			greed->SetState(false, nullptr);
 		}
@@ -353,6 +538,18 @@ void InventoryBox::ClearInven()
 		for (auto pos : pos_line)
 		{
 			pos = false;
+		}
+	}
+}
+
+void InventoryBox::Reset()
+{
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			itemGreed[i][j]->SetState(false, nullptr);
+			allPos[i][j] = false;
 		}
 	}
 }

@@ -4,90 +4,1159 @@
     "maxCount": 2,
     "weight": 1.0,
     "width": 1,
-    "height": 1
+    "height": 1,
+    "price": 150,
+    "uiName": "Recovery kit",
+    "type": 5,
+    "description": "Medical kit made from junk.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   },
   "handsaw": {
     "path": "graphics/items/handsaw.png",
     "maxCount": 1,
     "weight": 2.0,
     "width": 2,
-    "height": 1
+    "height": 1,
+    "price": 300,
+    "uiName": "Handsaw",
+    "type": 7,
+    "description": "Let's sell it.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   },
   "Armor-1": {
     "path": "graphics/items/Armor-1.png",
     "maxCount": 1,
     "weight": 2.0,
     "width": 2,
-    "height": 2
+    "height": 2,
+    "price": 500,
+    "uiName": "Bulletproof Vest",
+    "type": 4,
+    "description": "Basic Bulletproof Vest supplied.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   },
-  "GUN1": {
-    "path": "graphics/items/GUN1.png",
+  "Shotgun": {
+    "path": "graphics/items/shotgun/Shotgun.png",
     "maxCount": 1,
     "weight": 2.0,
     "width": 5,
-    "height": 1
+    "height": 1,
+    "price": 1200,
+    "uiName": "Shotgun",
+    "type": 3,
+    "description": "Basic Shotgun supplied.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   },
-  "GUN2": {
-    "path": "graphics/items/GUN2.png",
+  "MB_Shotgun": {
+    "path": "graphics/items/shotgun/MB_shotgun.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 5,
+    "height": 1,
+    "price": 1200,
+    "uiName": "MB-Shotgun",
+    "type": 3,
+    "description": "Shotgun with a Muzzle Brake attach\ned.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Up1-Shotgun": {
+    "path": "graphics/items/shotgun/smp153-2.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 5,
+    "height": 1,
+    "price": 5000,
+    "uiName": "Test",
+    "type": 3,
+    "description": "Test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Rifle": {
+    "path": "graphics/items/rifle/Rifle.png",
     "maxCount": 1,
     "weight": 2.0,
     "width": 3,
-    "height": 1
+    "height": 1,
+    "price": 1000,
+    "uiName": "Rifle",
+    "type": 3,
+    "description": "Basic Rifle supplied.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   },
-  "GUN3": {
-    "path": "graphics/items/GUN3.png",
+  "Scop_Rifle": {
+    "path": "graphics/items/rifle/Scop_Rifle.png",
     "maxCount": 1,
     "weight": 2.0,
     "width": 3,
-    "height": 1
+    "height": 1,
+    "price": 1000,
+    "uiName": "Scope-Rifle",
+    "type": 3,
+    "description": "Rifle with a scope attached.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "MB_Rifle": {
+    "path": "graphics/items/rifle/MB_Rifle.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 3,
+    "height": 1,
+    "price": 1000,
+    "uiName": "MB-Rifle",
+    "type": 3,
+    "description": "Rifle with a Muzzle Brake attached.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Sniper": {
+    "path": "graphics/items/sniper/Sniper.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 5,
+    "height": 1,
+    "price": 1500,
+    "uiName": "Sniper Rifle",
+    "type": 3,
+    "description": "Basic Sniper Rifle supplied.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Scop_sniper": {
+    "path": "graphics/items/sniper/Scop_sniper.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 5,
+    "height": 1,
+    "price": 1500,
+    "uiName": "Scope-Sniper Rifle",
+    "type": 3,
+    "description": "Sniper Rifle with a scope attach\ned.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "MB_sniper": {
+    "path": "graphics/items/sniper/MB_sniper.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 5,
+    "height": 1,
+    "price": 1500,
+    "uiName": "MB-Sniper Rifle",
+    "type": 3,
+    "description": "Sniper Rifle with a Muzzle Brake\nattached.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "SR_25": {
+    "path": "graphics/items/sniper/SR_25.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 5,
+    "height": 1,
+    "price": 2500,
+    "uiName": "SR-25",
+    "type": 3,
+    "description": "This Semi-automatic Rifle can only\n be obtained from Supply Drops.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Scope": {
+    "path": "graphics/items/scope.png",
+    "maxCount": 2,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 500,
+    "uiName": "Scope",
+    "type": 2,
+    "description": "When attached to your weapon,\n increase your sight.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Muzzle Brake": {
+    "path": "graphics/items/Muzzle_Brake.png",
+    "maxCount": 2,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 500,
+    "uiName": "Muzzle Brake",
+    "type": 2,
+    "description": "When attached to your weapon,\n Increases attack power and accuracy.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ShotgunUpgrade1": {
+    "path": "graphics/items/shotgun/smp153upgrade1.png",
+    "maxCount": 3,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 4000,
+    "uiName": "Test",
+    "type": 1,
+    "description": "Test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ShotgunUpgrade2": {
+    "path": "graphics/items/shotgun/smp153upgrade2.png",
+    "maxCount": 3,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 4000,
+    "uiName": "Test",
+    "type": 1,
+    "description": "Test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ShotgunUpgrade3": {
+    "path": "graphics/items/shotgun/smp153upgrade3.png",
+    "maxCount": 3,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 4000,
+    "uiName": "Test",
+    "type": 1,
+    "description": "Test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ShotgunUpgradeSet": {
+    "path": "graphics/items/shotgun/smp153upgradeset.png",
+    "maxCount": 3,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 10000,
+    "uiName": "Test",
+    "type": 1,
+    "description": "Test des",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   },
   "Apple": {
     "path": "graphics/items/apple.png",
     "maxCount": 2,
     "weight": 1.0,
     "width": 1,
-    "height": 1
+    "height": 1,
+    "price": 80,
+    "uiName": "Apple",
+    "type": 1,
+    "description": "An apple a day keeps the doctor\n away.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   },
   "Water": {
-    "path": "graphics/items/water.png",
+    "path": "graphics/items/item_water_bottle.png",
     "maxCount": 2,
     "weight": 1.0,
     "width": 1,
-    "height": 1
+    "height": 1,
+    "price": 100,
+    "uiName": "Water",
+    "type": 1,
+    "description": "The recommended amount of 8 cups\n per day is 1.6 liters.\nLet's drink bottled up.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   },
   "EnergyDrink": {
-    "path": "graphics/items/drink.png",
+    "path": "graphics/items/item_energy_drink.png",
     "maxCount": 2,
     "weight": 1.0,
     "width": 1,
-    "height": 1
+    "height": 1,
+    "price": 300,
+    "uiName": "Energy Drink",
+    "type": 1,
+    "description": "It's overtime signal.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   },
   "Meat": {
     "path": "graphics/items/meat.png",
     "maxCount": 2,
     "weight": 1.0,
     "width": 1,
-    "height": 1
+    "height": 1,
+    "price": 200,
+    "uiName": "Meat",
+    "type": 1,
+    "description": "Wow. I live for this.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   },
   "RifleBullet": {
     "path": "graphics/items/riflebullet.png",
     "maxCount": 500,
     "weight": 1.0,
     "width": 1,
-    "height": 1
+    "height": 1,
+    "price": 10,
+    "uiName": "Rifle Ammunition",
+    "type": 6,
+    "description": "Ammo for Rifle.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   },
   "ShotGunBullet": {
     "path": "graphics/items/shotgunbullet.png",
     "maxCount": 500,
     "weight": 1.0,
     "width": 1,
-    "height": 1
+    "height": 1,
+    "price": 25,
+    "uiName": "Shotgun Ammunition",
+    "type": 6,
+    "description": "Ammo for Shotgun.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   },
   "SniperBullet": {
     "path": "graphics/items/sniperbullet.png",
     "maxCount": 500,
     "weight": 1.0,
     "width": 1,
-    "height": 1
+    "height": 1,
+    "price": 65,
+    "uiName": "Sniper Rifle Ammunition",
+    "type": 6,
+    "description": "Ammo for Sniper Rifle.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Bread": {
+    "path": "graphics/items/item_bread.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 35,
+    "uiName": "Bread",
+    "type": 1,
+    "description": "Bread for a light meal.\nIt smells and tastes good, but get hung\nry soon.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "RottenBread": {
+    "path": "graphics/items/item_bread_rotten.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 20,
+    "uiName": "Rotten Bread",
+    "type": 1,
+    "description": "Moldy and dry bread.\nIt seems to taste like metal.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Cheese": {
+    "path": "graphics/items/item_cheese.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 50,
+    "uiName": "Cheese",
+    "type": 1,
+    "description": "low weight, high calorie.\nSuitable for survival food.\nIf you give up nutritional balance..",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "RottenCheese": {
+    "path": "graphics/items/item_cheese_rotten.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 35,
+    "uiName": "Rotten Cheese",
+    "type": 1,
+    "description": "Cheese is rotten too.\nWhat's the difference between ferment\nation and decay.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Egg": {
+    "path": "graphics/items/item_egg.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 100,
+    "uiName": "Egg",
+    "type": 1,
+    "description": "\"Why's the egg so dry?\" -Detective Ma",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "RottenEgg": {
+    "path": "graphics/items/item_egg_rotten.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 50,
+    "uiName": "Rotten Egg",
+    "type": 1,
+    "description": "You want me to eat this?\nYuuuuck disgusting!",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Sandwitch": {
+    "path": "graphics/items/item_sandwich_meat.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 300,
+    "uiName": "Sandwitch",
+    "type": 1,
+    "description": "I'll cut it into a star shape.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "MRE": {
+    "path": "graphics/items/item_mre.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 500,
+    "uiName": "MRE",
+    "type": 1,
+    "description": "Apart from the taste,\nIt's the perfect lunchbox.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "RottenWater": {
+    "path": "graphics/items/item_water_bottle_rotten.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 50,
+    "uiName": "Rotten Water",
+    "type": 1,
+    "description": "Ugh. stinky smell,\nwhat the hell is mixed with the water?",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Milk": {
+    "path": "graphics/items/item_milk.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 100,
+    "uiName": "Milk",
+    "type": 1,
+    "description": "There Is No Cow Level.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "RottenMilk": {
+    "path": "graphics/items/item_milk_rotten.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 50,
+    "uiName": "Rotten Milk",
+    "type": 1,
+    "description": "It's been a long time since the expiratio\nn date, and it smells thick and sour.\nI just imagine making cheese.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Coke": {
+    "path": "graphics/items/item_coke.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 200,
+    "uiName": "Coke",
+    "type": 1,
+    "description": "Please don't ask for Coke, ask for Cola.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Coffee": {
+    "path": "graphics/items/item_cup_coffee.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 180,
+    "uiName": "Coffee",
+    "type": 1,
+    "description": "What else?",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Vodka": {
+    "path": "graphics/items/item_vodka.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 300,
+    "uiName": "Vodka",
+    "type": 1,
+    "description": "Vodka! Vodka!\nDrinking is good for you!",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Whisky": {
+    "path": "graphics/items/item_whisky.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 300,
+    "uiName": "Whisky",
+    "type": 1,
+    "description": "American bourbon whiskey.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "AntiRad": {
+    "path": "graphics/items/item_pillanti_rad.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 200,
+    "uiName": "AntiRad",
+    "type": 1,
+    "description": "Reduces radiation levels in the body.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "RawMeat": {
+    "path": "graphics/items/item_meat_raw.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 50,
+    "uiName": "Raw Meat",
+    "type": 1,
+    "description": "Ah, Fresh Meat!",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "StandardMedikit": {
+    "path": "graphics/items/med1.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 300,
+    "uiName": "Standard Medikit",
+    "type": 5,
+    "description": "Standard medical kit supplied.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ModernMedikit": {
+    "path": "graphics/items/med2.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 500,
+    "uiName": "Modern Medikit",
+    "type": 5,
+    "description": "Specially designed medical kit\nfor seekers entering Zarkov.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "IdentificationTag": {
+    "path": "graphics/items/item_identificationtag.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 100,
+    "uiName": "Identification Tag",
+    "type": 7,
+    "description": "Evidence that the owner is a former\n soldier.\nwho cares? Let's sell it to the shop.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "lighter": {
+    "path": "graphics/items/item_lighter.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 50,
+    "uiName": "lighter",
+    "type": 7,
+    "description": "Tool for making a fire in the field.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Watch": {
+    "path": "graphics/items/item_watch.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 200,
+    "uiName": "Watch",
+    "type": 7,
+    "description": "It's expensive! Get it first.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Tentacles": {
+    "path": "graphics/items/item_tentacles.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 100,
+    "uiName": "Tentacles",
+    "type": 7,
+    "description": "Which part is this?",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Claw": {
+    "path": "graphics/items/item_claw.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 300,
+    "uiName": "Claw",
+    "type": 7,
+    "description": "Sharp Blink's Claws.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Fang": {
+    "path": "graphics/items/item_fang.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 2,
+    "price": 1500,
+    "uiName": "Fang",
+    "type": 7,
+    "description": "Big's Fang, as huge as its name.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ZombieMeat": {
+    "path": "graphics/items/item_zombiemeat.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 1,
+    "price": 250,
+    "uiName": "Zombie Meat",
+    "type": 7,
+    "description": "Oh no, This must be kryptonite",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "Gameboy": {
+    "path": "graphics/items/item_gameboy.png",
+    "maxCount": 2,
+    "weight": 1.0,
+    "width": 1,
+    "height": 2,
+    "price": 250,
+    "uiName": "Game Boy",
+    "type": 7,
+    "description": "33 years old,\n still Referred to as 'boy'",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "PoliceArmor": {
+    "path": "graphics/items/Armor-2.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 2,
+    "height": 2,
+    "price": 1000,
+    "uiName": "Police Armor",
+    "type": 4,
+    "description": "Armor with helmet used by police.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "HunterArmor": {
+    "path": "graphics/items/Armor-3.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 2,
+    "height": 2,
+    "price": 2000,
+    "uiName": "Hunter Armor",
+    "type": 4,
+    "description": "Armor crafted by seekers entering\n Zarkov to protect themselves.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ReinforcedArmor": {
+    "path": "graphics/items/Armor-4.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 2,
+    "height": 2,
+    "price": 3000,
+    "uiName": "Reinforced Armor",
+    "type": 4,
+    "description": "Metal-reinforced sturdy Armor.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "HDF-Armor": {
+    "path": "graphics/items/Armor-5.png",
+    "maxCount": 1,
+    "weight": 2.0,
+    "width": 2,
+    "height": 2,
+    "price": 4000,
+    "uiName": "HDF-Armor",
+    "type": 4,
+    "description": "Heavy Armor reinforced with lead \nand metal.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
+  },
+  "ImprovedAntirad": {
+    "path": "graphics/items/item_pillanti_rad2.png",
+    "maxCount": 2,
+    "weight": 2.0,
+    "width": 1,
+    "height": 1,
+    "price": 400,
+    "uiName": "Improved Antirad",
+    "type": 1,
+    "description": "Reduces radiation levels more in the\n body.",
+    "toolTipPos": {
+      "x": -20,
+      "y": -20
+    },
+    "toolTipSize": {
+      "x": 400,
+      "y": 400
+    },
+    "tooltipDelay": 1.0
   }
 }

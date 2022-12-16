@@ -4,6 +4,7 @@
 #include "../GameObject/TextObject.h"
 #include "../Framework/FileManager.h"
 #include "../Framework/InputMgr.h"
+#include "EditorMapUiMgr.h"
 
 LoadWindowBox::LoadWindowBox(UiMgr* mgr)
 	:Button(mgr)
@@ -12,17 +13,7 @@ LoadWindowBox::LoadWindowBox(UiMgr* mgr)
 
 LoadWindowBox::~LoadWindowBox()
 {
-	for (auto& del : loadFiles)
-	{
-		if (del != nullptr)
-		{
-			delete del;
-			del = nullptr;
-		}
-	}
-	loadFiles.clear();
-	allMaps.clear();
-	idx = 0;
+	Release();
 }
 
 void LoadWindowBox::Release()

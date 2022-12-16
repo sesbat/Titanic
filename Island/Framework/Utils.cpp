@@ -48,6 +48,11 @@ Vector2f Utils::RandAreaPoint()
 	return RandomRange() * RandContact(1.f);
 }
 
+Vector2f Utils::RandAreaPoint(float rad)
+{
+	return rad * RandContact(1.f);
+}
+
 Vector2f Utils::RandContact(float rad)
 {
 	float radian = RandomRange(0.f, M_PI * 2);
@@ -140,6 +145,44 @@ bool Utils::OBB( FloatRect& obb1,  HitBox& obb2)
 	rect.setPosition(obb1.left, obb1.top);
 	rect.setSize({ obb1.width, obb1.height });
 	return testCollision(rect, obb2.GetHitbox(), MTV);
+	return false;
+}
+
+bool Utils::LineRect(Vector2f startPos, Vector2f nextPos, RectangleShape hitObject)
+{
+	// check if the line has hit any of the rectangle's sides
+	// uses the Line/Line function below
+	auto bounds = hitObject.getGlobalBounds();
+	float rx = bounds.left;
+	float ry = bounds.top;
+	float rw = bounds.width;
+	float rh = bounds.height;
+	bool left = Lineline(startPos, nextPos, rx, ry, rx, ry + rh);
+	bool right = Lineline(startPos, nextPos, rx + rw, ry, rx + rw, ry + rh);
+	bool top = Lineline(startPos, nextPos, rx, ry, rx + rw, ry);
+	bool bottom = Lineline(startPos, nextPos, rx, ry + rh, rx + rw, ry + rh);
+
+	// if ANY of the above are true, the line
+	// has hit the rectangle
+	if (left || right || top || bottom) {
+		return true;
+	}
+	return false;
+}
+
+bool Utils::Lineline(Vector2f startPos, Vector2f nextPos, float x3, float y3, float x4, float y4)
+{
+	// calculate the direction of the lines
+	float uA = ((x4 - x3) * (startPos.y - y3) - (y4 - y3) * (startPos.x - x3)) /
+		((y4 - y3) * (nextPos.x - startPos.x) - (x4 - x3) * (nextPos.y - startPos.y));
+	float uB = ((nextPos.x - startPos.x) * (startPos.y - y3) - (nextPos.y - startPos.y) * (startPos.x - x3)) /
+		((y4 - y3) * (nextPos.x - startPos.x) - (x4 - x3) * (nextPos.y - startPos.y));
+
+	// if uA and uB are between 0-1, lines are colliding
+	if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1)
+	{
+		return true;
+	}
 	return false;
 }
 

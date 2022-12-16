@@ -12,6 +12,7 @@ DrawObj::DrawObj(UiMgr* uimgr)
 
 DrawObj::~DrawObj()
 {
+	Release();
 }
 
 void DrawObj::Update(float dt)
@@ -30,4 +31,9 @@ void DrawObj::Update(float dt)
 void DrawObj::SetMove(bool move)
 {
 	isMove = move;
+}
+
+void DrawObj::Release()
+{
+	Button::Release();
 }

@@ -1,0 +1,50 @@
+ {
+  "Recoverykit": {
+    "useItem": [
+      {
+        "cnt": 1,
+        "id": "Apple"
+      },
+      {
+        "cnt": 1,
+        "id": "Water"
+      }
+    ]
+  },
+  "ShotGunBullet": {
+    "useItem": [
+      {
+        "cnt": 1,
+        "id": "RifleBullet"
+      },
+      {
+        "cnt": 1,
+        "id": "SniperBullet"
+      }
+    ]
+  },
+  "RifleBullet": {
+    "useItem": [
+      {
+        "cnt": 1,
+        "id": "ShotGunBullet"
+      },
+      {
+        "cnt": 1,
+        "id": "SniperBullet"
+      }
+    ]
+  },
+  "SniperBullet": {
+    "useItem": [
+      {
+        "cnt": 1,
+        "id": "RifleBullet"
+      },
+      {
+        "cnt": 1,
+        "id": "ShotGunBullet"
+      }
+    ]
+  }
+}

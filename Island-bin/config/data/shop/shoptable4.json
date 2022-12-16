@@ -1,0 +1,22 @@
+{
+  "Rifle": {
+    "name": "Rifle",
+    "cnt": 1
+  },
+  "Shotgun": {
+    "name": "Rifle",
+    "cnt": 1
+  },
+  "Sniper": {
+    "name": "Sniper",
+    "cnt": 1
+  },
+  "Scope": {
+    "name": "Scope",
+    "cnt": 1
+  },
+  "Muzzle Brake": {
+    "name": "Muzzle Brake",
+    "cnt": 1
+  }
+}

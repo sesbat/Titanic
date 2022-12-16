@@ -12,6 +12,7 @@
 #include "../Ui/AddItemBox.h"
 #include "SaveWindowBox.h"
 #include "LoadWindowBox.h"
+#include "ConnectWindowBox.h"
 #include "../GameObject/TextObject.h"
 
 EditorMapUiMgr::EditorMapUiMgr(Scene* scene)
@@ -21,6 +22,18 @@ EditorMapUiMgr::EditorMapUiMgr(Scene* scene)
 
 EditorMapUiMgr::~EditorMapUiMgr()
 {
+	Release();
+}
+
+void EditorMapUiMgr::Release()
+{
+	if (nowDraw != nullptr)
+		delete nowDraw;
+	nowDraw = nullptr;
+	if (rect != nullptr)
+		delete rect;
+	rect = nullptr;
+	UiMgr::Release();
 }
 
 void EditorMapUiMgr::Init()
@@ -57,26 +70,35 @@ void EditorMapUiMgr::Init()
 	eraseBtn->SetPos({ 50,190 });
 	uiObjList[0].push_back(eraseBtn);
 
-	exitBtn = new Button(this);
-	exitBtn->SetClkColor(true);
-	exitBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
-		75, Color::White, "EXIT", true);
-	exitBtn->SetOrigin(Origins::TL);
-	exitBtn->SetPos({ 50,260 });
-	uiObjList[0].push_back(exitBtn);
-
 	boxBtn = new Button(this);
 	boxBtn->SetClkColor(false);
 	boxBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
 		75, Color::White, "Box", true);
 	boxBtn->SetOrigin(Origins::TL);
-	boxBtn->SetPos({ 50,330 });
+	boxBtn->SetPos({ 50,260 });
 	uiObjList[0].push_back(boxBtn);
 
+	connecntBtn = new Button(this);
+	connecntBtn->SetClkColor(true);
+	connecntBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		75, Color::White, "Connect", true);
+	connecntBtn->SetOrigin(Origins::TL);
+	connecntBtn->SetPos({ 50,330 });
+	uiObjList[0].push_back(connecntBtn);
 
-	selects = { "TILE","TREE","BUSH","STONE","BLOCK","PLAYER","ENEMY","BOX","ANOTHER"};
-	selectTxtSize = { 75,75,75,65,65,55,60,75,40 };
-	selectPosY = { 54,54,54,54,54,62,54,54,70 };
+	exitBtn = new Button(this);
+	exitBtn->SetClkColor(true);
+	exitBtn->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"),
+		75, Color::White, "EXIT", true);
+	exitBtn->SetOrigin(Origins::TL);
+	exitBtn->SetPos({ 50,800 });
+	uiObjList[0].push_back(exitBtn);
+
+
+
+	selects = { "TILE","TREE","BUSH","STONE","BLOCK","RADIATION","PLAYER","ENEMY", "BOSS","BOX","ANOTHER","INVISIBLE","RADTILE"};
+	selectTxtSize = { 75,75,75,65,65,40,55,60,60,75,40,40,75 };
+	selectPosY = { 54,54,54,54,54,70,62,54,54,54,70,70,54 };
 
 	selIdx = 0;
 	selectBtn = new Button(this);
@@ -105,7 +127,7 @@ void EditorMapUiMgr::Init()
 	}
 
 	saveWindow = new SaveWindowBox(this);
-	saveWindow->SetPos({ 350,50 });
+	saveWindow->SetPos({ 350,50 }); 
 	saveWindow->Init();
 	uiObjList[1].push_back(saveWindow);
 	for (auto& obj : type_selects[selects[selIdx]])
@@ -117,6 +139,11 @@ void EditorMapUiMgr::Init()
 	loadWindow->SetPos({ 350,50 });
 	loadWindow->Init();
 	uiObjList[1].push_back(loadWindow);
+
+	connectWindow = new ConnectWindowBox(this);
+	connectWindow->SetPos({ 350,50 });
+	connectWindow->Init();
+	uiObjList[1].push_back(connectWindow);
 
 	itemBox = new AddItemBox(this);
 	itemBox->Init();
@@ -141,6 +168,7 @@ void EditorMapUiMgr::Update(float dt)
 		saveWindow->Update(dt);
 		return;
 	}
+
 	if (loadWindow->GetActive())
 	{
 		loadBtn->Update(dt);
@@ -153,7 +181,35 @@ void EditorMapUiMgr::Update(float dt)
 		return;
 	}
 
+	if (connectWindow->GetActive())
+	{
+		connecntBtn->Update(dt);
+		if (connecntBtn->IsUp())
+		{
+			connectWindow->SetActive(!connectWindow->GetActive());
+			((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeletDraw();
+		}
+		connectWindow->Update(dt);
+		return;
+	}
+
 	UiMgr::Update(dt);
+
+	if (underUi->IsStay())
+	{
+		if (InputMgr::GetMouseWheelUp())
+		{
+			selectIdx--;
+			selectIdx = max(selectIdx, 0);
+			SetSelectSize();
+		}
+		if (InputMgr::GetMouseWheelDown())
+		{
+			selectIdx++;
+			selectIdx = min((int)type_selects[selects[selIdx]].size(), selectIdx);
+			SetSelectSize();
+		}
+	}
 
 	if (eraseBtn->IsUp())
 	{
@@ -170,7 +226,7 @@ void EditorMapUiMgr::Update(float dt)
 	}
 	if (boxBtn->IsUp())
 	{
-		cout << "Box Down" << endl;
+		//cout << "Box Down" << endl;
 		isBox = !isBox;
 		if (isBox)
 			boxBtn->GetTextObj()->SetColor(Color::Red);
@@ -190,8 +246,8 @@ void EditorMapUiMgr::Update(float dt)
 		rectStartPos = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)rectStartPos);
 		rect->setFillColor(Color(255, 255, 255, 20));
 		rect->setPosition(rectStartPos);
-		cout << rectStartPos.x << endl;
-		cout << rectStartPos.y << endl;
+		//cout << rectStartPos.x << endl;
+		//cout << rectStartPos.y << endl;
 
 		return;
 	}
@@ -200,14 +256,14 @@ void EditorMapUiMgr::Update(float dt)
 		auto mousePos = InputMgr::GetMousePos();
 		mousePos = SCENE_MGR->GetCurrScene()->ScreenToUiPosition((Vector2i)mousePos);
 		rect->setSize(Vector2f{ mousePos.x - rectStartPos.x, mousePos.y - rectStartPos.y });
-		cout << "Box ing" << endl;
+		//cout << "Box ing" << endl;
 
 		return;
 	}
 	if (isBox && InputMgr::GetMouseButtonUp(Mouse::Left))
 	{
 		BoxingEnd();
-		cout << "Box End" << endl;
+		//cout << "Box End" << endl;
 		return;
 	}
 
@@ -227,9 +283,15 @@ void EditorMapUiMgr::Update(float dt)
 		loadWindow->SetActive(!loadWindow->GetActive());
 		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeletDraw();
 	}
+	if (connecntBtn->IsUp())
+	{
+		connectWindow->SetActive(!connectWindow->GetActive());
+		((EditorMapUiMgr*)(parentScene->GetUiMgr()))->DeletDraw();
+	}
 
 	if (selectBtn->IsUp())
 	{
+		selectIdx = 0;
 		for (auto& obj : type_selects[selects[selIdx]])
 		{
 			obj->SetActive(false);
@@ -247,10 +309,12 @@ void EditorMapUiMgr::Update(float dt)
 
 		DeletDraw();
 		((MapEditor*)(parentScene))->SetType(selects[selIdx]);
+		SetSelectSize();
 	}
 
 	if (selectBtn->IsUpRight())
 	{
+		selectIdx = 0;
 		for (auto& obj : type_selects[selects[selIdx]])
 		{
 			obj->SetActive(false);
@@ -268,6 +332,7 @@ void EditorMapUiMgr::Update(float dt)
 
 		DeletDraw();
 		((MapEditor*)(parentScene))->SetType(selects[selIdx]);
+		SetSelectSize();
 	}
 
 }
@@ -360,6 +425,10 @@ bool EditorMapUiMgr::LoadActive()
 {
 	return loadWindow->GetActive();
 }
+bool EditorMapUiMgr::ConnectActive()
+{
+	return connectWindow->GetActive();
+}
 
 string EditorMapUiMgr::loadFile()
 {
@@ -420,7 +489,7 @@ void EditorMapUiMgr::BoxingEnd()
 
 	}
 
-	if (boxingErase)
+	/*if (boxingErase)
 	{
 		cout << "Erase" << endl;
 		cout << start_idx_x << endl;
@@ -435,13 +504,33 @@ void EditorMapUiMgr::BoxingEnd()
 		cout << start_idx_y << endl;
 		cout << end_idx_x << endl;
 		cout << end_idx_y << endl;
-	}
+	}*/
 
 
 	if (rect != nullptr)
 		delete rect;
 
 	rect = nullptr;
+}
 
+void EditorMapUiMgr::SetSelectSize()
+{
+	Vector2f pos = { 450, underUi->GetPos().y + 40.f };
 
+	int i = 0;
+	int x = 450;
+	for (auto& item : type_selects[selects[selIdx]])
+	{
+		if (i >= selectIdx && i < selectIdx + 12)
+		{
+			item->SetActive(true);
+			item->SetPos(pos);
+			pos.x += 100.f;
+		}
+		else
+		{
+			item->SetActive(false);
+		}
+		i++;
+	}
 }

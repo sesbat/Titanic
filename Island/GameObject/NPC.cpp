@@ -6,12 +6,10 @@
 #include "../Framework/ResourceManager.h"
 #include "../Ui/Button.h"
 #include "../Framework/Framework.h"
-#include "../Ui/InventoryBox.h"
 #include "../Scens/SceneManager.h"
 #include "../Scens/Scene.h"
-#include "../Ui/Inventory.h"
 #include "Ment.h"
-
+#include "../Scens/Ready.h"
 NPC::NPC()
 	:isShowMap(false)
 {
@@ -19,6 +17,12 @@ NPC::NPC()
 
 NPC::~NPC()
 {
+	Release();
+}
+
+void NPC::SetIsHeal(bool yesORno)
+{
+	isHeal = yesORno;
 }
 
 void NPC::SetPlayer(Player* player)
@@ -34,10 +38,6 @@ void NPC::SetNPCType(NPCType type)
 void NPC::Init()
 {
 	scene = SCENE_MGR->GetCurrScene();
-	shop = new InventoryBox(scene->GetUiMgr(),player->GetInventory(), Vector2i{ 1248,252 });
-	shop->Init();
-	NPCInven = player->GetInventory();
-	NPCInven->SetRightInven(shop);
 
 	ment = new Ment();
 	ment->SetText(*RESOURCES_MGR->GetFont("fonts/6809 chargen.otf"), 40, Color::White, "[F]");
@@ -52,32 +52,31 @@ void NPC::Init()
 
 void NPC::Release()
 {
-	SpriteObject::Release();
+	HitBoxObject::Release();
 }
 
 void NPC::Update(float dt)
 {
 	SpriteObject::Update(dt);
-	//cout << GetPos().x<<" "<< GetPos().y << endl;
-
 
 	if (!ment->GetActive() && Utils::Distance(GetPos(), player->GetPos()) < 100)
 	{
 		ment->SetActive(true);
 	}
-	else if(ment->GetActive() && Utils::Distance(GetPos(), player->GetPos()) >= 100)
+	else if (ment->GetActive() && Utils::Distance(GetPos(), player->GetPos()) >= 100)
 	{
 		ment->SetActive(false);
 	}
 
-	if (InputMgr::GetKeyDown(Keyboard::F))
+	if (InputMgr::GetKeyDown(Keyboard::F) || InputMgr::GetKeyDown(Keyboard::Escape))
 	{
+		((Ready*)SCENE_MGR->GetCurrScene())->CloseToolTip();
 		if (Utils::Distance(GetPos(), player->GetPos()) < 100)
 		{
 			switch (type)
 			{
 			case NPCType::Start:
-				if (player->GetIsMove())
+				if (player->GetIsMove() && !InputMgr::GetKeyDown(Keyboard::Escape))
 				{
 					isShowMap = true;
 					player->SetMove(false);
@@ -86,12 +85,24 @@ void NPC::Update(float dt)
 				{
 					isShowMap = false;
 					player->SetMove(true);
+					InputMgr::Clear();
 				}
 				break;
 			case NPCType::Shop:
+				if (player->GetIsMove() && !InputMgr::GetKeyDown(Keyboard::Escape))
+				{
+					isShowShop = true;
+					player->SetMove(false);
+				}
+				else if (isShowShop)
+				{
+					isShowShop = false;
+					player->SetMove(true);
+					InputMgr::Clear();
+				}
 				break;
 			case NPCType::Craft:
-				if (player->GetIsMove())
+				if (player->GetIsMove() && !InputMgr::GetKeyDown(Keyboard::Escape))
 				{
 					isShowCraft = true;
 					player->SetMove(false);
@@ -100,8 +111,25 @@ void NPC::Update(float dt)
 				{
 					isShowCraft = false;
 					player->SetMove(true);
+					InputMgr::Clear();
 				}
 				break;
+			case NPCType::Heal:
+			{
+				if (player->GetIsMove() && !InputMgr::GetKeyDown(Keyboard::Escape))
+				{
+					isHeal = true;
+					player->SetMove(false);
+				}
+				else if (isHeal)
+				{
+					isHeal = false;
+					player->SetMove(true);
+					InputMgr::Clear();
+				}
+			}
+			break;
+
 			case NPCType::Count:
 				break;
 			default:
@@ -113,49 +141,6 @@ void NPC::Update(float dt)
 			ment->SetActive(false);
 		}
 	}
-
-	//if (InputMgr::GetKeyDown(Keyboard::F))
-	//{
-	//	if (isShowMap && !player->GetIsMove())
-	//	{
-	//		switch (type)
-	//		{
-	//		case NPCType::Start:
-	//			isShowMap = false;
-	//			break;
-	//		case NPCType::Shop:
-	//			break;
-	//		case NPCType::Craft:
-	//			isShowCraft = false;
-	//			break;
-	//		case NPCType::Count:
-	//			break;
-	//		default:
-	//			break;
-	//		}
-
-	//		player->SetMove(true);
-	//	}
-	//	else if (!isShowMap && player->GetIsMove() && Utils::Distance(GetPos(), player->GetPos()) < 100)
-	//	{
-	//		switch (type)
-	//		{
-	//		case NPCType::Start:
-	//			isShowMap = true;
-	//			break;
-	//		case NPCType::Shop:
-	//			break;
-	//		case NPCType::Craft:
-	//			isShowCraft = true;
-	//			break;
-	//		case NPCType::Count:
-	//			break;
-	//		default:
-	//			break;
-	//		}
-	//		player->SetMove(false);
-	//	}
-	//}
 }
 
 void NPC::Draw(RenderWindow& window)

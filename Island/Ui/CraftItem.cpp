@@ -4,6 +4,10 @@
 #include "../Framework/InputMgr.h"
 #include "../GameObject/SpriteObject.h"
 #include "../GameObject/TextObject.h"
+#include "../Scens/SceneManager.h"
+#include "../Scens/Ready.h"
+#include "../Ui/Ready/ReadyUiMgr.h"
+#include "../GameObject/ToolTip.h"
 
 CraftItem::CraftItem(UiMgr* mgr)
 	:Button(mgr), material(3)
@@ -13,6 +17,7 @@ CraftItem::CraftItem(UiMgr* mgr)
 
 CraftItem::~CraftItem()
 {
+	Release();
 }
 
 void CraftItem::Init()
@@ -31,6 +36,7 @@ void CraftItem::Update(float dt)
 	{
 		GetTextObj()->SetPos(position + Vector2f(bound.width, bound.height));
 	}
+	ToolTipUpdate(dt);
 }
 
 void CraftItem::Draw(RenderWindow& window)
@@ -54,6 +60,8 @@ void CraftItem::Set(int width, int height, Vector2i invenPos, Vector2i invenGree
 	SetTexture(*RESOURCES_MGR->GetTexture(path), true);
 	GetTextObj()->SetPos(position + Vector2f(60, 60));
 
+	auto data = FILE_MGR->GetItemInfo(name);
+	SetOverlapTimer(data.tooltipDelay);
 }
 
 void CraftItem::SetInvenPos(Vector2i invenPos, Vector2i invenGreedPos)
@@ -83,4 +91,35 @@ void CraftItem::AddCount(int n)
 			20, Color::White, to_string(count), false);
 	GetTextObj()->SetOrigin(Origins::BR);
 	GetTextObj()->SetPos(position + Vector2f(60, 60));
+}
+
+void CraftItem::ToolTipUpdate(float dt)
+{
+	if (IsStay())
+	{
+		ToolTip* tip;
+		tip = ((ReadyUiMgr*)uimgr)->GetTip();
+
+		if (!tip->GetActive())
+		{
+			overLapTimer += dt;
+			//cout << overLapTimer << endl;
+			if (overLapTimer > initTimer)
+			{
+				tip->SetItem(GetName());
+				tip->SetCnt(count);
+				tip->SetItemType(FILE_MGR->GetItemInfo(GetName()).type);
+				tip->SetToolPos(InputMgr::GetMousePos());
+				tip->init();
+				tip->SetActive(true);
+				overLapTimer = 0.f;
+			}
+		}
+	}
+}
+
+void CraftItem::SetActive(bool state)
+{
+	Button::SetActive(state);
+	overLapTimer = 0.f;
 }
