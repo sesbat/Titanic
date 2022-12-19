@@ -1,3 +1,3 @@
 # Team Titanic
-Team Project\n
+Team Project
 SFML 2d shooting Game
